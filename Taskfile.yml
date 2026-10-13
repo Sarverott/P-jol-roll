@@ -8,6 +8,21 @@ includes:
   resources: ./resources/Taskfile.yml
 
 tasks:
+
+  resume:gather:
+    desc: continues with all gathered until now with no clearing cache storage
+    env:
+      CRAWLEE_PURGE_ON_START: 0
+    cmds:
+      - task: gather 
+
+  resume:gather:everything:
+    desc: same as "task resume:gather" works for "task gather" but it is for "task gather:everything"
+    env:
+      CRAWLEE_PURGE_ON_START: 0
+    cmds:
+      - task: gather:everything 
+
   default:
     cmds:
       - task --list
