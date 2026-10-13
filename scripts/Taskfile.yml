@@ -1,0 +1,20 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  justslap: # experiment with time measurement when someone notice that this namespace is silly, my now ptr is UNIXUSAT=1765151507283
+    cmds:
+      - uv sync
+      - uv lock
+      - uv export --format requirements.txt > ./reqirements.txt
+      - uv export --format pylock.toml > ./pylock.toml
+      - uv run python ./srcipts/hf-push.py
+  default:
+    cmds:
+      - uv run python -m notebook
+#      - uv run python ./procedures/push-that-juicy-alluring-datasets-to-huggingface-cloud.py
+    silent: true

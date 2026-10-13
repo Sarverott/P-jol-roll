@@ -1,0 +1,1 @@
+# NOTE: this way we can had more controll under lounching procedures. then in every hook place just "npm run tasks:husky $0" if i'm not wrong

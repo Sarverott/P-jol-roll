@@ -1,5 +1,14 @@
 # This file tells Git which files shouldn't be added to source control
 
+# https://huggingface.co/buckets/Sarverott/raw-law-of-poland
+resources/bucket
+
+# https://huggingface.co/datasets/Sarverott/polish_national_law_docs
+resources/dataset
+
+# https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland
+resources/space
+
 .idea
 dist
 node_modules

@@ -6,3 +6,7 @@ storage
 
 # installed files
 node_modules
+.obsidian
+.vscode
+.github
+.husky
