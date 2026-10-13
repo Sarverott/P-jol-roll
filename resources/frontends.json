@@ -1,0 +1,17 @@
+{
+	"eli": {
+		"title": "ELI permalink of act",
+		"url": "https://eli.gov.pl/eli/{ELI}/ogl"
+	},
+	"isap": {
+		"title": "Internetowy System Aktów Prawnych of Sejm",
+		"url": "https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id={address}"
+	},
+	"journal": {
+		"title": "website of journal, robots.txt there disallows everyone but Google",
+		"url": {
+			"DU": "https://dziennikustaw.gov.pl/DU/{year}/{pos}",
+			"MP": "https://monitorpolski.gov.pl/MP/{year}/{pos}"
+		}
+	}
+}

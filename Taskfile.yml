@@ -14,9 +14,20 @@ tasks:
     silent: true
 
   gather:
-    desc: Gather acts from ELI API of Sejm, arguments after "--" (e.g. task gather -- 2026 --pdf --limit 5).
+    desc: Gather from ELI API of Sejm, arguments after "--" (e.g. task gather -- 2026 --acts --limit 5), usage in src/main.ts.
     cmds:
-      - npm start -- {{.CLI_ARGS}}
+      - npm run gather -- {{.CLI_ARGS}}
+
+  gather:everything:
+    desc: Every journal, every year, 4 files of every act - about 600 thousand requests, days of work, can be stopped and repeated.
+    prompt: This asks API of Sejm for everything it has. Start?
+    cmds:
+      - npm run gather -- --all --acts --limit 0 {{.CLI_ARGS}}
+
+  checkup:
+    desc: Browser visits websites that show gathered acts, arguments after "--" (e.g. task checkup -- 2026 --limit 6).
+    cmds:
+      - npm run checkup -- {{.CLI_ARGS}}
 
   build:
     desc: Compile typescript into dist.

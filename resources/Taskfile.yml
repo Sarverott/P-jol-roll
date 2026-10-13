@@ -2,23 +2,21 @@
 
 version: '3'
 
-vars:
-  BUCKET: hf://buckets/Sarverott/raw-law-of-poland
-
+# directories dataset, space and bucket are local sides of huggingface repositories
+# listed in .map.json - compared file by file, only what differs is moved (src/hub.ts)
 tasks:
-  clone:
-    desc: Clone git repositories of huggingface listed in .map.json (dataset, space).
+  plan:
+    desc: Show what differs between local directory and huggingface, name after "--" (e.g. task resources:plan -- dataset).
     cmds:
-      - for: [dataset, space]
-        cmd: test -d resources/{{.ITEM}} || git clone "$(node -p "require('./resources/.map.json').{{.ITEM}}")" resources/{{.ITEM}}
+      - npm run --silent hub -- plan {{.CLI_ARGS}}
 
-  status:
-    desc: Show state of cloned repositories.
+  pull:
+    desc: Take files that are on huggingface and not here, name after "--".
     cmds:
-      - for: [dataset, space]
-        cmd: git -C resources/{{.ITEM}} status --short --branch
+      - npm run --silent hub -- pull {{.CLI_ARGS}}
 
-  bucket:plan:
-    desc: Show what would be sent to bucket, nothing gets sent.
+  push:
+    desc: Send files that are new or changed here, name after "--", needs HF_TOKEN.
+    prompt: This writes to huggingface. Send?
     cmds:
-      - uvx --from huggingface_hub hf buckets sync resources/bucket {{.BUCKET}} --dry-run
+      - npm run --silent hub -- push {{.CLI_ARGS}}
