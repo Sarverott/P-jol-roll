@@ -57,8 +57,11 @@ tests/            vitest; gather.test.ts runs whole gathering against a local co
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
   dataset/        tables: lists/, acts/<journal>/<year>.jsonl, checkups/<journal>/<year>.jsonl
   bucket/         raw files of acts: <journal>/<year>/<address>.{json,references.json,pdf,html}
+docs/guides/      how to install, gather, check up, move data; what the data is
+docs/glossary/    words of the source and of the project, each with one meaning
 docs/agents/      notes written by agents for agents; point-of-view.md is personal
 docs/devlog/      scrapnotes with the plan and progress
+.github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues
 .obsidian/        the repository is an Obsidian vault; plugins/ holds separate repositories
 ```
 

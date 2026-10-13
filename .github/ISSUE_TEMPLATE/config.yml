@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Documentation
+    url: https://github.com/Sarverott/P-jol-roll/tree/master/docs
+    about: Guides and the glossary - installation, gathering, checkup, the data and Hugging Face.
+  - name: A leaked token or a security problem
+    url: https://github.com/Sarverott/P-jol-roll/security/policy
+    about: Report it privately, not in a public issue.
+  - name: A question about the law itself
+    url: https://np.ms.gov.pl
+    about: This project gathers acts and does not interpret them. Free legal aid in Poland is described here.
