@@ -1,0 +1,4 @@
+[submodule "Hefaisto - Obsidian's plugin"]
+	path = .obsidian/plugins/hefaisto
+	url = https://github.com/Sarverott/hefaisto.git
+    branch = master

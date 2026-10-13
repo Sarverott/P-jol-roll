@@ -1,0 +1,24 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  BUCKET: hf://buckets/Sarverott/raw-law-of-poland
+
+tasks:
+  clone:
+    desc: Clone git repositories of huggingface listed in .map.json (dataset, space).
+    cmds:
+      - for: [dataset, space]
+        cmd: test -d resources/{{.ITEM}} || git clone "$(node -p "require('./resources/.map.json').{{.ITEM}}")" resources/{{.ITEM}}
+
+  status:
+    desc: Show state of cloned repositories.
+    cmds:
+      - for: [dataset, space]
+        cmd: git -C resources/{{.ITEM}} status --short --branch
+
+  bucket:plan:
+    desc: Show what would be sent to bucket, nothing gets sent.
+    cmds:
+      - uvx --from huggingface_hub hf buckets sync resources/bucket {{.BUCKET}} --dry-run

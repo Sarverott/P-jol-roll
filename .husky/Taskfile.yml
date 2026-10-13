@@ -1,1 +1,11 @@
 # NOTE: this way we can had more controll under lounching procedures. then in every hook place just "npm run tasks:husky $0" if i'm not wrong
+# ANSWER: almost - $0 is path of hook (.husky/pre-commit), so hook passes "$(basename "$0")", and npm needs "--" before it
+
+version: '3'
+
+# one task per git hook, named like the hook
+tasks:
+  pre-commit:
+    desc: Biome check of staged files, nothing gets changed.
+    cmds:
+      - npx biome check --staged --no-errors-on-unmatched

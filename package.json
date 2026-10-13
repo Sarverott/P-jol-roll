@@ -48,11 +48,15 @@
     "vitest": "^5.0.4"
   },
   "scripts": {
-    "start": "npm run start:dev",
+    "start": "tsx src/main.ts",
     "start:prod": "node dist/main.js",
     "start:dev": "tsx src/main.ts",
     "build": "tsc",
     "test": "vitest",
+    "check": "biome check",
+    "format": "biome check --write",
+    "tasks:husky": "task --taskfile .husky/Taskfile.yml --dir .",
+    "tasks:github": "task --taskfile .github/Taskfile.yml --dir .",
     "get-binaries": "camoufox-js fetch",
     "postinstall": "npm run get-binaries",
     "prepare": "husky"

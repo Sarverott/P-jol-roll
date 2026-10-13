@@ -1,1 +1,2 @@
-npm test
+#npm test
+npm run --silent tasks:husky -- "$(basename "$0")"

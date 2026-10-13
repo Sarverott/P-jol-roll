@@ -1,5 +1,5 @@
 {
-    "dataset":"https://huggingface.co/datasets/Sarverott/polish_national_law_docs",
-    "bucket":"https://huggingface.co/buckets/Sarverott/raw-law-of-poland",
-    "space":"https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland"
+	"dataset": "https://huggingface.co/datasets/Sarverott/polish_national_law_docs",
+	"bucket": "https://huggingface.co/buckets/Sarverott/raw-law-of-poland",
+	"space": "https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland"
 }

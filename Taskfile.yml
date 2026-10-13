@@ -2,11 +2,45 @@
 
 version: '3'
 
-vars:
-  GREETING: Hello, World!
+includes:
+  husky: ./.husky/Taskfile.yml
+  github: ./.github/Taskfile.yml
+  resources: ./resources/Taskfile.yml
 
 tasks:
   default:
     cmds:
-      - echo "{{.GREETING}}"
+      - task --list
     silent: true
+
+  gather:
+    desc: Gather acts from ELI API of Sejm, arguments after "--" (e.g. task gather -- 2026 --pdf --limit 5).
+    cmds:
+      - npm start -- {{.CLI_ARGS}}
+
+  build:
+    desc: Compile typescript into dist.
+    cmds:
+      - npm run build
+
+  test:
+    desc: Run tests once.
+    cmds:
+      - npx vitest run
+
+  check:
+    desc: Lint and check formatting with biome, nothing gets changed.
+    cmds:
+      - npx biome check
+
+  format:
+    desc: Apply safe biome fixes and formatting.
+    cmds:
+      - npx biome check --write
+
+  verify:
+    desc: Everything that has to pass before push - biome check, build, tests.
+    cmds:
+      - task: check
+      - task: build
+      - task: test

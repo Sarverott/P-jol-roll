@@ -1,3 +1,32 @@
 
 
 # NOTE: this taskfile is for all things that is possible related with flows monitor, repo management etc. with no going to website of github
+
+version: '3'
+
+tasks:
+  repo:
+    desc: Show the repository as github sees it.
+    cmds:
+      - gh repo view
+
+  runs:
+    desc: List latest runs of workflows.
+    cmds:
+      - gh run list --limit 10
+
+  watch:
+    desc: Follow a run of workflow until it ends.
+    interactive: true
+    cmds:
+      - gh run watch
+
+  issues:
+    desc: List open issues.
+    cmds:
+      - gh issue list
+
+  prs:
+    desc: List open pull requests.
+    cmds:
+      - gh pr list

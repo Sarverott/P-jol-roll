@@ -6,7 +6,8 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignoreUnknown": false
+		"ignoreUnknown": false,
+		"includes": ["**", "!!**/dist", "!.obsidian"]
 	},
 	"formatter": {
 		"enabled": true,
@@ -23,6 +24,14 @@
 			"quoteStyle": "double"
 		}
 	},
+	"overrides": [
+		{
+			"includes": ["package.json"],
+			"formatter": {
+				"indentStyle": "space"
+			}
+		}
+	],
 	"assist": {
 		"enabled": true,
 		"actions": {
