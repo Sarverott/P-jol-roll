@@ -1,5 +1,6 @@
-import type { Act } from "../apihandlers/eli.js";
 import * as store from "../resources/store.js";
+import type { GatheringScope } from "../vars/interfaces/index.js";
+import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
 
 /*
 Raw files of bucket -> tables of dataset. Details of acts of one year become
@@ -7,17 +8,10 @@ one file, and their references become edges of a graph: which act changes,
 repeals or carries out which.
 */
 
-// one tie between two acts, a line of dataset/references/{journal}/{year}.jsonl
-export interface Edge {
-	from: string; // ELI of act whose details name the tie
-	type: string; // kind from lists/reference_types.json, "Podstawa prawna"
-	to: string; // ELI of the other act
-	[field: string]: unknown; // what else API says about the tie: date, art
-}
-
-type References = Record<string, { id: string; [field: string]: unknown }[]>;
-
-export const edgesOf = (from: string, references: References = {}): Edge[] =>
+export const edgesOf = (
+	from: string,
+	references: GatheringTypes.References = {},
+): GatheringScope.Edge[] =>
 	Object.entries(references).flatMap(([type, ties]) =>
 		ties.map(({ id, ...rest }) => ({ from, type, to: id, ...rest })),
 	);
@@ -32,13 +26,13 @@ export async function compile() {
 	const sum = { acts: 0, details: 0, edges: 0 };
 	for (const { publisher, year } of store.listedYears()) {
 		const details = store
-			.readJsonl<Act>(store.listingPath(publisher, year))
+			.readJsonl<GatheringScope.Act>(store.listingPath(publisher, year))
 			.flatMap((act) => {
 				sum.acts += 1;
 				return (
-					store.readJson<Act & { references?: References }>(
-						store.actPath(act, ".json"),
-					) ?? []
+					store.readJson<
+						GatheringScope.Act & { references?: GatheringTypes.References }
+					>(store.actPath(act, ".json")) ?? []
 				);
 			});
 		if (!details.length) continue;

@@ -20,7 +20,7 @@ How to change the code. For how to propose a change, see
 | `src/core/methods/checkup.ts` | the browser visiting websites, with Crawlee `PlaywrightCrawler` and Camoufox |
 | `src/core/resources/hub.ts` | comparison and sync with Hugging Face, with `@huggingface/hub` |
 
-Three rules keep it readable:
+Four rules keep it readable:
 
 - **Addresses and data stay out of handlers.** A handler in `gather.ts` says
   what happens; where to ask is in `eli.ts` and where to write is in
@@ -30,6 +30,18 @@ Three rules keep it readable:
   `src/core/`: `apihandlers/` for sources, `methods/` for what commands do,
   `parsing/` for raw files into text, `resources/` for the local sides and
   Hugging Face. A new kind gets a new directory.
+- **Types and interfaces live in `src/core/vars/`.** One per file,
+  `types/<Name>.type.ts` or `interfaces/<Name>.interface.ts`, with a default
+  export and no directories inside. The `index.ts` of each directory puts
+  them into namespaces, `GatheringScope` and `HuggingfaceScope`, and code
+  takes them from there:
+
+  ```ts
+  import type { GatheringScope } from "../vars/interfaces/index.js";
+  import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
+
+  function trusted(act: GatheringScope.Act, part: GatheringTypes.Part) {}
+  ```
 
 `src/cli-command.js`, `src/cli-repl.js`, `src/desktopapp/`, `src/webgui/`
 and `src/webserver/` are beginnings of other ways into the same core. They

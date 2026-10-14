@@ -1,15 +1,10 @@
 import { Configuration, HttpCrawler, type HttpCrawlerOptions } from "crawlee";
+import type { GatheringScope } from "./vars/interfaces/index.js";
 
 // sources are open APIs and not websites, so no browser and no disguise are needed -
 // requests say who is asking
 export const USER_AGENT =
 	"P-jol-roll (+https://github.com/Sarverott/P-jol-roll)";
-
-export interface Asked {
-	url: string;
-	label?: string;
-	userData?: Record<string, unknown>;
-}
 
 /*
 One polite walk over addresses of an API: own name, two requests at a time,
@@ -18,7 +13,7 @@ what is gathered is known from files in resources/, so nothing has to be
 resumed from storage/ and a stopped run is simply started again.
 */
 export async function crawl(
-	requests: Asked[],
+	requests: GatheringScope.Asked[],
 	requestHandler: HttpCrawlerOptions["requestHandler"],
 	rate: number,
 ) {

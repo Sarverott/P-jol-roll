@@ -2,8 +2,9 @@ import { createHash } from "node:crypto";
 import { createReadStream, existsSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import { pipeline } from "node:stream/promises";
-import { type Act, type ActText, filesOf, PARTS } from "../apihandlers/eli.js";
+import { filesOf, PARTS } from "../apihandlers/eli.js";
 import * as store from "../resources/store.js";
+import type { GatheringScope } from "../vars/interfaces/index.js";
 
 /*
 Bucket gives no checksums, so we keep our own: one record per gathered file
@@ -19,8 +20,8 @@ async function sha256Of(path: string) {
 }
 
 // every file that an act can have, with the address it comes from
-function possible(act: Act) {
-	const texts = store.readJson<{ texts?: ActText[] }>(
+function possible(act: GatheringScope.Act) {
+	const texts = store.readJson<{ texts?: GatheringScope.ActText[] }>(
 		store.actPath(act, ".json"),
 	)?.texts;
 	return PARTS.flatMap((part) => filesOf(act, part, texts));
@@ -30,7 +31,9 @@ export async function seal() {
 	let added = 0;
 	for (const { publisher, year } of store.listedYears()) {
 		const records = store.sealed(publisher, year);
-		for (const act of store.readJsonl<Act>(store.listingPath(publisher, year)))
+		for (const act of store.readJsonl<GatheringScope.Act>(
+			store.listingPath(publisher, year),
+		))
 			for (const { url, suffix } of possible(act)) {
 				const path = store.bucketPath(act, suffix);
 				const file = store.actPath(act, suffix);
@@ -42,7 +45,7 @@ export async function seal() {
 					sha256: await sha256Of(file),
 					url,
 					gatheredAt: mtime.toISOString(),
-				} satisfies store.FileRecord);
+				} satisfies GatheringScope.FileRecord);
 				added += 1;
 			}
 		console.log(`${publisher}/${year}: ${added} records added so far`);

@@ -4,39 +4,15 @@ import { Browser, ImpitHttpClient } from "@crawlee/impit-client";
 import { launchOptions } from "camoufox-js";
 import { PlaywrightCrawler } from "crawlee";
 import { firefox } from "playwright";
-import type { Act } from "../apihandlers/eli.js";
 import * as store from "../resources/store.js";
-
-export interface CheckupPlan {
-	publishers: string[]; // journals to walk, listings of them have to be gathered first
-	years: number[];
-	frontends: string[]; // names from resources/frontends.json, empty means every one
-	limit: number; // how many pages one run may open, 0 means no limit
-	headless: boolean;
-}
-
-// website that shows acts to people: address with {ELI} {address} {year} {pos},
-// one for all journals or one per journal
-interface Frontend {
-	title: string;
-	url: string | Record<string, string>;
-}
-
-// one visit of one page, a line of dataset/checkups/{publisher}/{year}.jsonl
-export interface Checkup {
-	ELI: string;
-	frontend: string;
-	url: string;
-	loadedUrl?: string;
-	status?: number;
-	title?: string;
-	error?: string;
-	checkedAt: string;
-}
+import type { GatheringScope } from "../vars/interfaces/index.js";
 
 const { readJsonl } = store;
 
-export function frontendUrl(frontend: Frontend, act: Act): string | undefined {
+export function frontendUrl(
+	frontend: GatheringScope.Frontend,
+	act: GatheringScope.Act,
+): string | undefined {
 	const template =
 		typeof frontend.url === "string"
 			? frontend.url
@@ -45,8 +21,8 @@ export function frontendUrl(frontend: Frontend, act: Act): string | undefined {
 }
 
 // pages that were not visited yet, in order of acts
-export function planVisits(plan: CheckupPlan) {
-	const frontends: Record<string, Frontend> = JSON.parse(
+export function planVisits(plan: GatheringScope.CheckupPlan) {
+	const frontends: Record<string, GatheringScope.Frontend> = JSON.parse(
 		readFileSync(join(store.RESOURCES_DIR, "frontends.json"), "utf8"),
 	);
 	const names = plan.frontends.length ? plan.frontends : Object.keys(frontends);
@@ -55,11 +31,13 @@ export function planVisits(plan: CheckupPlan) {
 	for (const publisher of plan.publishers) {
 		for (const year of plan.years) {
 			const done = new Set(
-				readJsonl<Checkup>(store.checkupPath(publisher, year)).map(
-					({ ELI, frontend }) => `${ELI} ${frontend}`,
-				),
+				readJsonl<GatheringScope.Checkup>(
+					store.checkupPath(publisher, year),
+				).map(({ ELI, frontend }) => `${ELI} ${frontend}`),
 			);
-			for (const act of readJsonl<Act>(store.listingPath(publisher, year))) {
+			for (const act of readJsonl<GatheringScope.Act>(
+				store.listingPath(publisher, year),
+			)) {
 				for (const frontend of names) {
 					const url =
 						frontends[frontend] && frontendUrl(frontends[frontend], act);
@@ -76,10 +54,10 @@ export function planVisits(plan: CheckupPlan) {
 }
 
 // browser walks pages like a person would and writes down what it saw
-export async function checkup(plan: CheckupPlan) {
+export async function checkup(plan: GatheringScope.CheckupPlan) {
 	const save = (
 		{ url, userData }: { url: string; userData: Record<string, unknown> },
-		seen: Partial<Checkup>,
+		seen: Partial<GatheringScope.Checkup>,
 	) =>
 		store.appendLine(
 			store.checkupPath(userData.publisher as string, userData.year as number),

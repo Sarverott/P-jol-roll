@@ -1,23 +1,16 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import TurndownService from "turndown";
-import { type Act, filesOf } from "../apihandlers/eli.js";
+import { filesOf } from "../apihandlers/eli.js";
 import * as store from "../resources/store.js";
+import type { GatheringScope } from "../vars/interfaces/index.js";
+import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
 
 /*
 Html texts of bucket -> markdown files of dataset, for people and for models.
 Every markdown file has a record that ties it to what it was made from, so a
 reader can go back to the source and check that nothing was changed on the way.
 */
-
-// a line of dataset/texts/{journal}/{year}.jsonl
-export interface TextRecord {
-	ELI: string;
-	markdown: string; // path inside of dataset
-	sha256_md: string;
-	sha256_html: string;
-	url: string; // html at the source
-}
 
 const turndown = new TurndownService({
 	headingStyle: "atx",
@@ -50,9 +43,8 @@ export const toMarkdown = (html: string) =>
 		.replace(/\n{3,}/g, "\n\n")
 		.trim()}\n`;
 
-export const markdownPath = (
-	act: Pick<Act, "publisher" | "year" | "address">,
-) => `texts/${store.bucketPath(act, ".md")}`;
+export const markdownPath = (act: GatheringTypes.ActAddress) =>
+	`texts/${store.bucketPath(act, ".md")}`;
 
 export const textsTablePath = (publisher: string, year: number) =>
 	join(store.DATASET_DIR, "texts", publisher, `${year}.jsonl`);
@@ -62,12 +54,12 @@ export async function text() {
 	for (const { publisher, year } of store.listedYears()) {
 		const known = new Map(
 			store
-				.readJsonl<TextRecord>(textsTablePath(publisher, year))
+				.readJsonl<GatheringScope.TextRecord>(textsTablePath(publisher, year))
 				.map((record) => [record.ELI, record]),
 		);
-		const records: TextRecord[] = [];
+		const records: GatheringScope.TextRecord[] = [];
 
-		for (const act of store.readJsonl<Act>(
+		for (const act of store.readJsonl<GatheringScope.Act>(
 			store.listingPath(publisher, year),
 		)) {
 			const source = store.actPath(act, ".html");

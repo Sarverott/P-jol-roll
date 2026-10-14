@@ -1,6 +1,8 @@
 // For more information, see https://crawlee.dev/
+
 import { parseArgs } from "node:util";
-import { PARTS, type Part } from "./apihandlers/eli.js";
+import { PARTS } from "./apihandlers/eli.js";
+import type { GatheringScope as GatheringTypes } from "./vars/types/index.js";
 
 /*
 ### usage - npm start -- {command} ..., command "gather" can be left out
@@ -66,7 +68,9 @@ const { values, positionals } = parseArgs({
 });
 
 if (command === "gather") {
-	const asked = values.parts.split(",").filter(Boolean) as Part[];
+	const asked = values.parts
+		.split(",")
+		.filter(Boolean) as GatheringTypes.Part[];
 	const unknown = asked.filter((part) => !PARTS.includes(part));
 	if (unknown.length) throw new Error(`unknown parts: ${unknown}`);
 

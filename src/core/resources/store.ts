@@ -2,14 +2,13 @@ import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { appendFile, mkdir, rename, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import type { Act } from "../apihandlers/eli.js";
+import type { GatheringScope } from "../vars/interfaces/index.js";
+import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
 
 // local copies of huggingface repositories listed in resources/.map.json
 export const RESOURCES_DIR = process.env.RESOURCES_DIR ?? "resources";
 export const DATASET_DIR = join(RESOURCES_DIR, "dataset");
 export const BUCKET_DIR = join(RESOURCES_DIR, "bucket");
-
-type ActAddress = Pick<Act, "publisher" | "year" | "address">;
 
 // dataset: tables that are small and read often
 export const indexPath = () => join(DATASET_DIR, "lists", "index.json");
@@ -35,19 +34,11 @@ export const changesPath = () => join(DATASET_DIR, "lists", "changes.json");
 
 // bucket: raw files of every act, side by side, named by address -
 // the identifier that API gives to every act ("WDU20260000001")
-export const bucketPath = (act: ActAddress, suffix: string) =>
+export const bucketPath = (act: GatheringTypes.ActAddress, suffix: string) =>
 	`${act.publisher}/${act.year}/${act.address}${suffix}`;
 
-export const actPath = (act: ActAddress, suffix: string) =>
+export const actPath = (act: GatheringTypes.ActAddress, suffix: string) =>
 	join(BUCKET_DIR, bucketPath(act, suffix));
-
-export interface FileRecord {
-	path: string; // inside of bucket
-	size: number;
-	sha256: string;
-	url: string; // where it was taken from
-	gatheredAt: string;
-}
 
 export const readJson = <Value>(path: string): Value | undefined =>
 	existsSync(path) ? JSON.parse(readFileSync(path, "utf8")) : undefined;
@@ -63,10 +54,9 @@ export const readJsonl = <Line>(path: string): Line[] =>
 // records of one year by path, the newest record of a file wins
 export const sealed = (publisher: string, year: number) =>
 	new Map(
-		readJsonl<FileRecord>(manifestPath(publisher, year)).map((record) => [
-			record.path,
-			record,
-		]),
+		readJsonl<GatheringScope.FileRecord>(manifestPath(publisher, year)).map(
+			(record) => [record.path, record],
+		),
 	);
 
 export const sha256 = (content: string | Buffer) =>
@@ -92,7 +82,7 @@ export const saveJsonl = (path: string, lines: unknown[]) =>
 export async function saveListing(
 	publisher: string,
 	year: number,
-	acts: Act[],
+	acts: GatheringScope.Act[],
 ) {
 	await saveJsonl(
 		listingPath(publisher, year),

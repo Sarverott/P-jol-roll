@@ -1,45 +1,22 @@
 import { existsSync } from "node:fs";
 import { createHttpRouter } from "crawlee";
 import {
-	type Act,
-	type ActFile,
-	type ActText,
 	CHANGES_PAGE,
-	type Changes,
 	changesUrl,
 	ELI_API,
 	filesOf,
-	type Index,
-	type Part,
-	type Publisher,
 	pickLists,
 	pickPublishers,
 	pickYears,
-	type YearListing,
 	yearUrl,
 } from "../apihandlers/eli.js";
 import { crawl } from "../crawl.js";
 import * as store from "../resources/store.js";
-
-export interface GatherPlan {
-	publishers: string[]; // empty means every journal
-	years: number[]; // empty means only the newest one
-	all: boolean; // every year of journal
-	parts: Part[]; // files to take for each act, empty means only lists and listings
-	limit: number; // how many acts one run may take files for, 0 means no limit
-	rate: number; // requests per minute
-	since?: string; // only acts changed since this date, or "last" for date of previous such run
-}
-
-// what one year has to give: all its acts, or only these that changed
-interface YearWork {
-	publisher: string;
-	year: number;
-	changed?: Set<string>; // addresses
-}
+import type { GatheringScope } from "../vars/interfaces/index.js";
+import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
 
 // names of files are built from answers of API - nothing of them may leave its directory
-function trusted(act: Act) {
+function trusted(act: GatheringScope.Act) {
 	if (!/^[A-Z_]+$/.test(act.publisher) || !/^\w+$/.test(act.address))
 		throw new Error(`act with unusable name: ${JSON.stringify(act.ELI)}`);
 	return act;
@@ -50,9 +27,11 @@ First walk: index -> every list it names -> listings of years. With "since"
 years are not walked - API is asked which acts changed, and only years of
 these acts are listed again.
 */
-async function survey(plan: GatherPlan): Promise<YearWork[]> {
+async function survey(
+	plan: GatheringScope.GatherPlan,
+): Promise<GatheringScope.YearWork[]> {
 	const router = createHttpRouter();
-	const work = new Map<string, YearWork>();
+	const work = new Map<string, GatheringScope.YearWork>();
 	const since =
 		plan.since === "last"
 			? store.readJson<{ since: string }>(store.changesPath())?.since
@@ -65,7 +44,7 @@ async function survey(plan: GatherPlan): Promise<YearWork[]> {
 
 	// index of API -> every list it names (statuses, types, keywords, institutions, ...)
 	router.addHandler("index", async ({ json, log, addRequests }) => {
-		const lists = pickLists(json as Index);
+		const lists = pickLists(json as GatheringTypes.Index);
 		await store.saveJson(store.indexPath(), json);
 		log.info(`lists: ${lists.map(({ name }) => name).join(", ")}`);
 
@@ -90,7 +69,7 @@ async function survey(plan: GatherPlan): Promise<YearWork[]> {
 			return;
 		}
 		for (const { code, years: available, actsCount } of pickPublishers(
-			json as Publisher[],
+			json as GatheringScope.Publisher[],
 			plan.publishers,
 		)) {
 			const years = pickYears(available, plan.years, plan.all);
@@ -107,7 +86,7 @@ async function survey(plan: GatherPlan): Promise<YearWork[]> {
 
 	// page of changed acts -> years they belong to, and the next page
 	router.addHandler("changes", async ({ json, log, addRequests }) => {
-		const { items, offset, totalCount } = json as Changes;
+		const { items, offset, totalCount } = json as GatheringScope.Changes;
 		for (const act of items) {
 			const wanted =
 				!plan.publishers.length || plan.publishers.includes(act.publisher);
@@ -143,7 +122,7 @@ async function survey(plan: GatherPlan): Promise<YearWork[]> {
 	// year -> metadata of its acts
 	router.addHandler("year", async ({ request, json, log }) => {
 		const { publisher, year } = request.userData;
-		const { items, count, totalCount } = json as YearListing;
+		const { items, count, totalCount } = json as GatheringScope.YearListing;
 		if (count !== totalCount)
 			log.warning(`${publisher}/${year} is cut: ${count} of ${totalCount}`);
 
@@ -167,16 +146,20 @@ is "here" when it lies in bucket directory or when its checksum is recorded
 in dataset - so a machine that has only the dataset does not ask Sejm again
 for what is already kept in the bucket.
 */
-async function gatherYear(plan: GatherPlan, work: YearWork, left: number) {
+async function gatherYear(
+	plan: GatheringScope.GatherPlan,
+	work: GatheringScope.YearWork,
+	left: number,
+) {
 	const { publisher, year, changed } = work;
 	const records = store.sealed(publisher, year);
 	const taken = new Set<string>();
 	const acts = store
-		.readJsonl<Act>(store.listingPath(publisher, year))
+		.readJsonl<GatheringScope.Act>(store.listingPath(publisher, year))
 		.filter((act) => !changed || changed.has(act.address));
 
-	const missing = (act: Act, parts: Part[]) => {
-		const texts = store.readJson<{ texts?: ActText[] }>(
+	const missing = (act: GatheringScope.Act, parts: GatheringTypes.Part[]) => {
+		const texts = store.readJson<{ texts?: GatheringScope.ActText[] }>(
 			store.actPath(act, ".json"),
 		)?.texts;
 		return parts
@@ -190,10 +173,15 @@ async function gatherYear(plan: GatherPlan, work: YearWork, left: number) {
 			});
 	};
 
-	const take = async (wanted: { act: Act; files: ActFile[] }[]) => {
+	const take = async (
+		wanted: { act: GatheringScope.Act; files: GatheringScope.ActFile[] }[],
+	) => {
 		const router = createHttpRouter();
 		router.addDefaultHandler(async ({ request, response, json, body, log }) => {
-			const { act, file } = request.userData as { act: Act; file: ActFile };
+			const { act, file } = request.userData as {
+				act: GatheringScope.Act;
+				file: GatheringScope.ActFile;
+			};
 			const path = store.bucketPath(act, file.suffix);
 			if (response.statusCode === 404) {
 				log.warning(`${act.ELI} ${file.part}: source does not have it`);
@@ -225,7 +213,7 @@ async function gatherYear(plan: GatherPlan, work: YearWork, left: number) {
 					...written,
 					url: file.url,
 					gatheredAt: new Date().toISOString(),
-				} satisfies store.FileRecord);
+				} satisfies GatheringScope.FileRecord);
 			log.info(
 				`${act.ELI} ${file.part}${file.part === "texts" ? file.suffix : ""}`,
 			);
@@ -264,9 +252,9 @@ async function gatherYear(plan: GatherPlan, work: YearWork, left: number) {
 	return chosen.length;
 }
 
-export async function gather(plan: GatherPlan) {
+export async function gather(plan: GatheringScope.GatherPlan) {
 	// acts that changed are asked for the files that can change, when no other were named
-	const parts: Part[] =
+	const parts: GatheringTypes.Part[] =
 		plan.since && !plan.parts.length ? ["details", "references"] : plan.parts;
 	const years = await survey(plan);
 	let left = plan.limit || Number.POSITIVE_INFINITY;

@@ -1,8 +1,9 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { createHttpRouter } from "crawlee";
-import { type Asked, crawl } from "../crawl.js";
+import { crawl } from "../crawl.js";
 import * as store from "../resources/store.js";
+import type { GatheringScope } from "../vars/interfaces/index.js";
 
 /*
 How a statute was made: API of Sejm's work, https://api.sejm.gov.pl/sejm/openapi/
@@ -17,38 +18,6 @@ export const SEJM_BUCKET = join(store.RESOURCES_DIR, "sejm-bucket");
 // processes are given in pages, prints of a term in one answer
 const PAGE = 500;
 
-export interface Term {
-	num: number;
-	current: boolean;
-	from: string;
-	to?: string;
-	prints?: { count: number };
-}
-
-export interface Process {
-	term: number;
-	number: string; // number of the print that started it
-	title: string;
-	ELI?: string; // act that came out of it
-	[field: string]: unknown;
-}
-
-export interface Print {
-	term: number;
-	number: string;
-	title: string;
-	attachments?: string[]; // names of files: draft, justification, opinions
-	[field: string]: unknown;
-}
-
-export interface SejmPlan {
-	terms: number[]; // empty means the current one
-	all: boolean; // every term
-	files: boolean; // details of processes and attachments of prints
-	limit: number; // how many files one run may take, 0 means no limit
-	rate: number;
-}
-
 const usable = (name: string) =>
 	/^[\w.() -]+$/.test(name) && !name.startsWith(".");
 
@@ -60,7 +29,11 @@ export const processPath = (term: number, number: string) =>
 export const attachmentPath = (term: number, number: string, name: string) =>
 	join(SEJM_BUCKET, `term${term}`, "prints", number, name);
 
-export const pickTerms = (available: Term[], wanted: number[], all: boolean) =>
+export const pickTerms = (
+	available: GatheringScope.Term[],
+	wanted: number[],
+	all: boolean,
+) =>
 	available
 		.filter(
 			({ num, current }) =>
@@ -69,16 +42,18 @@ export const pickTerms = (available: Term[], wanted: number[], all: boolean) =>
 		.map(({ num }) => num);
 
 // files of term that are not here yet, with addresses they come from
-export function missingFiles(term: number): (Asked & { path: string })[] {
+export function missingFiles(
+	term: number,
+): (GatheringScope.Asked & { path: string })[] {
 	const processes = store
-		.readJsonl<Process>(tablePath(term, "processes"))
+		.readJsonl<GatheringScope.Process>(tablePath(term, "processes"))
 		.filter(({ number }) => usable(number))
 		.map(({ number }) => ({
 			url: `${SEJM_API}/term${term}/processes/${number}`,
 			path: processPath(term, number),
 		}));
 	const attachments = store
-		.readJsonl<Print>(tablePath(term, "prints"))
+		.readJsonl<GatheringScope.Print>(tablePath(term, "prints"))
 		.filter(({ number }) => usable(number))
 		.flatMap(({ number, attachments = [] }) =>
 			attachments.filter(usable).map((name) => ({
@@ -91,14 +66,16 @@ export function missingFiles(term: number): (Asked & { path: string })[] {
 		.map(({ url, path }) => ({ url, path, userData: { path } }));
 }
 
-export async function sejm(plan: SejmPlan) {
+export async function sejm(plan: GatheringScope.SejmPlan) {
 	const router = createHttpRouter();
 	const terms: number[] = [];
-	const pages = new Map<number, Process[]>();
+	const pages = new Map<number, GatheringScope.Process[]>();
 
 	router.addHandler("terms", async ({ json, log, addRequests }) => {
 		await store.saveJson(termsPath(), json);
-		terms.push(...pickTerms(json as Term[], plan.terms, plan.all));
+		terms.push(
+			...pickTerms(json as GatheringScope.Term[], plan.terms, plan.all),
+		);
 		log.info(`terms: ${terms}`);
 		await addRequests(
 			terms.flatMap((term) => [
@@ -118,8 +95,11 @@ export async function sejm(plan: SejmPlan) {
 
 	router.addHandler("prints", async ({ request, json, log }) => {
 		const { term } = request.userData;
-		await store.saveJsonl(tablePath(term, "prints"), json as Print[]);
-		log.info(`term ${term}: ${(json as Print[]).length} prints`);
+		await store.saveJsonl(
+			tablePath(term, "prints"),
+			json as GatheringScope.Print[],
+		);
+		log.info(`term ${term}: ${(json as GatheringScope.Print[]).length} prints`);
 	});
 
 	// table is written when the last page arrives, so it is never a half of itself
@@ -127,7 +107,7 @@ export async function sejm(plan: SejmPlan) {
 		"processes",
 		async ({ request, json, log, addRequests }) => {
 			const { term, offset } = request.userData;
-			const page = json as Process[];
+			const page = json as GatheringScope.Process[];
 			const all = [...(pages.get(term) ?? []), ...page];
 			pages.set(term, all);
 			if (page.length === PAGE) {

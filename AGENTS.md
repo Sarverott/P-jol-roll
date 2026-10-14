@@ -72,7 +72,9 @@ src/core/              the gatherer itself; everything below is its tree
   resources/           the local sides and their way to huggingface
     store.ts           where gathered things are written
     hub.ts             sync of resources/ with huggingface, file by file (@huggingface/hub)
-  interfaces/          empty for now
+  vars/                every type and interface, one per file, flat inside each directory
+    interfaces/        <Name>.interface.ts, and index.ts with namespaces GatheringScope, HuggingfaceScope
+    types/             <Name>.type.ts, and index.ts with the same namespaces
 src/cli-command.js, cli-repl.js, desktopapp/, webgui/, webserver/
                        Sett's beginnings of other ways in (terminal, Electron, Astro, express) - not wired yet
 tests/            vitest; gather.test.ts runs whole gathering against a local copy of API
@@ -116,6 +118,10 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 - No flat scope: a new file goes into the directory of its kind under
   `src/core/` (or a new directory when it is a new kind), not next to
   `main.ts`. The same holds for docs, tests and resources as they grow.
+- Types and interfaces are not declared next to code. Each has its own file
+  in `src/core/vars/types/` or `src/core/vars/interfaces/` (default export,
+  no directories inside), is added to a namespace in the `index.ts` there,
+  and is used through it: `GatheringScope.Act`. Namespaces only in indexes.
 - A gathered file appears under its name only when it is complete (`.part`
   first), so an interrupted run can be repeated and takes what is missing.
 - What is gathered is known from files and from records in `dataset/files/`.

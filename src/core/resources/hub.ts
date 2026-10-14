@@ -12,6 +12,8 @@ import {
 	type RepoDesignation,
 	uploadFiles,
 } from "@huggingface/hub";
+import type { HuggingfaceScope } from "../vars/interfaces/index.js";
+import type { HuggingfaceScope as HuggingfaceTypes } from "../vars/types/index.js";
 import { RESOURCES_DIR } from "./store.js";
 
 /*
@@ -29,25 +31,12 @@ const accessToken = process.env.HF_TOKEN;
 // never moved in any direction
 const IGNORED = [".git", "node_modules", ".venv", "__pycache__"];
 
-export interface RemoteFile {
-	size: number;
-	oid?: string; // hash of git blob, buckets do not have it
-	lfsOid?: string; // sha256 of big file kept outside of git
-}
-
-export interface Difference {
-	upload: string[]; // here and not there
-	changed: string[]; // on both sides with other content
-	download: string[]; // there and not here
-	same: number;
-}
-
 // "https://huggingface.co/datasets/Sarverott/x" -> "datasets/Sarverott/x"
 export const repoOf = (url: string) =>
 	new URL(url).pathname.slice(1) as RepoDesignation;
 
 export function target(name: string) {
-	const map: Record<string, string> = JSON.parse(
+	const map: HuggingfaceTypes.ResourcesMap = JSON.parse(
 		readFileSync(join(RESOURCES_DIR, ".map.json"), "utf8"),
 	);
 	if (!map[name])
@@ -71,8 +60,8 @@ export async function localFiles(dir: string): Promise<Map<string, number>> {
 
 export async function remoteFiles(
 	repo: RepoDesignation,
-): Promise<Map<string, RemoteFile>> {
-	const files = new Map<string, RemoteFile>();
+): Promise<Map<string, HuggingfaceScope.RemoteFile>> {
+	const files = new Map<string, HuggingfaceScope.RemoteFile>();
 	for await (const file of listFiles({ repo, recursive: true, accessToken })) {
 		if (file.type === "file")
 			files.set(file.path, {
@@ -92,7 +81,7 @@ export async function hashOf(path: string, algorithm: "git" | "sha256") {
 	return hash.digest("hex");
 }
 
-async function sameContent(path: string, remote: RemoteFile) {
+async function sameContent(path: string, remote: HuggingfaceScope.RemoteFile) {
 	if (remote.lfsOid) return (await hashOf(path, "sha256")) === remote.lfsOid;
 	if (remote.oid) return (await hashOf(path, "git")) === remote.oid;
 	return true; // bucket gives only size
@@ -102,10 +91,10 @@ async function sameContent(path: string, remote: RemoteFile) {
 export async function compare(
 	dir: string,
 	local: Map<string, number>,
-	remote: Map<string, RemoteFile>,
+	remote: Map<string, HuggingfaceScope.RemoteFile>,
 	same = sameContent,
-): Promise<Difference> {
-	const difference: Difference = {
+): Promise<HuggingfaceScope.Difference> {
+	const difference: HuggingfaceScope.Difference = {
 		upload: [],
 		changed: [],
 		download: [],

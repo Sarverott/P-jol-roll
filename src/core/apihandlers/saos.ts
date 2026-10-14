@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { createHttpRouter } from "crawlee";
 import { crawl } from "../crawl.js";
 import * as store from "../resources/store.js";
+import type { GatheringScope } from "../vars/interfaces/index.js";
 
 /*
 The law as it is applied: SAOS, System Analizy Orzeczeń Sądowych,
@@ -17,18 +18,6 @@ export const SAOS_DATASET = join(store.RESOURCES_DIR, "saos-dataset");
 
 // the biggest page that API allows
 export const PAGE = 100;
-
-export interface SaosPlan {
-	years: number[];
-	limit: number; // how many months one run may take, 0 means no limit
-	rate: number;
-	today?: Date;
-}
-
-interface Judgment {
-	id: number;
-	[field: string]: unknown;
-}
 
 // judgments/2020/2020-03.jsonl - every judgment dated in that month, one per line
 export const monthPath = (year: number, month: number) =>
@@ -58,15 +47,15 @@ export function missingMonths(years: number[], today = new Date()) {
 	return months;
 }
 
-export async function saos(plan: SaosPlan) {
+export async function saos(plan: GatheringScope.SaosPlan) {
 	const months = missingMonths(plan.years, plan.today);
-	const pages = new Map<string, Judgment[]>();
+	const pages = new Map<string, GatheringScope.Judgment[]>();
 	const router = createHttpRouter();
 
 	// month is written when its last page arrives
 	router.addDefaultHandler(async ({ request, json, log, addRequests }) => {
 		const { year, month, page } = request.userData;
-		const { items } = json as { items: Judgment[] };
+		const { items } = json as { items: GatheringScope.Judgment[] };
 		const key = `${year}-${month}`;
 		const all = [...(pages.get(key) ?? []), ...items];
 		pages.set(key, all);
