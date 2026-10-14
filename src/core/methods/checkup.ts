@@ -4,8 +4,8 @@ import { Browser, ImpitHttpClient } from "@crawlee/impit-client";
 import { launchOptions } from "camoufox-js";
 import { PlaywrightCrawler } from "crawlee";
 import { firefox } from "playwright";
-import type { Act } from "./eli.js";
-import * as store from "./store.js";
+import type { Act } from "../apihandlers/eli.js";
+import * as store from "../resources/store.js";
 
 export interface CheckupPlan {
 	publishers: string[]; // journals to walk, listings of them have to be gathered first

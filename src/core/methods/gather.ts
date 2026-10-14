@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import { createHttpRouter } from "crawlee";
-import { crawl } from "./crawl.js";
+import { crawl } from "../crawl.js";
 import {
 	type Act,
 	type ActFile,
@@ -18,8 +18,8 @@ import {
 	pickYears,
 	type YearListing,
 	yearUrl,
-} from "./eli.js";
-import * as store from "./store.js";
+} from "../apihandlers/eli.js";
+import * as store from "../resources/store.js";
 
 export interface GatherPlan {
 	publishers: string[]; // empty means every journal

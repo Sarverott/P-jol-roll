@@ -2,8 +2,8 @@ import { createHash } from "node:crypto";
 import { createReadStream, existsSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import { pipeline } from "node:stream/promises";
-import { type Act, type ActText, filesOf, PARTS } from "./eli.js";
-import * as store from "./store.js";
+import { type Act, type ActText, filesOf, PARTS } from "../apihandlers/eli.js";
+import * as store from "../resources/store.js";
 
 /*
 Bucket gives no checksums, so we keep our own: one record per gathered file

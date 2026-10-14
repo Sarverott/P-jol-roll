@@ -1,6 +1,6 @@
 // For more information, see https://crawlee.dev/
 import { parseArgs } from "node:util";
-import { PARTS, type Part } from "./eli.js";
+import { PARTS, type Part } from "./core/apihandlers/eli.js";
 
 /*
 ### usage - npm start -- {command} ..., command "gather" can be left out
@@ -70,7 +70,7 @@ if (command === "gather") {
 	const unknown = asked.filter((part) => !PARTS.includes(part));
 	if (unknown.length) throw new Error(`unknown parts: ${unknown}`);
 
-	const { gather } = await import("./gather.js");
+	const { gather } = await import("./core/methods/gather.js");
 	await gather({
 		publishers: values.publisher,
 		years: positionals.map(Number),
@@ -83,7 +83,7 @@ if (command === "gather") {
 }
 
 if (command === "seal") {
-	const { seal, check } = await import("./seal.js");
+	const { seal, check } = await import("./core/methods/seal.js");
 	if (values.check) {
 		const { same, differs } = await check();
 		console.log(
@@ -95,17 +95,17 @@ if (command === "seal") {
 }
 
 if (command === "compile") {
-	const { compile } = await import("./compile.js");
+	const { compile } = await import("./core/methods/compile.js");
 	console.log(await compile());
 }
 
 if (command === "text") {
-	const { text } = await import("./text.js");
+	const { text } = await import("./core/parsing/text.js");
 	console.log(await text());
 }
 
 if (command === "sejm") {
-	const { sejm } = await import("./sejm.js");
+	const { sejm } = await import("./core/apihandlers/sejm.js");
 	await sejm({
 		terms: positionals.map(Number),
 		all: values.all,
@@ -117,7 +117,7 @@ if (command === "sejm") {
 
 if (command === "saos") {
 	if (!positionals.length) throw new Error("saos needs years: saos 2025");
-	const { saos } = await import("./saos.js");
+	const { saos } = await import("./core/apihandlers/saos.js");
 	await saos({
 		years: positionals.map(Number),
 		limit: Number(values.limit ?? 3),
@@ -129,7 +129,7 @@ if (command === "saos") {
 if (command === "checkup") {
 	if (!positionals.length) throw new Error("checkup needs years: checkup 2026");
 
-	const { checkup } = await import("./checkup.js");
+	const { checkup } = await import("./core/methods/checkup.js");
 	await checkup({
 		publishers: values.publisher.length ? values.publisher : ["DU"],
 		years: positionals.map(Number),
@@ -141,7 +141,7 @@ if (command === "checkup") {
 
 if (command === "hub") {
 	const [action, name = ""] = positionals;
-	const hub = await import("./hub.js");
+	const hub = await import("./core/resources/hub.js");
 
 	if (action === "plan") {
 		const { repo, upload, changed, download, same } = await hub.plan(name);

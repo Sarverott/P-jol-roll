@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { appendFile, mkdir, rename, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import type { Act } from "./eli.js";
+import type { Act } from "../apihandlers/eli.js";
 
 // local copies of huggingface repositories listed in resources/.map.json
 export const RESOURCES_DIR = process.env.RESOURCES_DIR ?? "resources";

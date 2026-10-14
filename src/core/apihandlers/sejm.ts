@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { createHttpRouter } from "crawlee";
-import { type Asked, crawl } from "./crawl.js";
-import * as store from "./store.js";
+import { type Asked, crawl } from "../crawl.js";
+import * as store from "../resources/store.js";
 
 /*
 How a statute was made: API of Sejm's work, https://api.sejm.gov.pl/sejm/openapi/

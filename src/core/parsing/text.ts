@@ -1,8 +1,8 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import TurndownService from "turndown";
-import { type Act, filesOf } from "./eli.js";
-import * as store from "./store.js";
+import { type Act, filesOf } from "../apihandlers/eli.js";
+import * as store from "../resources/store.js";
 
 /*
 Html texts of bucket -> markdown files of dataset, for people and for models.

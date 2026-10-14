@@ -1,5 +1,5 @@
-import type { Act } from "./eli.js";
-import * as store from "./store.js";
+import type { Act } from "../apihandlers/eli.js";
+import * as store from "../resources/store.js";
 
 /*
 Raw files of bucket -> tables of dataset. Details of acts of one year become

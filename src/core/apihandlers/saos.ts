@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { createHttpRouter } from "crawlee";
-import { crawl } from "./crawl.js";
-import * as store from "./store.js";
+import { crawl } from "../crawl.js";
+import * as store from "../resources/store.js";
 
 /*
 The law as it is applied: SAOS, System Analizy Orzeczeń Sądowych,
