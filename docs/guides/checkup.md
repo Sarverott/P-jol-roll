@@ -45,7 +45,7 @@ ordinary visitor. The window is visible by default, so you see what it does.
 ## Pace
 
 One page at a time, 20 pages per minute, one retry. These are fixed in
-`src/checkup.ts`.
+`src/core/methods/checkup.ts`.
 
 ## Options
 

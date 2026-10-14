@@ -55,18 +55,26 @@ browser, one page at a time.
 ## Layout
 
 ```
-src/main.ts       arguments; commands gather, checkup, hub - usage is written there
-src/eli.ts        addresses and shapes of ELI API
-src/store.ts      where gathered things are written
-src/crawl.ts      one polite walk over addresses of an API, queue in memory
-src/gather.ts     index -> lists -> years, then files of acts year by year; --since for changes
-src/seal.ts       checksums of gathered files: records, and check against them
-src/compile.ts    tables of details and references from raw files
-src/text.ts       markdown from html, with checksums of both
-src/sejm.ts       other source: processes and prints of Sejm
-src/saos.ts       other source: court judgments
-src/checkup.ts    browser (Camoufox) visits websites that show acts, writes what it saw
-src/hub.ts        sync of resources/ with huggingface, file by file (@huggingface/hub)
+src/core/              the gatherer itself; everything below is its tree
+  main.ts              arguments; commands gather, seal, compile, text, sejm, saos, checkup, hub - usage is written there
+  crawl.ts             one polite walk over addresses of an API, queue in memory
+  apihandlers/         one file per source: addresses, shapes, and the walk when the source has its own
+    eli.ts             addresses and shapes of ELI API
+    sejm.ts            other source: processes and prints of Sejm
+    saos.ts            other source: court judgments
+  methods/             what a command does
+    gather.ts          index -> lists -> years, then files of acts year by year; --since for changes
+    seal.ts            checksums of gathered files: records, and check against them
+    compile.ts         tables of details and references from raw files
+    checkup.ts         browser (Camoufox) visits websites that show acts, writes what it saw
+  parsing/             raw files into text
+    text.ts            markdown from html, with checksums of both
+  resources/           the local sides and their way to huggingface
+    store.ts           where gathered things are written
+    hub.ts             sync of resources/ with huggingface, file by file (@huggingface/hub)
+  interfaces/          empty for now
+src/cli-command.js, cli-repl.js, desktopapp/, webgui/, webserver/
+                       Sett's beginnings of other ways in (terminal, Electron, Astro, express) - not wired yet
 tests/            vitest; gather.test.ts runs whole gathering against a local copy of API
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
   dataset/        tables: lists/, and per <journal>/<year> acts, files, details, references, texts, checkups
@@ -105,6 +113,9 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 
 - Tabs for indentation (Biome), except `package.json`. Double quotes.
 - Short file names. Data and addresses stay out of handlers.
+- No flat scope: a new file goes into the directory of its kind under
+  `src/core/` (or a new directory when it is a new kind), not next to
+  `main.ts`. The same holds for docs, tests and resources as they grow.
 - A gathered file appears under its name only when it is complete (`.part`
   first), so an interrupted run can be repeated and takes what is missing.
 - What is gathered is known from files and from records in `dataset/files/`.

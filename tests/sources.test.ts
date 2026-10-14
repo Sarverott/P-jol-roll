@@ -59,11 +59,11 @@ process.env.SAOS_API = `${base}/saos`;
 process.env.RESOURCES_DIR = join(work, "resources");
 process.env.CRAWLEE_LOG_LEVEL = "OFF";
 
-const store = await import("../src/store.js");
+const store = await import("../src/core/resources/store.js");
 
 test("work of Sejm: tables of the current term, then files that miss", async () => {
 	const { sejm, tablePath, processPath, attachmentPath } = await import(
-		"../src/sejm.js"
+		"../src/core/apihandlers/sejm.js"
 	);
 	await sejm({ terms: [], all: false, files: true, limit: 0, rate: 6000 });
 
@@ -87,7 +87,9 @@ test("work of Sejm: tables of the current term, then files that miss", async () 
 }, 60_000);
 
 test("judgments: months that ended, each one whole", async () => {
-	const { saos, monthPath, missingMonths } = await import("../src/saos.js");
+	const { saos, monthPath, missingMonths } = await import(
+		"../src/core/apihandlers/saos.js"
+	);
 	const today = new Date("2025-03-15");
 	expect(missingMonths([2025], today)).toEqual([
 		{ year: 2025, month: 1 },

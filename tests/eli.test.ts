@@ -1,6 +1,15 @@
 import { expect, test } from "vitest";
-import { filesOf, pickLists, pickPublishers, pickYears } from "../src/eli.js";
-import { actPath, bucketPath, listingPath } from "../src/store.js";
+import {
+	filesOf,
+	pickLists,
+	pickPublishers,
+	pickYears,
+} from "../src/core/apihandlers/eli.js";
+import {
+	actPath,
+	bucketPath,
+	listingPath,
+} from "../src/core/resources/store.js";
 
 const YEARS = [1918, 1919, 2025, 2026];
 

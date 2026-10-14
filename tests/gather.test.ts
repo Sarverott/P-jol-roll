@@ -78,8 +78,8 @@ process.env.RESOURCES_DIR = join(work, "resources");
 process.env.CRAWLEE_STORAGE_DIR = join(work, "storage");
 process.env.CRAWLEE_LOG_LEVEL = "OFF";
 
-const store = await import("../src/store.js");
-const { gather } = await import("../src/gather.js");
+const store = await import("../src/core/resources/store.js");
+const { gather } = await import("../src/core/methods/gather.js");
 const read = (path: string) => readFileSync(path, "utf8");
 const plan = {
 	publishers: [],
@@ -203,10 +203,10 @@ test("acts changed since a day are taken again", async () => {
 test("tables, markdown and checksums are made from what was gathered", async () => {
 	server.close();
 	const { compile, detailsTablePath, edgesTablePath } = await import(
-		"../src/compile.js"
+		"../src/core/methods/compile.js"
 	);
-	const { text, textsTablePath } = await import("../src/text.js");
-	const { seal, check } = await import("../src/seal.js");
+	const { text, textsTablePath } = await import("../src/core/parsing/text.js");
+	const { seal, check } = await import("../src/core/methods/seal.js");
 
 	expect(await compile()).toMatchObject({ details: 2, edges: 1 });
 	expect(store.readJsonl(detailsTablePath("DU", 2026))).toHaveLength(2);

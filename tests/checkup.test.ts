@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { frontendUrl } from "../src/checkup.js";
+import { frontendUrl } from "../src/core/methods/checkup.js";
 
 const act = {
 	ELI: "MP/2026/7",

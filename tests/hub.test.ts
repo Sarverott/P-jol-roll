@@ -2,7 +2,12 @@ import { mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { expect, test } from "vitest";
-import { compare, hashOf, localFiles, repoOf } from "../src/hub.js";
+import {
+	compare,
+	hashOf,
+	localFiles,
+	repoOf,
+} from "../src/core/resources/hub.js";
 
 test("repository is named by path of its address", () => {
 	expect(repoOf("https://huggingface.co/datasets/Sarverott/x")).toBe(

@@ -97,5 +97,5 @@ upload and download calls are not. Try `push` first on a small directory.
 
 The first version cloned the repositories with git, and
 `scripts/hf-push.py` sent a whole folder. Both are replaced by
-`src/hub.ts`. `resources/dataset` and `resources/space` may still hold a
+`src/core/resources/hub.ts`. `resources/dataset` and `resources/space` may still hold a
 `.git` directory from then; it is skipped.

@@ -53,7 +53,7 @@ More in [the guides](../docs/README.md).
    `tests/gather.test.ts` shows how.
 4. **Follow the code that is there.** Tabs, double quotes, short file names.
    Addresses and data stay out of handlers: addresses of the API live in
-   `src/eli.ts`, paths of files in `src/store.ts`, websites in
+   `src/core/apihandlers/eli.ts`, paths of files in `src/core/resources/store.ts`, websites in
    `resources/frontends.json`.
 5. **Run `task verify`.** The pre-commit hook also checks staged files with
    Biome.

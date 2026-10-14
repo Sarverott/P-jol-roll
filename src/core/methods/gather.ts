@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs";
 import { createHttpRouter } from "crawlee";
-import { crawl } from "../crawl.js";
 import {
 	type Act,
 	type ActFile,
@@ -19,6 +18,7 @@ import {
 	type YearListing,
 	yearUrl,
 } from "../apihandlers/eli.js";
+import { crawl } from "../crawl.js";
 import * as store from "../resources/store.js";
 
 export interface GatherPlan {

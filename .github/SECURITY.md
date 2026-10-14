@@ -14,7 +14,7 @@ There are no released versions yet. Fixes go to `master`.
   ignores. If you see a token in a commit, an issue or a log, report it
   privately so it can be revoked.
 - **A way to make the gatherer harm its source**: more requests than the
-  limits allow, requests to a host that is not in `src/eli.ts` or
+  limits allow, requests to a host that is not in `src/core/apihandlers/eli.ts` or
   `resources/frontends.json`, or a loop that never ends.
 - **A way to write outside `resources/`.** Names of files come from the
   answers of the API (`address`, `publisher`, `year`). An answer that makes

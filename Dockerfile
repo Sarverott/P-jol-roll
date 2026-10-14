@@ -17,5 +17,5 @@ RUN npm run build
 #   docker run -v "$PWD/resources:/home/myuser/resources" p-jol-roll gather 2026 --acts --limit 5
 COPY --chown=myuser resources/frontends.json resources/.map.json ./resources/
 
-ENTRYPOINT ["node", "dist/main.js"]
+ENTRYPOINT ["node", "dist/core/main.js"]
 CMD ["gather"]

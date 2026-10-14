@@ -7,25 +7,33 @@ How to change the code. For how to propose a change, see
 
 | File | What is in it |
 | --- | --- |
-| `src/main.ts` | arguments and the three commands: `gather`, `checkup`, `hub`. Usage is written at its top |
-| `src/eli.ts` | the API: its address, shapes of answers, addresses of every part of an act |
-| `src/store.ts` | where gathered things are written, and how (`.part`, then rename) |
-| `src/crawl.ts` | one polite walk over addresses of an API: own name, pace, queue in memory |
-| `src/gather.ts` | index → lists → years, then files of acts year by year; `--since` for changes |
-| `src/seal.ts` | checksums of gathered files: writing records, checking files against them |
-| `src/compile.ts` | tables of details and references from raw files |
-| `src/text.ts` | markdown from HTML, with records that tie both |
-| `src/sejm.ts` | another source: processes and prints of Sejm |
-| `src/saos.ts` | another source: court judgments |
-| `src/checkup.ts` | the browser visiting websites, with Crawlee `PlaywrightCrawler` and Camoufox |
-| `src/hub.ts` | comparison and sync with Hugging Face, with `@huggingface/hub` |
+| `src/core/main.ts` | arguments and the commands. Usage is written at its top |
+| `src/core/apihandlers/eli.ts` | the API: its address, shapes of answers, addresses of every part of an act |
+| `src/core/resources/store.ts` | where gathered things are written, and how (`.part`, then rename) |
+| `src/core/crawl.ts` | one polite walk over addresses of an API: own name, pace, queue in memory |
+| `src/core/methods/gather.ts` | index → lists → years, then files of acts year by year; `--since` for changes |
+| `src/core/methods/seal.ts` | checksums of gathered files: writing records, checking files against them |
+| `src/core/methods/compile.ts` | tables of details and references from raw files |
+| `src/core/parsing/text.ts` | markdown from HTML, with records that tie both |
+| `src/core/apihandlers/sejm.ts` | another source: processes and prints of Sejm |
+| `src/core/apihandlers/saos.ts` | another source: court judgments |
+| `src/core/methods/checkup.ts` | the browser visiting websites, with Crawlee `PlaywrightCrawler` and Camoufox |
+| `src/core/resources/hub.ts` | comparison and sync with Hugging Face, with `@huggingface/hub` |
 
-Two rules keep it readable:
+Three rules keep it readable:
 
 - **Addresses and data stay out of handlers.** A handler in `gather.ts` says
   what happens; where to ask is in `eli.ts` and where to write is in
   `store.ts`.
 - **One command, one file.** `main.ts` only reads arguments and calls.
+- **No flat scope.** Files sit in the directory of their kind under
+  `src/core/`: `apihandlers/` for sources, `methods/` for what commands do,
+  `parsing/` for raw files into text, `resources/` for the local sides and
+  Hugging Face. A new kind gets a new directory.
+
+`src/cli-command.js`, `src/cli-repl.js`, `src/desktopapp/`, `src/webgui/`
+and `src/webserver/` are beginnings of other ways into the same core. They
+are not wired to anything yet.
 
 ## Tasks
 
@@ -70,7 +78,7 @@ These must be set before the code is imported, because `eli.ts` and
 
 For example `struct`, which the API gives as `/acts/DU/2026/1/struct`:
 
-1. `src/eli.ts`: add the name to `PARTS` and one line to `filesOf`, with
+1. `src/core/apihandlers/eli.ts`: add the name to `PARTS` and one line to `filesOf`, with
    the address it is asked at and the ending of its file name. If the file
    does not exist for every act, return nothing for the acts without it.
 2. `tests/gather.test.ts`: let the local copy of the API answer for it.

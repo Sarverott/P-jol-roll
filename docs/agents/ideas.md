@@ -67,29 +67,29 @@ Sett asked for it, so here it is. Marked guesses are guesses.
 
 - **Texts by article.**
   What: one line per article with its id from `struct`.
-  Where: `src/text.ts`, table `dataset/units/<journal>/<year>.jsonl`.
+  Where: `src/core/parsing/text.ts`, table `dataset/units/<journal>/<year>.jsonl`.
   How: the HTML marks every unit with `id` and `data-id`; walk it once.
 
 - **Text from digital PDF.**
   What: markdown for acts without HTML.
-  Where: `src/text.ts`, with a field saying how the text was read.
+  Where: `src/core/parsing/text.ts`, with a field saying how the text was read.
   How: a PDF library first; reading of scans separately and marked.
 
 - **Join tables.**
   What: process → act, judgment → act.
-  Where: `src/compile.ts`.
+  Where: `src/core/methods/compile.ts`.
   How: processes carry `ELI`; judgments carry `journalYear` and
   `journalEntry` in `referencedRegulations`.
 
 - **Changes of judgments.**
   What: SAOS can list judgments modified since a time
   (`sinceModificationDate`).
-  Where: `src/saos.ts`.
+  Where: `src/core/apihandlers/saos.ts`.
   How: like `gather --since`, rewriting the months that were touched.
 
 - **Votings and transcripts of Sejm.**
   What: who voted how, and what was said.
-  Where: `src/sejm.ts`.
+  Where: `src/core/apihandlers/sejm.ts`.
   How: the same API, per sitting.
 
 ## Next steps inside this source
@@ -97,7 +97,7 @@ Sett asked for it, so here it is. Marked guesses are guesses.
 - **Tables from raw files.**
   What: details and references of 164 thousand acts are small JSON files in
   the bucket; a dataset needs them as tables.
-  Where: `src/compile.ts`, writing into `resources/dataset/`.
+  Where: `src/core/methods/compile.ts`, writing into `resources/dataset/`.
   How: one JSONL of details per journal and year, and one table of edges
   `from | type | to | art | date` built from the references. The edge table
   is the graph of the law and it will be small enough to open in a notebook.
@@ -116,7 +116,7 @@ Sett asked for it, so here it is. Marked guesses are guesses.
   than one PDF per act. Details of `DU/2026/1` list four texts of types
   `O`, `I`, `T`, `U`. I do not know what the letters mean; my guess is that
   some of them are consolidated texts.
-  Where: two more entries in `PARTS` of `src/eli.ts`.
+  Where: two more entries in `PARTS` of `src/core/apihandlers/eli.ts`.
   How: `struct` is one more JSON per act. The extra texts need the details
   first, because their file names are listed there.
 
@@ -171,12 +171,12 @@ I would decide that after the Polish graph exists.
 - **Skip what is already there.**
   What: on a second machine the gatherer would ask Sejm again for files that
   the bucket already holds.
-  Where: `src/gather.ts`, next to the check of local files.
+  Where: `src/core/methods/gather.ts`, next to the check of local files.
   How: read the listing of the bucket once at start and treat those paths as
   gathered.
 
 - **Buckets are compared by size only.**
-  What: a bucket does not give a git hash, so `src/hub.ts` calls a file the
+  What: a bucket does not give a git hash, so `src/core/resources/hub.ts` calls a file the
   same when path and size agree.
   How to do better: keep our own list of hashes in the dataset, written at
   gathering time.
@@ -191,6 +191,6 @@ I would decide that after the Polish graph exists.
 - `Dockerfile` is still the first template. It does not build what `src/`
   is now.
 - `scripts/Taskfile.yml` calls `./srcipts/hf-push.py`, and `scripts/` has no
-  `pyproject.toml` for `uv`. `src/hub.ts` now does that job.
+  `pyproject.toml` for `uv`. `src/core/resources/hub.ts` now does that job.
 - `resources/dataset` and `resources/space` are git clones from the first
   round. The new sync does not use git there and skips `.git`.

@@ -1,4 +1,4 @@
-// turndown comes without types - only what src/text.ts uses is described here
+// turndown comes without types - only what text.ts uses is described here
 declare module "turndown" {
 	export default class TurndownService {
 		constructor(options?: Record<string, string>);

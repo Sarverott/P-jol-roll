@@ -15,7 +15,7 @@ tasks:
     silent: true
 
   gather:
-    desc: Gather from ELI API of Sejm, arguments after "--" (e.g. task gather -- 2026 --acts --limit 5), usage in src/main.ts.
+    desc: Gather from ELI API of Sejm, arguments after "--" (e.g. task gather -- 2026 --acts --limit 5), usage in src/core/main.ts.
     cmds:
       - npm run gather -- {{.CLI_ARGS}}
 
