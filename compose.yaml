@@ -1,0 +1,14 @@
+# website and api in one container, over gathered resources mounted read-only - coolify takes this file as it is
+#   docker compose up -d   ->   http://localhost:8080
+services:
+  web:
+    build: .
+    entrypoint: ["node", "dist/openapi/main.js"]
+    environment:
+      HOST: 0.0.0.0
+      PORT: "8080"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./resources:/home/myuser/resources:ro
+    restart: unless-stopped

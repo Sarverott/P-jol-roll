@@ -21,3 +21,6 @@ storage
 
 # tokens (HF_TOKEN)
 .env
+
+# astro keeps its generated types here
+.astro

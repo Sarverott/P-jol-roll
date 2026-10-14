@@ -1,0 +1,21 @@
+---
+
+// NOTE: this will be selfhosted best case for coolify, docker apps etc. - api mode also here
+import manifest from "../../app/manifest.json?url";
+import Viewer from "../../gui/index.vue";
+
+// built as static files into dist/web; the api (src/openapi) serves them next to /api,
+// so one container is website and api at once. PUBLIC_API points the viewer elsewhere
+const api = import.meta.env.PUBLIC_API ?? "";
+---
+<html lang="pl">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>P_JOL_ROLL</title>
+		<link rel="manifest" href={manifest} />
+	</head>
+	<body>
+		<Viewer client:only="vue" api={api} />
+	</body>
+</html>

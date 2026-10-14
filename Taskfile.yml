@@ -2,10 +2,17 @@
 
 version: '3'
 
+env:
+  ELECTRON_DISABLE_SANDBOX: 1 
+
 includes:
   husky: ./.husky/Taskfile.yml
   github: ./.github/Taskfile.yml
   resources: ./resources/Taskfile.yml
+  src:
+    taskfile: ./src/Taskfile.yml
+    dir: .
+    flatten: true
 
 tasks:
 

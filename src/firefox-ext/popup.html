@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8" />
+		<style>
+			body { font: 14px system-ui, sans-serif; width: 26rem; margin: 0.8rem; }
+			input { width: 100%; box-sizing: border-box; margin-bottom: 0.4rem; }
+			small { opacity: 0.7; }
+			.failure { color: #c33; }
+		</style>
+	</head>
+	<body>
+		<form id="look">
+			<input id="eli" placeholder="DU/2026/1 or Dz.U. 2026 poz. 1"/>
+			<button type="submit">look up</button>
+		</form>
+		<div id="answer"></div>
+		<details>
+			<summary><small>host</small></summary>
+			<input id="api" placeholder="http://127.0.0.1:8080" />
+		</details>
+		<script src="main.js" type="module"></script>
+	</body>
+</html>

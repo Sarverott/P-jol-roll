@@ -1,0 +1,46 @@
+# https://taskfile.dev
+# ways into gathered data: api, MCP, website, desktop window, android app, browser extension
+
+version: '3'
+
+tasks:
+
+  serve:
+    desc: Http api with live notices (socket.io) and the built website, on http://127.0.0.1:8080 - PORT and HOST in environment change it.
+    cmds:
+      - npm run serve
+
+  mcp:
+    desc: MCP server over stdio for AI agents, read-only (e.g. claude mcp add p-jol-roll -- npx tsx src/mcp/main.ts).
+    cmds:
+      - npm run --silent mcp
+
+  web:build:
+    desc: Website of src/web with the viewer of src/gui, into dist/web.
+    cmds:
+      - npx astro build
+
+  web:dev:
+    desc: Website with reload on change; the api has to run beside it (PUBLIC_API=http://127.0.0.1:8080 task web:dev).
+    cmds:
+      - npm run web:dev
+
+  desktop:
+    desc: Electron window around the viewer - builds the website, starts the api for itself.
+    cmds:
+      - task: web:build
+      - npm run desktop
+
+  app:sync:
+    desc: Android app by Capacitor in src/app - first time "task app:sync -- add android", then plain; needs Android SDK. PUBLIC_API has to name a reachable host.
+    dir: src/app
+    cmds:
+      - npx astro build --root ../..
+      - npx --yes @capacitor/cli {{.CLI_ARGS | default "sync android"}}
+
+  extension:
+    desc: Where the browser extension is and how to load it.
+    cmds:
+      - echo "Firefox - about:debugging, This Firefox, Load Temporary Add-on, src/firefox-ext/manifest.json"
+      - echo "Chrome - chrome://extensions, developer mode, Load unpacked, src/firefox-ext"
+    silent: true

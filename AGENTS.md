@@ -20,7 +20,8 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    Requests carry the project's own User-Agent and run two at a time. Sett
    runs the gathering and the checkup; an agent verifies with tests and a
    local copy of the API, and does not run them against the real source
-   unless asked.
+   unless asked. Hosts and interfaces (api, MCP, website, extension) only
+   read `resources/`; none of them may start gathering.
 4. **Nothing is sent to huggingface by an agent.** `resources/dataset`,
    `resources/space` and `resources/bucket` are filled locally; pushing and
    syncing them is Sett's move.
@@ -75,8 +76,19 @@ src/core/              the gatherer itself; everything below is its tree
   vars/                every type and interface, one per file, flat inside each directory
     interfaces/        <Name>.interface.ts, and index.ts with namespaces GatheringScope, HuggingfaceScope
     types/             <Name>.type.ts, and index.ts with the same namespaces
-src/cli-command.js, cli-repl.js, desktopapp/, webgui/, webserver/
-                       Sett's beginnings of other ways in (terminal, Electron, Astro, express) - not wired yet
+  reading/             gathered data as readers see it - the only thing hosts below lean on
+    library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
+src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
+src/mcp/               MCP server over stdio for AI agents, read-only
+src/gui/               index.vue - the one viewer that every interface shows
+src/web/               Astro website carrying the viewer (pages/), built into dist/web
+src/desktop/           Electron window: starts the api, shows the viewer
+src/app/               web app manifest and Capacitor config of the android app
+src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
+src/chrome-ext/        empty, kept
+src/Taskfile.yml       tasks of everything above core, included in the root one
+src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
+scripts/               install.sh, install.bat, the python push - scripts/README.md
 tests/            vitest; gather.test.ts runs whole gathering against a local copy of API
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
   dataset/        tables: lists/, and per <journal>/<year> acts, files, details, references, texts, checkups
@@ -109,7 +121,9 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
 | `task check` / `task format` | Biome, check only / with fixes |
-| `task verify` | check, build, tests — run before reporting work as done |
+| `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
+| `task web:build` / `task desktop` | website into `dist/web` / Electron window around it |
+| `task verify` | check, build (TypeScript and website), tests — run before reporting work as done |
 
 ## Conventions
 

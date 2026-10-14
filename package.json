@@ -27,12 +27,15 @@
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.133.0",
     "@apify/tsconfig": "^0.2.0",
+    "@astrojs/vue": "^7.0.3",
     "@biomejs/biome": "^2.5.15",
+    "@electron-forge/cli": "^8.0.1",
     "@go-task/cli": "^3.45.4",
     "@google/genai": "^2.29.0",
     "@huggingface/hub": "^2.17.6",
     "@huggingface/inference": "^4.13.32",
     "@huggingface/mcp-client": "^0.2.3",
+    "@types/express": "^5.0.6",
     "@types/fs-extra": "^11",
     "@types/node": "^24.0.0",
     "dockerode": "^5.0.1",
@@ -54,7 +57,11 @@
     "start": "tsx src/core/main.ts",
     "start:prod": "node dist/core/main.js",
     "start:dev": "tsx src/core/main.ts",
-    "build": "tsc",
+    "build": "tsc && astro build",
+    "serve": "tsx src/openapi/main.ts",
+    "mcp": "tsx src/mcp/main.ts",
+    "web:dev": "astro dev",
+    "desktop": "electron src/desktop/main.js",
     "test": "vitest",
     "gather": "tsx src/core/main.ts gather",
     "seal": "tsx src/core/main.ts seal",
@@ -73,5 +80,9 @@
     "prepare": "husky"
   },
   "author": "Sett Sarverott A.A.B.",
-  "license": "AGPL-3.0-only"
+  "license": "AGPL-3.0-only",
+  "main": "src/main.js",
+  "packagerConfig":{
+    "executableArgs":["--no-sandbox"]
+  }
 }

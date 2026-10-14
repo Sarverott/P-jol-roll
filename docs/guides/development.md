@@ -53,7 +53,7 @@ are not wired to anything yet.
 | --- | --- |
 | `task check` | Biome: lint and formatting, changes nothing |
 | `task format` | Biome with safe fixes |
-| `task build` | TypeScript into `dist/` |
+| `task build` | TypeScript into `dist/`, the website into `dist/web` |
 | `task test` | tests, once |
 | `task verify` | all three checks. Run it before reporting work as done |
 | `task seal`, `compile`, `text` | work on gathered files, without the internet: see [processing](processing.md) |

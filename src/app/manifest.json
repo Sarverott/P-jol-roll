@@ -1,1 +1,11 @@
-// NOTE: here i was hoping for some small android app in capacitor 
+{
+	"//": "NOTE: here i was hoping for some small android app in capacitor",
+	"name": "P_JOL_ROLL",
+	"short_name": "P_JOL_ROLL",
+	"description": "Polish journals of laws, as gathered by P_JOL_ROLL",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#ffffff",
+	"theme_color": "#ffffff",
+	"lang": "pl"
+}

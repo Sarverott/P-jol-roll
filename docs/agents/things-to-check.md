@@ -30,6 +30,22 @@ point was added.
 - **2026-10-13. `scripts/`.** `hf-push.py` and its Taskfile are kept, with
   the path fixed. `task resources:push` does the same job file by file. Keep
   or remove.
+- **2026-10-14. The api is open to every origin.** `src/openapi` answers
+  any website, because the data is public and the extension and the app
+  ask from elsewhere. It listens on this machine only unless `HOST` says
+  otherwise; `compose.yaml` says `0.0.0.0`. There is no limit of requests
+  per client yet. Decide before it stands on the internet.
+- **2026-10-14. Capacitor is not installed.** `src/app/capacitor.config.json`
+  is ready, and `task app:sync -- add android` fetches the command line by
+  `npx`, but the app also needs `@capacitor/core` and `@capacitor/android`
+  in `package.json` and the Android SDK on the machine. Left to you,
+  because it adds a native project under `src/app/android`.
+- **2026-10-14. Two new development dependencies**: `@astrojs/vue` (Vue
+  inside Astro) and `@types/express`. `tsconfig.json` got `ES2022` in
+  `lib`, because the MCP library needs `ErrorOptions`.
+- **2026-10-14. `src/chrome-ext/`** stays empty. The extension in
+  `src/firefox-ext/` loads in Chrome too; a separate one is needed only
+  when the stores want different packages.
 - **2026-10-13. gitrecon.** Its `CODE_OF_CONDUCT.md` says it covers "every
   repository of the Shakespeare project". Not touched from here.
 
@@ -53,6 +69,20 @@ point was added.
 - **Paging of changes and of processes** assumes a page smaller than asked
   is the last one. 500 per page was not tried on the real APIs; 1000
   processes in one answer was.
+
+- **The Electron window** was not opened: its binary is not downloaded
+  (`node node_modules/electron/install.js` does it), and a window on your
+  screen at night was not mine to open. Its script passes a syntax check.
+- **The extension** was not loaded in a browser. Reading citations from
+  addresses and text was checked on seven examples.
+- **The website and the api** were checked in headless Camoufox over the
+  real listings: list of 2026, opening an act, its PDF link, no errors.
+  Markdown in the viewer was seen only in tests, because `task text` was
+  never run into `resources/dataset`.
+- **The MCP server** was asked over stdio: start, list of tools,
+  `search_acts`, `act_text`. Not added to any agent.
+- **`compose.yaml`, `install.sh`, `install.bat`** were not run. `install.sh`
+  passes `sh -n`.
 
 ## Assumptions in the docs
 

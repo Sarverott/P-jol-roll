@@ -30,6 +30,20 @@
 			"formatter": {
 				"indentStyle": "space"
 			}
+		},
+		{
+			"includes": ["**/*.vue", "**/*.astro"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedVariables": "off",
+						"noUnusedImports": "off"
+					},
+					"style": {
+						"useVueMultiWordComponentNames": "off"
+					}
+				}
+			}
 		}
 	],
 	"assist": {

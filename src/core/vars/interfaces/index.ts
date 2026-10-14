@@ -1,7 +1,10 @@
 // every interface of the core, one per file next to this index - namespaces say which side of work it belongs to
+
 import type ActInterface from "./Act.interface.js";
 import type ActFileInterface from "./ActFile.interface.js";
+import type ActPageInterface from "./ActPage.interface.js";
 import type ActTextInterface from "./ActText.interface.js";
+import type ActViewInterface from "./ActView.interface.js";
 import type AskedInterface from "./Asked.interface.js";
 import type ChangesInterface from "./Changes.interface.js";
 import type CheckupInterface from "./Checkup.interface.js";
@@ -11,6 +14,7 @@ import type EdgeInterface from "./Edge.interface.js";
 import type FileRecordInterface from "./FileRecord.interface.js";
 import type FrontendInterface from "./Frontend.interface.js";
 import type GatherPlanInterface from "./GatherPlan.interface.js";
+import type JournalInterface from "./Journal.interface.js";
 import type JudgmentInterface from "./Judgment.interface.js";
 import type PrintInterface from "./Print.interface.js";
 import type ProcessInterface from "./Process.interface.js";
@@ -50,4 +54,11 @@ export namespace GatheringScope {
 	export type TextRecord = TextRecordInterface;
 	export type YearListing = YearListingInterface;
 	export type YearWork = YearWorkInterface;
+}
+
+// what readers of gathered data get: server, MCP, interfaces
+export namespace ReadingScope {
+	export type Journal = JournalInterface;
+	export type ActPage = ActPageInterface;
+	export type ActView = ActViewInterface;
 }

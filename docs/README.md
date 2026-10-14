@@ -21,6 +21,8 @@ Polish **Journals of Laws resources operational lurker loader** - complex set of
 | [Hugging Face](guides/huggingface.md) | `hub`: comparing and moving data, file by file |
 | [the data](guides/data.md) | layout, fields, limits of what the data says, rights |
 | [development](guides/development.md) | the code, tests, how to add a file, a website, a source |
+| [source codes](../src/README.md) | every file of `src/`: core, hosts, viewer, shells |
+| [scripts](../scripts/README.md) | setting up a machine, the Python push |
 
 ## Glossary
 

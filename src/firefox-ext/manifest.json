@@ -1,0 +1,16 @@
+{
+	"manifest_version": 3,
+	"name": "P_JOL_ROLL",
+	"version": "0.0.1",
+	"description": "Looks up an act of Polish journals of laws in a P_JOL_ROLL host: status, ties, text.",
+	"action": { "default_popup": "popup.html", "default_title": "P_JOL_ROLL" },
+	"permissions": ["activeTab", "storage"],
+	"host_permissions": ["http://127.0.0.1/*", "http://localhost/*"],
+	"optional_host_permissions": ["https://*/*"],
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "p-jol-roll@sarverott.github.io",
+			"strict_min_version": "128.0"
+		}
+	}
+}

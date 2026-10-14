@@ -9,8 +9,9 @@ COPY --chown=myuser package*.json ./
 # scripts are skipped - browser is already in the image and git hooks have no use in it
 RUN npm ci --ignore-scripts --audit=false
 
-COPY --chown=myuser tsconfig.json ./
+COPY --chown=myuser tsconfig.json astro.config.mjs ./
 COPY --chown=myuser src ./src
+# typescript into dist/, website of src/web into dist/web
 RUN npm run build
 
 # websites for checkup and map of huggingface repositories; gathered things come as a volume:
@@ -19,3 +20,5 @@ COPY --chown=myuser resources/frontends.json resources/.map.json ./resources/
 
 ENTRYPOINT ["node", "dist/core/main.js"]
 CMD ["gather"]
+# website and api instead of gathering: compose.yaml, or
+#   docker run -p 8080:8080 -e HOST=0.0.0.0 -v "$PWD/resources:/home/myuser/resources:ro" --entrypoint node p-jol-roll dist/openapi/main.js
