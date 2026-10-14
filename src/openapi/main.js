@@ -1,0 +1,1 @@
+// NOTE: standard thing is to think about basic approachable http api headless host. add in it websocket connectivity by socket.io for live info exchanges

@@ -1,0 +1,1 @@
+// NOTE: firefox web extension here

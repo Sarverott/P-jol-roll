@@ -1,0 +1,1 @@
+// NOTE: here i think we consider mounting of core functionality for AI agents usage
