@@ -12,12 +12,14 @@
     "bulma": "^1.0.4",
     "camoufox-js": "^0.12.0",
     "crawlee": "^3.0.0",
+
     "marked": "^18.1.1",
     "playwright": "1.60.0",
     "pyodide": "^314.0.7",
     "socket.io": "^4.8.4",
     "socket.io-client": "^4.8.4",
     "ssh2": "^1.17.0",
+
     "turndown": "^7.2.4",
     "vite": "^8.3.4",
     "vue": "^3.5.44",
@@ -61,7 +63,7 @@
     "serve": "tsx src/openapi/main.ts",
     "mcp": "tsx src/mcp/main.ts",
     "web:dev": "astro dev",
-    "desktop": "electron src/desktop/main.js",
+    "desktop": "electron --no-sandbox src/desktop/main.js",
     "test": "vitest",
     "gather": "tsx src/core/main.ts gather",
     "seal": "tsx src/core/main.ts seal",
@@ -81,8 +83,10 @@
   },
   "author": "Sett Sarverott A.A.B.",
   "license": "AGPL-3.0-only",
-  "main": "src/main.js",
-  "packagerConfig":{
-    "executableArgs":["--no-sandbox"]
+  "main": "src/desktop/main.js",
+  "packagerConfig": {
+    "executableArgs": [
+      "--no-sandbox"
+    ]
   }
 }

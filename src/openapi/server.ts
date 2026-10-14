@@ -58,12 +58,15 @@ export function serve({ port = 8080, host = "127.0.0.1", web = WEB_DIR } = {}) {
 	});
 
 	return new Promise<{ server: typeof server; io: SocketServer; url: string }>(
-		(done) =>
+		(done, fail) => {
+			// a port that is taken ends here, not as an error thrown from nowhere
+			server.once("error", fail);
 			server.listen(port, host, () => {
 				const address = server.address();
 				const bound =
 					typeof address === "object" && address ? address.port : port;
 				done({ server, io, url: `http://${host}:${bound}` });
-			}),
+			});
+		},
 	);
 }

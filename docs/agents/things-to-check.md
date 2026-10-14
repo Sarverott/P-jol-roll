@@ -73,6 +73,10 @@ point was added.
 - **The Electron window** was not opened: its binary is not downloaded
   (`node node_modules/electron/install.js` does it), and a window on your
   screen at night was not mine to open. Its script passes a syntax check.
+  2026-10-14: Sett opened it; the second start found the port taken,
+  because the api outlived the window (npx -> tsx -> node, only npx was
+  killed). Now it is one process on a free port that ends when its stdin
+  closes. Checked by killing the parent hard; the window itself again not.
 - **The extension** was not loaded in a browser. Reading citations from
   addresses and text was checked on seven examples.
 - **The website and the api** were checked in headless Camoufox over the
