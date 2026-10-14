@@ -63,7 +63,8 @@ listed in `resources/.map.json`. See [Hugging Face](huggingface.md).
 | `ELI_API` | `https://api.sejm.gov.pl/eli` | where `gather` asks. Tests point it at a local copy |
 | `RESOURCES_DIR` | `resources` | where everything is written and read |
 | `HF_TOKEN` | none | token for `hub push` and for private repositories |
-| `CRAWLEE_STORAGE_DIR` | `storage` | where the crawler keeps its queue of requests while it runs |
+| `SEJM_API`, `SAOS_API` | the real addresses | the same for `sejm` and `saos` |
+| `CRAWLEE_STORAGE_DIR` | `storage` | where the browser of `checkup` keeps its queue while it runs. The gatherers keep theirs in memory |
 
 ## The Obsidian vault
 

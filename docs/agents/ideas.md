@@ -4,6 +4,94 @@ Collected by Cleo on 2026-10-13. Nothing here is decided; Sett picks, changes
 or drops any of it. Each idea says what it is, where it would live and how
 it could be done. Things I checked are marked as checked; the rest is a guess.
 
+## What became of these ideas
+
+Sett answered them in `docs/devlog/scrapnote-1791920000154.md`. State after
+that round (2026-10-13, evening):
+
+| Idea | State |
+| --- | --- |
+| Tables from raw files | built: `task compile` |
+| Daily updates | built: `task gather:changes` |
+| Structure and other texts | built: parts `struct` and `texts` of `gather` |
+| Text for models | built for HTML: `task text`. PDF is open |
+| Links for people | open: the checkups are gathered, the space does not show them |
+| Other sources | built: `task sejm`, `task saos`. The rest is open |
+| European law | put off by Sett until other countries are in scope |
+| Skip what is already there | built: a file with a record in `dataset/files/` is not asked for |
+| Buckets are compared by size only | built: `task seal` and `task seal -- --check` |
+| Housekeeping | `Dockerfile` rewritten (not built), path in `scripts/Taskfile.yml` fixed |
+
+What waits for a decision or was not verified is in
+[things to check](things-to-check.md).
+
+## More of my view on structure and texts
+
+Sett asked for it, so here it is. Marked guesses are guesses.
+
+- **The text marked `U` may be the most valuable file in the whole source.**
+  A statute as published in 1997 is not the statute in force today: it was
+  amended many times, and the amendments sit in other acts. Someone has to
+  work them into one text. From the file names I believe `U` is that text,
+  kept current by the office of Sejm *(guess, to confirm on ISAP)*. An
+  advisor that answers from the published text of an old statute will be
+  wrong with confidence. It should answer from `U` where `U` exists, and say
+  that `U` is not an official text.
+- **Structure makes citation possible.** `struct` gives every article and
+  point an id. A model that is given units with ids can answer "art. 5
+  ust. 2" and point at it, and a reader can check. A model that is given a
+  wall of text can only paraphrase. For the advisor I would cut texts into
+  articles by these ids before anything is fed anywhere.
+- **Three quarters of acts have no HTML and no structure.** 39,110 of
+  164,638 have HTML. The rest is PDF: born digital for newer years, scans
+  for old ones. Before reading scans, count which acts are still in force
+  (`inForce` in details). I expect most acts in force to be new enough to
+  have a digital PDF or HTML, and most scans to be history *(guess; the
+  details will tell once gathered)*. If so, reading scans is a project for
+  historians and can wait.
+- **Status alone is not enough to know what applies.** `obowiązujący` on a
+  statute says the statute stands; it does not say which wording. The graph
+  of references says what amended it and when. Date of the question, status
+  and references together answer "what was the law on that day".
+- **Justifications are the missing explanation.** A print of Sejm holds the
+  draft and the authors' reasons for it. Processes carry the ELI of the act
+  they ended with, so every newer statute can be joined with the reasons it
+  was written for. That is the closest thing to "why" that exists in public
+  data.
+- **Judgments need care before they are published by us.** They are public,
+  and they are about people. The source anonymises parties; I would not
+  build anything that searches judgments by a person's name, judges
+  included.
+
+## Ideas that came up while building
+
+- **Texts by article.**
+  What: one line per article with its id from `struct`.
+  Where: `src/text.ts`, table `dataset/units/<journal>/<year>.jsonl`.
+  How: the HTML marks every unit with `id` and `data-id`; walk it once.
+
+- **Text from digital PDF.**
+  What: markdown for acts without HTML.
+  Where: `src/text.ts`, with a field saying how the text was read.
+  How: a PDF library first; reading of scans separately and marked.
+
+- **Join tables.**
+  What: process → act, judgment → act.
+  Where: `src/compile.ts`.
+  How: processes carry `ELI`; judgments carry `journalYear` and
+  `journalEntry` in `referencedRegulations`.
+
+- **Changes of judgments.**
+  What: SAOS can list judgments modified since a time
+  (`sinceModificationDate`).
+  Where: `src/saos.ts`.
+  How: like `gather --since`, rewriting the months that were touched.
+
+- **Votings and transcripts of Sejm.**
+  What: who voted how, and what was said.
+  Where: `src/sejm.ts`.
+  How: the same API, per sitting.
+
 ## Next steps inside this source
 
 - **Tables from raw files.**

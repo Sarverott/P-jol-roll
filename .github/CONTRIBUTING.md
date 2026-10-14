@@ -48,7 +48,8 @@ More in [the guides](../docs/README.md).
    with it.
 3. **Keep tests away from the real source.** Tests never ask
    `api.sejm.gov.pl`, a government website or Hugging Face. `ELI_API` and
-   `RESOURCES_DIR` in the environment point the code at a local copy;
+   `RESOURCES_DIR` (and `SEJM_API`, `SAOS_API`) in the environment point the
+   code at a local copy;
    `tests/gather.test.ts` shows how.
 4. **Follow the code that is there.** Tabs, double quotes, short file names.
    Addresses and data stay out of handlers: addresses of the API live in

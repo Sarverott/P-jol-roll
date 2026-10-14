@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { Browser, ImpitHttpClient } from "@crawlee/impit-client";
 import { launchOptions } from "camoufox-js";
@@ -34,13 +34,7 @@ export interface Checkup {
 	checkedAt: string;
 }
 
-const readJsonl = <Line>(path: string): Line[] =>
-	existsSync(path)
-		? readFileSync(path, "utf8")
-				.split("\n")
-				.filter(Boolean)
-				.map((line) => JSON.parse(line))
-		: [];
+const { readJsonl } = store;
 
 export function frontendUrl(frontend: Frontend, act: Act): string | undefined {
 	const template =

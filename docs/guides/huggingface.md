@@ -38,7 +38,9 @@ moved twice.
 
 > **Remember!** A bucket gives no hash. There a file counts as the same when
 > path and size agree. A file that changed without changing its size would
-> be missed.
+> be missed. The project keeps its own checksums for that:
+> `task seal -- --check` compares every file here with the record made when
+> it was gathered. See [processing](processing.md#checksums-seal).
 
 ## What it never does
 
@@ -59,9 +61,31 @@ their files.
 
 ## Which data goes where
 
-Tables go to the dataset and raw files of acts go to the bucket. A dataset
-on Hugging Face is a git repository, and git works badly with hundreds of
-thousands of files. A bucket is object storage and has no such trouble.
+Tables go to the dataset and raw files of acts go to the bucket.
+
+A dataset on Hugging Face is a git repository. Xet, the storage behind it,
+solves the size of files: big files are cut into chunks, a chunk that was
+already sent is not sent again, and git keeps only a small pointer. It does
+not change how many files git has to track. The recommendations of Hugging
+Face for a git repository still stand (read on 2026-10-13):
+
+| What | Recommended |
+| --- | --- |
+| files in a repository | under 100 thousand |
+| entries in one folder | under 10 thousand |
+| files in one commit | under 100 |
+
+A bucket is object storage on the same Xet, without git, and that page says
+these recommendations do not apply to buckets. So the raw files (several
+per act, 164 thousand acts) belong in the bucket, and the dataset gets a
+year in a file wherever it can.
+
+`task text` writes one markdown file per act with HTML. The listings say
+39,110 acts have HTML (all in Dziennik Ustaw, counted on 2026-10-13), in
+folders of a year each, so the dataset stays inside these recommendations.
+If parsing of PDF is added later and every act gets a markdown file, that
+becomes 164 thousand files and the texts should then be packed a year in a
+file.
 
 ## What was tested
 

@@ -10,7 +10,13 @@ How to change the code. For how to propose a change, see
 | `src/main.ts` | arguments and the three commands: `gather`, `checkup`, `hub`. Usage is written at its top |
 | `src/eli.ts` | the API: its address, shapes of answers, addresses of every part of an act |
 | `src/store.ts` | where gathered things are written, and how (`.part`, then rename) |
-| `src/gather.ts` | index → lists → years → files of acts, with Crawlee `HttpCrawler` |
+| `src/crawl.ts` | one polite walk over addresses of an API: own name, pace, queue in memory |
+| `src/gather.ts` | index → lists → years, then files of acts year by year; `--since` for changes |
+| `src/seal.ts` | checksums of gathered files: writing records, checking files against them |
+| `src/compile.ts` | tables of details and references from raw files |
+| `src/text.ts` | markdown from HTML, with records that tie both |
+| `src/sejm.ts` | another source: processes and prints of Sejm |
+| `src/saos.ts` | another source: court judgments |
 | `src/checkup.ts` | the browser visiting websites, with Crawlee `PlaywrightCrawler` and Camoufox |
 | `src/hub.ts` | comparison and sync with Hugging Face, with `@huggingface/hub` |
 
@@ -30,6 +36,7 @@ Two rules keep it readable:
 | `task build` | TypeScript into `dist/` |
 | `task test` | tests, once |
 | `task verify` | all three checks. Run it before reporting work as done |
+| `task seal`, `compile`, `text` | work on gathered files, without the internet: see [processing](processing.md) |
 | `task github:repo`, `runs`, `issues`, `prs` | read the state of the repository on GitHub with `gh` |
 
 Every directory with procedures has its own `Taskfile.yml` (`.husky`,
@@ -43,7 +50,8 @@ Face.
 | File | What it checks |
 | --- | --- |
 | `eli.test.ts` | choice of journals and years, addresses, paths of files |
-| `gather.test.ts` | a whole gathering against a local copy of the API: lists, order, limit, skipping what exists, trusting the flags |
+| `gather.test.ts` | whole gatherings against a local copy of the API: lists, order, limit, skipping what exists, records, structure and other texts, changes since a day; then tables, markdown and checksums made from the result |
+| `sources.test.ts` | Sejm and judgments against local copies of their APIs |
 | `checkup.test.ts` | how addresses of websites are filled in from an act |
 | `hub.test.ts` | naming of repositories, and that only what differs is moved |
 
@@ -62,13 +70,16 @@ These must be set before the code is imported, because `eli.ts` and
 
 For example `struct`, which the API gives as `/acts/DU/2026/1/struct`:
 
-1. `src/eli.ts`: add the name to `PARTS` and its suffix to `PART_SUFFIX`.
-   If the file does not exist for every act, say so in `hasPart`.
-2. `src/store.ts`: add its file suffix to `PART_SUFFIX` there.
-3. `src/gather.ts`: the `part` handler saves JSON for `details` and
-   `references` and bytes for the rest; add the new name to the right side.
-4. `tests/gather.test.ts`: let the local copy of the API answer for it.
-5. `docs/guides/data.md` and the table in `AGENTS.md`.
+1. `src/eli.ts`: add the name to `PARTS` and one line to `filesOf`, with
+   the address it is asked at and the ending of its file name. If the file
+   does not exist for every act, return nothing for the acts without it.
+2. `tests/gather.test.ts`: let the local copy of the API answer for it.
+3. `docs/guides/data.md`, `docs/guides/gathering.md` and the table in
+   `AGENTS.md`.
+
+`gather.ts` and `seal.ts` need no change: a file ending in `.json` is saved
+as JSON, one ending in `.pdf` must be a PDF, and anything else is kept as
+it came. This is how `struct` was added.
 
 ## Adding a website to checkup
 
@@ -77,9 +88,11 @@ first and write what it says into `title` when it disallows crawlers.
 
 ## Adding a source
 
-Another API is another pair of files: its addresses and shapes (like
-`eli.ts`) and its gathering (like `gather.ts`), with a command in `main.ts`.
-`store.ts` and `hub.ts` are shared. Propose it first with the "new source"
+Another API is one more file with its addresses, shapes and gathering, and
+a command in `main.ts`; `sejm.ts` and `saos.ts` are the examples. `crawl.ts`
+gives the polite walk, `store.ts` the writing of files, and `hub.ts` the
+moving. Its directories are `resources/<source>-dataset` and
+`resources/<source>-bucket`. Propose it first with the "new source"
 issue form; candidates already looked at are in
 [ideas](../agents/ideas.md).
 
@@ -96,5 +109,6 @@ maintainer, with `ANSWER:` lines as replies; both stay.
 
 | File | State |
 | --- | --- |
-| `Dockerfile` | from the first template; does not build what `src/` is now |
-| `scripts/hf-push.py`, `scripts/Taskfile.yml` | replaced by `src/hub.ts` |
+| `Dockerfile` | rewritten for what `src/` is now; the image was not built yet |
+| `scripts/hf-push.py`, `scripts/Taskfile.yml` | kept; `task resources:push` does the same job file by file |
+| `storage/` | queue of the first gatherer, hundreds of thousands of small files; nothing reads it now |

@@ -9,6 +9,11 @@ resources/dataset
 # https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland
 resources/space
 
+# other sources, repositories for them are not created yet
+resources/sejm-dataset
+resources/sejm-bucket
+resources/saos-dataset
+
 .idea
 dist
 node_modules

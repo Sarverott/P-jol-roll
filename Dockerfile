@@ -1,47 +1,21 @@
-# Specify the base Docker image. You can read more about
-# the available images at https://crawlee.dev/docs/guides/docker-images
-# You can also use any other image from Docker Hub.
-FROM apify/actor-node-playwright-camoufox:24-1.60.0 AS builder
-
-# Copy just package.json and package-lock.json
-# to speed up the build using Docker layer cache.
-COPY --chown=myuser package*.json ./
-
-# Install all dependencies. Don't audit to speed up the installation.
-RUN npm install --include=dev --audit=false
-
-# Next, copy the source files using the user set
-# in the base image.
-COPY --chown=myuser . ./
-
-# Install all dependencies and build the project.
-# Don't audit to speed up the installation.
-RUN npm run build
-
-# Create final image
+# Image with node, playwright and camoufox - gatherer needs only node, checkup needs the browser.
+# https://crawlee.dev/docs/guides/docker-images
 FROM apify/actor-node-playwright-camoufox:24-1.60.0
 
-# Copy only built JS files from builder image
-COPY --from=builder --chown=myuser /home/myuser/dist ./dist
-
-# Copy just package.json and package-lock.json
-# to speed up the build using Docker layer cache.
+# package files first, so layer with dependencies is reused until they change
 COPY --chown=myuser package*.json ./
 
-# Install NPM packages, skip development dependencies to
-# keep the image small. Avoid logging too much and print the dependency
-# tree for debugging
-RUN npm --quiet set progress=false \
-    && npm install --omit=dev \
-    && echo "Installed NPM packages:" \
-    && (npm list --omit=dev --all || true) \
-    && echo "Node.js version:" \
-    && node --version \
-    && echo "NPM version:" \
-    && npm --version
+# typescript is built here and libraries of hub are development dependencies, so all are installed;
+# scripts are skipped - browser is already in the image and git hooks have no use in it
+RUN npm ci --ignore-scripts --audit=false
 
-# Copy the source files and directories.
-COPY --chown=myuser . ./
+COPY --chown=myuser tsconfig.json ./
+COPY --chown=myuser src ./src
+RUN npm run build
 
-# Run the image.
-CMD npm run start:prod
+# websites for checkup and map of huggingface repositories; gathered things come as a volume:
+#   docker run -v "$PWD/resources:/home/myuser/resources" p-jol-roll gather 2026 --acts --limit 5
+COPY --chown=myuser resources/frontends.json resources/.map.json ./resources/
+
+ENTRYPOINT ["node", "dist/main.js"]
+CMD ["gather"]

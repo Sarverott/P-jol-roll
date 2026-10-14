@@ -36,9 +36,24 @@
 | Index | The answer of `GET /`: names and addresses of everything the API gives. The gatherer follows it. |
 | List | A small table of the API that describes the rest: statuses, types, keywords, institutions, journals. |
 | Listing | Metadata of every act of one year of one journal, in one file. |
-| Part | One of the files of an act: `details`, `references`, `pdf`, `html`. |
+| Part | One of the files of an act: `details`, `references`, `pdf`, `html`, `struct`, `texts`. |
 | Limit | How many acts one run takes files for. |
+| Record | One line about one gathered file: its path, size, checksum, source and time. Kept in `dataset/files/`. |
+| Seal | To write records for files that have none; with `--check`, to compare files with their records. |
+| Change | An act whose record at the source was changed after it was gathered. `gather:changes` takes it again. |
+| Structure | The skeleton of an act's text: parts, chapters, articles, points, each with an id. |
+| Tie (edge) | One line of the references table: from one act, of some kind, to another act. |
 | Rate | Requests per minute. |
+
+## Other sources
+
+| Word | Meaning |
+| --- | --- |
+| Term | One term of office of Sejm, numbered. Term 10 began in 2023. |
+| Process | The way of one draft through Sejm, with its stages. Carries the ELI of the act it ended with. |
+| Print (druk) | A numbered document of Sejm: a draft with its justification, a committee report, an opinion. |
+| Judgment | One decision of a court, with its text and the acts it refers to. |
+| SAOS | System Analizy Orzeczeń Sądowych, a collection of published court judgments with an API. |
 
 ## Checkup
 

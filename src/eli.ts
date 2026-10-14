@@ -32,29 +32,71 @@ export interface YearListing {
 	items: Act[];
 }
 
-// files of one act, named like in index of API (act_details, act_pdf, ...)
-export const PARTS = ["details", "references", "pdf", "html"] as const;
+// answer of GET /changes/acts - a page of acts with their details
+export interface Changes extends YearListing {
+	offset: number;
+}
+
+// one text of act as details list it: O is the published one (the same file as text.pdf),
+// H is html; T and U are other wordings kept by Sejm - meaning of letters is not documented
+export interface ActText {
+	fileName: string;
+	type: string;
+}
+
+// files of one act; "texts" are these texts from details that are neither text.pdf nor text.html
+export const PARTS = [
+	"details",
+	"references",
+	"pdf",
+	"html",
+	"struct",
+	"texts",
+] as const;
 export type Part = (typeof PARTS)[number];
 
-const PART_SUFFIX: Record<Part, string> = {
-	details: "",
-	references: "/references",
-	pdf: "/text.pdf",
-	html: "/text.html",
-};
+// one file to take: where to ask and how its name ends after address of act
+export interface ActFile {
+	part: Part;
+	url: string;
+	suffix: string;
+}
 
 export const yearUrl = (publisher: string, year: number) =>
 	`${ELI_API}/acts/${publisher}/${year}`;
 
-export const partUrl = (act: Pick<Act, "ELI">, part: Part) =>
-	`${ELI_API}/acts/${act.ELI}${PART_SUFFIX[part]}`;
+// acts that were changed since date ("2026-10-12" or "2026-10-12T09:15:19"), newest change last
+export const CHANGES_PAGE = 500;
+export const changesUrl = (since: string, offset: number) =>
+	`${ELI_API}/changes/acts?since=${encodeURIComponent(since)}&limit=${CHANGES_PAGE}&offset=${offset}`;
 
-// listing says which texts exist - asking for the missing ones answers with empty page
-export const hasPart = (
-	act: Pick<Act, "textPDF" | "textHTML">,
-	part: Part,
-): boolean =>
-	part === "pdf" ? act.textPDF : part === "html" ? act.textHTML : true;
+type Listed = Pick<Act, "ELI" | "textPDF" | "textHTML">;
+
+// listing says which texts exist - asking for the missing ones answers with empty page,
+// and structure is given only to acts that have html
+export function filesOf(act: Listed, part: Part, texts?: ActText[]): ActFile[] {
+	const base = `${ELI_API}/acts/${act.ELI}`;
+	const one = (path: string, suffix: string) => [
+		{ part, url: `${base}${path}`, suffix },
+	];
+	if (part === "details") return one("", ".json");
+	if (part === "references") return one("/references", ".references.json");
+	if (part === "pdf") return act.textPDF ? one("/text.pdf", ".pdf") : [];
+	if (part === "html") return act.textHTML ? one("/text.html", ".html") : [];
+	if (part === "struct")
+		return act.textHTML ? one("/struct", ".struct.json") : [];
+
+	// texts are named in details, so details have to be here first
+	const published = texts?.find(({ type }) => type === "O")?.fileName;
+	const names = new Set([published]);
+	return (texts ?? []).flatMap(({ fileName, type }) => {
+		if (type === "H" || names.has(fileName) || !/^[\w.-]+$/.test(fileName))
+			return [];
+		names.add(fileName);
+		const extension = fileName.slice(fileName.lastIndexOf("."));
+		return one(`/text/${type}/${fileName}`, `.${type}${extension}`);
+	});
+}
 
 // "list_statuses" -> "statuses"; addresses with {placeholders} are not lists
 export function pickLists(index: Index): { name: string; url: string }[] {

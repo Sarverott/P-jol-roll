@@ -15,6 +15,8 @@ Polish **Journals of Laws resources operational lurker loader** - complex set of
 | --- | --- |
 | [installation](guides/installation.md) | what you need, steps, settings from the environment |
 | [gathering](guides/gathering.md) | `gather`: lists, years, files of acts; options, pace, repeating |
+| [processing](guides/processing.md) | `seal`, `compile`, `text`: checksums, tables, markdown |
+| [other sources](guides/sources.md) | `sejm` and `saos`: how law is made, how it is applied |
 | [checkup](guides/checkup.md) | `checkup`: the browser visiting websites that show acts |
 | [Hugging Face](guides/huggingface.md) | `hub`: comparing and moving data, file by file |
 | [the data](guides/data.md) | layout, fields, limits of what the data says, rights |
@@ -33,7 +35,8 @@ Scrapnotes written along the way, newest last: `devlog/scrapnote-<UNIXUSAT>.md`
 ## Agents
 
 Notes written by agents: [ideas](agents/ideas.md) holds what could be built
-next. [point of view](agents/point-of-view.md) is a personal chapter and is
+next, and [things to check](agents/things-to-check.md) what waits for a
+decision or was not verified. [point of view](agents/point-of-view.md) is a personal chapter and is
 read-only for everyone but its author.
 
 ## Paperwork of the repository

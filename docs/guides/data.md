@@ -13,15 +13,26 @@ resources/
 │   │   ├── reference_types.json every kind of tie between acts
 │   │   ├── keywords.json
 │   │   └── institutions.json
-│   ├── acts/<journal>/<year>.jsonl       metadata, one act per line
-│   └── checkups/<journal>/<year>.jsonl   what the browser saw, one visit per line
+│   ├── acts/<journal>/<year>.jsonl        metadata, one act per line
+│   ├── files/<journal>/<year>.jsonl       checksum and source of every gathered file
+│   ├── details/<journal>/<year>.jsonl     details of acts, put together by compile
+│   ├── references/<journal>/<year>.jsonl  ties between acts, one per line
+│   ├── texts/<journal>/<year>.jsonl       which markdown was made from which HTML
+│   ├── texts/<journal>/<year>/<address>.md  the text as markdown
+│   └── checkups/<journal>/<year>.jsonl    what the browser saw, one visit per line
 └── bucket/                     raw files of every act
     └── <journal>/<year>/
         ├── <address>.json              details
         ├── <address>.references.json   ties to other acts
         ├── <address>.pdf               the published text
-        └── <address>.html              the text as HTML, for some acts
+        ├── <address>.html              the text as HTML, for some acts
+        ├── <address>.struct.json       parts, chapters, articles of the HTML text
+        └── <address>.T.pdf, .U.pdf     other texts of the act
 ```
+
+The tables `files`, `details`, `references` and `texts` are described in
+[from raw files to tables and texts](processing.md). Work of Sejm and court
+judgments have their own directories: see [other sources](sources.md).
 
 `<journal>` is `DU` or `MP`. `<address>` is the identifier the API gives to
 every act, for example `WDU20260000001`.
@@ -77,9 +88,33 @@ adds, among others:
 | `directives` | European directives the act carries out |
 | `previousTitle` | earlier titles |
 
-`texts` may list more files than the two that are gathered. Types seen so
-far are `H` (HTML), `O`, `I`, `T`, `U`; what the letters mean is not
-documented here yet. [`TODO`]
+`texts` lists every text file of the act. The API documents five types and
+does not say what the letters mean:
+
+| Type | What it is | Kept as |
+| --- | --- | --- |
+| `O` | the published text. The same file as `text.pdf` (compared byte for byte on `DU/1918/2`) | `<address>.pdf` |
+| `H` | the HTML text | `<address>.html` |
+| `I` | in the acts looked at, the same file name as `O` | not taken twice |
+| `T` | another PDF, named like `D20260001L.pdf` | `<address>.T.pdf` |
+| `U` | another PDF, named like `D20260001Lj.pdf` | `<address>.U.pdf` |
+
+On the ISAP website the same three files are offered as "tekst ogłoszony",
+"tekst aktu" and "tekst ujednolicony". If `U` is the last of these, it is
+the wording of the act with later amendments worked in by the office of
+Sejm: not an official text, and the most useful one for reading the law as
+it stands. *(assumed from the file names; not confirmed)* [`TODO`]
+
+## Structure
+
+`bucket/DU/2024/WDU20240001907.struct.json` is the skeleton of the HTML
+text: a tree of parts, chapters, articles, paragraphs and points, each with
+an `id` such as `chpt_1-arti_1-pint_2`. The API gives it only for acts that
+have HTML; for the others it answers 404.
+
+The same ids address one unit of the text at the source
+(`/acts/DU/2024/1907/struct/{path}`). That is not gathered: the whole HTML
+already holds every unit.
 
 ## References
 
@@ -109,8 +144,7 @@ act changes, repeals or carries out which. The examples above are shortened.
 - **HTML** exists only for some acts. In the listing of 2026 none of 1321
   acts had it (checked on 2026-10-13).
 
-Neither is parsed yet. Turning them into text for reading and for models is
-a later stage.
+HTML is turned into markdown by `task text`. PDF is not parsed yet.
 
 ## Checkups
 

@@ -1,12 +1,22 @@
 # configurations
 .idea
-
-# crawlee storage folder
-storage
-
-# installed files
-node_modules
 .obsidian
 .vscode
 .github
 .husky
+.git
+
+# tokens
+.env
+
+# crawlee storage folder
+storage
+
+# installed and built files
+node_modules
+dist
+
+# gathered things come as a volume - only these two small files of resources go into image
+resources/*
+!resources/frontends.json
+!resources/.map.json

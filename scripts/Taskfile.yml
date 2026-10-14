@@ -12,7 +12,9 @@ tasks:
       - uv lock
       - uv export --format requirements.txt > ./reqirements.txt
       - uv export --format pylock.toml > ./pylock.toml
-      - uv run python ./srcipts/hf-push.py
+      # ANSWER: this path had a typo (srcipts) and pointed outside of this directory. Sending is now done by
+      # "task resources:push -- dataset" (src/hub.ts): file by file, only what differs, where upload_folder sends a whole folder
+      - uv run python ./hf-push.py
   default:
     cmds:
       - uv run python -m notebook

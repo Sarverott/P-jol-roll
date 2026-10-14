@@ -9,20 +9,6 @@ includes:
 
 tasks:
 
-  resume:gather:
-    desc: continues with all gathered until now with no clearing cache storage
-    env:
-      CRAWLEE_PURGE_ON_START: 0
-    cmds:
-      - task: gather 
-
-  resume:gather:everything:
-    desc: same as "task resume:gather" works for "task gather" but it is for "task gather:everything"
-    env:
-      CRAWLEE_PURGE_ON_START: 0
-    cmds:
-      - task: gather:everything 
-
   default:
     cmds:
       - task --list
@@ -34,10 +20,40 @@ tasks:
       - npm run gather -- {{.CLI_ARGS}}
 
   gather:everything:
-    desc: Every journal, every year, 4 files of every act - about 600 thousand requests, days of work, can be stopped and repeated.
+    desc: Every journal, every year, every file of every act - hundreds of thousands of requests, days of work, can be stopped and started again.
     prompt: This asks API of Sejm for everything it has. Start?
     cmds:
       - npm run gather -- --all --acts --limit 0 {{.CLI_ARGS}}
+
+  gather:changes:
+    desc: Acts changed since the previous such run (or a day - task gather:changes -- 2026-10-01), their listings, details and references again.
+    cmds:
+      - npm run gather -- --since {{.CLI_ARGS | default "last"}}
+
+  seal:
+    desc: Write checksums of gathered files that have no record yet; "task seal -- --check" reads every file again and names these that differ.
+    cmds:
+      - npm run --silent seal -- {{.CLI_ARGS}}
+
+  compile:
+    desc: Tables of dataset from raw files of bucket - details and references of acts, a year in a file.
+    cmds:
+      - npm run --silent compile
+
+  text:
+    desc: Markdown from gathered html texts, with checksums of both and address of source.
+    cmds:
+      - npm run --silent text
+
+  sejm:
+    desc: Work of Sejm - processes and prints of a term, arguments after "--" (e.g. task sejm -- 10 --files --limit 50).
+    cmds:
+      - npm run sejm -- {{.CLI_ARGS}}
+
+  saos:
+    desc: Court judgments from SAOS by months of years, arguments after "--" (e.g. task saos -- 2025 --limit 3).
+    cmds:
+      - npm run saos -- {{.CLI_ARGS}}
 
   checkup:
     desc: Browser visits websites that show gathered acts, arguments after "--" (e.g. task checkup -- 2026 --limit 6).
