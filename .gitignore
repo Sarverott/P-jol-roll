@@ -24,3 +24,9 @@ storage
 
 # astro keeps its generated types here
 .astro
+
+# workflows: build of nitro, its cache, and runs of the local world
+src/workflows/.output
+src/workflows/node_modules
+.workflow-data
+.swc

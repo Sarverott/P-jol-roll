@@ -20,6 +20,7 @@ them asks the source; only the core does, and only when a person starts it.
 | [Electron](https://www.electronjs.org/) | the desktop window |
 | [Capacitor](https://capacitorjs.com/) | the android app (configured, not set up yet) |
 | WebExtensions, manifest v3 | the browser extension, Firefox and Chrome |
+| [Workflow SDK](https://workflow-sdk.dev/) on [Nitro](https://nitro.build/) 3 (beta) | durable runs: steps that survive restarts, retries, waiting for a person |
 
 ## Four major parts
 
@@ -28,7 +29,7 @@ The directories group into four parts. Each part only leans on the one below it.
 | Part | Directories | What it is |
 | --- | --- | --- |
 | **core** | `core/` | gathering, checksums, tables, markdown, and reading of all of it |
-| **hosts** | `openapi/`, `mcp/` | serve what the core reads: to programs over http, to AI agents over stdio |
+| **hosts** | `openapi/`, `mcp/`, `workflows/` | serve what the core reads: to programs over http, to AI agents over stdio; and run the core's commands as durable runs |
 | **viewer** | `gui/`, `web/` | one Vue viewer, and the website that carries it |
 | **shells** | `desktop/`, `app/`, `firefox-ext/`, `chrome-ext/` | wrap the viewer or the api for one kind of device |
 
@@ -114,6 +115,11 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/openapi/server.ts` | Express app, socket.io (sends `journals` on connect and `changed` when files of the dataset change), and the built website from `dist/web`. Open to every origin, because the data is public and the extension and the app ask from elsewhere. |
 | `src/openapi/routes.ts` | The read-only routes under `/api`. |
 | `src/openapi/spec.ts` | OpenAPI 3.1 description, served at `/openapi.json`. Kept by hand next to the routes. |
+| `src/workflows/flows/daily.ts` | The daily run: `gather --since`, `seal`, `compile`, `text`, `hub plan` of each repository, then it waits for an answer (3 days by default). Only "yes" makes it push; no answer ends it without pushing. |
+| `src/workflows/flows/steps.ts` | Steps: each runs one command of `src/core/main.ts` in its own process and keeps its last 40 lines. Retried 3 times by the runtime; every command is safe to repeat. |
+| `src/workflows/server/api/daily.post.ts` | `POST /api/daily` starts a run and answers with its approval token. `task workflows:daily`. |
+| `src/workflows/server/api/daily/approve.post.ts` | `POST /api/daily/approve` answers a waiting run. The server listens on this machine only, which is what makes the answer a person's. `task workflows:approve`. |
+| `src/workflows/nitro.config.ts` | Nitro with the `workflow/nitro` module. Built from inside `src/workflows` (`task workflows:build`), because names of workflows are paths from where the build runs. |
 | `src/mcp/main.ts` | MCP server over stdio: tools `journals`, `search_acts`, `act`, `act_text`, `act_references`. Read-only, so an agent cannot start a crawl of the source. `task mcp`. |
 
 ### viewer

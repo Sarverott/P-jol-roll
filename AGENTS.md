@@ -80,6 +80,8 @@ src/core/              the gatherer itself; everything below is its tree
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
 src/mcp/               MCP server over stdio for AI agents, read-only
+src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
+                       built from inside that directory; the run pushes only after a person answers "yes"
 src/gui/               index.vue - the one viewer that every interface shows
 src/web/               Astro website carrying the viewer (pages/), built into dist/web
 src/desktop/           Electron window: starts the api, shows the viewer
@@ -122,6 +124,8 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
 | `task check` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
+| `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
+| `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
 | `task web:build` / `task desktop` | website into `dist/web` / Electron window around it |
 | `task verify` | check, build (TypeScript and website), tests — run before reporting work as done |
 

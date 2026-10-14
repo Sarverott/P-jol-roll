@@ -46,6 +46,15 @@ point was added.
 - **2026-10-14. `src/chrome-ext/`** stays empty. The extension in
   `src/firefox-ext/` loads in Chrome too; a separate one is needed only
   when the stores want different packages.
+- **2026-10-14. Workflow SDK pilot.** Nitro 3 is a beta, and `workflow`
+  5.2.2 came out the day before it was added. `npm audit` names 13 "high"
+  advisories, all one: an old `nanoid` inside `@workflow/core` that loops on
+  a negative size; the fix it offers is a downgrade to `workflow` 2. The
+  local world keeps runs in `.workflow-data` and is meant for development;
+  long self-hosted use points to `@workflow/world-postgres`. No schedule
+  yet: a run starts by `task workflows:daily` (or cron calling it).
+- **2026-10-14. `tsconfig.json`** got `skipLibCheck`, because types inside
+  the Workflow SDK and Nitro do not check against ours.
 - **2026-10-13. gitrecon.** Its `CODE_OF_CONDUCT.md` says it covers "every
   repository of the Shakespeare project". Not touched from here.
 
@@ -87,6 +96,12 @@ point was added.
   `search_acts`, `act_text`. Not added to any agent.
 - **`compose.yaml`, `install.sh`, `install.bat`** were not run. `install.sh`
   passes `sh -n`.
+
+- **The workflow server** ran over a local copy of the ELI API and a
+  scratch `resources/`: all four steps, a wrong token (404), "no" (run
+  completed, nothing pushed), and no answer in 5 seconds (completed, by
+  "nobody in time"). `hub plan` and `hub push` steps were not run, and
+  nothing was run against the real API or Hugging Face.
 
 ## Assumptions in the docs
 

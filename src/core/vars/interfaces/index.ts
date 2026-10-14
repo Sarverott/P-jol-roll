@@ -5,10 +5,13 @@ import type ActFileInterface from "./ActFile.interface.js";
 import type ActPageInterface from "./ActPage.interface.js";
 import type ActTextInterface from "./ActText.interface.js";
 import type ActViewInterface from "./ActView.interface.js";
+import type ApprovalInterface from "./Approval.interface.js";
 import type AskedInterface from "./Asked.interface.js";
 import type ChangesInterface from "./Changes.interface.js";
 import type CheckupInterface from "./Checkup.interface.js";
 import type CheckupPlanInterface from "./CheckupPlan.interface.js";
+import type CommandResultInterface from "./CommandResult.interface.js";
+import type DailyPlanInterface from "./DailyPlan.interface.js";
 import type DifferenceInterface from "./Difference.interface.js";
 import type EdgeInterface from "./Edge.interface.js";
 import type FileRecordInterface from "./FileRecord.interface.js";
@@ -61,4 +64,11 @@ export namespace ReadingScope {
 	export type Journal = JournalInterface;
 	export type ActPage = ActPageInterface;
 	export type ActView = ActViewInterface;
+}
+
+// durable runs of src/workflows: what they are asked, what their steps return
+export namespace WorkflowScope {
+	export type DailyPlan = DailyPlanInterface;
+	export type CommandResult = CommandResultInterface;
+	export type Approval = ApprovalInterface;
 }

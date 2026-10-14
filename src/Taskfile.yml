@@ -44,3 +44,37 @@ tasks:
       - echo "Firefox - about:debugging, This Firefox, Load Temporary Add-on, src/firefox-ext/manifest.json"
       - echo "Chrome - chrome://extensions, developer mode, Load unpacked, src/firefox-ext"
     silent: true
+
+  workflows:build:
+    desc: Durable runs (Workflow SDK on Nitro) of src/workflows, into src/workflows/.output - built from inside that directory, so names of workflows match.
+    dir: src/workflows
+    cmds:
+      - npx nitro build
+
+  workflows:serve:
+    desc: Server of durable runs on http://127.0.0.1:8090, this machine only; runs are kept in .workflow-data. Starts nothing by itself.
+    env:
+      HOST: 127.0.0.1
+      PORT: "8090"
+    cmds:
+      - node src/workflows/.output/server/index.mjs
+
+  workflows:daily:
+    desc: Start one daily run - changes, seal, compile, text, plans of dataset and bucket, then it waits up to 3 days for your answer before any push. JSON after "--" changes it.
+    cmds:
+      - 'curl -s -X POST -H "content-type: application/json" -d ''{{.CLI_ARGS | default "{}"}}'' http://127.0.0.1:8090/api/daily'
+      - echo
+
+  workflows:approve:
+    desc: Answer a waiting run - "task workflows:approve -- push:2026-...Z" pushes, add "no" after the token to end it without pushing.
+    cmds:
+      - |
+        set -- {{.CLI_ARGS}}
+        if [ "${2:-yes}" = "no" ]; then push=false; else push=true; fi
+        curl -s -X POST -H "content-type: application/json" -d "{\"token\": \"$1\", \"push\": $push, \"by\": \"$USER\"}" http://127.0.0.1:8090/api/daily/approve
+        echo
+
+  workflows:web:
+    desc: Web interface of the Workflow SDK over runs kept in .workflow-data - steps, outputs, what waits.
+    cmds:
+      - npx workflow web

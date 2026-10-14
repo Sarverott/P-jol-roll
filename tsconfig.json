@@ -8,7 +8,9 @@
 		"rootDir": "src",
 		"tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
 		"noUnusedLocals": false,
+		"skipLibCheck": true,
 		"lib": ["ES2022", "DOM"]
 	},
-	"include": ["./src/**/*"]
+	"include": ["./src/**/*"],
+	"exclude": ["./src/workflows/nitro.config.ts", "./src/workflows/.output"]
 }
