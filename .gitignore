@@ -37,3 +37,4 @@ docs/devlog/STATE.md
 # the website, built by task docs:build
 site/
 docs/.venv
+__pycache__/
