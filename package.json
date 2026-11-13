@@ -10,7 +10,7 @@
     "@xterm/xterm": "^6.0.0",
     "astro": "^7.3.8",
     "bulma": "^1.0.4",
-    "camoufox-js": "^0.8.2",
+    "camoufox-js": "^0.12.0",
     "crawlee": "^3.0.0",
     "marked": "^18.1.1",
     "nitro": "^3.0.260903-beta",
@@ -23,7 +23,7 @@
     "turndown": "^7.2.4",
     "vite": "^8.3.4",
     "vue": "^3.5.44",
-    "workflow": "^2.0.6",
+    "workflow": "^5.2.2",
     "yaml": "^2.9.1",
     "zod": "^4.6.7"
   },
@@ -89,5 +89,16 @@
     "executableArgs": [
       "--no-sandbox"
     ]
+  },
+  "allowScripts": {
+    "@go-task/cli": true,
+    "esbuild": true,
+    "@swc/core": true,
+    "@google/genai": false,
+    "better-sqlite3": false,
+    "cbor-extract": false,
+    "cpu-features": false,
+    "protobufjs": false,
+    "ssh2": false
   }
 }

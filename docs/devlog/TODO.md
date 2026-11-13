@@ -16,7 +16,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 ## Phase 1: dependencies repaired
 
 - [x] Baseline recorded in `docs/agents/NOTES.md`: what install, check, build and tests give before any repair
-- [ ] Forced downgrades undone: `crawlee`, `camoufox-js` and the rest resolved by their ranges again, the lock regenerated from them, not by `audit fix --force`
+- [x] Forced downgrades undone: `crawlee`, `camoufox-js` and the rest resolved by their ranges again, the lock regenerated from them, not by `audit fix --force`
 - [ ] Workflow SDK pilot on a version that builds and runs; the `nanoid` advisory recorded with its real reach (Q9)
 - [ ] The termui experiment placed so that checks pass (Q4)
 - [ ] Node pinned: `engines`, `.nvmrc`; `npm ci` from a clean copy passes

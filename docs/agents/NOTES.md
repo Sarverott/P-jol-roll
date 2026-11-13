@@ -4,6 +4,42 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-13 · Cleo · after undoing the forced downgrades
+
+The ranges of `workflow` (^5.2.2) and `camoufox-js` (^0.12.0) put back, then
+`npm update` (every package to the newest its range allows) and `npm audit
+fix` without `--force`:
+
+| | before | after |
+| - | ------ | ----- |
+| workflow | 2.0.6 | 5.5.0 |
+| camoufox-js | 0.8.5 | 0.12.1 |
+| crawlee | 3.2.2 | 3.18.2 |
+| astro | 7.3.8 | 7.4.12 |
+| @biomejs/biome | 2.5.15 | 2.6.7 |
+| `npm audit` | 15 (2 high) | 34 (3 high: one is `zod <4.6.6` inside `@vercel/queue` of the Workflow SDK; the rest moderate `minimatch`/`glob` ReDoS in build tooling and crawlee's dependencies) |
+
+The count went up because newer packages pulled new transitive copies; none
+of the advisories is reachable from data an outsider sends to this project
+(the api and MCP server take only ELI addresses and words of titles, which
+never reach a glob or a zod schema of those libraries). `@go-task/cli` was
+moved back to 3.45.4 by `audit fix` to leave `basic-ftp` behind.
+
+**npm 11 blocks install scripts** until they are reviewed. `package.json`
+now has `allowScripts`: allowed `@go-task/cli` (downloads the `task`
+binary), `esbuild` and `@swc/core` (check their native binaries); denied
+`@google/genai` (a no-op), `protobufjs`, and the native builds
+`better-sqlite3`, `cbor-extract`, `cpu-features`, `ssh2` (all optional, and
+they need a compiler on the machine). Without this a fresh install - on the
+external machine too - silently has no `task` binary.
+
+**Biome 2.6** formats Markdown and YAML. Both are switched off in
+`biome.json`: docs and Taskfiles are written by hand, with the owner's NOTE
+comments in them.
+
+Checks now: tsc and Biome red only in the termui experiment (Q4); website,
+tests (22/22) and the workflows build (`nitro build`) pass.
+
 ## 2026-11-13 · Cleo · baseline before the dependency repair
 
 A clean worktree of `dev/Cleo` at `c3bdaeb` (the owner's downgrade
