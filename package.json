@@ -82,6 +82,10 @@
     "postinstall": "npm run get-binaries",
     "prepare": "husky"
   },
+  "engines": {
+    "node": ">=24",
+    "npm": ">=11"
+  },
   "author": "Sett Sarverott A.A.B.",
   "license": "AGPL-3.0-only",
   "main": "src/desktop/main.js",

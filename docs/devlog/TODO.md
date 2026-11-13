@@ -19,7 +19,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [x] Forced downgrades undone: `crawlee`, `camoufox-js` and the rest resolved by their ranges again, the lock regenerated from them, not by `audit fix --force`
 - [ ] Workflow SDK pilot on a version that builds and runs; the `nanoid` advisory recorded with its real reach (Q9)
 - [ ] The termui experiment placed so that checks pass (Q4)
-- [ ] Node pinned: `engines`, `.nvmrc`; `npm ci` from a clean copy passes
+- [x] Node pinned: `engines`, `.nvmrc`; `npm ci` from a clean copy passes
 - [ ] `.github/dependabot.yml`: npm and Actions, grouped, into `development`
 - [ ] `.github/workflows/checks.yml`: the same `task check` as the hooks
 - [ ] Commit messages checked: commitlint and a `commit-msg` hook, like the BOS core
