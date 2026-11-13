@@ -6,15 +6,26 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-13. Dependabot is active only on `master`.** It reads
+  `.github/dependabot.yml` from the default branch, so the config waits
+  until `development` reaches `master` through your pull request.
+
 - **2026-10-13. Labels on GitHub.** Issue forms use the labels `data` and
   `source`, which do not exist yet. Until they do, those issues arrive
   without a label. `gh label create data` and `gh label create source`.
 - **2026-10-13. Private reporting of vulnerabilities** is off for the
   repository, so `SECURITY.md` gives `sett@sarverott.com`, taken from
   gitrecon.
-- **2026-10-13. Branches.** `CONTRIBUTING.md` says to branch from `master`,
-  because the loop of branches is skipped for now. The workshop rule says
-  `development`.
+- **2026-11-13. Ten questions** wait in `docs/devlog/BRAINSTORM.md` (Q1-Q10);
+  pushing (Q2) and six TODO items wait on them: Parrot OS (Q1), termui (Q4),
+  publishing the website (Q6), the place in the workshop (Q7), versions
+  (Q8), the Workflow SDK (Q9).
+- **2026-11-13. CI is red until Q4.** `task check` stops at Biome on the
+  termui experiment.
+- **2026-11-13. Branches.** The BOS loop is in use since this batch:
+  `development`, `dev/Sarverott`, `dev/Cleo`; nothing pushed (Q2).
+  `CONTRIBUTING.md` still tells outside contributors to branch from
+  `master` (left for the owner to decide with Q2).
 - **2026-10-13. The `journal` website in checkup.** `robots.txt` of
   `dziennikustaw.gov.pl` disallows every crawler but Google. The entry is in
   `resources/frontends.json`; removing it leaves that site alone.
@@ -59,6 +70,11 @@ point was added.
   repository of the Shakespeare project". Not touched from here.
 
 ## Written and not verified
+
+- **The website's diagrams.** Mermaid did not render in a headless
+  browser (Material loads it from a CDN); the rest of the site did.
+- **`dotenv` in the root Taskfile** was tried in a scratch Taskfile and by
+  the tests; not on the second machine.
 
 - **`hub push` and `hub pull`** were never run against Hugging Face. Only
   `plan` was.

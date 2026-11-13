@@ -4,7 +4,7 @@
 
 | Thing | Why |
 | --- | --- |
-| Node.js 24 and npm | everything runs on it (the code is TypeScript, run with `tsx`) |
+| Node.js 24 or newer, npm 11 or newer | everything runs on it (the code is TypeScript, run with `tsx`); `.nvmrc` says 24, `engines` in `package.json` says the same |
 | git | to clone; the repository has one submodule, the Obsidian plugin |
 | about 1 GB of disk | dependencies, and the Camoufox browser that `npm install` downloads for `checkup` |
 | [Task](https://taskfile.dev), optional | shorter commands. A copy comes with the dependencies: `npx task` |
@@ -57,6 +57,8 @@ echo "HF_TOKEN=hf_..." > .env
 listed in `resources/.map.json`. See [Hugging Face](huggingface.md).
 
 ## Settings from the environment
+
+Tasks read them from `.env` of the working copy too (a variable set in the shell wins).
 
 | Variable | Default | What it changes |
 | --- | --- | --- |

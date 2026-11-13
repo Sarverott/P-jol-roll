@@ -1,0 +1,45 @@
+{
+	"loop": {
+		"stations": [
+			"master",
+			"development",
+			"revision",
+			"testing",
+			"releasing",
+			"rejection"
+		],
+		"directions": {
+			"master": ["development"],
+			"development": ["revision", "rejection"],
+			"revision": ["testing", "rejection"],
+			"testing": ["releasing", "rejection"],
+			"releasing": ["master", "rejection"],
+			"rejection": ["development"]
+		},
+		"contributors": {
+			"pattern": "dev/*",
+			"into": "development"
+		},
+		"autocreate": true,
+		"automerge": {
+			"master": false,
+			"development": false,
+			"revision": false,
+			"testing": false,
+			"releasing": false,
+			"rejection": false
+		},
+		"release": "master"
+	},
+	"versioning": {
+		"bumps": {
+			"revision": "minor",
+			"master": "patch"
+		},
+		"tagPrefix": "v",
+		"commits": {
+			"branches": [],
+			"bump": "patch"
+		}
+	}
+}

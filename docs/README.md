@@ -3,21 +3,43 @@
 Polish **Journals of Laws resources operational lurker loader** - complex set of tools to handle datamining, crawling and parsing of all law documents released as published by polish goverment national legal code, package of approved acts or available constitution version
 
 
+## The idea
+
+Every act published in **Dziennik Ustaw** (since 1918) and **Monitor
+Polski** (since 1930), taken from the open
+[ELI API of Sejm](https://api.sejm.gov.pl/eli/openapi/) and kept in the open:
+raw files in a [bucket](https://huggingface.co/buckets/Sarverott/raw-law-of-poland),
+tables and markdown in a [dataset](https://huggingface.co/datasets/Sarverott/polish_national_law_docs)
+on Hugging Face. Every file can be checked against its checksum, every act
+is tied to the acts it changes, to the work of Sejm that made it and to the
+judgments that apply it. The far goal is a small model and an agent that
+read all of it: an open **devil's advocate for every person**
+([vision](devlog/VISION.md)).
+
+Nothing here is legal advice. See [what the data is and is not](guides/data.md#what-it-is-not).
+
+## State
+
+<!-- state -->
+
 ## Start here
 
 - [installation](guides/installation.md) - setup, a first small gathering, the token
 - `task --list` - every task, with one line each
 - [the data](guides/data.md) - what is gathered, where it lies, what it is and is not
+- [what it can do](guides/features.md) - every function, and how sure we are that it works
 
 ## Guides
 
 | Guide | For |
 | --- | --- |
+| [what it can do](guides/features.md) | every function: works, built, wanted |
 | [installation](guides/installation.md) | what you need, steps, settings from the environment |
 | [gathering](guides/gathering.md) | `gather`: lists, years, files of acts; options, pace, repeating |
 | [processing](guides/processing.md) | `seal`, `compile`, `text`: checksums, tables, markdown |
 | [other sources](guides/sources.md) | `sejm` and `saos`: how law is made, how it is applied |
 | [checkup](guides/checkup.md) | `checkup`: the browser visiting websites that show acts |
+| [second machine](guides/second-machine.md) | gathering elsewhere, data on an external drive, what refuses and why |
 | [Hugging Face](guides/huggingface.md) | `hub`: comparing and moving data, file by file |
 | [the data](guides/data.md) | layout, fields, limits of what the data says, rights |
 | [development](guides/development.md) | the code, tests, how to add a file, a website, a source |

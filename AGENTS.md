@@ -10,8 +10,17 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
 
 ## Rules
 
-1. **Do not commit and do not push.** Sett reviews the working tree and writes
-   every commit. Leave changes uncommitted and report what changed.
+1. **The BOS craft loop.** Work on your own `dev/<name>` branch (`dev/Cleo`
+   for Claude Code), made from `development`; never commit on `master`. One
+   finished, checked step of `docs/devlog/TODO.md` is one conventional commit
+   (`type(scope): subject`) that ticks its box; an agent's commits end with
+   its `Co-Authored-By:` line. Never `--no-verify`. When a batch is done,
+   merge `dev/<name>` into `development` with `--no-ff`. Pushing waits for
+   the owner's answer to Q2 of `docs/devlog/BRAINSTORM.md`; `master`, tags,
+   releases and repository settings are always asked for first.
+   **The owner's edits** found in the working tree go first, as they are, one
+   commit per change on `dev/Sarverott`, with a message saying how the agent
+   understood them; then that branch is merged into `development`.
 2. **Tasks arrive as `// NOTE: ` comments** (in READMEs and Taskfiles too).
    Build what is concrete, keep the NOTE in place, add `ANSWER:` when the note
    asked a question, and report the notes you left with the question that
@@ -25,6 +34,19 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
 4. **Nothing is sent to huggingface by an agent.** `resources/dataset`,
    `resources/space` and `resources/bucket` are filled locally; pushing and
    syncing them is Sett's move.
+
+## Questions and plans
+
+`docs/devlog/README.md` says how a batch moves. In short:
+
+| It is | It goes to |
+| ----- | ---------- |
+| the owner's words | `docs/devlog/INQUIRIES.md` / `ORDERS.md` (or the chat), then `docs/changelog/phase-<n>.md`, word for word |
+| a plan | `docs/devlog/VISION.md`, `ROADMAP.md`, `TODO.md` |
+| a question for the owner | `docs/devlog/BRAINSTORM.md` as `## Q<n>. <title>` with a *Lean:*; never settled in code before the answer |
+| an idea for debate | `docs/devlog/PROPOSALS.md` as `PP<n>` |
+| an agent's findings and what was not verified | `docs/agents/` (`NOTES.md`, `things-to-check.md`) |
+| work for another repository | `~/__WORKSHOP/forge/NOTES-for-repositories.md`, never the other repository itself |
 
 ## Source
 
@@ -95,12 +117,16 @@ tests/            vitest; gather.test.ts runs whole gathering against a local co
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
   dataset/        tables: lists/, and per <journal>/<year> acts, files, details, references, texts, checkups
   bucket/         raw files of acts: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf}
-docs/guides/      how to install, gather, check up, move data; what the data is
+docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
+docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
+docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md
 docs/glossary/    words of the source and of the project, each with one meaning
-docs/agents/      notes written by agents: ideas.md, things-to-check.md (what waits for a decision
+docs/agents/      notes written by agents: NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
                   or was not verified - keep it current); point-of-view.md is personal
-docs/devlog/      scrapnotes with the plan and progress
-.github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues
+docs/devlog/      the BOS devlog: VISION, ROADMAP, TODO, BRAINSTORM, ORDERS, INQUIRIES, PROPOSALS, scrapnotes
+docs/changelog/   what happened per phase, the owner's words word for word, append-only
+.github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues, AUTHORS;
+                  bos.json (the loop as data), dependabot.yml, workflows/checks.yml
 .obsidian/        the repository is an Obsidian vault; plugins/ holds separate repositories
 ```
 
@@ -122,12 +148,14 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
-| `task check` / `task format` | Biome, check only / with fixes |
+| `task lint` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
+| `task docs:build` / `docs:serve` | the website of the project into `site/` / live preview |
+| `task devlog:state` / `devlog:scrapnote` | where the project stands (the `bos` command) / a new scrapnote |
 | `task web:build` / `task desktop` | website into `dist/web` / Electron window around it |
-| `task verify` | check, build (TypeScript and website), tests — run before reporting work as done |
+| `task check` (or `task verify`) | Biome, build (TypeScript and website), tests — the same in CI; run before a commit is reported done |
 
 ## Conventions
 

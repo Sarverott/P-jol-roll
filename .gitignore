@@ -30,3 +30,10 @@ src/workflows/.output
 src/workflows/node_modules
 .workflow-data
 .swc
+
+# made by task devlog:state, never kept in git (as in the BOS core)
+docs/devlog/STATE.md
+
+# the website, built by task docs:build
+site/
+docs/.venv

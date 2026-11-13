@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+# Tasks of the devlog. Included by the root Taskfile as `devlog:` (runs in this directory).
+
+version: '3'
+
+vars:
+  # the bos command: from npm by default, or a local checkout of the core through $BOS
+  BOS: '{{.BOS | default "npx --yes blacksmith-organization-system@next"}}'
+
+tasks:
+  scrapnote:
+    desc: 'Start a scrapnote named by the current moment, e.g. task devlog:scrapnote -- "external machine"'
+    cmds:
+      - |
+        UNIXUSAT=$(node -e 'console.log(Date.now())')
+        printf '# %s\n\n> UNIXUSAT=%s\n\n' "{{.CLI_ARGS | default "scrapnote"}}" "$UNIXUSAT" > "scrapnote-$UNIXUSAT.md"
+        echo "scrapnote-$UNIXUSAT.md"
+
+  state:
+    desc: 'Write STATE.md - phases of TODO.md, open questions, waiting orders (the bos command of the BOS core; BOS="node <core>/src/cli.ts" uses a local checkout)'
+    cmds:
+      - '{{.BOS}} devlog state --write'
