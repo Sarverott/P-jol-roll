@@ -27,7 +27,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 
 ## Phase 2: say what it can do
 
-- [ ] `docs/guides/features.md`: every function - works (and how it was verified), built and not verified, wanted
+- [x] `docs/guides/features.md`: every function - works (and how it was verified), built and not verified, wanted
 - [ ] `README.md` rewritten: what it is, getting started in five commands, where to read on
 
 ## Phase 3: BOS integration

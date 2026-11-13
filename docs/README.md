@@ -8,11 +8,13 @@ Polish **Journals of Laws resources operational lurker loader** - complex set of
 - [installation](guides/installation.md) - setup, a first small gathering, the token
 - `task --list` - every task, with one line each
 - [the data](guides/data.md) - what is gathered, where it lies, what it is and is not
+- [what it can do](guides/features.md) - every function, and how sure we are that it works
 
 ## Guides
 
 | Guide | For |
 | --- | --- |
+| [what it can do](guides/features.md) | every function: works, built, wanted |
 | [installation](guides/installation.md) | what you need, steps, settings from the environment |
 | [gathering](guides/gathering.md) | `gather`: lists, years, files of acts; options, pace, repeating |
 | [processing](guides/processing.md) | `seal`, `compile`, `text`: checksums, tables, markdown |
