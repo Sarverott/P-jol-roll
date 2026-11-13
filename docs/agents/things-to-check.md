@@ -17,7 +17,7 @@ point was added.
   repository, so `SECURITY.md` gives `sett@sarverott.com`, taken from
   gitrecon.
 - **2026-11-13. Ten questions** wait in `docs/devlog/BRAINSTORM.md` (Q1-Q10);
-  six TODO items wait on them: Parrot OS (Q1), pushing (Q2), termui (Q4),
+  pushing (Q2) and six TODO items wait on them: Parrot OS (Q1), termui (Q4),
   publishing the website (Q6), the place in the workshop (Q7), versions
   (Q8), the Workflow SDK (Q9).
 - **2026-11-13. CI is red until Q4.** `task check` stops at Biome on the
