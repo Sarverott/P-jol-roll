@@ -117,13 +117,16 @@ tests/            vitest; gather.test.ts runs whole gathering against a local co
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
   dataset/        tables: lists/, and per <journal>/<year> acts, files, details, references, texts, checkups
   bucket/         raw files of acts: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf}
-docs/guides/      how to install, gather, check up, move data; what the data is
+docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
+docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
+docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md
 docs/glossary/    words of the source and of the project, each with one meaning
 docs/agents/      notes written by agents: NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
                   or was not verified - keep it current); point-of-view.md is personal
 docs/devlog/      the BOS devlog: VISION, ROADMAP, TODO, BRAINSTORM, ORDERS, INQUIRIES, PROPOSALS, scrapnotes
 docs/changelog/   what happened per phase, the owner's words word for word, append-only
-.github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues
+.github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues, AUTHORS;
+                  bos.json (the loop as data), dependabot.yml, workflows/checks.yml
 .obsidian/        the repository is an Obsidian vault; plugins/ holds separate repositories
 ```
 
@@ -149,6 +152,8 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
+| `task docs:build` / `docs:serve` | the website of the project into `site/` / live preview |
+| `task devlog:state` / `devlog:scrapnote` | where the project stands (the `bos` command) / a new scrapnote |
 | `task web:build` / `task desktop` | website into `dist/web` / Electron window around it |
 | `task check` (or `task verify`) | Biome, build (TypeScript and website), tests — the same in CI; run before a commit is reported done |
 
