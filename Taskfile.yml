@@ -80,7 +80,7 @@ tasks:
     cmds:
       - npx vitest run
 
-  check:
+  lint:
     desc: Lint and check formatting with biome, nothing gets changed.
     cmds:
       - npx biome check
@@ -90,9 +90,14 @@ tasks:
     cmds:
       - npx biome check --write
 
-  verify:
-    desc: Everything that has to pass before push - biome check, build, tests.
+  check:
+    desc: Every check, as in every BOS project - biome, build (typescript and website), tests; the same in CI.
     cmds:
-      - task: check
+      - task: lint
       - task: build
       - task: test
+
+  verify:
+    desc: The same as check - the older name, kept.
+    cmds:
+      - task: check

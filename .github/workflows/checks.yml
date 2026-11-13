@@ -1,4 +1,4 @@
-# The same checks as `task verify` and the hooks: Biome, TypeScript, the website build, tests,
+# The same checks as `task check` and the hooks: Biome, TypeScript, the website build, tests,
 # and the build of the durable runs. On every push to development and a contributor's
 # dev/** branch, and on pull requests into the stations of the loop.
 name: "checks › verify"
@@ -30,7 +30,7 @@ jobs:
       # scripts off: no browser download (checkup is not run here), no git hooks;
       # the task binary comes from setup-task
       - run: npm ci --ignore-scripts
-      - run: task verify
+      - run: task check
       - name: Build of the durable runs (Nitro)
         working-directory: src/workflows
         run: npx nitro build

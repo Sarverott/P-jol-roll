@@ -145,12 +145,12 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
-| `task check` / `task format` | Biome, check only / with fixes |
+| `task lint` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
 | `task web:build` / `task desktop` | website into `dist/web` / Electron window around it |
-| `task verify` | check, build (TypeScript and website), tests — run before reporting work as done |
+| `task check` (or `task verify`) | Biome, build (TypeScript and website), tests — the same in CI; run before a commit is reported done |
 
 ## Conventions
 
