@@ -9,3 +9,8 @@ tasks:
     desc: Biome check of staged files, nothing gets changed.
     cmds:
       - npx biome check --staged --no-errors-on-unmatched
+
+  commit-msg:
+    desc: Commitlint on the message being written - conventional commits, as in the BOS core.
+    cmds:
+      - npx commitlint --edit {{.CLI_ARGS}}

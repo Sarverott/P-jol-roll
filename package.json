@@ -32,6 +32,8 @@
     "@apify/tsconfig": "^0.2.0",
     "@astrojs/vue": "^7.0.3",
     "@biomejs/biome": "^2.5.15",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
     "@electron-forge/cli": "^8.0.1",
     "@go-task/cli": "^3.45.4",
     "@google/genai": "^2.29.0",
