@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+# Tasks of the devlog. Included by the root Taskfile as `devlog:` (runs in this directory).
+
+version: '3'
+
+tasks:
+  scrapnote:
+    desc: 'Start a scrapnote named by the current moment, e.g. task devlog:scrapnote -- "external machine"'
+    cmds:
+      - |
+        UNIXUSAT=$(node -e 'console.log(Date.now())')
+        printf '# %s\n\n> UNIXUSAT=%s\n\n' "{{.CLI_ARGS | default "scrapnote"}}" "$UNIXUSAT" > "scrapnote-$UNIXUSAT.md"
+        echo "scrapnote-$UNIXUSAT.md"

@@ -9,6 +9,9 @@ includes:
   husky: ./.husky/Taskfile.yml
   github: ./.github/Taskfile.yml
   resources: ./resources/Taskfile.yml
+  devlog:
+    taskfile: ./docs/devlog/Taskfile.yml
+    dir: ./docs/devlog
   src:
     taskfile: ./src/Taskfile.yml
     dir: .
