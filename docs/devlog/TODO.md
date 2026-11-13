@@ -32,7 +32,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 
 ## Phase 3: BOS integration
 
-- [ ] `.github/bos.json`: the loop (stations, contributors `dev/*`) and versioning, as in the BOS core
+- [x] `.github/bos.json`: the loop (stations, contributors `dev/*`) and versioning, as in the BOS core
 - [ ] Taskfiles: `task check` (= hooks = CI), `devlog:` included, standard names of BOS
 - [ ] Anatomy checked against `bos-skillset`'s `bos-project` skill and the core's project template; what is missing added
 - [ ] Version `0.1.0` and `CHANGELOG.md`, counted from the phases (Q8)
