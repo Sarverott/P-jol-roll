@@ -1,0 +1,95 @@
+# The website of the project: the idea, the state, the guides. Built locally (`task docs:build`,
+# `task docs:serve`); where it is published is Q6 of the devlog. Always built from the
+# repository root: mkdocs build -f docs/mkdocs.yml
+site_name: P_JOL_ROLL
+site_description: Every act of the Polish journals of laws, gathered in the open
+site_author: Sett Sarverott
+site_url: !ENV [SITE_URL, "http://127.0.0.1:8000/"]
+repo_url: https://github.com/Sarverott/P-jol-roll
+repo_name: Sarverott/P-jol-roll
+edit_uri: edit/development/docs/
+copyright: Copyright &copy; 2026 Sett Sarverott, AGPL-3.0-only. Nothing here is legal advice.
+
+docs_dir: .
+site_dir: ../site
+exclude_docs: |
+  .*
+  /mkdocs.yml
+  /pyproject.toml
+  /uv.lock
+  /Taskfile.yml
+  /_mkdocs/
+  /devlog/AGENTS.md
+  /devlog/Taskfile.yml
+  /devlog/STATE.md
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - content.action.edit
+    - search.highlight
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: red
+      accent: indigo
+      toggle: { icon: material/weather-night, name: dark mode }
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: red
+      accent: indigo
+      toggle: { icon: material/weather-sunny, name: light mode }
+
+plugins:
+  - search
+
+hooks:
+  - _mkdocs/project.py   # the state on the home page, from TODO.md and features.md; links out of docs/ → GitHub
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Home: README.md
+  - Guides:
+      - guides/features.md
+      - guides/installation.md
+      - guides/gathering.md
+      - guides/processing.md
+      - guides/sources.md
+      - guides/checkup.md
+      - guides/huggingface.md
+      - guides/data.md
+      - guides/development.md
+  - Glossary: glossary/README.md
+  - Devlog:
+      - devlog/README.md
+      - devlog/VISION.md
+      - devlog/ROADMAP.md
+      - devlog/TODO.md
+      - devlog/BRAINSTORM.md
+      - devlog/PROPOSALS.md
+      - devlog/ORDERS.md
+      - devlog/INQUIRIES.md
+      - Scrapnotes:
+          - devlog/scrapnote-1791881492510.md
+          - devlog/scrapnote-1791920000154.md
+  - Changelog:
+      - changelog/phase-0.md
+  - For agents:
+      - agents/NOTES.md
+      - agents/things-to-check.md
+      - agents/ideas.md
+      - agents/point-of-view.md

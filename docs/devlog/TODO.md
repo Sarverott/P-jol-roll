@@ -41,8 +41,8 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 
 ## Phase 4: a website of the project
 
-- [ ] MkDocs Material over `docs/` (as the BOS core): the idea, the state, guides, glossary, devlog
-- [ ] A state page made from `TODO.md` and `features.md`, so it never lies about what works
+- [x] MkDocs Material over `docs/` (as the BOS core): the idea, the state, guides, glossary, devlog
+- [x] The state on the home page, counted at build from `TODO.md` and `features.md`, so it never says more than they do
 - [ ] `task docs:build` / `docs:serve`; publishing it (Q6)
 
 ## Phase 5: gathering on another machine

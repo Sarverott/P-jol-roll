@@ -3,6 +3,25 @@
 Polish **Journals of Laws resources operational lurker loader** - complex set of tools to handle datamining, crawling and parsing of all law documents released as published by polish goverment national legal code, package of approved acts or available constitution version
 
 
+## The idea
+
+Every act published in **Dziennik Ustaw** (since 1918) and **Monitor
+Polski** (since 1930), taken from the open
+[ELI API of Sejm](https://api.sejm.gov.pl/eli/openapi/) and kept in the open:
+raw files in a [bucket](https://huggingface.co/buckets/Sarverott/raw-law-of-poland),
+tables and markdown in a [dataset](https://huggingface.co/datasets/Sarverott/polish_national_law_docs)
+on Hugging Face. Every file can be checked against its checksum, every act
+is tied to the acts it changes, to the work of Sejm that made it and to the
+judgments that apply it. The far goal is a small model and an agent that
+read all of it: an open **devil's advocate for every person**
+([vision](devlog/VISION.md)).
+
+Nothing here is legal advice. See [what the data is and is not](guides/data.md#what-it-is-not).
+
+## State
+
+<!-- state -->
+
 ## Start here
 
 - [installation](guides/installation.md) - setup, a first small gathering, the token

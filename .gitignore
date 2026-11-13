@@ -33,3 +33,7 @@ src/workflows/node_modules
 
 # made by task devlog:state, never kept in git (as in the BOS core)
 docs/devlog/STATE.md
+
+# the website, built by task docs:build
+site/
+docs/.venv

@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+# The website of the project: MkDocs over the markdown in this folder (config: mkdocs.yml, here).
+# From the repository root: task docs:serve, task docs:build, task docs:lock
+
+version: '3'
+
+vars:
+  MKDOCS: uv run --project {{.TASKFILE_DIR}} mkdocs
+
+tasks:
+  serve:
+    desc: Live preview of the website at http://127.0.0.1:8000
+    dir: '{{.TASKFILE_DIR}}/..'
+    cmds: ['{{.MKDOCS}} serve -f docs/mkdocs.yml']
+
+  build:
+    desc: Build the website into site/, failing on any warning
+    dir: '{{.TASKFILE_DIR}}/..'
+    cmds: ['{{.MKDOCS}} build --strict -f docs/mkdocs.yml']
+
+  lock:
+    desc: After editing docs/pyproject.toml, refresh uv.lock
+    dir: '{{.TASKFILE_DIR}}'
+    cmds: [uv lock]
