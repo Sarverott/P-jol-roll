@@ -119,7 +119,7 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   bucket/         raw files of acts: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf}
 docs/guides/      how to install, gather, check up, move data; what the data is
 docs/glossary/    words of the source and of the project, each with one meaning
-docs/agents/      notes written by agents: ideas.md, things-to-check.md (what waits for a decision
+docs/agents/      notes written by agents: NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
                   or was not verified - keep it current); point-of-view.md is personal
 docs/devlog/      the BOS devlog: VISION, ROADMAP, TODO, BRAINSTORM, ORDERS, INQUIRIES, PROPOSALS, scrapnotes
 docs/changelog/   what happened per phase, the owner's words word for word, append-only
