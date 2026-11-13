@@ -39,6 +39,7 @@ Nothing here is legal advice. See [what the data is and is not](guides/data.md#w
 | [processing](guides/processing.md) | `seal`, `compile`, `text`: checksums, tables, markdown |
 | [other sources](guides/sources.md) | `sejm` and `saos`: how law is made, how it is applied |
 | [checkup](guides/checkup.md) | `checkup`: the browser visiting websites that show acts |
+| [second machine](guides/second-machine.md) | gathering elsewhere, data on an external drive, what refuses and why |
 | [Hugging Face](guides/huggingface.md) | `hub`: comparing and moving data, file by file |
 | [the data](guides/data.md) | layout, fields, limits of what the data says, rights |
 | [development](guides/development.md) | the code, tests, how to add a file, a website, a source |

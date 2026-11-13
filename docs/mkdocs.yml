@@ -70,6 +70,7 @@ nav:
       - guides/processing.md
       - guides/sources.md
       - guides/checkup.md
+      - guides/second-machine.md
       - guides/huggingface.md
       - guides/data.md
       - guides/development.md

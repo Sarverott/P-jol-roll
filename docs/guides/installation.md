@@ -58,6 +58,8 @@ listed in `resources/.map.json`. See [Hugging Face](huggingface.md).
 
 ## Settings from the environment
 
+Tasks read them from `.env` of the working copy too (a variable set in the shell wins).
+
 | Variable | Default | What it changes |
 | --- | --- | --- |
 | `ELI_API` | `https://api.sejm.gov.pl/eli` | where `gather` asks. Tests point it at a local copy |

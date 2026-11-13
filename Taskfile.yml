@@ -2,6 +2,9 @@
 
 version: '3'
 
+# settings of this machine (RESOURCES_DIR, HF_TOKEN, ELI_API...) for every task; the shell wins over .env
+dotenv: ['.env']
+
 env:
   ELECTRON_DISABLE_SANDBOX: 1 
 

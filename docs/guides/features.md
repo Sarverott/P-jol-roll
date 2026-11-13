@@ -47,7 +47,7 @@ State of 2026-11-13.
 | Compare local data with Hugging Face | `task resources:plan -- dataset` | **works**: run by the owner |
 | Send or take only what differs | `task resources:push` / `pull -- dataset` | **built**: never run by an agent (sending is the owner's move) |
 | Daily run that waits for "yes" before pushing | `task workflows:daily`, `workflows:approve` | **built**: end to end against a local copy, with "no" and with no answer; Q9 asks whether to keep it |
-| Gathering on a second machine | | **wanted**: a guide, and the trouble on Parrot OS (Q1, Q10) |
+| Gathering on a second machine | [second machine](second-machine.md); `RESOURCES_DIR` in `.env` | **built**: the guide and `.env` for every task; the trouble on Parrot OS waits for its error (Q1) |
 
 ## Reading and showing
 
