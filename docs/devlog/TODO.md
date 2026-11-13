@@ -21,7 +21,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [ ] The termui experiment placed so that checks pass (Q4)
 - [x] Node pinned: `engines`, `.nvmrc`; `npm ci` from a clean copy passes
 - [x] `.github/dependabot.yml`: npm and Actions, grouped, into `development`
-- [ ] `.github/workflows/checks.yml`: the same `task check` as the hooks
+- [x] `.github/workflows/checks.yml`: the same `task verify` as the hooks (red until Q4 is answered: the termui experiment fails Biome and tsc)
 - [ ] Commit messages checked: commitlint and a `commit-msg` hook, like the BOS core
 
 ## Phase 2: say what it can do
