@@ -13,7 +13,8 @@ standard look of a BOS project's `docs/devlog/`, the same as in the BOS core
 | `PROPOSALS.md` | ideas for debate `PP<n>` | anyone proposes, the owner decides |
 | `ORDERS.md` | the owner's answers to `Q<n>`, below its `---` | **owner**; agents empty it |
 | `INQUIRIES.md` | the owner's requests in their own words, below its `---` | **owner**; agents empty it |
-| `Taskfile.yml` | `scrapnote` | agents |
+| `STATE.md` | where the project stands; made by `task devlog:state` (the `bos` command of the core), not kept in git | the core |
+| `Taskfile.yml` | `scrapnote`, `state` | agents |
 | `scrapnote-<UNIXUSAT>.md` | notes of a working round, not sorted yet | anyone |
 | `AGENTS.md` | imports this README for agents | |
 

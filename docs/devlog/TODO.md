@@ -34,7 +34,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 
 - [x] `.github/bos.json`: the loop (stations, contributors `dev/*`) and versioning, as in the BOS core
 - [x] Taskfiles: `task check` (= CI) runs everything, `task lint` is Biome alone, `verify` kept as its old name; `devlog:` included
-- [ ] Anatomy checked against `bos-skillset`'s `bos-project` skill and the core's project template; what is missing added
+- [x] Anatomy checked against `bos-skillset`'s `bos-project` skill and the core's project template: all of it present; added `.github/AUTHORS` (`bos project authors`) and `task devlog:state` (`bos devlog state`)
 - [ ] Version `0.1.0` and `CHANGELOG.md`, counted from the phases (Q8)
 - [ ] The project's place in the workshop (Q7); notes for the BOS repositories in `forge/NOTES-for-repositories.md`
 
