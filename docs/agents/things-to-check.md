@@ -6,6 +6,10 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-13. Dependabot is active only on `master`.** It reads
+  `.github/dependabot.yml` from the default branch, so the config waits
+  until `development` reaches `master` through your pull request.
+
 - **2026-10-13. Labels on GitHub.** Issue forms use the labels `data` and
   `source`, which do not exist yet. Until they do, those issues arrive
   without a label. `gh label create data` and `gh label create source`.

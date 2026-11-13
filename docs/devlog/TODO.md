@@ -20,7 +20,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [ ] Workflow SDK pilot on a version that builds and runs; the `nanoid` advisory recorded with its real reach (Q9)
 - [ ] The termui experiment placed so that checks pass (Q4)
 - [x] Node pinned: `engines`, `.nvmrc`; `npm ci` from a clean copy passes
-- [ ] `.github/dependabot.yml`: npm and Actions, grouped, into `development`
+- [x] `.github/dependabot.yml`: npm and Actions, grouped, into `development`
 - [ ] `.github/workflows/checks.yml`: the same `task check` as the hooks
 - [ ] Commit messages checked: commitlint and a `commit-msg` hook, like the BOS core
 
