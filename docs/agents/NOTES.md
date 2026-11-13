@@ -4,6 +4,24 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-13 · Cleo · the git hooks never blocked anything
+
+`@go-task/cli` 3.45.4 runs the `task` binary and throws its exit code
+away (`run-task.js` calls `run("task")` and ends with 0). Every hook goes
+`npm run tasks:husky` → that wrapper, so a failed Biome check in
+`pre-commit` printed its errors and the commit went on anyway - since the
+hooks were made. 3.54.0 ends with `process.exit(code)`.
+
+`npm audit fix` had moved the package back to 3.45.4 to leave `basic-ftp`
+(through `proxy-agent`, used by its installer to download the binary)
+behind. The range is now `^3.54.0`: hooks that block are worth more than an
+advisory in a downloader that runs once, at install, against GitHub's
+releases. `npm audit` says 39 (8 high) after it; the new high ones are
+`basic-ftp` and its chain inside that installer.
+
+Checked: a bad commit message and a badly formatted staged file both stop
+the commit now (exit 201); a good message passes.
+
 ## 2026-11-13 · Cleo · after undoing the forced downgrades
 
 The ranges of `workflow` (^5.2.2) and `camoufox-js` (^0.12.0) put back, then
