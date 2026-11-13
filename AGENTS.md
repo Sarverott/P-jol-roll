@@ -14,7 +14,8 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    for Claude Code), made from `development`; never commit on `master`. One
    finished, checked step of `docs/devlog/TODO.md` is one conventional commit
    (`type(scope): subject`) that ticks its box; an agent's commits end with
-   its `Co-Authored-By:` line. Never `--no-verify`. When a batch is done,
+   its `Co-Authored-By:` line, named as in `.github/AUTHORS` - Claude Code
+   signs `Co-Authored-By: Cleo (Claude Opus 5.5) <noreply@anthropic.com>`. Never `--no-verify`. When a batch is done,
    merge `dev/<name>` into `development` with `--no-ff`. Pushing waits for
    the owner's answer to Q2 of `docs/devlog/BRAINSTORM.md`; `master`, tags,
    releases and repository settings are always asked for first.
