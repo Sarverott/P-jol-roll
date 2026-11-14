@@ -16,14 +16,14 @@ point was added.
 - **2026-10-13. Private reporting of vulnerabilities** is off for the
   repository, so `SECURITY.md` gives `sett@sarverott.com`, taken from
   gitrecon.
-- **2026-11-13. Ten questions** wait in `docs/devlog/BRAINSTORM.md` (Q1-Q10);
-  pushing (Q2) and six TODO items wait on them: Parrot OS (Q1), termui (Q4),
-  publishing the website (Q6), the place in the workshop (Q7), versions
-  (Q8), the Workflow SDK (Q9).
-- **2026-11-13. CI is red until Q4.** `task check` stops at Biome on the
-  termui experiment.
+- **2026-11-15. Seven questions** wait in `docs/devlog/BRAINSTORM.md`
+  (Q1, Q2, Q6-Q10; Q3, Q4, Q5 answered). Five TODO items wait on them:
+  Parrot OS (Q1), publishing the website (Q6), the place in the workshop
+  (Q7), versions (Q8), the Workflow SDK (Q9). Pushing asks each time until
+  Q2.
 - **2026-11-13. Branches.** The BOS loop is in use since this batch:
-  `development`, `dev/Sarverott`, `dev/Cleo`; nothing pushed (Q2).
+  `development`, `dev/Sarverott`, `dev/Cleo`; `development` pushed when
+  Sett says so, the `dev/` branches stay local (Q2).
   `CONTRIBUTING.md` still tells outside contributors to branch from
   `master` (left for the owner to decide with Q2).
 - **2026-10-13. The `journal` website in checkup.** `robots.txt` of
