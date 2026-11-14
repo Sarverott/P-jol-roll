@@ -58,9 +58,10 @@ Scrapnotes written along the way, newest last: `devlog/scrapnote-<UNIXUSAT>.md`
 
 ## Agents
 
-Notes written by agents: [ideas](agents/ideas.md) holds what could be built
-next, and [things to check](agents/things-to-check.md) what waits for a
-decision or was not verified. [point of view](agents/point-of-view.md) is a personal chapter and is
+`.agents/` is the agents' own domain: people read it, agents write it.
+[Notes](.agents/NOTES.md) hold their findings, [ideas](.agents/ideas.md) what could be built
+next, and [things to check](.agents/things-to-check.md) what waits for a
+decision or was not verified. [point of view](.agents/point-of-view.md) is a personal chapter and is
 read-only for everyone but its author.
 
 ## Paperwork of the repository

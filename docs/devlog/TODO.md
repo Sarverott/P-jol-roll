@@ -14,11 +14,11 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [x] AGENTS.md: the craft loop and the routine of BOS in place of "do not commit" (Q2, Q3 for pushing)
 - [x] The owner's answers to Q3, Q4, Q5 moved word for word into the changelog (`phase-0.md`, `phase-1.md`)
 - [x] AGENTS.md: who may commit - identity and understanding confirmed by the members, own name and lineage in the co-authorship line, where edits go (Q3)
-- [ ] Agents' notes in `docs/.agents/`, their own domain that humans read (Q5)
+- [x] Agents' notes in `docs/.agents/`, their own domain that humans read (Q5)
 
 ## Phase 1: dependencies repaired
 
-- [x] Baseline recorded in `docs/agents/NOTES.md`: what install, check, build and tests give before any repair
+- [x] Baseline recorded in `docs/.agents/NOTES.md`: what install, check, build and tests give before any repair
 - [x] Forced downgrades undone: `crawlee`, `camoufox-js` and the rest resolved by their ranges again, the lock regenerated from them, not by `audit fix --force`
 - [ ] Workflow SDK pilot on a version that builds and runs; the `nanoid` advisory recorded with its real reach (Q9)
 - [ ] The termui experiment placed so that checks pass (Q4)

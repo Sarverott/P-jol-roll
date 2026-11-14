@@ -34,6 +34,8 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    agent understood them; then that branch is merged into `development`.
    Edits the owner makes on GitHub land on `development`; take them in with
    a fast-forward before branching.
+   **Agents' own domain** is `docs/.agents/`: agents write there, humans
+   read it and do not write, edit or delete.
 3. **Tasks arrive as `// NOTE: ` comments** (in READMEs and Taskfiles too).
    Build what is concrete, keep the NOTE in place, add `ANSWER:` when the note
    asked a question, and report the notes you left with the question that
@@ -58,7 +60,7 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
 | a plan | `docs/devlog/VISION.md`, `ROADMAP.md`, `TODO.md` |
 | a question for the owner | `docs/devlog/BRAINSTORM.md` as `## Q<n>. <title>` with a *Lean:*; never settled in code before the answer |
 | an idea for debate | `docs/devlog/PROPOSALS.md` as `PP<n>` |
-| an agent's findings and what was not verified | `docs/agents/` (`NOTES.md`, `things-to-check.md`) |
+| an agent's findings and what was not verified | `docs/.agents/` (`NOTES.md`, `things-to-check.md`) |
 | work for another repository | `~/__WORKSHOP/forge/NOTES-for-repositories.md`, never the other repository itself |
 
 ## Source
@@ -134,7 +136,7 @@ docs/guides/      how to install, gather, check up, move data, gather on a secon
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md
 docs/glossary/    words of the source and of the project, each with one meaning
-docs/agents/      notes written by agents: NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
+docs/.agents/     the agents' own domain (humans read only): NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
                   or was not verified - keep it current); point-of-view.md is personal
 docs/devlog/      the BOS devlog: VISION, ROADMAP, TODO, BRAINSTORM, ORDERS, INQUIRIES, PROPOSALS, scrapnotes
 docs/changelog/   what happened per phase, the owner's words word for word, append-only

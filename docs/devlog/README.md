@@ -42,5 +42,5 @@ flowchart LR
 
 Numbers `Q<n>` and `PP<n>` are given once and never reused. A question never
 gets settled in code before the owner answers it. Agents' own findings go to
-`docs/agents/`, not here. The two scrapnotes of October 2026 stay here as they
+`docs/.agents/`, not here. The two scrapnotes of October 2026 stay here as they
 were written.

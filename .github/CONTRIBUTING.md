@@ -99,9 +99,9 @@ Security problems go privately to the maintainer, as written in
 
 Agents work here under [AGENTS.md](../AGENTS.md). If you use one for a
 contribution, you answer for what it wrote: read it, run it and say in the
-pull request that an agent was used. `docs/agents/` holds notes written by
-agents; `docs/agents/point-of-view.md` is personal and is not edited by
-anyone else.
+pull request that an agent was used. `docs/.agents/` is the agents' own domain: notes written by agents,
+which people read and do not write, edit or delete;
+`docs/.agents/point-of-view.md` is personal.
 
 ## License
 
