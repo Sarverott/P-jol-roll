@@ -139,4 +139,5 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/app/capacitor.config.json` | Capacitor settings of the android app: its web part is `dist/web`. `task app:sync -- add android` the first time. |
 | `src/firefox-ext/manifest.json`, `popup.html`, `main.js` | Browser extension: looks up an act cited in the open tab or typed in (`Dz.U. 2026 poz. 1`, ISAP addresses, ELI) in a P_JOL_ROLL host. Loads in Firefox, and unpacked in Chrome. `task extension` says how. |
 | `src/chrome-ext/main.js` | Empty, kept by Sett; the Firefox extension loads in Chrome already. |
+| `src/tui/index.tsx`, `main.js`, `termui.config.ts`, `termui.config.json` | Sett's experiment with a terminal interface ([TermUI](https://arindam200.github.io/termui) on `ink` and `react`), moved here as it was. Its packages are not in `package.json` yet, so Biome and TypeScript skip this directory until it is wanted. |
 | `src/Taskfile.yml` | Tasks of these parts, included in the root one: `serve`, `mcp`, `web:build`, `web:dev`, `desktop`, `app:sync`, `extension`. |

@@ -21,10 +21,10 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [x] Baseline recorded in `docs/.agents/NOTES.md`: what install, check, build and tests give before any repair
 - [x] Forced downgrades undone: `crawlee`, `camoufox-js` and the rest resolved by their ranges again, the lock regenerated from them, not by `audit fix --force`
 - [ ] Workflow SDK pilot on a version that builds and runs; the `nanoid` advisory recorded with its real reach (Q9)
-- [ ] The termui experiment placed so that checks pass (Q4)
+- [x] The termui experiment placed so that checks pass: `src/tui/`, skipped by Biome and tsc (Q4)
 - [x] Node pinned: `engines`, `.nvmrc`; `npm ci` from a clean copy passes
 - [x] `.github/dependabot.yml`: npm and Actions, grouped, into `development`
-- [x] `.github/workflows/checks.yml`: the same `task verify` as the hooks (red until Q4 is answered: the termui experiment fails Biome and tsc)
+- [x] `.github/workflows/checks.yml`: the same `task verify` as the hooks (green again once the termui experiment moved out of the checks, Q4)
 - [x] Commit messages checked: commitlint and a `commit-msg` hook, like the BOS core
 - [x] Hooks that block: `@go-task/cli` 3.54, whose wrapper passes the exit code of `task` on (3.45.4 threw it away)
 

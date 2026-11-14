@@ -125,6 +125,7 @@ src/desktop/           Electron window: starts the api, shows the viewer
 src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
+src/tui/               Sett's terminal interface experiment (TermUI), out of the checks until its packages are added
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
