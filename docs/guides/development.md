@@ -114,7 +114,7 @@ gives the polite walk, `store.ts` the writing of files, and `hub.ts` the
 moving. Its directories are `resources/<source>-dataset` and
 `resources/<source>-bucket`. Propose it first with the "new source"
 issue form; candidates already looked at are in
-[ideas](../agents/ideas.md).
+[ideas](../.agents/ideas.md).
 
 ## Style
 

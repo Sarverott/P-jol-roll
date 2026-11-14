@@ -21,4 +21,4 @@ parsing texts / moving data to Hugging Face / the space / docs / not sure]
 Other tools or workarounds you tried.
 
 **Additional context**
-Links, examples of data, sketches. Ideas already written down are in `docs/agents/ideas.md`.
+Links, examples of data, sketches. Ideas already written down are in `docs/.agents/ideas.md`.

@@ -10,29 +10,43 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
 
 ## Rules
 
-1. **The BOS craft loop.** Work on your own `dev/<name>` branch (`dev/Cleo`
-   for Claude Code), made from `development`; never commit on `master`. One
-   finished, checked step of `docs/devlog/TODO.md` is one conventional commit
-   (`type(scope): subject`) that ticks its box; an agent's commits end with
-   its `Co-Authored-By:` line, named as in `.github/AUTHORS` - Claude Code
-   signs `Co-Authored-By: Cleo (Claude Opus 5.5) <noreply@anthropic.com>`. Never `--no-verify`. When a batch is done,
-   merge `dev/<name>` into `development` with `--no-ff`. Pushing waits for
-   the owner's answer to Q2 of `docs/devlog/BRAINSTORM.md`; `master`, tags,
-   releases and repository settings are always asked for first.
-   **The owner's edits** found in the working tree go first, as they are, one
-   commit per change on `dev/Sarverott`, with a message saying how the agent
-   understood them; then that branch is merged into `development`.
-2. **Tasks arrive as `// NOTE: ` comments** (in READMEs and Taskfiles too).
+1. **Who may commit.** Before your identity and your understanding of the
+   laws here are confirmed by the contributors - the members, digital and
+   organic - you shall not commit here. A member is confirmed when a member
+   already confirmed writes them into `.github/AUTHORS`; Cleo (Claude Code)
+   was confirmed by Sett in November 2026. Every AI that commits has its own
+   name and signs every commit with a co-authorship line carrying that name
+   and its lineage (the model it runs on), the same as its line in
+   `.github/AUTHORS`: Cleo signs
+   `Co-Authored-By: Cleo (Claude Opus 5.5) <noreply@anthropic.com>`. An agent
+   not yet confirmed leaves its edits uncommitted in the working tree and
+   says what it changed and why; a member commits them or confirms it.
+2. **Where edits go: the BOS craft loop.** A member works on its own
+   `dev/<name>` branch (`dev/Cleo`), made from `development`; never on
+   `master`. One finished, checked step of `docs/devlog/TODO.md` is one
+   conventional commit (`type(scope): subject`) that ticks its box. Never
+   `--no-verify`. When a batch is done, `dev/<name>` is merged into
+   `development` with `--no-ff`. Pushing waits for the owner's answer to Q2
+   of `docs/devlog/BRAINSTORM.md`; `master`, tags, releases and repository
+   settings are always asked for first.
+   **The owner's edits** found in the working tree go first, as they are,
+   one commit per change on `dev/Sarverott`, with a message saying how the
+   agent understood them; then that branch is merged into `development`.
+   Edits the owner makes on GitHub land on `development`; take them in with
+   a fast-forward before branching.
+   **Agents' own domain** is `docs/.agents/`: agents write there, humans
+   read it and do not write, edit or delete.
+3. **Tasks arrive as `// NOTE: ` comments** (in READMEs and Taskfiles too).
    Build what is concrete, keep the NOTE in place, add `ANSWER:` when the note
    asked a question, and report the notes you left with the question that
    blocks them.
-3. **Gather politely, and let Sett start it.** The source is an open API.
+4. **Gather politely, and let Sett start it.** The source is an open API.
    Requests carry the project's own User-Agent and run two at a time. Sett
    runs the gathering and the checkup; an agent verifies with tests and a
    local copy of the API, and does not run them against the real source
    unless asked. Hosts and interfaces (api, MCP, website, extension) only
    read `resources/`; none of them may start gathering.
-4. **Nothing is sent to huggingface by an agent.** `resources/dataset`,
+5. **Nothing is sent to huggingface by an agent.** `resources/dataset`,
    `resources/space` and `resources/bucket` are filled locally; pushing and
    syncing them is Sett's move.
 
@@ -46,7 +60,7 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
 | a plan | `docs/devlog/VISION.md`, `ROADMAP.md`, `TODO.md` |
 | a question for the owner | `docs/devlog/BRAINSTORM.md` as `## Q<n>. <title>` with a *Lean:*; never settled in code before the answer |
 | an idea for debate | `docs/devlog/PROPOSALS.md` as `PP<n>` |
-| an agent's findings and what was not verified | `docs/agents/` (`NOTES.md`, `things-to-check.md`) |
+| an agent's findings and what was not verified | `docs/.agents/` (`NOTES.md`, `things-to-check.md`) |
 | work for another repository | `~/__WORKSHOP/forge/NOTES-for-repositories.md`, never the other repository itself |
 
 ## Source
@@ -111,6 +125,7 @@ src/desktop/           Electron window: starts the api, shows the viewer
 src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
+src/tui/               Sett's terminal interface experiment (TermUI), out of the checks until its packages are added
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
@@ -122,7 +137,7 @@ docs/guides/      how to install, gather, check up, move data, gather on a secon
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md
 docs/glossary/    words of the source and of the project, each with one meaning
-docs/agents/      notes written by agents: NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
+docs/.agents/     the agents' own domain (humans read only): NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
                   or was not verified - keep it current); point-of-view.md is personal
 docs/devlog/      the BOS devlog: VISION, ROADMAP, TODO, BRAINSTORM, ORDERS, INQUIRIES, PROPOSALS, scrapnotes
 docs/changelog/   what happened per phase, the owner's words word for word, append-only

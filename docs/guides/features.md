@@ -3,7 +3,7 @@
 Every function of the project, with how sure we are that it works. Updated
 with the work; the plan for what is missing is in
 [the devlog](../devlog/TODO.md), older ideas in
-[ideas](../agents/ideas.md).
+[ideas](../.agents/ideas.md).
 
 | Mark | Means |
 | ---- | ----- |
@@ -27,7 +27,7 @@ State of 2026-11-13.
 | Court judgments of SAOS | `task saos -- 2025 --limit 3` | **built**: tests; one real request; republishing terms not checked |
 | Websites that show acts, visited by a browser | `task checkup -- 2026 --limit 6` | **built**: run against a local page only |
 | Votings, transcripts, interpellations of Sejm | | **wanted** |
-| Open data portal, court register, statistics, national bank | | **wanted** (looked at, see [ideas](../agents/ideas.md)) |
+| Open data portal, court register, statistics, national bank | | **wanted** (looked at, see [ideas](../.agents/ideas.md)) |
 | European law | | **wanted**, put off by the owner |
 
 ## Processing

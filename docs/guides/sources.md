@@ -95,7 +95,7 @@ courts before publication.
 
 ## What else was looked at
 
-See [ideas](../agents/ideas.md), "Other government sources in Poland": the
+See [ideas](../.agents/ideas.md), "Other government sources in Poland": the
 open data portal, the court register, statistics and the national bank
 answer, and are data about the country and not law. They have no command
 yet.

@@ -36,38 +36,8 @@ own `dev/<name>` and `revision` without asking.
 tags, releases and repository settings stay yours. Until you answer, I push
 nothing.
 
-## Q3. "Do not commit" in AGENTS.md
 
-Rule 1 of `AGENTS.md` says agents never commit. Your inquiry asks for every
-step as a commit, the BOS way.
 
-*Lean:* rule 1 becomes the BOS routine (own `dev/<name>`, conventional
-commits, one step each, never `master`), and the owner's edits are taken in
-on `dev/Sarverott` with a message saying how I understood them. Done in
-phase 0 already, because the inquiry asks for it; say so if you meant only
-the plan.
-
-## Q4. The termui experiment
-
-`src/index.tsx`, `src/main.js` (empty), `termui.config.ts` and
-`termui.config.json` came with "test of termui and fatal errors while
-unresolvable versions". `ink`, `react` and `termui` are not in
-`package.json`, so it cannot run, and it makes `task verify` red (Biome and
-tsc).
-
-*Lean:* move it into `src/tui/` with both configs, keep it out of the checks
-until it is wanted, and add its packages then. The other way is to drop it;
-it stays in git history either way.
-
-## Q5. `docs/agents/` or `docs/.agents/`
-
-The BOS core keeps agents' notes in `docs/.agents/` (`CLEO.md`, `NOTES.md`).
-This repository has `docs/agents/` (`ideas.md`, `things-to-check.md`,
-`point-of-view.md`) and is an Obsidian vault, which hides directories that
-start with a dot.
-
-*Lean:* keep `docs/agents/`, add `NOTES.md` there in the BOS form. Moving my
-`point-of-view.md` is your call anyway, since you keep it read-only.
 
 ## Q6. Where the website lives
 

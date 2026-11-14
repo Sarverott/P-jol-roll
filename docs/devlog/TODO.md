@@ -12,16 +12,19 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [x] Branch `development` from `master`; the owner's uncommitted dependency edit committed on `dev/Sarverott` and merged
 - [x] Devlog in the standard look of BOS: README, VISION, ROADMAP, TODO, BRAINSTORM, PROPOSALS, ORDERS, INQUIRIES, Taskfile; the inquiry of 2026-11-13 word for word in `docs/changelog/phase-0.md`
 - [x] AGENTS.md: the craft loop and the routine of BOS in place of "do not commit" (Q2, Q3 for pushing)
+- [x] The owner's answers to Q3, Q4, Q5 moved word for word into the changelog (`phase-0.md`, `phase-1.md`)
+- [x] AGENTS.md: who may commit - identity and understanding confirmed by the members, own name and lineage in the co-authorship line, where edits go (Q3)
+- [x] Agents' notes in `docs/.agents/`, their own domain that humans read (Q5)
 
 ## Phase 1: dependencies repaired
 
-- [x] Baseline recorded in `docs/agents/NOTES.md`: what install, check, build and tests give before any repair
+- [x] Baseline recorded in `docs/.agents/NOTES.md`: what install, check, build and tests give before any repair
 - [x] Forced downgrades undone: `crawlee`, `camoufox-js` and the rest resolved by their ranges again, the lock regenerated from them, not by `audit fix --force`
 - [ ] Workflow SDK pilot on a version that builds and runs; the `nanoid` advisory recorded with its real reach (Q9)
-- [ ] The termui experiment placed so that checks pass (Q4)
+- [x] The termui experiment placed so that checks pass: `src/tui/`, skipped by Biome and tsc (Q4)
 - [x] Node pinned: `engines`, `.nvmrc`; `npm ci` from a clean copy passes
 - [x] `.github/dependabot.yml`: npm and Actions, grouped, into `development`
-- [x] `.github/workflows/checks.yml`: the same `task verify` as the hooks (red until Q4 is answered: the termui experiment fails Biome and tsc)
+- [x] `.github/workflows/checks.yml`: the same `task verify` as the hooks (green again once the termui experiment moved out of the checks, Q4)
 - [x] Commit messages checked: commitlint and a `commit-msg` hook, like the BOS core
 - [x] Hooks that block: `@go-task/cli` 3.54, whose wrapper passes the exit code of `task` on (3.45.4 threw it away)
 

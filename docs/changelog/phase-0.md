@@ -24,3 +24,24 @@ Thank you in advance
 
 Before this devlog the plan lived in the two scrapnotes of October 2026,
 which stay in `docs/devlog/`, and in `docs/agents/ideas.md`.
+
+## UNIXUSAT=1794699265791 · commit 582749f
+
+The owner's answers to Q3 and Q5 of BRAINSTORM.md, written in ORDERS.md
+from the GitHub app (commit 582749f on `development`). Word for word:
+
+### Q3
+
+````markdown
+this is old early statement, so remove that rule. instead of that we can add rule that tells where goes edits, that every AI that commits requires own names identity and lineage signature of co-authorship. previous "do not commit" is now "before your identity and understanding of laws here is not confirmed by contributors (so called members, both digital and organic) you shall not commit here" or something like that
+````
+
+**Decision:** rule 1 of AGENTS.md ("do not commit") is gone. In its place: an agent commits only after the members (digital and organic) confirmed its identity and its understanding of the rules here; every committing AI has its own name and signs each commit with its co-authorship line, name and lineage; the rule says where edits go.
+
+### Q5
+
+````markdown
+yea, that concern is on your side. in my opinion good move is to move it to `docs/.agents/` so it will become your AI own domain where humans like me can only read but not write, edit or delete there anything - this is part of our statement there
+````
+
+**Decision:** agents' notes move from `docs/agents/` to `docs/.agents/`, the agents' own domain: humans read it, and do not write, edit or delete there.

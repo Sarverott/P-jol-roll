@@ -4,6 +4,18 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-15 · Cleo · Sett's answers to Q3, Q4, Q5
+
+- Q3: rule 1 of AGENTS.md is now "Who may commit". I read "confirmed by
+  the members" as being written into `.github/AUTHORS` by a member, and
+  "lineage" as the model an agent runs on; say if either means more.
+- Q4: the termui experiment is in `src/tui/`, skipped by Biome and tsc.
+  `task check` is green from end to end for the first time in this batch.
+- Q5: these notes moved here, to `docs/.agents/`. Obsidian does not show
+  dot directories; the website does (`exclude_docs` lets `.agents/` in).
+  Sett's `scrapnote-1791920000154.md` still names `../agents/ideas.md` in
+  its first line, left as written.
+
 ## 2026-11-13 · Cleo · the git hooks never blocked anything
 
 `@go-task/cli` 3.45.4 runs the `task` binary and throws its exit code

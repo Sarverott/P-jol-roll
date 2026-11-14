@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 Sources are limited to public institutions of Poland. Some were already looked at:
-`docs/agents/ideas.md`, "Other government sources in Poland".
+`docs/.agents/ideas.md`, "Other government sources in Poland".
 
 **The source**
 Its name, who runs it and its address.
