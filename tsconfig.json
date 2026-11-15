@@ -12,5 +12,9 @@
 		"lib": ["ES2022", "DOM"]
 	},
 	"include": ["./src/**/*"],
-	"exclude": ["./src/workflows/nitro.config.ts", "./src/workflows/.output"]
+	"exclude": [
+		"./src/workflows/nitro.config.ts",
+		"./src/workflows/.output",
+		"./src/tui"
+	]
 }

@@ -1,0 +1,17 @@
+# The website of the project as its own uv project, as in the BOS core: MkDocs Material over
+# the markdown of docs/. Dependencies are listed here only; `task docs:lock` refreshes uv.lock.
+[project]
+name = "p-jol-roll-docs"
+version = "0.1.0"
+description = "Website of P_JOL_ROLL: the idea, the state and the guides, built with MkDocs"
+authors = [
+    { name = "Sett Sarverott", email = "sett@sarverott.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "mkdocs>=1.6,<2",
+    "mkdocs-material>=9.5,<10",
+]
+
+[tool.uv]
+package = false

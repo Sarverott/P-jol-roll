@@ -51,11 +51,11 @@ are not wired to anything yet.
 
 | Task | What it does |
 | --- | --- |
-| `task check` | Biome: lint and formatting, changes nothing |
+| `task lint` | Biome: lint and formatting, changes nothing |
 | `task format` | Biome with safe fixes |
 | `task build` | TypeScript into `dist/`, the website into `dist/web` |
 | `task test` | tests, once |
-| `task verify` | all three checks. Run it before reporting work as done |
+| `task check` (or `task verify`) | lint, build and tests - the same as CI. Run it before reporting work as done |
 | `task seal`, `compile`, `text` | work on gathered files, without the internet: see [processing](processing.md) |
 | `task github:repo`, `runs`, `issues`, `prs` | read the state of the repository on GitHub with `gh` |
 
@@ -114,7 +114,7 @@ gives the polite walk, `store.ts` the writing of files, and `hub.ts` the
 moving. Its directories are `resources/<source>-dataset` and
 `resources/<source>-bucket`. Propose it first with the "new source"
 issue form; candidates already looked at are in
-[ideas](../agents/ideas.md).
+[ideas](../.agents/ideas.md).
 
 ## Style
 

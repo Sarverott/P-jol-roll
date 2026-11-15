@@ -32,8 +32,10 @@
     "@apify/tsconfig": "^0.2.0",
     "@astrojs/vue": "^7.0.3",
     "@biomejs/biome": "^2.5.15",
+    "@commitlint/cli": "^21.2.4",
+    "@commitlint/config-conventional": "^21.2.4",
     "@electron-forge/cli": "^8.0.1",
-    "@go-task/cli": "^3.45.4",
+    "@go-task/cli": "^3.54.0",
     "@google/genai": "^2.29.0",
     "@huggingface/hub": "^2.17.6",
     "@huggingface/inference": "^4.13.32",
@@ -82,6 +84,10 @@
     "postinstall": "npm run get-binaries",
     "prepare": "husky"
   },
+  "engines": {
+    "node": ">=24",
+    "npm": ">=11"
+  },
   "author": "Sett Sarverott A.A.B.",
   "license": "AGPL-3.0-only",
   "main": "src/desktop/main.js",
@@ -89,5 +95,16 @@
     "executableArgs": [
       "--no-sandbox"
     ]
+  },
+  "allowScripts": {
+    "@go-task/cli": true,
+    "esbuild": true,
+    "@swc/core": true,
+    "@google/genai": false,
+    "better-sqlite3": false,
+    "cbor-extract": false,
+    "cpu-features": false,
+    "protobufjs": false,
+    "ssh2": false
   }
 }

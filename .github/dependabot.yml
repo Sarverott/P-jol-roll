@@ -1,0 +1,33 @@
+# Updates arrive where work is done: the development branch (the policy of BOS, as in the core).
+# Routine updates come grouped, one pull request per ecosystem and week; a major version comes
+# alone, because it is a migration. Dependabot reads this file from the default branch (master),
+# so it is active only after it reaches master.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    target-branch: development
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      npm-routine:
+        update-types: [minor, patch]
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: development
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
+  - package-ecosystem: docker
+    directory: /
+    target-branch: development
+    schedule:
+      interval: weekly
+  - package-ecosystem: docker-compose
+    directory: /
+    target-branch: development
+    schedule:
+      interval: weekly
