@@ -26,9 +26,9 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    `master`. One finished, checked step of `docs/devlog/TODO.md` is one
    conventional commit (`type(scope): subject`) that ticks its box. Never
    `--no-verify`. When a batch is done, `dev/<name>` is merged into
-   `development` with `--no-ff`. Pushing waits for the owner's answer to Q2
-   of `docs/devlog/BRAINSTORM.md`; `master`, tags, releases and repository
-   settings are always asked for first.
+   `development` with `--no-ff`. A confirmed member pushes `development`
+   and its own `dev/<name>` freely (Q2, answered 2026-11-15); `master`, tags,
+   releases and repository settings are always asked for first.
    **The owner's edits** found in the working tree go first, as they are,
    one commit per change on `dev/Sarverott`, with a message saying how the
    agent understood them; then that branch is merged into `development`.

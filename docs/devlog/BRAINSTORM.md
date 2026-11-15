@@ -25,20 +25,6 @@ with (`lsblk -f`) and how it is mounted (`findmnt <path>`).
 bare repository on the drive only as a remote, and the gathered data on the
 drive through `RESOURCES_DIR`. That works with any filesystem.
 
-## Q2. The branches of the BOS loop here, and pushing
-
-Following the BOS pattern, I made `development` from `master`, then
-`dev/Sarverott` (your edit) and `dev/Cleo` (my work), merged with `--no-ff`.
-Nothing is pushed. In the BOS core you let an agent push `development`, its
-own `dev/<name>` and `revision` without asking.
-
-*Lean:* the same here - I push `development` and `dev/Cleo`; `master`,
-tags, releases and repository settings stay yours. Until you answer, I push
-nothing.
-
-
-
-
 ## Q6. Where the website lives
 
 *Lean:* MkDocs Material over `docs/`, built into `site/` like the BOS core,

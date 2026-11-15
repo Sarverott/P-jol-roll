@@ -45,3 +45,18 @@ yea, that concern is on your side. in my opinion good move is to move it to `doc
 ````
 
 **Decision:** agents' notes move from `docs/agents/` to `docs/.agents/`, the agents' own domain: humans read it, and do not write, edit or delete there.
+
+## UNIXUSAT=1794703638694 · commit f96dd32
+
+The owner's answer to Q2 of BRAINSTORM.md (the branches of the BOS loop,
+and pushing), given in the chat after the batch of Q3-Q5. Word for word:
+
+### Q2
+
+````markdown
+Yes, you can push. Answer the Q2 about that, You can push freely
+````
+
+**Decision:** as the lean said: agents push `development` and their own
+`dev/<name>` without asking; `master`, tags, releases and repository
+settings stay the owner's and are asked for first.
