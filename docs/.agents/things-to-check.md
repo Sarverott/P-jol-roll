@@ -16,16 +16,14 @@ point was added.
 - **2026-10-13. Private reporting of vulnerabilities** is off for the
   repository, so `SECURITY.md` gives `sett@sarverott.com`, taken from
   gitrecon.
-- **2026-11-15. Seven questions** wait in `docs/devlog/BRAINSTORM.md`
-  (Q1, Q2, Q6-Q10; Q3, Q4, Q5 answered). Five TODO items wait on them:
-  Parrot OS (Q1), publishing the website (Q6), the place in the workshop
-  (Q7), versions (Q8), the Workflow SDK (Q9). Pushing asks each time until
-  Q2.
-- **2026-11-13. Branches.** The BOS loop is in use since this batch:
-  `development`, `dev/Sarverott`, `dev/Cleo`; `development` pushed when
-  Sett says so, the `dev/` branches stay local (Q2).
-  `CONTRIBUTING.md` still tells outside contributors to branch from
-  `master` (left for the owner to decide with Q2).
+- **2026-11-15. Six questions** wait in `docs/devlog/BRAINSTORM.md`
+  (Q1, Q6-Q10; Q2-Q5 answered). Five TODO items wait on them: Parrot OS
+  (Q1), publishing the website (Q6), the place in the workshop (Q7),
+  versions (Q8), the Workflow SDK (Q9).
+- **2026-11-13. Branches for outside contributors.** The BOS loop is in
+  use: `development`, `dev/Sarverott`, `dev/Cleo`, pushed by their members
+  (Q2). `CONTRIBUTING.md` still tells outside contributors to branch from
+  `master` and open pull requests there; should they target `development`?
 - **2026-10-13. The `journal` website in checkup.** `robots.txt` of
   `dziennikustaw.gov.pl` disallows every crawler but Google. The entry is in
   `resources/frontends.json`; removing it leaves that site alone.
