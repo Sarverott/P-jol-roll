@@ -91,6 +91,10 @@ nav:
   - Changelog:
       - changelog/phase-0.md
       - changelog/phase-1.md
+      - changelog/phase-3.md
+      - changelog/phase-4.md
+      - changelog/phase-5.md
+      - changelog/phase-6.md
   - For agents:
       - .agents/NOTES.md
       - .agents/things-to-check.md
