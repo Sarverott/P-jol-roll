@@ -4,6 +4,19 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-22 · Cleo · phase 8, releases and routines
+
+- Every workflow step is a script of `scripts/devops/` (shellcheck and
+  actionlint clean). Tried against a scratch bare remote: `flow:land`,
+  `flow:sync`, `release/hotfix.sh`. Not tried, because they need GitHub:
+  `release.sh`, `readthedocs.sh`, the push to `github-pages`, the automerge
+  and `phase-close.yml` - they run first on the next merge into `master`.
+- Phases 0-3 closed together by hand on `development` (v0.1.0, PR #13),
+  since `phase-close.yml` is not on `master` yet; phase 8 closes the same
+  way.
+- `webpage/`: React at the root of the website, MkDocs under `docs/`.
+- The first `flow:land` wrote its summary in quotes; fixed.
+
 ## 2026-11-21 · Cleo · after the gathering break: answers to Q1, Q6-Q10
 
 - **Versions.** One version in `package.json`, every copy synced

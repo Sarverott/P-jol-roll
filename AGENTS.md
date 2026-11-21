@@ -142,6 +142,7 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   configs/        configurations of services, one directory per purpose, in git
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
+webpage/          the React introduction at the root of the website (Vite, own package.json); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md

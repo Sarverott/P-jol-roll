@@ -8,7 +8,7 @@ tasks:
   land:
     desc: 'Your dev/<name> merged into development (--no-ff), both pushed, dev/<name> brought up again: task flow:land -- "what the batch did"'
     cmds:
-      - scripts/devops/local/land.sh {{.CLI_ARGS | quote}}
+      - scripts/devops/local/land.sh {{.CLI_ARGS}}
 
   sync:
     desc: development from origin (the owner's GitHub edits), master merged in when ahead, your dev/<name> brought up to it

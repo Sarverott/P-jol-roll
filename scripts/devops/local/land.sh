@@ -5,7 +5,7 @@
 # Usage: land.sh "<what the batch did>"   (task flow:land -- "...")
 # shellcheck source=../_common.sh
 source "$(dirname "$0")/../_common.sh"
-summary="${1:?what the batch did, for the merge message}"
+summary="${*:?what the batch did, for the merge message}"
 branch=$(git rev-parse --abbrev-ref HEAD)
 case "$branch" in
   dev/*) ;;
