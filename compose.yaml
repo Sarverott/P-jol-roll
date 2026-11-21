@@ -4,3 +4,5 @@
 include:
   - path: resources/services/webapp-server.yaml
     project_directory: .
+  - path: resources/services/log-collector.yaml
+    project_directory: .

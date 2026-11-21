@@ -1,0 +1,12 @@
+# log-collector: rsyslog, the one place the services send their logs to (Q1 of the devlog).
+# Listens on 127.0.0.1:5514 (udp and tcp) of the host, where Docker's syslog driver of
+# each service sends; writes resources/.containerdatavol/log-collector/<program>.log.
+services:
+  log-collector:
+    build: ./resources/configs/log-collector
+    ports:
+      - "127.0.0.1:5514:514/udp"
+      - "127.0.0.1:5514:514/tcp"
+    volumes:
+      - ./resources/.containerdatavol/log-collector:/logs
+    restart: unless-stopped
