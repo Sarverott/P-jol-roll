@@ -1,6 +1,6 @@
 # Image with node, playwright and camoufox - gatherer needs only node, checkup needs the browser.
 # https://crawlee.dev/docs/guides/docker-images
-FROM apify/actor-node-playwright-camoufox:24-1.60.0
+FROM apify/actor-node-playwright-camoufox:24-1.62.1
 
 # package files first, so layer with dependencies is reused until they change
 COPY --chown=myuser package*.json ./

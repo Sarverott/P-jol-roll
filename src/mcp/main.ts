@@ -11,7 +11,7 @@ a person, so an agent cannot set off a crawl of the source through here.
   claude mcp add p-jol-roll -- npx tsx src/mcp/main.ts
 */
 
-const server = new McpServer({ name: "p-jol-roll", version: "0.0.12" });
+const server = new McpServer({ name: "p-jol-roll", version: "0.0.13" });
 const readOnly = { readOnlyHint: true, openWorldHint: false };
 
 const answer = (value: unknown) => ({
