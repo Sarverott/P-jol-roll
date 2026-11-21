@@ -44,7 +44,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [x] One version: every version field (api, MCP, extension, Python projects) synced from `package.json` by `task version:sync` (Q8)
 - [x] Every commit on `dev/*` bumps the patch in the pre-commit hook, with the merge driver that keeps the higher version, as in the BOS core (Q8)
 - [x] Notes for the BOS repositories in `forge/NOTES-for-repositories.md` (outside git): `@go-task/cli` 3.54, npm 11 `allowScripts`, Biome 2.6, an eval case for the Dependabot skill
-- [ ] The project's place in the workshop: stays, with an optional relative scope (Q7, Q11)
+- ~~[ ] The project's place in the workshop: stays, with an optional relative scope (Q7, Q11)~~ - delegated to be resolved in core BOS repository project, here we work as in one of projects inside scope of "Sarverott's github repositories", repo cares only about own self, scope is topic related to way how workshop and forge works
 
 ## Phase 4: a website of the project
 
