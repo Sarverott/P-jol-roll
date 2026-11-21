@@ -137,6 +137,9 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   dataset/        tables: lists/, and per <journal>/<year> acts, files, details, references, texts, checkups
   bucket/         raw files of acts: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf}
   services/       one compose file per service, included by compose.yaml at the root
+  configs/        configurations of services, one directory per purpose, in git
+  .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
+  secrets/        generated secrets, one file each, ignored; .env wins over them
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md

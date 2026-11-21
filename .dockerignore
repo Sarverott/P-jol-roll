@@ -8,6 +8,8 @@
 
 # tokens
 .env
+resources/secrets
+resources/.containerdatavol
 
 # crawlee storage folder
 storage
