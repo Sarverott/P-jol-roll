@@ -58,9 +58,9 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 ## Phase 5: gathering on another machine
 
 - [x] Guide: the gatherer on a second machine - clone on the internal disk, resources on the drive through `.env` (read by every task now), what refuses and why, both ways home (Q10 picks one)
-- [ ] Rich logging: every command writes structured lines to stdout and, when asked, to syslog (Q1)
+- [x] Rich logging: every command writes structured lines to stdout and, when asked, to syslog (Q1)
 - [x] A test container for Parrot OS: `tests/unittesting/parrot-os/headless-server/` with the case `-gather-and-parse`, against a local copy of the API (Q1)
-- [ ] The Parrot OS trouble with the bare repository on an external drive, reproduced in that container and solved (Q1)
+- [x] The Parrot OS trouble with the bare repository on an external drive, reproduced in that container and solved: case `-bare-repo-on-drive` - npm `EPERM`, `Permission denied`, dubious ownership on the drive; the guide's layout works (Q1)
 
 ## Phase 6: services
 

@@ -11,3 +11,10 @@ tasks:
     cmds:
       - docker build -q -f tests/unittesting/parrot-os/headless-server/Dockerfile -t p-jol-roll-unittesting:parrot-os-headless-server .
       - docker run --rm p-jol-roll-unittesting:parrot-os-headless-server {{.CLI_ARGS | default "-gather-and-parse"}}
+
+  parrot-os-drive:
+    desc: 'Parrot OS with an external drive (FAT, noexec) holding a bare repository - case -bare-repo-on-drive; the container runs privileged to mount the drive image'
+    dir: '{{.TASKFILE_DIR}}/../..'
+    cmds:
+      - docker build -q -f tests/unittesting/parrot-os/headless-server/Dockerfile -t p-jol-roll-unittesting:parrot-os-headless-server .
+      - docker run --rm --privileged --user root p-jol-roll-unittesting:parrot-os-headless-server -bare-repo-on-drive

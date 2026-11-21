@@ -1,3 +1,4 @@
+import log from "../logging/setup.js";
 import * as store from "../resources/store.js";
 import type { GatheringScope } from "../vars/interfaces/index.js";
 import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
@@ -42,8 +43,14 @@ export async function compile() {
 		await store.saveJsonl(edgesTablePath(publisher, year), edges);
 		sum.details += details.length;
 		sum.edges += edges.length;
-		console.log(
+		log.info(
 			`${publisher}/${year}: ${details.length} acts, ${edges.length} ties`,
+			{
+				publisher,
+				year,
+				acts: details.length,
+				ties: edges.length,
+			},
 		);
 	}
 	return sum;

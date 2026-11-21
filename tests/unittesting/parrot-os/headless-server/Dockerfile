@@ -8,7 +8,7 @@ FROM parrotsec/core:latest
 # Node 24 and npm 11 taken whole from the official image (Parrot is Debian, the same libc)
 COPY --from=node /usr/local /usr/local
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends git ca-certificates \
+	&& apt-get install -y --no-install-recommends git ca-certificates dosfstools util-linux sudo \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& useradd --create-home gatherer
 USER gatherer
