@@ -10,6 +10,11 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # camoufox-js 0.13 wants playwright-core below 1.63 (its peer dependency); lift this
+    # when a camoufox-js release allows a newer one
+    ignore:
+      - dependency-name: playwright
+        versions: [">=1.63.0"]
     groups:
       npm-routine:
         update-types: [minor, patch]
