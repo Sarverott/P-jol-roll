@@ -13,6 +13,7 @@ includes:
   github: ./.github/Taskfile.yml
   resources: ./resources/Taskfile.yml
   unittesting: ./tests/unittesting/Taskfile.yml
+  flow: ./scripts/devops/Taskfile.yml
   docs: ./docs/Taskfile.yml
   devlog:
     taskfile: ./docs/devlog/Taskfile.yml

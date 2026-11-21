@@ -1,20 +1,23 @@
 # The same checks as `task check` and the hooks: Biome, TypeScript, the website build, tests,
-# and the build of the durable runs. On every push to development and a contributor's
-# dev/** branch, and on pull requests into the stations of the loop.
+# the build of the durable runs, and shellcheck of scripts/devops/. On every push to
+# development and a contributor's dev/** branch, on pull requests into development and
+# master, and called by the release (release.yml). A pull request from dev/<name> into
+# development is merged once these pass (scripts/devops/flow/automerge.sh).
 name: "checks › verify"
 
 on:
   push:
     branches: [development, "dev/**"]
   pull_request:
-    branches: [master, development, revision]
+    branches: [master, development]
+  workflow_call:
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: checks-${{ github.ref }}
+  group: checks-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
@@ -34,3 +37,23 @@ jobs:
       - name: Build of the durable runs (Nitro)
         working-directory: src/workflows
         run: npx nitro build
+      - name: Scripts of the workflows
+        run: scripts/devops/checks/shellcheck.sh
+
+  automerge:
+    needs: verify
+    if: >-
+      github.event_name == 'pull_request'
+      && github.base_ref == 'development'
+      && startsWith(github.head_ref, 'dev/')
+      && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Merge dev/<name> into development
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/devops/flow/automerge.sh "${{ github.event.pull_request.number }}"

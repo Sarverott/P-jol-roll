@@ -1,0 +1,3 @@
+# Settings of shellcheck for scripts/devops: every script sources ../_common.sh next to it
+source-path=SCRIPTDIR
+external-sources=true

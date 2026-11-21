@@ -41,3 +41,4 @@ in the country, as open source.
 | 5 | gathering on another machine: the heavy downloading delegated, and the trouble of Parrot OS solved |
 | 6 | services: every part of the project a container of its own, logs collected in one place |
 | 7 | init and launcher: a newcomer types `task` and is led |
+| 8 | releases and routines: a release on every merge into master, versions and phases closed by workflows, the rest of the routine by tasks |

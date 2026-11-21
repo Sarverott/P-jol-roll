@@ -28,7 +28,7 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    pre-commit hook gives it its own version (the patch bumped, every copy
    synced, `src/devtools/version.ts`). Never
    `--no-verify`. When a batch is done, `dev/<name>` is merged into
-   `development` with `--no-ff`. A confirmed member pushes `development`
+   `development` with `--no-ff` (`task flow:land` does it and pushes). A confirmed member pushes `development`
    and its own `dev/<name>` freely (Q2, answered 2026-11-15); `master`, tags,
    releases and repository settings are always asked for first.
    **The owner's edits** found in the working tree go first, as they are,
@@ -132,6 +132,7 @@ src/devtools/          tools of the repository itself: version.ts (one version: 
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
+  devops/              every step of the workflows as a .sh (pages, release, docs, flow, checks), local/ routines behind task flow:*
 tests/            vitest; gather.test.ts runs whole gathering against a local copy of API
   unittesting/    the project on other systems in containers: <system>/<setup>/Dockerfile, cases -<case>/run.sh
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
@@ -174,6 +175,8 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
 | `task unittesting:parrot-os` | Parrot OS headless server in a container, case `-gather-and-parse` (needs Docker) |
+| `task flow:land -- "..."` / `flow:sync` | your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
+| `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
