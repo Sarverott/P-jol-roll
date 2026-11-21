@@ -89,7 +89,7 @@ The NOTEs Sett left in `compose.yaml` (changelog phase 6), each moved to its pla
 
 The inquiry of 2026-11-22 (changelog phase 8). Workflows run scripts of `scripts/devops/`, never multi-line blocks.
 
-- [ ] `README.md` is the page GitHub shows again: the links move there, `.github/README.md` goes; third-party references under a **DISCLAIMER:** quote; ExplainGitHub and GitReverse kept only in a scrapnote
+- [x] `README.md` is the page GitHub shows again: the links move there, `.github/README.md` goes; third-party references under a **DISCLAIMER:** quote; ExplainGitHub and GitReverse kept only in a scrapnote
 - [ ] `scripts/devops/`: the scripts of every workflow, one `.sh` each, with a common part; `pages.yml` uses them
 - [ ] Release on every push to `master`: checks, tag `v<version>` and the GitHub release - before the documentation and the website
 - [ ] After the release, in order: Read the Docs builds the tag, the website is built and pushed to `github-pages`, `master` goes back into `development`
