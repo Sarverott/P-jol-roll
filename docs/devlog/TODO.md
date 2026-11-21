@@ -21,7 +21,9 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 
 - [x] Baseline recorded in `docs/.agents/NOTES.md`: what install, check, build and tests give before any repair
 - [x] Forced downgrades undone: `crawlee`, `camoufox-js` and the rest resolved by their ranges again, the lock regenerated from them, not by `audit fix --force`
-- [ ] Workflow SDK pilot on a version that builds and runs; the `nanoid` advisory recorded with its real reach (Q9)
+- [x] Workflow SDK pilot on a version that builds: `workflow` 5.7.1, Nitro build passes, the `nanoid` advisory gone with the update (Q9)
+- [x] Dependabot's pull requests gone through: all taken but `playwright` 1.65 (camoufox-js 0.13 wants `playwright-core` below 1.63, so 1.62.1) and `@types/node` 26 (Node 24 here, its types stay 24) (Q9)
+- [x] `npm audit` brought down from 39 (8 high) to 0: crawlee 3.18.2, overrides for `basic-ftp`, `zod`, `glob`, `minimatch`; no replacement needed (PP1) (Q9)
 - [x] The termui experiment placed so that checks pass: `src/tui/`, skipped by Biome and tsc (Q4)
 - [x] Node pinned: `engines`, `.nvmrc`; `npm ci` from a clean copy passes
 - [x] `.github/dependabot.yml`: npm and Actions, grouped, into `development`
@@ -39,17 +41,45 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [x] `.github/bos.json`: the loop (stations, contributors `dev/*`) and versioning, as in the BOS core
 - [x] Taskfiles: `task check` (= CI) runs everything, `task lint` is Biome alone, `verify` kept as its old name; `devlog:` included
 - [x] Anatomy checked against `bos-skillset`'s `bos-project` skill and the core's project template: all of it present; added `.github/AUTHORS` (`bos project authors`) and `task devlog:state` (`bos devlog state`)
-- [ ] Version `0.1.0` and `CHANGELOG.md`, counted from the phases (Q8)
+- [x] One version: every version field (api, MCP, extension, Python projects) synced from `package.json` by `task version:sync` (Q8)
+- [x] Every commit on `dev/*` bumps the patch in the pre-commit hook, with the merge driver that keeps the higher version, as in the BOS core (Q8)
 - [x] Notes for the BOS repositories in `forge/NOTES-for-repositories.md` (outside git): `@go-task/cli` 3.54, npm 11 `allowScripts`, Biome 2.6, an eval case for the Dependabot skill
-- [ ] The project's place in the workshop (Q7)
+- [ ] The project's place in the workshop: stays, with an optional relative scope (Q7, Q11)
 
 ## Phase 4: a website of the project
 
 - [x] MkDocs Material over `docs/` (as the BOS core): the idea, the state, guides, glossary, devlog
 - [x] The state on the home page, counted at build from `TODO.md` and `features.md`, so it never says more than they do
-- [ ] Publishing the website (Q6); `task docs:build` / `docs:serve` are there
+- [ ] Read the Docs builds the documentation with the locked tools of `docs/` (Q6)
+- [ ] `site/` from `master` pushed to the `github-pages` branch by a workflow, as in Amoorion (Q6)
+- [ ] A static build of the explorer reading the dataset and the bucket on Hugging Face, into `resources/space/webapp` (Q6)
+- [ ] The podcasts and Read the Docs linked from the README and the home page (Q12)
 
 ## Phase 5: gathering on another machine
 
 - [x] Guide: the gatherer on a second machine - clone on the internal disk, resources on the drive through `.env` (read by every task now), what refuses and why, both ways home (Q10 picks one)
-- [ ] The Parrot OS trouble with the bare repository on an external drive, reproduced and solved (Q1)
+- [ ] Rich logging: every command writes structured lines to stdout and, when asked, to syslog (Q1)
+- [ ] A test container for Parrot OS: `tests/unittesting/parrot-os/headless-server/` with the case `-gather-and-parse`, against a local copy of the API (Q1)
+- [ ] The Parrot OS trouble with the bare repository on an external drive, reproduced in that container and solved (Q1)
+
+## Phase 6: services
+
+The NOTEs Sett left in `compose.yaml` (changelog phase 6), each moved to its place.
+
+- [ ] `compose.yaml` includes one file per service from `resources/services/`; `web` renamed `webapp-server`
+- [ ] Directories with their ignore rules: `resources/configs/<purpose>/`, `resources/.containerdatavol/<volume>/`, `resources/secrets/`
+- [ ] `.env.example`; tokens left empty (after trimming) turn their optional functions off
+- [ ] `log-collector`: rsyslog, taking the logs of every service (Q1)
+- [ ] `docs-server`: the documentation served locally
+- [ ] `gatherer-daemon` and `parser-daemon`: gathering and parsing as separate units, started by a person
+- [ ] `routing-proxy` (traefik) and `internal-dns` (dnsmasq), for local use with the desktop window
+- [ ] `hf-demo-space`: the static explorer of phase 4 served from `resources/space/webapp`
+- [ ] `llms-api-host`: ollama behind a litellm proxy
+- [ ] `agentic-shell`: a shell gateway nearest to the host machine
+- [ ] `hf-gateway`: WireGuard connections towards Hugging Face (optional)
+
+## Phase 7: init and launcher
+
+- [ ] `task init`: checks what is installed, generates secrets, copies `.env.example`, once
+- [ ] `task help` lists the tasks; bare `task` starts the launcher
+- [ ] The launcher: a terminal menu in `src/tui/` over commands declared in `src/cli/`

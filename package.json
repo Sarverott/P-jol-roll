@@ -1,6 +1,6 @@
 {
   "name": "P-jol-roll",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "private": true,
   "type": "module",
   "description": "crawler to garher every PDF from https://dziennikustaw.gov.pl/DU",
@@ -10,11 +10,11 @@
     "@xterm/xterm": "^6.0.0",
     "astro": "^7.3.8",
     "bulma": "^1.0.4",
-    "camoufox-js": "^0.12.0",
-    "crawlee": "^3.0.0",
+    "camoufox-js": "^0.13.0",
+    "crawlee": "^3.18.2",
     "marked": "^18.1.1",
     "nitro": "^3.0.260903-beta",
-    "playwright": "1.60.0",
+    "playwright": "1.62.1",
     "pyodide": "^314.0.7",
     "rollup": "^4.64.6",
     "socket.io": "^4.8.4",
@@ -28,7 +28,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@anthropic-ai/sdk": "^0.133.0",
+    "@anthropic-ai/sdk": "^1.12.0",
     "@apify/tsconfig": "^0.2.0",
     "@astrojs/vue": "^7.0.3",
     "@biomejs/biome": "^2.5.15",
@@ -36,7 +36,7 @@
     "@commitlint/config-conventional": "^21.2.4",
     "@electron-forge/cli": "^8.0.1",
     "@go-task/cli": "^3.54.0",
-    "@google/genai": "^2.29.0",
+    "@google/genai": "^3.6.1",
     "@huggingface/hub": "^2.17.6",
     "@huggingface/inference": "^4.13.32",
     "@huggingface/mcp-client": "^0.2.3",
@@ -55,7 +55,7 @@
     "openai": "^7.32.0",
     "translate": "^3.1.0",
     "tsx": "^4.4.0",
-    "typescript": "~6.0.0",
+    "typescript": "^7.0.2",
     "vitest": "^5.0.4"
   },
   "scripts": {
@@ -106,5 +106,11 @@
     "cpu-features": false,
     "protobufjs": false,
     "ssh2": false
+  },
+  "overrides": {
+    "basic-ftp": "^6.2.6",
+    "zod": "^4.6.7",
+    "glob": "^14.0.6",
+    "minimatch": "^11.0.9"
   }
 }

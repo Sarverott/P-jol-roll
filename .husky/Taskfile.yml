@@ -6,9 +6,24 @@ version: '3'
 # one task per git hook, named like the hook
 tasks:
   pre-commit:
-    desc: Biome check of staged files, nothing gets changed.
+    desc: The commit's own version (dev/* bumps the patch), then Biome check of staged files - nothing else gets changed.
     cmds:
+      - task: merge-driver
+      - task: bump-commit
       - npx biome check --staged --no-errors-on-unmatched
+
+  bump-commit:
+    desc: 'On a dev/* branch every commit has its own version: the patch bumped, every copy synced and staged (.github/bos.json versioning.commits)'
+    # HUSKY=0: nothing started from here runs the hooks again; the bump only writes and stages files
+    env: { HUSKY: "0" }
+    cmds:
+      - node src/devtools/version.ts bump-commit
+
+  merge-driver:
+    desc: Register in this clone the merge driver that .gitattributes names (merge=version)
+    cmds:
+      - git config merge.version.name 'P_JOL_ROLL - the higher version, then a three-way merge'
+      - git config merge.version.driver 'node src/devtools/version.ts merge %O %A %B'
 
   commit-msg:
     desc: Commitlint on the message being written - conventional commits, as in the BOS core.
