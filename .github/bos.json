@@ -38,7 +38,7 @@
 		},
 		"tagPrefix": "v",
 		"commits": {
-			"branches": [],
+			"branches": ["dev/*"],
 			"bump": "patch"
 		}
 	}

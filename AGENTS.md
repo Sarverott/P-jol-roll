@@ -24,7 +24,9 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
 2. **Where edits go: the BOS craft loop.** A member works on its own
    `dev/<name>` branch (`dev/Cleo`), made from `development`; never on
    `master`. One finished, checked step of `docs/devlog/TODO.md` is one
-   conventional commit (`type(scope): subject`) that ticks its box. Never
+   conventional commit (`type(scope): subject`) that ticks its box; the
+   pre-commit hook gives it its own version (the patch bumped, every copy
+   synced, `src/devtools/version.ts`). Never
    `--no-verify`. When a batch is done, `dev/<name>` is merged into
    `development` with `--no-ff`. A confirmed member pushes `development`
    and its own `dev/<name>` freely (Q2, answered 2026-11-15); `master`, tags,

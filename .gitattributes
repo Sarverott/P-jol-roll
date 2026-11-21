@@ -1,0 +1,6 @@
+# Every commit on a dev/* branch bumps the patch (pre-commit hook), so the version
+# differs whenever two branches meet: the driver keeps the higher one and merges the
+# rest as usual. `task husky:merge-driver` registers it (every pre-commit does);
+# without it git merges these files as text.
+package.json merge=version
+package-lock.json merge=version
