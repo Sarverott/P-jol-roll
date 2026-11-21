@@ -1,5 +1,6 @@
 // One version for the whole repository: the `version` of package.json.
 //   node src/devtools/version.ts sync           every other version field written from it
+//   node src/devtools/version.ts bump minor     X.Y.Z bumped (major, minor or patch), then sync - used by the workflows
 //   node src/devtools/version.ts bump-commit    on a branch of .github/bos.json versioning.commits: the patch bumped, then sync
 //   node src/devtools/version.ts merge O A B    git merge driver: the higher version of A and B, then a three-way merge
 // As in the BOS core (`bos flow bump-commit`, `bos flow merge-version`), without needing `bos` installed.
@@ -81,6 +82,20 @@ const matches = (branch: string, pattern: string) =>
 		? branch.startsWith(pattern.slice(0, -1))
 		: branch === pattern;
 
+// X.Y.Z bumped by "major", "minor" or "patch", written and synced; the files it changed
+function bump(kind: string) {
+	const pkg = readJson(at("package.json"));
+	const [x, y, z] = parse(pkg.version);
+	pkg.version =
+		kind === "major"
+			? `${x + 1}.0.0`
+			: kind === "minor"
+				? `${x}.${y + 1}.0`
+				: `${x}.${y}.${z + 1}`;
+	writeJson(at("package.json"), pkg);
+	return sync();
+}
+
 function bumpCommit() {
 	const commits = readJson(at(".github/bos.json")).versioning?.commits ?? {};
 	const branch = git("rev-parse", "--abbrev-ref", "HEAD");
@@ -89,19 +104,10 @@ function bumpCommit() {
 		console.log(`version: ${branch} does not bump`);
 		return;
 	}
-	const pkg = readJson(at("package.json"));
-	const [x, y, z] = parse(pkg.version);
-	const bump = commits.bump ?? "patch";
-	pkg.version =
-		bump === "major"
-			? `${x + 1}.0.0`
-			: bump === "minor"
-				? `${x}.${y + 1}.0`
-				: `${x}.${y}.${z + 1}`;
-	writeJson(at("package.json"), pkg);
-	const { version, files } = sync();
+	const kind = commits.bump ?? "patch";
+	const { version, files } = bump(kind);
 	git("add", "--", ...files);
-	console.log(`version: ${version} (${bump} of ${branch})`);
+	console.log(`version: ${version} (${kind} of ${branch})`);
 }
 
 // git calls it with the ancestor, ours (the result goes here) and theirs
@@ -129,11 +135,14 @@ if (command === "sync") {
 	const { version, files } = sync();
 	console.log(`version: ${version} in ${files.join(", ")}`);
 } else if (command === "bump-commit") bumpCommit();
-else if (command === "merge" && args.length === 3)
+else if (command === "bump" && ["major", "minor", "patch"].includes(args[0])) {
+	const { version, files } = bump(args[0]);
+	console.log(`version: ${version} in ${files.join(", ")}`);
+} else if (command === "merge" && args.length === 3)
 	merge(args[0], args[1], args[2]);
 else {
 	console.error(
-		"usage: version.ts sync | bump-commit | merge <base> <ours> <theirs>",
+		"usage: version.ts sync | bump major|minor|patch | bump-commit | merge <base> <ours> <theirs>",
 	);
 	process.exit(2);
 }
