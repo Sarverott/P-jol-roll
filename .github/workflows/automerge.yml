@@ -1,0 +1,35 @@
+# A pull request from a contributor's dev/<name> into development: the checks (checks.yml),
+# then it merges itself (scripts/devops/flow/automerge.sh). Any other pull request into
+# development gets the checks and waits for a person.
+name: "flow › pull request into development: checks, then automerge"
+
+on:
+  pull_request:
+    branches: [development]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: automerge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.yml
+
+  automerge:
+    needs: checks
+    if: >-
+      startsWith(github.head_ref, 'dev/')
+      && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Merge dev/<name> into development
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/devops/flow/automerge.sh "${{ github.event.pull_request.number }}"
