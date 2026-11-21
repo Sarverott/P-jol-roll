@@ -43,7 +43,9 @@ export the variable first. `.env` is ignored by git.
 | hooks do not stop a bad commit | `@go-task/cli` older than 3.54 drops the exit code | `npm install` from this version of the repository brings 3.54 |
 
 `lsblk -f` shows how a drive is formatted, `findmnt <path>` how it is
-mounted. Q1 in the devlog collects what actually failed on Parrot OS.
+mounted. `task unittesting:parrot-os-drive` shows the three refusals above
+on Parrot OS with a FAT drive mounted `noexec`, and the layout of this
+page working on the same drive.
 
 ## Bringing the data back
 

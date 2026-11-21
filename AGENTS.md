@@ -176,7 +176,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
-| `task unittesting:parrot-os` | Parrot OS headless server in a container, case `-gather-and-parse` (needs Docker) |
+| `task unittesting:parrot-os` / `parrot-os-drive` | Parrot OS headless server in a container: case `-gather-and-parse` / `-bare-repo-on-drive` (privileged; needs Docker) |
 | `task flow:land -- "..."` / `flow:sync` | your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
 | `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
