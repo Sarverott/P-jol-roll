@@ -53,7 +53,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [x] Read the Docs builds the documentation with the locked tools of `docs/` (Q6)
 - [x] `site/` from `master` pushed to the `github-pages` branch by a workflow, as in Amoorion (Q6)
 - [ ] A static build of the explorer reading the dataset and the bucket on Hugging Face, into `resources/space/webapp` (Q6)
-- [ ] The podcasts and Read the Docs linked from the README and the home page (Q12)
+- [x] Links in `.github/README.md`: introduction, demo, bucket, dataset, the podcasts in 12 languages, documentation, code, the repository seen by other tools (Q12)
 
 ## Phase 5: gathering on another machine
 
@@ -80,6 +80,7 @@ The NOTEs Sett left in `compose.yaml` (changelog phase 6), each moved to its pla
 
 ## Phase 7: init and launcher
 
-- [ ] `task init`: checks what is installed, generates secrets, copies `.env.example`, once
-- [ ] `task help` lists the tasks; bare `task` starts the launcher
+- [x] `task init`: checks what is installed, generates secrets, copies `.env.example`, once
+- [x] `task help` lists the tasks (bare `task` runs it until the launcher exists)
+- [ ] Bare `task` starts the launcher
 - [ ] The launcher: a terminal menu in `src/tui/` over commands declared in `src/cli/`

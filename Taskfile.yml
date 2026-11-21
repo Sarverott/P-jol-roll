@@ -25,9 +25,24 @@ includes:
 tasks:
 
   default:
+    # NOTE: we want to make easy project lounching for newcommers, so cui louncher should be runned when we call "task" and current listing of commands will be "task help"
+    # ANSWER: "task help" lists them now; this stays the listing until the launcher of src/tui/ exists (phase 7)
+    cmds:
+      - task: help
+    silent: true
+
+  help:
+    desc: Every task with one line each.
     cmds:
       - task --list
     silent: true
+
+  init:
+    desc: First launch on this machine - checks what is installed, makes .env from .env.example, generates secrets; once (task init -f again).
+    cmds:
+      - node src/devtools/init.ts
+    status:
+      - test -f resources/.containerdatavol/init/done
 
   gather:
     desc: Gather from ELI API of Sejm, arguments after "--" (e.g. task gather -- 2026 --acts --limit 5), usage in src/core/main.ts.

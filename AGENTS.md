@@ -128,7 +128,7 @@ src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
 src/tui/               Sett's terminal interface experiment (TermUI), out of the checks until its packages are added
-src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver)
+src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init)
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
@@ -161,6 +161,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 
 | Command | What it does |
 | --- | --- |
+| `task init` | first launch on a machine: tools checked, `.env` from `.env.example`, secrets generated; once |
 | `task gather` | lists and metadata of the newest year, every journal |
 | `task gather -- 2026 --acts --limit 5` | and all files of 5 acts that miss any |
 | `task gather:everything` | all of it, asks before it starts |
