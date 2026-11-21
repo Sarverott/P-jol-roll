@@ -39,3 +39,5 @@ in the country, as open source.
 | 3 | BOS integration: settings, tasks, hooks and versions the way every BOS project has them |
 | 4 | a website that presents the idea and the state of the project |
 | 5 | gathering on another machine: the heavy downloading delegated, and the trouble of Parrot OS solved |
+| 6 | services: every part of the project a container of its own, logs collected in one place |
+| 7 | init and launcher: a newcomer types `task` and is led |

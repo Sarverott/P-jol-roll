@@ -1,0 +1,28 @@
+# Read the Docs configuration file
+# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+# Published as https://lex-polonica.readthedocs.io/ (Q6 of the devlog).
+
+# Required
+version: 2
+
+# Set the OS, Python version, and other tools you might need
+build:
+  os: ubuntu-24.04
+  tools:
+    python: "3.13"
+  # The tools of the website are a uv project (docs/pyproject.toml, docs/uv.lock):
+  # installed from the lock, the same versions as `task docs:build` uses locally.
+  jobs:
+    pre_create_environment:
+      - asdf plugin add uv
+      - asdf install uv latest
+      - asdf global uv latest
+    create_environment:
+      - uv venv "${READTHEDOCS_VIRTUALENV_PATH}"
+    install:
+      - UV_PROJECT_ENVIRONMENT="${READTHEDOCS_VIRTUALENV_PATH}" uv sync --frozen --project docs
+
+# Build documentation with Mkdocs
+mkdocs:
+   configuration: docs/mkdocs.yml
+   fail_on_warning: true

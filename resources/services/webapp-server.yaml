@@ -1,0 +1,22 @@
+# webapp-server: the http api with the website, over gathered resources mounted read-only.
+# Included by compose.yaml at the root, with the root as its project directory, so the
+# paths below are relative to the root of the repository.
+services:
+  webapp-server:
+    build: .
+    entrypoint: ["node", "dist/openapi/main.js"]
+    environment:
+      HOST: 0.0.0.0
+      PORT: "8080"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./resources:/home/myuser/resources:ro
+    restart: unless-stopped
+    # its logs to log-collector (udp: the service starts even when the collector does not run;
+    # `docker compose logs` still shows them)
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://127.0.0.1:5514
+        tag: p-jol-roll-webapp-server

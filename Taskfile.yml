@@ -12,6 +12,7 @@ includes:
   husky: ./.husky/Taskfile.yml
   github: ./.github/Taskfile.yml
   resources: ./resources/Taskfile.yml
+  unittesting: ./tests/unittesting/Taskfile.yml
   docs: ./docs/Taskfile.yml
   devlog:
     taskfile: ./docs/devlog/Taskfile.yml
@@ -83,6 +84,11 @@ tasks:
     desc: Run tests once.
     cmds:
       - npx vitest run
+
+  version:sync:
+    desc: Every version field (lock, api, MCP, extension, Python projects) written from the version of package.json.
+    cmds:
+      - node src/devtools/version.ts sync
 
   lint:
     desc: Lint and check formatting with biome, nothing gets changed.

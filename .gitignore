@@ -14,6 +14,14 @@ resources/sejm-dataset
 resources/sejm-bucket
 resources/saos-dataset
 
+# compose services (phase 6): configs in resources/configs/<purpose>/ are kept in git;
+# data of containers that must stay but never be pushed, one directory per volume
+resources/.containerdatavol/*
+!resources/.containerdatavol/README.md
+# secrets generated at the first `task init`, one file each; .env overrides them
+resources/secrets/*
+!resources/secrets/README.md
+
 .idea
 dist
 node_modules

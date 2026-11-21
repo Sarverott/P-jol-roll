@@ -22,11 +22,12 @@ file by file, the way git does it: by path, size and hash of content. Only
 what differs is moved, so repeating push or pull costs one listing.
 */
 
-// token is needed for push and for private repositories - HF_TOKEN in environment or in .env
+// token is needed for push and for private repositories - HF_TOKEN in environment or in .env;
+// empty or only spaces means no token (.env.example)
 try {
 	process.loadEnvFile();
 } catch {}
-const accessToken = process.env.HF_TOKEN;
+const accessToken = process.env.HF_TOKEN?.trim() || undefined;
 
 // never moved in any direction
 const IGNORED = [".git", "node_modules", ".venv", "__pycache__"];

@@ -27,7 +27,7 @@ task check                                    # nothing asks the internet
 task gather -- 2026 --acts --limit 5          # a small run first
 ```
 
-Every task reads `.env` of the working copy (`dotenv` in `Taskfile.yml`),
+`.env.example` lists every setting; every task reads `.env` of the working copy (`dotenv` in `Taskfile.yml`),
 so `RESOURCES_DIR` set there holds for all of them; a variable set in the
 shell wins over it. `npm run ...` without Task does not read `.env`: there,
 export the variable first. `.env` is ignored by git.
