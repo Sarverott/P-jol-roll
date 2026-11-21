@@ -84,6 +84,11 @@ tasks:
     cmds:
       - npx vitest run
 
+  version:sync:
+    desc: Every version field (lock, api, MCP, extension, Python projects) written from the version of package.json.
+    cmds:
+      - node src/devtools/version.ts sync
+
   lint:
     desc: Lint and check formatting with biome, nothing gets changed.
     cmds:

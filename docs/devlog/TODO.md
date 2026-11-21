@@ -41,7 +41,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [x] `.github/bos.json`: the loop (stations, contributors `dev/*`) and versioning, as in the BOS core
 - [x] Taskfiles: `task check` (= CI) runs everything, `task lint` is Biome alone, `verify` kept as its old name; `devlog:` included
 - [x] Anatomy checked against `bos-skillset`'s `bos-project` skill and the core's project template: all of it present; added `.github/AUTHORS` (`bos project authors`) and `task devlog:state` (`bos devlog state`)
-- [ ] One version: every version field (api, MCP, extension, Python projects) synced from `package.json` by `task version:sync` (Q8)
+- [x] One version: every version field (api, MCP, extension, Python projects) synced from `package.json` by `task version:sync` (Q8)
 - [ ] Every commit on `dev/*` bumps the patch in the pre-commit hook, with the merge driver that keeps the higher version, as in the BOS core (Q8)
 - [x] Notes for the BOS repositories in `forge/NOTES-for-repositories.md` (outside git): `@go-task/cli` 3.54, npm 11 `allowScripts`, Biome 2.6, an eval case for the Dependabot skill
 - [ ] The project's place in the workshop: stays, with an optional relative scope (Q7, Q11)

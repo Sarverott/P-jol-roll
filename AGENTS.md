@@ -126,6 +126,7 @@ src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
 src/tui/               Sett's terminal interface experiment (TermUI), out of the checks until its packages are added
+src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver)
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
@@ -164,6 +165,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
+| `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
