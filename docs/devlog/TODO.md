@@ -95,6 +95,6 @@ The inquiry of 2026-11-22 (changelog phase 8). Workflows run scripts of `scripts
 - [x] After the release, in order: Read the Docs builds the tag, the website is built and pushed to `github-pages`, `master` goes back into `development`
 - [x] Closing a phase: a workflow bumps Y (`vX.Y.Z`), pushes it to `development` and opens the pull request to `master`
 - [x] Pull requests from `dev/*` into `development` merged by a workflow once checks pass
-- [ ] Local routines as tasks: land `dev/<name>` into `development` and push, sync from `origin`, take the owner's edits
+- [x] Local routines as tasks: `task flow:land` (dev/<name> into development, both pushed), `task flow:sync` (origin, master merged in, dev/<name> brought up), `task flow:phase-close`; the owner's edits stay with an agent, who has to say how it understood them
 - [ ] `webpage/`: a React page, the introduction at the root of the website, with the MkDocs site under it
 
