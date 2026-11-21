@@ -18,6 +18,14 @@ updates:
     groups:
       npm-routine:
         update-types: [minor, patch]
+  - package-ecosystem: npm
+    directory: /webpage
+    target-branch: development
+    schedule:
+      interval: weekly
+    groups:
+      webpage-routine:
+        update-types: [minor, patch]
   - package-ecosystem: github-actions
     directory: /
     target-branch: development

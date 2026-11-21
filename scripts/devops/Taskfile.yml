@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+# The routine of the BOS loop on this machine (scripts/devops/local/). Included by the root
+# Taskfile as `flow:`. The workflows run the scripts of the other directories themselves.
+
+version: '3'
+
+tasks:
+  land:
+    desc: 'Your dev/<name> merged into development (--no-ff), both pushed, dev/<name> brought up again: task flow:land -- "what the batch did"'
+    cmds:
+      - scripts/devops/local/land.sh {{.CLI_ARGS}}
+
+  sync:
+    desc: development from origin (the owner's GitHub edits), master merged in when ahead, your dev/<name> brought up to it
+    cmds:
+      - scripts/devops/local/sync.sh
+
+  phase-close:
+    desc: 'Close a phase on GitHub - Y bumped, pull request to master: task flow:phase-close -- <n>'
+    cmds:
+      - scripts/devops/local/phase-close.sh {{.CLI_ARGS}}
+
+  lint:
+    desc: shellcheck over scripts/devops/ (needs shellcheck)
+    cmds:
+      - scripts/devops/checks/shellcheck.sh

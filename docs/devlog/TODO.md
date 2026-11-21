@@ -53,7 +53,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [x] Read the Docs builds the documentation with the locked tools of `docs/` (Q6)
 - [x] `site/` from `master` pushed to the `github-pages` branch by a workflow, as in Amoorion (Q6)
 - [ ] A static build of the explorer reading the dataset and the bucket on Hugging Face, into `resources/space/webapp` (Q6)
-- [ ] The podcasts and Read the Docs linked from the README and the home page (Q12)
+- [x] Links in `.github/README.md`: introduction, demo, bucket, dataset, the podcasts in 12 languages, documentation, code, the repository seen by other tools (Q12)
 
 ## Phase 5: gathering on another machine
 
@@ -80,6 +80,21 @@ The NOTEs Sett left in `compose.yaml` (changelog phase 6), each moved to its pla
 
 ## Phase 7: init and launcher
 
-- [ ] `task init`: checks what is installed, generates secrets, copies `.env.example`, once
-- [ ] `task help` lists the tasks; bare `task` starts the launcher
+- [x] `task init`: checks what is installed, generates secrets, copies `.env.example`, once
+- [x] `task help` lists the tasks (bare `task` runs it until the launcher exists)
+- [ ] Bare `task` starts the launcher
 - [ ] The launcher: a terminal menu in `src/tui/` over commands declared in `src/cli/`
+
+## Phase 8: releases and routines
+
+The inquiry of 2026-11-22 (changelog phase 8). Workflows run scripts of `scripts/devops/`, never multi-line blocks.
+
+- [x] `README.md` is the page GitHub shows again: the links move there, `.github/README.md` goes; third-party references under a **DISCLAIMER:** quote; ExplainGitHub and GitReverse kept only in a scrapnote
+- [x] `scripts/devops/`: the scripts of every workflow, one `.sh` each, with a common part and shellcheck in CI
+- [x] Release on every push to `master`: checks, tag `v<version>` and the GitHub release - before the documentation and the website
+- [x] After the release, in order: Read the Docs builds the tag, the website is built and pushed to `github-pages`, `master` goes back into `development`
+- [x] Closing a phase: a workflow bumps Y (`vX.Y.Z`), pushes it to `development` and opens the pull request to `master`
+- [x] Pull requests from `dev/*` into `development` merged by a workflow once checks pass
+- [x] Local routines as tasks: `task flow:land` (dev/<name> into development, both pushed), `task flow:sync` (origin, master merged in, dev/<name> brought up), `task flow:phase-close`; the owner's edits stay with an agent, who has to say how it understood them
+- [x] `webpage/`: a React page, the introduction at the root of the website, with the MkDocs site under `docs/`
+

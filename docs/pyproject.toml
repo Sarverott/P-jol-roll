@@ -2,7 +2,7 @@
 # the markdown of docs/. Dependencies are listed here only; `task docs:lock` refreshes uv.lock.
 [project]
 name = "p-jol-roll-docs"
-version = "0.0.18"
+version = "0.2.0"
 description = "Website of P_JOL_ROLL: the idea, the state and the guides, built with MkDocs"
 authors = [
     { name = "Sett Sarverott", email = "sett@sarverott.com" }

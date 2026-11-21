@@ -12,12 +12,40 @@ website and an MCP server for AI agents. The far goal: an open
 
 Nothing here is legal advice. See [what the data is and is not](docs/guides/data.md#what-it-is-not).
 
-### repositories related with this one
+## Links
 
-- on HuggingFace 
-    - S3 Bucket with raw docs: https://huggingface.co/buckets/Sarverott/raw-law-of-poland
-    - Dataset with markdown-parsed docs with content and without trash: https://huggingface.co/datasets/Sarverott/polish_national_law_docs
-    - presenting demo space to preview docs: https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland
+- **Introduction** (the website of the project, GitHub Pages): https://sarverott.github.io/P-jol-roll/
+- **Demo** (browse the acts, Hugging Face space): https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland
+- **Bucket** (raw files of every act): https://huggingface.co/buckets/Sarverott/raw-law-of-poland
+- **Dataset** (tables and markdown of the acts): https://huggingface.co/datasets/Sarverott/polish_national_law_docs
+- **Podcasts about the project**, 12 languages, on Google Drive: [the whole folder](https://drive.google.com/drive/folders/1yklwKu-k9AXvT_CJlFhjhtmbaY3VSD7k)
+    - PL (Polski): [P-jol-roll uczy AI polskiego prawa](https://drive.google.com/file/d/1yTeUXJgW3X8Y0A5nsNUuvsHuzLRexGQU/view)
+    - EN (English): [Reverse Engineering Polish Law for AI](https://drive.google.com/file/d/13MJHVm9r9u-rqBwDg-bPdhVRM2DNXEgf/view)
+    - DE (Deutsch): [Ein Entwickler macht Polens Rechtssystem KI-bereit](https://drive.google.com/file/d/1ooqmwBEpH2N_Q03VxA4-2hyegdwk9rfz/view)
+    - ES (Español): [Estructurar las leyes polacas para IA](https://drive.google.com/file/d/1SfJLPqWTQYtmG2ksY2EDz0G4o1QqjvyY/view)
+    - FR (Français): [Un développeur solo structure les lois polonaises](https://drive.google.com/file/d/1te4lCq1cIff1Eg9Ax0DQfIl_U7Baatqq/view)
+    - IT (Italiano): [Tradurre le leggi per l'intelligenza artificiale](https://drive.google.com/file/d/1TBdDWgaSRzSSLCv9eRvKQ_GQ22lWJFJM/view)
+    - RO (Română): [Un programator digitalizează legile Poloniei pentru AI](https://drive.google.com/file/d/1B04JWltBs2KzHRLKK55EZKKg7RvxkVu_/view)
+    - HU (Magyar): [Lengyel törvények átalakítása AI adattá](https://drive.google.com/file/d/100gjWNfmT7XcQyVNjc9MswP2-Gdx2P_y/view)
+    - TR (Türkçe): [Polonya Yasalarını Temizleyen P-jol-roll Projesi](https://drive.google.com/file/d/1b9yQ7pevJzXPprKSLH9vo9hNuygXbcik/view)
+    - RU (Русский): [Как оцифровать законы Польши для ИИ](https://drive.google.com/file/d/1RmheRvm5LlFRk2mMDZipkeO0M6_JUXHQ/view)
+    - JA (日本語): [難解な政府法律PDFをAI用マークダウンに変換](https://drive.google.com/file/d/1pGLBfUQqTdaYW4IGUZFGPrYEQGaunJGd/view)
+    - KO (한국어): [국가 법률 PDF를 해체한 1인 개발자](https://drive.google.com/file/d/1mIhxodV9kDpCMHYdz6DXSJTgvU01lWl3/view)
+- **Documentation** (Read the Docs): https://lex-polonica.readthedocs.io/
+- **Code**: https://github.com/Sarverott/P-jol-roll (mirrors on GitLab and Bitbucket later)
+
+### Known references to this project by third party sources
+
+> **DISCLAIMER:** these pages are made by other people's services, mostly
+> by machines, from this repository as it is. The project does not check
+> them and is not responsible for their mistakes; none of it is legal
+> advice.
+
+- [GitIngest](https://gitingest.com/sarverott/p-jol-roll) - the repository as one text, for a language model
+- [DeepWiki](https://deepwiki.com/Sarverott/P-jol-roll) - a wiki written by AI
+- [GitMCP](https://gitmcp.io/Sarverott/P-jol-roll) - the repository as an MCP server (the project's own MCP server reads the gathered law: `task mcp`)
+- [GitDiagram](https://gitdiagram.com/Sarverott/P-jol-roll) - a diagram of the code drawn by AI
+- [github.dev](https://github.dev/Sarverott/P-jol-roll) - the code in an editor in the browser (GitHub's own)
 
 ## Getting started
 
@@ -28,6 +56,7 @@ comes with the dependencies as `npx task`.
 ```sh
 git clone --recurse-submodules https://github.com/Sarverott/P-jol-roll.git
 cd P-jol-roll && npm install        # also downloads the browser and sets up git hooks
+task init                           # once: tools checked, .env from .env.example, secrets
 task verify                         # checks, build, tests - nothing asks the internet
 task gather -- 2026 --acts --limit 5   # a small gathering: listing of 2026, files of 5 acts
 task compile && task text           # tables and markdown from what was gathered

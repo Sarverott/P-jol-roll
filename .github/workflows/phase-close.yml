@@ -1,0 +1,33 @@
+# Closing a phase of docs/devlog/TODO.md (phase 8 of the devlog): Y of vX.Y.Z bumped on
+# development, pushed, and the pull request development → master opened. Refused while the
+# phase has an open step. Started by hand, or locally by `task flow:phase-close -- <n>`.
+name: "flow › close a phase: bump Y, pull request to master"
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: number of the phase of docs/devlog/TODO.md that is done
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: phase-close
+  cancel-in-progress: false
+
+jobs:
+  close:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with: { ref: development, fetch-depth: 0 }
+      - uses: actions/setup-node@v7
+        with: { node-version-file: .nvmrc }
+      - name: Bump Y, push, open the pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/devops/flow/phase-close.sh "${{ inputs.phase }}"

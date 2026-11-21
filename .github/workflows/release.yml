@@ -1,0 +1,92 @@
+# Every push to master releases (phase 8 of the devlog) - a merged pull request
+# development → master, a person's merge. In order, as Sett asked: the release first, then
+# the documentation, then the website:
+#   1. checks (checks.yml)
+#   2. a version reaching master released already gets the patch (a hotfix); then the tag
+#      v<version> and the GitHub release, skipped when that tag exists
+#   3. Read the Docs activates and builds the tag (only with READTHEDOCS_API_TOKEN)
+#   4. the website built (the React introduction of webpage/ at the root, the MkDocs
+#      documentation under docs/) and pushed to the github-pages branch
+#   5. master merged back into development
+# Every step is a script of scripts/devops/, runnable by hand.
+name: "release › master: tag, docs, website, back into development"
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  checks:
+    uses: ./.github/workflows/checks.yml
+
+  release:
+    needs: checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      tag: ${{ steps.release.outputs.tag }}
+      version: ${{ steps.hotfix.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with: { ref: master, fetch-depth: 0 }
+      - uses: actions/setup-node@v7
+        with: { node-version-file: .nvmrc }
+      - name: Hotfix bump (a released version reaching master)
+        id: hotfix
+        run: scripts/devops/release/hotfix.sh
+      - name: Tag and GitHub release
+        id: release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/devops/release/release.sh
+
+  readthedocs:
+    needs: release
+    if: needs.release.outputs.tag
+    runs-on: ubuntu-latest
+    env:
+      READTHEDOCS_API_TOKEN: ${{ secrets.READTHEDOCS_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+      - run: scripts/devops/docs/readthedocs.sh "${{ needs.release.outputs.tag }}"
+
+  pages:
+    # after the release and the documentation; the website of what master holds now
+    needs: [release, readthedocs]
+    if: ${{ !cancelled() && needs.release.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      SITE_URL: https://sarverott.github.io/P-jol-roll/
+    steps:
+      - uses: actions/checkout@v7
+        with: { ref: master }
+      - uses: astral-sh/setup-uv@v6
+      - uses: actions/setup-node@v7
+        with: { node-version-file: .nvmrc }
+      - run: scripts/devops/pages/build.sh
+      - run: scripts/devops/pages/publish.sh "${{ needs.release.outputs.tag || needs.release.outputs.version }}"
+
+  back:
+    needs: [release, readthedocs, pages]
+    if: ${{ !cancelled() && needs.release.result == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v7
+        with: { node-version-file: .nvmrc }
+      - name: master back into development
+        run: scripts/devops/flow/merge-into.sh origin/master development

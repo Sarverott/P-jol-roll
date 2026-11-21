@@ -89,6 +89,7 @@ nav:
       - Scrapnotes:
           - devlog/scrapnote-1791881492510.md
           - devlog/scrapnote-1791920000154.md
+          - devlog/scrapnote-1795303854040.md
   - Changelog:
       - changelog/phase-0.md
       - changelog/phase-1.md
@@ -96,6 +97,7 @@ nav:
       - changelog/phase-4.md
       - changelog/phase-5.md
       - changelog/phase-6.md
+      - changelog/phase-8.md
   - For agents:
       - .agents/NOTES.md
       - .agents/things-to-check.md
