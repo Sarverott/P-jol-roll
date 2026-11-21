@@ -94,7 +94,7 @@ The inquiry of 2026-11-22 (changelog phase 8). Workflows run scripts of `scripts
 - [x] Release on every push to `master`: checks, tag `v<version>` and the GitHub release - before the documentation and the website
 - [x] After the release, in order: Read the Docs builds the tag, the website is built and pushed to `github-pages`, `master` goes back into `development`
 - [x] Closing a phase: a workflow bumps Y (`vX.Y.Z`), pushes it to `development` and opens the pull request to `master`
-- [ ] Pull requests from `dev/*` into `development` merged by a workflow once checks pass
+- [x] Pull requests from `dev/*` into `development` merged by a workflow once checks pass
 - [ ] Local routines as tasks: land `dev/<name>` into `development` and push, sync from `origin`, take the owner's edits
 - [ ] `webpage/`: a React page, the introduction at the root of the website, with the MkDocs site under it
 
