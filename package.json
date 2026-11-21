@@ -1,6 +1,6 @@
 {
   "name": "P-jol-roll",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "type": "module",
   "description": "crawler to garher every PDF from https://dziennikustaw.gov.pl/DU",
@@ -11,7 +11,7 @@
     "astro": "^7.3.8",
     "bulma": "^1.0.4",
     "camoufox-js": "^0.13.0",
-    "crawlee": "^3.0.0",
+    "crawlee": "^3.18.2",
     "marked": "^18.1.1",
     "nitro": "^3.0.260903-beta",
     "playwright": "1.62.1",
@@ -106,5 +106,11 @@
     "cpu-features": false,
     "protobufjs": false,
     "ssh2": false
+  },
+  "overrides": {
+    "basic-ftp": "^6.2.6",
+    "zod": "^4.6.7",
+    "glob": "^14.0.6",
+    "minimatch": "^11.0.9"
   }
 }
