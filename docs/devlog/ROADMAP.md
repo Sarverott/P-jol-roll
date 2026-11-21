@@ -13,6 +13,9 @@ in [VISION.md](VISION.md), the checklist in [TODO.md](TODO.md).
 
 The version lives in `package.json`; every other version field is synced
 from it. Every commit on a `dev/*` branch bumps Z, as in the BOS core (Q8).
+Closing a phase bumps Y, pushes, and opens the pull request to `master`;
+every push to `master` releases its version (phase 8). Phases 0-3 were
+closed before the rule; their one bump makes `0.1.0`.
 
 ## Milestones
 
@@ -21,6 +24,6 @@ from it. Every commit on a `dev/*` branch bumps Z, as in the BOS core (Q8).
 | M0: gathered (October 2026, before this devlog) | - | gather every act, seal, compile, markdown, read it through api, MCP, website, window |
 | M1: standing on its own feet | 0, 1, 2, 3 | install and check from clean, say what it does, live in the BOS loop |
 | M2: seen and spread | 4, 5 | present itself on a website, gather on more than one machine |
-| M3: run as services | 6, 7 | start with `task`, run every part as a container, logs in one place |
+| M3: run as services | 6, 7, 8 | start with `task`, run every part as a container, logs in one place |
 | M4: read by a model | later | PDF texts into markdown, a dataset for training, the first advisor agent |
 | M5: no centre | later | torrents pointed to by IPFS, a WireGuard network with load balancing, mirrors per voivodeship or district, no central infrastructure (Cosmos SDK) - modular, one part at a time (Q10) |
