@@ -39,6 +39,8 @@ jobs:
         run: npx nitro build
       - name: Scripts of the workflows
         run: scripts/devops/checks/shellcheck.sh
+      - name: The introduction page (webpage/)
+        run: npm ci --prefix webpage --no-audit --no-fund && npm run --prefix webpage build
 
   automerge:
     needs: verify

@@ -5,7 +5,8 @@
 #   2. a version reaching master released already gets the patch (a hotfix); then the tag
 #      v<version> and the GitHub release, skipped when that tag exists
 #   3. Read the Docs activates and builds the tag (only with READTHEDOCS_API_TOKEN)
-#   4. the website built and pushed to the github-pages branch
+#   4. the website built (the React introduction of webpage/ at the root, the MkDocs
+#      documentation under docs/) and pushed to the github-pages branch
 #   5. master merged back into development
 # Every step is a script of scripts/devops/, runnable by hand.
 name: "release › master: tag, docs, website, back into development"
@@ -71,7 +72,8 @@ jobs:
       - uses: actions/checkout@v7
         with: { ref: master }
       - uses: astral-sh/setup-uv@v6
-      - uses: go-task/setup-task@v2
+      - uses: actions/setup-node@v7
+        with: { node-version-file: .nvmrc }
       - run: scripts/devops/pages/build.sh
       - run: scripts/devops/pages/publish.sh "${{ needs.release.outputs.tag || needs.release.outputs.version }}"
 

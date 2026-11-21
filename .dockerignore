@@ -16,6 +16,7 @@ storage
 
 # installed and built files
 node_modules
+webpage
 dist
 
 # gathered things come as a volume - only these two small files of resources go into image
