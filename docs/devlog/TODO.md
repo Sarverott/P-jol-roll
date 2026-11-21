@@ -59,7 +59,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 
 - [x] Guide: the gatherer on a second machine - clone on the internal disk, resources on the drive through `.env` (read by every task now), what refuses and why, both ways home (Q10 picks one)
 - [ ] Rich logging: every command writes structured lines to stdout and, when asked, to syslog (Q1)
-- [ ] A test container for Parrot OS: `tests/unittesting/parrot-os/headless-server/` with the case `-gather-and-parse`, against a local copy of the API (Q1)
+- [x] A test container for Parrot OS: `tests/unittesting/parrot-os/headless-server/` with the case `-gather-and-parse`, against a local copy of the API (Q1)
 - [ ] The Parrot OS trouble with the bare repository on an external drive, reproduced in that container and solved (Q1)
 
 ## Phase 6: services
