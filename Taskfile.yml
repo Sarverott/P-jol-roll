@@ -25,6 +25,14 @@ includes:
 tasks:
 
   default:
+    # NOTE: we want to make easy project lounching for newcommers, so cui louncher should be runned when we call "task" and current listing of commands will be "task help"
+    # ANSWER: "task help" lists them now; this stays the listing until the launcher of src/tui/ exists (phase 7)
+    cmds:
+      - task: help
+    silent: true
+
+  help:
+    desc: Every task with one line each.
     cmds:
       - task --list
     silent: true
