@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import TurndownService from "turndown";
 import { filesOf } from "../apihandlers/eli.js";
+import log from "../logging/setup.js";
 import * as store from "../resources/store.js";
 import type { GatheringScope } from "../vars/interfaces/index.js";
 import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
@@ -86,7 +87,11 @@ export async function text() {
 		}
 		if (records.length) {
 			await store.saveJsonl(textsTablePath(publisher, year), records);
-			console.log(`${publisher}/${year}: ${records.length} texts`);
+			log.info(`${publisher}/${year}: ${records.length} texts`, {
+				publisher,
+				year,
+				texts: records.length,
+			});
 		}
 	}
 	return sum;

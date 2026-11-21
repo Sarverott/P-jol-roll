@@ -3,6 +3,7 @@ import { createReadStream, existsSync } from "node:fs";
 import { stat } from "node:fs/promises";
 import { pipeline } from "node:stream/promises";
 import { filesOf, PARTS } from "../apihandlers/eli.js";
+import log from "../logging/setup.js";
 import * as store from "../resources/store.js";
 import type { GatheringScope } from "../vars/interfaces/index.js";
 
@@ -48,7 +49,11 @@ export async function seal() {
 				} satisfies GatheringScope.FileRecord);
 				added += 1;
 			}
-		console.log(`${publisher}/${year}: ${added} records added so far`);
+		log.info(`${publisher}/${year}: ${added} records added so far`, {
+			publisher,
+			year,
+			added,
+		});
 	}
 	return added;
 }

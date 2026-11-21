@@ -115,6 +115,7 @@ src/core/              the gatherer itself; everything below is its tree
   vars/                every type and interface, one per file, flat inside each directory
     interfaces/        <Name>.interface.ts, and index.ts with namespaces GatheringScope, HuggingfaceScope
     types/             <Name>.type.ts, and index.ts with the same namespaces
+  logging/             setup.ts: the one logger of every command (text or JSON lines, syslog when asked) - import it first
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
