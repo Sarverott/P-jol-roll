@@ -22,7 +22,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 - [x] Baseline recorded in `docs/.agents/NOTES.md`: what install, check, build and tests give before any repair
 - [x] Forced downgrades undone: `crawlee`, `camoufox-js` and the rest resolved by their ranges again, the lock regenerated from them, not by `audit fix --force`
 - [ ] Workflow SDK pilot on a version that builds and runs; the `nanoid` advisory recorded with its real reach (Q9)
-- [ ] Dependabot's pull requests gone through: what can be taken taken, the rest answered on the pull request (Q9)
+- [x] Dependabot's pull requests gone through: all taken but `playwright` 1.65 (camoufox-js 0.13 wants `playwright-core` below 1.63, so 1.62.1) (Q9)
 - [ ] `npm audit` brought down: newest versions where they add no advisories; packages worth replacing named in PROPOSALS.md (Q9)
 - [x] The termui experiment placed so that checks pass: `src/tui/`, skipped by Biome and tsc (Q4)
 - [x] Node pinned: `engines`, `.nvmrc`; `npm ci` from a clean copy passes
