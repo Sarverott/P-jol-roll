@@ -50,8 +50,8 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 
 - [x] MkDocs Material over `docs/` (as the BOS core): the idea, the state, guides, glossary, devlog
 - [x] The state on the home page, counted at build from `TODO.md` and `features.md`, so it never says more than they do
-- [ ] Read the Docs builds the documentation with the locked tools of `docs/` (Q6)
-- [ ] `site/` from `master` pushed to the `github-pages` branch by a workflow, as in Amoorion (Q6)
+- [x] Read the Docs builds the documentation with the locked tools of `docs/` (Q6)
+- [x] `site/` from `master` pushed to the `github-pages` branch by a workflow, as in Amoorion (Q6)
 - [ ] A static build of the explorer reading the dataset and the bucket on Hugging Face, into `resources/space/webapp` (Q6)
 - [ ] The podcasts and Read the Docs linked from the README and the home page (Q12)
 
@@ -59,17 +59,17 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 
 - [x] Guide: the gatherer on a second machine - clone on the internal disk, resources on the drive through `.env` (read by every task now), what refuses and why, both ways home (Q10 picks one)
 - [ ] Rich logging: every command writes structured lines to stdout and, when asked, to syslog (Q1)
-- [ ] A test container for Parrot OS: `tests/unittesting/parrot-os/headless-server/` with the case `-gather-and-parse`, against a local copy of the API (Q1)
+- [x] A test container for Parrot OS: `tests/unittesting/parrot-os/headless-server/` with the case `-gather-and-parse`, against a local copy of the API (Q1)
 - [ ] The Parrot OS trouble with the bare repository on an external drive, reproduced in that container and solved (Q1)
 
 ## Phase 6: services
 
 The NOTEs Sett left in `compose.yaml` (changelog phase 6), each moved to its place.
 
-- [ ] `compose.yaml` includes one file per service from `resources/services/`; `web` renamed `webapp-server`
-- [ ] Directories with their ignore rules: `resources/configs/<purpose>/`, `resources/.containerdatavol/<volume>/`, `resources/secrets/`
-- [ ] `.env.example`; tokens left empty (after trimming) turn their optional functions off
-- [ ] `log-collector`: rsyslog, taking the logs of every service (Q1)
+- [x] `compose.yaml` includes one file per service from `resources/services/`; `web` renamed `webapp-server`
+- [x] Directories with their ignore rules: `resources/configs/<purpose>/`, `resources/.containerdatavol/<volume>/`, `resources/secrets/`
+- [x] `.env.example`; tokens left empty (after trimming) turn their optional functions off
+- [x] `log-collector`: rsyslog, taking the logs of every service (Q1)
 - [ ] `docs-server`: the documentation served locally
 - [ ] `gatherer-daemon` and `parser-daemon`: gathering and parsing as separate units, started by a person
 - [ ] `routing-proxy` (traefik) and `internal-dns` (dnsmasq), for local use with the desktop window

@@ -6,6 +6,23 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-21. Dependabot's #6 (`@types/node` 26)** is not taken: the
+  project runs on Node 24. Closing it, or an `ignore` for majors of
+  `@types/node` in `dependabot.yml`, is yours.
+- **2026-11-21. Coolify and `include`.** `compose.yaml` now only includes
+  the files of `resources/services/`. Whether Coolify follows `include`
+  was not tried.
+- **2026-11-21. Logs written as root.** `log-collector` writes
+  `resources/.containerdatavol/log-collector/` as root; removing them
+  needs `sudo` or a container.
+
+- **2026-11-21. GitHub Pages and Read the Docs, once each.** The workflow
+  `pages.yml` fills the `github-pages` branch on the first push to
+  `master` that touches `docs/`; Pages then has to be set to serve that
+  branch (Settings, Pages, "Deploy from a branch", `github-pages`, `/`).
+  Read the Docs has to have the project `lex-polonica` pointing at this
+  repository, with `development` or `master` as its default branch.
+
 - **2026-11-13. Dependabot is active only on `master`.** It reads
   `.github/dependabot.yml` from the default branch, so the config waits
   until `development` reaches `master` through your pull request.

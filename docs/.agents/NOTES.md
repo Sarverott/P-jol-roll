@@ -4,6 +4,26 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-21 · Cleo · after the gathering break: answers to Q1, Q6-Q10
+
+- **Versions.** One version in `package.json`, every copy synced
+  (`src/devtools/version.ts`); each commit on `dev/*` bumps the patch, the
+  merge driver keeps the higher. 0.0.1 → 0.0.14 in this batch.
+- **Dependencies.** `npm audit`: 39 (8 high) → 0. Taken: every Dependabot
+  update but `playwright` 1.65 (camoufox-js 0.13 wants `playwright-core`
+  below 1.63) and `@types/node` 26 (Node 24 here). `crawlee` itself was
+  still 3.2.2 under `^3.0.0`; now 3.18.2. Overrides: `basic-ftp`, `zod`,
+  `glob`, `minimatch` (PP1). The Docker image moved to the browser of
+  playwright 1.62.1.
+- **Publishing.** Read the Docs syncs the website's tools from
+  `docs/uv.lock` (tried in a fresh venv); `pages.yml` pushes `site/` from
+  `master` to `github-pages` (the orphan commit tried in a scratch clone).
+- **Services.** `compose.yaml` includes `resources/services/*.yaml`;
+  `webapp-server` sends its logs to `log-collector` (rsyslog, tried with a
+  test container).
+- **Parrot OS.** `task unittesting:parrot-os`: Parrot Security 7.4, tsc and
+  the gathering test pass. The external-drive trouble is not reproduced yet.
+
 ## 2026-11-15 · Cleo · Sett's answers to Q3, Q4, Q5
 
 - Q3: rule 1 of AGENTS.md is now "Who may commit". I read "confirmed by

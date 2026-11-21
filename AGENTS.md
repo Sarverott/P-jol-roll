@@ -133,9 +133,14 @@ src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
 tests/            vitest; gather.test.ts runs whole gathering against a local copy of API
+  unittesting/    the project on other systems in containers: <system>/<setup>/Dockerfile, cases -<case>/run.sh
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
   dataset/        tables: lists/, and per <journal>/<year> acts, files, details, references, texts, checkups
   bucket/         raw files of acts: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf}
+  services/       one compose file per service, included by compose.yaml at the root
+  configs/        configurations of services, one directory per purpose, in git
+  .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
+  secrets/        generated secrets, one file each, ignored; .env wins over them
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md
@@ -167,6 +172,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
+| `task unittesting:parrot-os` | Parrot OS headless server in a container, case `-gather-and-parse` (needs Docker) |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |

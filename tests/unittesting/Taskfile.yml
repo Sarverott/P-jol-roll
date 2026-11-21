@@ -1,0 +1,13 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+# The project on other systems, in containers (README.md here). Included by the root
+# Taskfile as `unittesting:`; images are built from the root of the repository.
+
+version: '3'
+
+tasks:
+  parrot-os:
+    desc: 'Parrot OS as a headless server: build the image, run a case (default -gather-and-parse; task unittesting:parrot-os -- <case>)'
+    dir: '{{.TASKFILE_DIR}}/../..'
+    cmds:
+      - docker build -q -f tests/unittesting/parrot-os/headless-server/Dockerfile -t p-jol-roll-unittesting:parrot-os-headless-server .
+      - docker run --rm p-jol-roll-unittesting:parrot-os-headless-server {{.CLI_ARGS | default "-gather-and-parse"}}

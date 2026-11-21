@@ -1,10 +1,11 @@
 # The website of the project: the idea, the state, the guides. Built locally (`task docs:build`,
-# `task docs:serve`); where it is published is Q6 of the devlog. Always built from the
-# repository root: mkdocs build -f docs/mkdocs.yml
+# `task docs:serve`), on Read the Docs (.readthedocs.yaml, lex-polonica.readthedocs.io) and by
+# .github/workflows/pages.yml from master into the github-pages branch (Q6). Always built from
+# the repository root: mkdocs build -f docs/mkdocs.yml
 site_name: P_JOL_ROLL
 site_description: Every act of the Polish journals of laws, gathered in the open
 site_author: Sett Sarverott
-site_url: !ENV [SITE_URL, "http://127.0.0.1:8000/"]
+site_url: !ENV [SITE_URL, READTHEDOCS_CANONICAL_URL, "http://127.0.0.1:8000/"]
 repo_url: https://github.com/Sarverott/P-jol-roll
 repo_name: Sarverott/P-jol-roll
 edit_uri: edit/development/docs/
