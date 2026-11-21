@@ -115,6 +115,7 @@ src/core/              the gatherer itself; everything below is its tree
   vars/                every type and interface, one per file, flat inside each directory
     interfaces/        <Name>.interface.ts, and index.ts with namespaces GatheringScope, HuggingfaceScope
     types/             <Name>.type.ts, and index.ts with the same namespaces
+  logging/             setup.ts: the one logger of every command (text or JSON lines, syslog when asked) - import it first
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
@@ -175,7 +176,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
-| `task unittesting:parrot-os` | Parrot OS headless server in a container, case `-gather-and-parse` (needs Docker) |
+| `task unittesting:parrot-os` / `parrot-os-drive` | Parrot OS headless server in a container: case `-gather-and-parse` / `-bare-repo-on-drive` (privileged; needs Docker) |
 | `task flow:land -- "..."` / `flow:sync` | your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
 | `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |

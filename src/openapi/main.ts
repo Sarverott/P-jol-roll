@@ -1,4 +1,6 @@
 // NOTE: standard thing is to think about basic approachable http api headless host. add in it websocket connectivity by socket.io for live info exchanges
+
+import log from "../core/logging/setup.js";
 import { serve } from "./server.js";
 
 // HOST=0.0.0.0 to be reached from outside (docker, coolify); by default only this machine.
@@ -15,12 +17,12 @@ if (process.env.EXIT_WITH_PARENT) {
 
 try {
 	const { url } = await serve({ port, host });
-	console.log(
+	log.info(
 		`P_JOL_ROLL api listening on ${url} - description at ${url}/openapi.json`,
 	);
 } catch (error) {
 	if ((error as NodeJS.ErrnoException).code !== "EADDRINUSE") throw error;
-	console.error(
+	log.error(
 		`${host}:${port} is taken - an api started earlier may still run there (ss -ltnp | grep :${port}), or choose another: PORT=8081 task serve`,
 	);
 	process.exit(1);

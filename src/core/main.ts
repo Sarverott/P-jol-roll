@@ -2,6 +2,7 @@
 
 import { parseArgs } from "node:util";
 import { PARTS } from "./apihandlers/eli.js";
+import log from "./logging/setup.js";
 import type { GatheringScope as GatheringTypes } from "./vars/types/index.js";
 
 /*
@@ -90,22 +91,28 @@ if (command === "seal") {
 	const { seal, check } = await import("./methods/seal.js");
 	if (values.check) {
 		const { same, differs } = await check();
-		console.log(
-			`${same} files are what was recorded, ${differs.length} differ`,
-		);
-		for (const path of differs) console.log(path);
+		log.info(`${same} files are what was recorded, ${differs.length} differ`, {
+			same,
+			differ: differs.length,
+		});
+		for (const path of differs) log.warning(`differs: ${path}`, { path });
 		if (differs.length) process.exitCode = 1;
-	} else console.log(`${await seal()} records added`);
+	} else {
+		const added = await seal();
+		log.info(`${added} records added`, { added });
+	}
 }
 
 if (command === "compile") {
 	const { compile } = await import("./methods/compile.js");
-	console.log(await compile());
+	const sum = await compile();
+	log.info(`compiled: ${sum.details} acts, ${sum.edges} ties`, sum);
 }
 
 if (command === "text") {
 	const { text } = await import("./parsing/text.js");
-	console.log(await text());
+	const sum = await text();
+	log.info(`text: ${sum.parsed} parsed, ${sum.unchanged} unchanged`, sum);
 }
 
 if (command === "sejm") {
@@ -149,9 +156,12 @@ if (command === "hub") {
 
 	if (action === "plan") {
 		const { repo, upload, changed, download, same } = await hub.plan(name);
-		console.log(`${repo}: ${same} files are the same`);
+		log.info(`${repo}: ${same} files are the same`, { repo, same });
 		for (const [title, paths] of Object.entries({ upload, changed, download }))
-			console.log(`${title} ${paths.length}`, paths.slice(0, 10));
+			log.info(`${title} ${paths.length}`, {
+				[title]: paths.length,
+				first: paths.slice(0, 10),
+			});
 	} else if (action === "push") await hub.push(name, Number(values.batch));
 	else if (action === "pull") await hub.pull(name);
 	else throw new Error("hub needs action: plan, pull or push");

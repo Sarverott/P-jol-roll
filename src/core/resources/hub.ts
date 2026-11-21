@@ -12,6 +12,7 @@ import {
 	type RepoDesignation,
 	uploadFiles,
 } from "@huggingface/hub";
+import log from "../logging/setup.js";
 import type { HuggingfaceScope } from "../vars/interfaces/index.js";
 import type { HuggingfaceScope as HuggingfaceTypes } from "../vars/types/index.js";
 import { RESOURCES_DIR } from "./store.js";
@@ -130,7 +131,11 @@ export async function push(name: string, batch: number) {
 	if (!accessToken) throw new Error("HF_TOKEN is missing");
 	const { repo, dir, upload, changed, same } = await plan(name);
 	const paths = [...upload, ...changed];
-	console.log(`${repo}: ${paths.length} to send, ${same} already there`);
+	log.info(`${repo}: ${paths.length} to send, ${same} already there`, {
+		repo,
+		send: paths.length,
+		same,
+	});
 
 	for (let sent = 0; sent < paths.length; sent += batch) {
 		const files = paths.slice(sent, sent + batch);
@@ -143,7 +148,10 @@ export async function push(name: string, batch: number) {
 			})),
 			commitTitle: `P-jol-roll: ${files.length} files (${sent + files.length} of ${paths.length})`,
 		});
-		console.log(`${sent + files.length} of ${paths.length}`);
+		log.info(`${sent + files.length} of ${paths.length}`, {
+			sent: sent + files.length,
+			all: paths.length,
+		});
 	}
 }
 
@@ -151,7 +159,10 @@ export async function push(name: string, batch: number) {
 // local work is never overwritten
 export async function pull(name: string) {
 	const { repo, dir, download, changed } = await plan(name);
-	console.log(`${repo}: ${download.length} to take`);
+	log.info(`${repo}: ${download.length} to take`, {
+		repo,
+		take: download.length,
+	});
 
 	for (const path of download) {
 		const blob = await downloadFile({ repo, path, accessToken });
@@ -165,5 +176,7 @@ export async function pull(name: string) {
 		await rename(`${file}.part`, file);
 	}
 	if (changed.length)
-		console.warn(`differs on both sides, left as it is here: ${changed}`);
+		log.warning(`differs on both sides, left as it is here: ${changed}`, {
+			changed,
+		});
 }
