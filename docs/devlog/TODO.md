@@ -66,7 +66,7 @@ edits), ticking its box. An item waiting for an answer names its `Q<n>`.
 
 The NOTEs Sett left in `compose.yaml` (changelog phase 6), each moved to its place.
 
-- [ ] `compose.yaml` includes one file per service from `resources/services/`; `web` renamed `webapp-server`
+- [x] `compose.yaml` includes one file per service from `resources/services/`; `web` renamed `webapp-server`
 - [ ] Directories with their ignore rules: `resources/configs/<purpose>/`, `resources/.containerdatavol/<volume>/`, `resources/secrets/`
 - [ ] `.env.example`; tokens left empty (after trimming) turn their optional functions off
 - [ ] `log-collector`: rsyslog, taking the logs of every service (Q1)

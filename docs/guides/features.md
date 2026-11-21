@@ -59,7 +59,7 @@ State of 2026-11-13.
 | Desktop window | `task desktop` | **built**: opened by the owner, the port problem fixed afterwards and not opened again |
 | Android app | `task app:sync` | **wanted**: configured, Capacitor not installed |
 | Browser extension (Firefox, Chrome) | `task extension` | **built**: citations read from seven examples; not loaded in a browser |
-| Container: website and api | `docker compose up` | **built**: image never built |
+| Container: website and api (`webapp-server`) | `docker compose up` | **built**: image never built |
 | Terminal interface (termui) | | **wanted**: an experiment, Q4 |
 | Website of the project: idea and state | | **wanted**: phase 4 |
 | Links to acts in the Hugging Face space | | **wanted** |

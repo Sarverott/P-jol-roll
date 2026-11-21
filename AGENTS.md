@@ -136,6 +136,7 @@ tests/            vitest; gather.test.ts runs whole gathering against a local co
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
   dataset/        tables: lists/, and per <journal>/<year> acts, files, details, references, texts, checkups
   bucket/         raw files of acts: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf}
+  services/       one compose file per service, included by compose.yaml at the root
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md
