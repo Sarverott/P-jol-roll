@@ -68,7 +68,7 @@ The NOTEs Sett left in `compose.yaml` (changelog phase 6), each moved to its pla
 
 - [x] `compose.yaml` includes one file per service from `resources/services/`; `web` renamed `webapp-server`
 - [x] Directories with their ignore rules: `resources/configs/<purpose>/`, `resources/.containerdatavol/<volume>/`, `resources/secrets/`
-- [ ] `.env.example`; tokens left empty (after trimming) turn their optional functions off
+- [x] `.env.example`; tokens left empty (after trimming) turn their optional functions off
 - [ ] `log-collector`: rsyslog, taking the logs of every service (Q1)
 - [ ] `docs-server`: the documentation served locally
 - [ ] `gatherer-daemon` and `parser-daemon`: gathering and parsing as separate units, started by a person
