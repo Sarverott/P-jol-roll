@@ -18,10 +18,9 @@ if [ -n "$(git status --porcelain)" ]; then
   exit 1
 fi
 
-# the checks of CI, here and now, on the commit that lands
-task_bin=node_modules/.bin/task
-[ -x "$task_bin" ] || task_bin=task
-"$task_bin" check || { echo "task check failed - nothing landed" >&2; exit 1; }
+# the checks of CI, here and now, on the commit that lands; its tree remembered, so the
+# pre-push hook does not check the same tree again
+scripts/devops/local/verify-push.sh --now || { echo "task check failed - nothing landed" >&2; exit 1; }
 
 merge_driver
 git fetch -q origin

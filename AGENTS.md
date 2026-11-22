@@ -247,7 +247,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task docs:build` / `docs:serve` | the website of the project into `site/` / live preview |
 | `task devlog:state` / `devlog:scrapnote` | where the project stands (the `bos` command) / a new scrapnote |
 | `task web:build` / `task desktop` | website into `dist/web` / Electron window around it |
-| `task check` (or `task verify`) | Biome, build (TypeScript and website), tests — the same in CI; run before a commit is reported done |
+| `task check` (or `task verify`) | Biome, build (TypeScript and website), tests — the same in CI; run before a commit is reported done, and by the pre-push hook |
 
 ## Conventions
 
