@@ -93,8 +93,8 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/core/main.ts` | Command line of the gatherer: reads arguments and calls one command. Usage is written at its top. Run by `task gather`, `seal`, `compile`, `text`, `sejm`, `saos`, `checkup`, `hub`, and by the Docker image. |
 | `src/core/crawl.ts` | One polite walk over addresses of an API: own User-Agent, two requests at a time, a pace per minute, queue in memory. Every gatherer uses it, so manners live in one place. |
 | `src/core/apihandlers/eli.ts` | Addresses of the ELI API of Sejm and the files of an act (`filesOf`). Where to ask, never what to do. |
-| `src/core/apihandlers/sejm.ts` | Second source: legislative processes and prints of Sejm, into `resources/sejm-dataset` and `sejm-bucket`. |
-| `src/core/apihandlers/saos.ts` | Third source: court judgments of SAOS by months, into `resources/saos-dataset`. |
+| `src/core/apihandlers/sejm.ts` | Second source: legislative processes and prints of Sejm, into `resources/dataset/sejm` and `bucket/sejm`. |
+| `src/core/apihandlers/saos.ts` | Third source: court judgments of SAOS by months, into `resources/dataset/SAOS`. |
 | `src/core/methods/gather.ts` | The gatherer: index, lists, listings of years, then files of acts year by year; `--since` takes changed acts again. Writes a checksum record for every file the moment it lands. |
 | `src/core/methods/seal.ts` | Checksum records for files gathered without them, and `--check` that reads every file again. |
 | `src/core/methods/compile.ts` | Tables of the dataset from raw files: details and references of acts, a year in a file. |
@@ -104,6 +104,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/core/resources/store.ts` | Where every gathered thing is written and how: `.part` first, then the real name. |
 | `src/core/resources/hub.ts` | Comparison and sync of `resources/` with Hugging Face, file by file. |
 | `src/core/reading/library.ts` | Gathered data as readers see it: journals, pages of acts, one act, its text, its ties, its files. Only reads `resources/`. The hosts stand on this and nothing else. |
+| `src/core/reading/remote.ts` | The remote mode (the demo): with `DATASET_URL` and `BUCKET_URL`, each file a reader needs is taken once from the copies on Hugging Face into `resources/` (a cache then, fresh for `REMOTE_HOURS`); raw files are addresses on the bucket. `library.prepare()` names what each address needs. Never asks the sources of the law. |
 | `src/core/vars/interfaces/*.interface.ts` | Every interface, one per file. `index.ts` there groups them into `GatheringScope`, `HuggingfaceScope` and `ReadingScope`. |
 | `src/core/vars/types/*.type.ts` | Every type alias, one per file, grouped the same way in its `index.ts`. |
 
@@ -145,4 +146,5 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/cli/tasks.ts`, `repl.ts` | The commands of the launcher: every task read from `task --list-all --json`, grouped by its Taskfile (by namespace for included ones), run by the `task` of `node_modules`; the REPL `p-jol-roll>` takes any task as a command with Tab completion, and `help`, `list [group]`, `menu`, `exit`. |
 | `src/devtools/version.ts` | One version for the repository: `sync` writes the version of `package.json` into the lock, the api, the MCP server, the extension and the Python projects; `bump-commit` bumps the patch on `dev/*` branches (pre-commit hook); `merge` is the git merge driver that keeps the higher version. As in the BOS core, without needing `bos`. |
 | `src/devtools/init.ts` | `task init`, the first launch on a machine: names the tools found and missing (node 24, npm 11, git needed; docker, uv optional), makes `.env` from `.env.example` when there is none, generates the services' secrets into `resources/secrets/` without overwriting, and leaves `resources/.containerdatavol/init/done` so the task runs once. |
+| `src/devtools/merge.ts` | `task resources:merge`: the directories the other sources had before phase 10 (`sejm-dataset`, `sejm-bucket`, `saos-dataset`) moved file by file into `dataset/` and `bucket/`, never over a file that is there; local only. |
 | `src/Taskfile.yml` | Tasks of these parts, included in the root one: `serve`, `mcp`, `web:build`, `web:dev`, `desktop`, `app:sync`, `extension`. |

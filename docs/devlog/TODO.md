@@ -113,9 +113,9 @@ The inquiry of 2026-11-22, the second (changelog phase 9). The launcher goes on 
 
 The inquiries of 2026-11-22, the third (changelog phase 10).
 
-- [ ] The launcher keeps a log too: its file in `logs/` with the output of every task it runs; Ctrl+C stops the task and goes back to the menu, written in the log
-- [ ] `web:dev` stops watching `resources/` (it ran out of file watchers on the bucket)
-- [ ] One bucket: the raw files of every source in `resources/bucket/` (`DU/`, `MP/`, `sejm/`, `SAOS/`), with a README of links; one dataset: the tables of every source in `resources/dataset/`, the training collection; a task moving what is gathered into the new places
-- [ ] The demo reads the prepared dataset: the server in a remote mode takes `lists/index.json` and only what a page needs from the dataset on Hugging Face, and links raw files on the bucket; local use stays as it is
-- [ ] `examples/`: Jupyter notebooks of using the project from Python, turned into marimo notebooks and exported as static pages with the website
-- [ ] The main page tells a newcomer the whole scope: what is gathered, where it is, the demo, the examples, how to start
+- [x] The launcher keeps a log too: its file in `logs/` with the output of every task it runs; Ctrl+C stops the task and goes back to the menu, written in the log
+- [x] `web:dev` stops watching `resources/` (it ran out of file watchers on the bucket)
+- [x] One bucket: the raw files of every source in `resources/bucket/` (`DU/`, `MP/`, `sejm/`, `SAOS/`), with a README of links; one dataset: the tables of every source in `resources/dataset/`, the training collection; a task moving what is gathered into the new places
+- [x] The demo reads the prepared dataset: the server in a remote mode (`DATASET_URL`, `BUCKET_URL`) takes only what a page needs from the dataset on Hugging Face - `lists/publishers.json`, the acts of a year, one act's details, records and markdown - and sends readers of raw files to the bucket; local use stays as it is (`lists/index.json` turned out to be the index of the API, not of the dataset)
+- [x] `examples/`: Jupyter notebooks of using the project from Python, turned into marimo notebooks and exported as static pages with the website
+- [x] The main page tells a newcomer the whole scope: what is gathered, where it is, the demo, the examples, how to start

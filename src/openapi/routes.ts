@@ -1,6 +1,7 @@
 import { resolve } from "node:path";
 import { type Request, type Response, Router } from "express";
 import * as library from "../core/reading/library.js";
+import { remote } from "../core/reading/remote.js";
 import { spec } from "./spec.js";
 
 // every route only reads gathered files - nothing here asks the source or writes
@@ -11,6 +12,17 @@ const eliOf = (request: Request) =>
 
 const notHere = (response: Response) =>
 	response.status(404).json({ error: "not gathered here" });
+
+// remote mode (the demo): what an address needs is taken from Hugging Face first
+if (remote)
+	routes.use("/api", (request, _response, next) => {
+		const [, kind, journal, year, pos] = request.path.split("/");
+		const number = (value?: string) =>
+			value && /^\d+$/.test(value) ? Number(value) : undefined;
+		library
+			.prepare(kind === "acts" ? journal : undefined, number(year), number(pos))
+			.then(() => next(), next);
+	});
 
 routes.get("/openapi.json", (_request, response) => {
 	response.json(spec);
@@ -53,7 +65,8 @@ routes.get(
 	"/api/acts/:journal/:year/:pos/file/:ending",
 	(request, response) => {
 		const path = library.file(eliOf(request), String(request.params.ending));
-		if (path) response.sendFile(resolve(path));
-		else notHere(response);
+		if (!path) notHere(response);
+		else if (/^https?:/.test(path)) response.redirect(302, path);
+		else response.sendFile(resolve(path));
 	},
 );

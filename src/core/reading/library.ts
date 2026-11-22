@@ -5,11 +5,14 @@ import { markdownPath } from "../parsing/text.js";
 import * as store from "../resources/store.js";
 import type { GatheringScope, ReadingScope } from "../vars/interfaces/index.js";
 import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
+import * as remote from "./remote.js";
 
 /*
 Gathered data as readers see it: journals, acts of a year, one act with its
 text and ties. Only reads resources/, never asks any API - the server, the MCP
-server and every interface stand on this and nothing else.
+server and every interface stand on this and nothing else. In the remote mode
+(remote.ts, the demo) resources/ is a cache that prepare() fills first from the
+copies on Hugging Face; raw files are then addresses on the bucket.
 */
 
 // "DU/2026/1" -> its parts, or nothing when it is not an ELI of a journal
@@ -49,7 +52,20 @@ export function journals(): ReadingScope.Journal[] {
 		).map((publisher) => [publisher.code, publisher.name]),
 	);
 	const found = new Map<string, number[]>();
-	for (const { publisher, year } of store.listedYears())
+	// remotely the years are those the journals have: the dataset has the acts of each
+	const years = remote.remote
+		? (
+				store.readJson<GatheringScope.Publisher[]>(
+					store.listPath("publishers"),
+				) ?? []
+			).flatMap((journal) =>
+				(journal.years ?? []).map((year) => ({
+					publisher: journal.code,
+					year,
+				})),
+			)
+		: store.listedYears();
+	for (const { publisher, year } of years)
 		found.set(publisher, [...(found.get(publisher) ?? []), year]);
 	return [...found].map(([code, years]) => ({
 		code,
@@ -95,13 +111,30 @@ const ENDINGS = [
 	".U.pdf",
 ];
 
+// endings of the files of an act that are gathered: here, what is on disk; remotely, what
+// the records of the dataset (files/) name, or else what the listing says the act has
+function endings(found: GatheringScope.Act) {
+	if (!remote.remote)
+		return ENDINGS.filter((ending) => existsSync(store.actPath(found, ending)));
+	const records = store.sealed(found.publisher, found.year);
+	if (records.size)
+		return ENDINGS.filter((ending) =>
+			records.has(store.bucketPath(found, ending)),
+		);
+	return [
+		".json",
+		...(found.textPDF ? [".pdf"] : []),
+		...(found.textHTML ? [".html"] : []),
+	];
+}
+
 export function act(eli: string): ReadingScope.ActView | undefined {
 	const found = find(eli);
 	if (!found) return undefined;
 	return {
 		act: found,
 		details: store.readJson(store.actPath(found, ".json")),
-		files: ENDINGS.filter((ending) => existsSync(store.actPath(found, ending))),
+		files: endings(found),
 		markdown: existsSync(markdownFile(found)),
 	};
 }
@@ -117,12 +150,34 @@ export function text(eli: string): string | undefined {
 	return existsSync(path) ? readFileSync(path, "utf8") : undefined;
 }
 
-// path of one gathered file of an act - only endings the gatherer writes
+// path of one gathered file of an act - only endings the gatherer writes; remotely its
+// address on the bucket
 export function file(eli: string, ending: string): string | undefined {
 	const found = find(eli);
 	if (!found || !ENDINGS.includes(ending)) return undefined;
+	if (remote.remote)
+		return endings(found).includes(ending)
+			? remote.bucketUrl(store.bucketPath(found, ending))
+			: undefined;
 	const path = store.actPath(found, ending);
 	return existsSync(path) ? path : undefined;
+}
+
+// remote mode: the files a reader of this address needs, taken before it is read
+// (journals; acts of a year; one act with its records, details and markdown)
+export async function prepare(journal?: string, year?: number, pos?: number) {
+	if (!remote.remote) return;
+	await remote.fromDataset("lists/publishers.json");
+	if (!journal || !year) return;
+	await remote.fromDataset(`acts/${journal}/${year}.jsonl`);
+	if (pos === undefined) return;
+	const found = find(`${journal}/${year}/${pos}`);
+	if (!found) return;
+	await Promise.all([
+		remote.fromDataset(`files/${journal}/${year}.jsonl`),
+		remote.fromBucket(store.bucketPath(found, ".json")),
+		remote.fromDataset(markdownPath(found)),
+	]);
 }
 
 // ties named in details of the act: what it changes, repeals, carries out
