@@ -15,6 +15,7 @@ includes:
   unittesting: ./tests/unittesting/Taskfile.yml
   flow: ./scripts/devops/Taskfile.yml
   docs: ./docs/Taskfile.yml
+  examples: ./examples/Taskfile.yml
   devlog:
     taskfile: ./docs/devlog/Taskfile.yml
     dir: ./docs/devlog
@@ -33,6 +34,14 @@ tasks:
     cmds:
       - node_modules/.bin/tsx src/tui/launcher/main.ts
     silent: true
+
+  shell:
+    desc: The agentic-shell container (Q13) started, and bash in it - the repository at /workspace
+    interactive: true
+    cmds:
+      - mkdir -p resources/.containerdatavol/agentic-shell
+      - docker compose --profile agentic up -d --build agentic-shell
+      - docker compose exec agentic-shell bash
 
   help:
     desc: Every task with one line each.

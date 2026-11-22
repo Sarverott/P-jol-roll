@@ -31,6 +31,7 @@ Nothing here is legal advice. See [what the data is and is not](docs/guides/data
     - RU (Русский): [Как оцифровать законы Польши для ИИ](https://drive.google.com/file/d/1RmheRvm5LlFRk2mMDZipkeO0M6_JUXHQ/view)
     - JA (日本語): [難解な政府法律PDFをAI用マークダウンに変換](https://drive.google.com/file/d/1pGLBfUQqTdaYW4IGUZFGPrYEQGaunJGd/view)
     - KO (한국어): [국가 법률 PDF를 해체한 1인 개발자](https://drive.google.com/file/d/1mIhxodV9kDpCMHYdz6DXSJTgvU01lWl3/view)
+- **Examples** (using it from Python: notebooks, marimo, run with the website): https://sarverott.github.io/P-jol-roll/examples/ - source in [examples/](examples/)
 - **Documentation** (Read the Docs): https://lex-polonica.readthedocs.io/
 - **Code**: https://github.com/Sarverott/P-jol-roll (mirrors on GitLab and Bitbucket later)
 
@@ -64,9 +65,10 @@ task compile && task text           # tables and markdown from what was gathered
 task web:build && task serve        # the viewer on http://127.0.0.1:8080
 ```
 
-What lands where: tables in `resources/dataset/`, raw files in
-`resources/bucket/`, both ignored by git; their repositories on Hugging Face
-are named in `resources/.map.json`.
+What lands where: tables of every source in `resources/dataset/` (the
+journals, `sejm/`, `SAOS/`), raw files in `resources/bucket/` (`DU/`, `MP/`,
+`sejm/`), both ignored by git; their repositories on Hugging Face are named
+in `resources/.map.json`.
 
 Before the big run (`task gather:everything`, hundreds of thousands of
 requests, days of work) read [gathering](docs/guides/gathering.md): the

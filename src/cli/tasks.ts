@@ -2,8 +2,9 @@
 // from `task --list-all --json`, grouped by the Taskfile it comes from, and run by `task`.
 // Declared once here, so the menu (src/tui/launcher/) and the REPL (src/cli/repl.ts) agree.
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync } from "node:fs";
-import { relative } from "node:path";
+import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { LaunchingScope } from "../core/vars/interfaces/index.js";
 
@@ -66,14 +67,66 @@ export function groups(tasks: LaunchingScope.TaskEntry[]) {
 	);
 }
 
-// "gather -- 2026 --acts" -> task gather -- 2026 --acts; the exit code of task comes back
+// Where the output of every task run goes besides the terminal (the launcher's log file).
+// A task is then run inside `script` of util-linux: in a terminal of its own, so it keeps its
+// colours and questions, its output is recorded, and Ctrl+C reaches the task alone - the
+// launcher (and the `task` that started it) stay, and the menu comes back. Without `script`
+// (macOS, Windows) a task runs as it is and nothing of it is recorded.
+let recorder: ((text: string) => void) | null = null;
+export function recordInto(record: ((text: string) => void) | null) {
+	recorder = record;
+}
+
+const SCRIPT = (() => {
+	try {
+		return /util-linux/.test(
+			execFileSync("script", ["--version"], {
+				encoding: "utf8",
+				stdio: ["ignore", "pipe", "ignore"],
+			}),
+		);
+	} catch {
+		return false;
+	}
+})();
+
+// one word for sh, quoted when it needs to be
+export const quote = (word: string) =>
+	/^[\w@%+=:,./-]+$/.test(word) ? word : `'${word.replaceAll("'", "'\\''")}'`;
+
+// "gather -- 2026 --acts" -> task gather -- 2026 --acts; the exit code of task comes back.
+// The terminal is given to the task cooked (the REPL holds it raw, and a raw terminal turns
+// Ctrl+C into a plain character the task never takes for a signal), then given back.
 export function runTask(name: string, args: string[] = []) {
-	const result = spawnSync(
-		taskBinary(),
-		args.length ? [name, "--", ...args] : [name],
-		{ cwd: ROOT, stdio: "inherit" },
-	);
-	return result.status ?? 1;
+	const raw = Boolean(process.stdin.isTTY && process.stdin.isRaw);
+	if (raw) process.stdin.setRawMode(false);
+	try {
+		return runCooked(name, args);
+	} finally {
+		if (raw) process.stdin.setRawMode(true);
+	}
+}
+
+function runCooked(name: string, args: string[]) {
+	const command = [taskBinary(), name, ...(args.length ? ["--", ...args] : [])];
+	if (!(recorder && SCRIPT)) {
+		const [file, ...rest] = command;
+		return spawnSync(file, rest, { cwd: ROOT, stdio: "inherit" }).status ?? 1;
+	}
+	const dir = mkdtempSync(join(tmpdir(), "p-jol-roll-task-"));
+	const typescript = join(dir, "typescript");
+	try {
+		const result = spawnSync(
+			"script",
+			["-q", "-e", "-f", "-c", command.map(quote).join(" "), typescript],
+			{ cwd: ROOT, stdio: "inherit" },
+		);
+		const text = existsSync(typescript) ? readFileSync(typescript, "utf8") : "";
+		recorder(text.replace(/^Script (started|done) on .*\n?/gm, ""));
+		return result.status ?? 1;
+	} finally {
+		rmSync(dir, { recursive: true, force: true });
+	}
 }
 
 // a line typed by a person split into words, "quoted words" kept whole
