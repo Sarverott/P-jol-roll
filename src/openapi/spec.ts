@@ -41,7 +41,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.8.12",
+		version: "0.8.14",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address.",
 		license: { name: "AGPL-3.0-only" },
@@ -135,6 +135,20 @@ export const spec = {
 				parameters: eli,
 				responses: {
 					200: { description: "ties: from, type, to, date, art" },
+					404: missing,
+				},
+			},
+		},
+		"/api/acts/{journal}/{year}/{pos}/diagram": {
+			get: {
+				summary:
+					"the ties as one mermaid flowchart, drawn the same in every interface",
+				parameters: eli,
+				responses: {
+					200: {
+						description: "mermaid",
+						content: { "text/vnd.mermaid": { schema: { type: "string" } } },
+					},
 					404: missing,
 				},
 			},

@@ -11,7 +11,7 @@ a person, so an agent cannot set off a crawl of the source through here.
   claude mcp add p-jol-roll -- npx tsx src/mcp/main.ts
 */
 
-const server = new McpServer({ name: "p-jol-roll", version: "0.8.12" });
+const server = new McpServer({ name: "p-jol-roll", version: "0.8.14" });
 const readOnly = { readOnlyHint: true, openWorldHint: false };
 
 const answer = (value: unknown) => ({
@@ -122,11 +122,18 @@ server.registerTool(
 	{
 		title: "Ties of an act",
 		description:
-			"Ties to other acts named in details: legal basis, amendments, repeals, executive acts.",
-		inputSchema: z.object({ eli }),
+			"Ties to other acts named in details: legal basis, amendments, repeals, executive acts. as=mermaid gives them as a mermaid flowchart, the same drawing as the api and the viewer.",
+		inputSchema: z.object({
+			eli,
+			as: z.enum(["list", "mermaid"]).default("list"),
+		}),
 		annotations: readOnly,
 	},
-	async ({ eli }) => {
+	async ({ eli, as }) => {
+		if (as === "mermaid") {
+			const diagram = library.diagram(eli);
+			return diagram ? answer(diagram) : notHere(eli);
+		}
 		const ties = library.references(eli);
 		return ties ? answer(ties) : notHere(eli);
 	},

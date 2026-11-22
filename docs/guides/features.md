@@ -56,6 +56,7 @@ State of 2026-11-13.
 | -------- | ------- | ----- |
 | Http api with OpenAPI description and live notices | `task serve` | **works**: tests, and a browser over the real listings |
 | Website: the viewer of acts | `task web:build`, then `task serve` | **works**: headless browser over the real listings (list, act, PDF link) |
+| Ties of an act drawn (mermaid, one drawing for api, MCP and viewer) and a minimap of them (Cytoscape.js) | `/api/acts/<eli>/diagram`, the viewer | **works**: headless browser over DU 2020, a click on a node opens that act |
 | MCP server for AI agents, read-only | `task mcp` | **built**: tools listed and called over stdio |
 | Desktop window | `task desktop` | **built**: opened by the owner, the port problem fixed afterwards and not opened again |
 | Android app | `task app:sync` | **wanted**: configured, Capacitor not installed |

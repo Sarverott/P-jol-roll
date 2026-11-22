@@ -120,12 +120,13 @@ src/core/              the gatherer itself; everything below is its tree
   logging/             setup.ts: the one logger of every command (text or JSON lines, a file per run in logs/, syslog when asked) - import it first, then logRun(<command>)
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
+    diagram.ts         the ties of an act as one mermaid flowchart, for every interface
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
 src/mcp/               MCP server over stdio for AI agents, read-only
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
-src/gui/               index.vue - the one viewer that every interface shows
+src/gui/               index.vue - the one viewer that every interface shows (Bulma); components/ the ties drawn (mermaid) and their minimap (Cytoscape.js)
 src/web/               Astro website carrying the viewer (pages/), built into dist/web
 src/desktop/           Electron window: starts the api, shows the viewer
 src/app/               web app manifest and Capacitor config of the android app
