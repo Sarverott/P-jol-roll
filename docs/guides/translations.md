@@ -99,5 +99,18 @@ task i18n:translate -- PL-PL --again                # one pack anew (not its rev
 The viewer and the introduction take the pack of `?lang=PL-PL`, else the
 last choice, else the browser's languages, else English. They load only
 that pack and lay it over the page before it shows, and a switch in the
-header changes it without a reload. The documentation, the launcher and the
-CLI manuals come next (phase 16).
+header changes it without a reload.
+
+The documentation is translated when the website is built
+(`scripts/devops/pages/build.sh` runs `src/devtools/docs-i18n.ts`): the
+built MkDocs site is copied into `site/docs/pl-pl/`, `uk-ua/` and `de-de/`,
+and each pack is laid over the guides, the glossary and the home page by
+the same `apply()` the browser uses. The changelog and the devlog stay in
+English in every copy, because they keep the owner's words word for word.
+Every page gets a list of languages in its header, pointing at the same
+page in each copy. Read the Docs builds only the English.
+
+Identifiers are never translated: a text that is one path or name
+(`datasets/Sarverott/polish_national_law_docs`) gets no hook, and one inside
+a sentence (`resources/.map.json`, `SHA-256`, `v0.11.0`) stands in as a
+number while the model works, like the names of `keep`.

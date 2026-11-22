@@ -57,7 +57,7 @@ State of 2026-11-13.
 | Http api with OpenAPI description and live notices | `task serve` | **works**: tests, and a browser over the real listings |
 | Website: the viewer of acts | `task web:build`, then `task serve` | **works**: headless browser over the real listings (list, act, PDF link) |
 | Search over every year (Typesense): titles, keywords, beginnings of texts, filters by type and status | `task search:index`, `/api/search`, the viewer's "every year" | **works**: 165,006 acts indexed in 10 s (20 s with texts, 444 MB in memory); headless browser searched, filtered, saw the marked words |
-| The viewer and the introduction in Polish, Ukrainian and German (packs of `resources/locales/`) | `?lang=PL-PL` or the switch | **works**: headless browser, data untouched, back to English without reload; the packs are machine translations, not read by a person |
+| The viewer, the introduction and the documentation in Polish, Ukrainian and German (packs of `resources/locales/`, 1207 texts) | `?lang=PL-PL` or the switch; `/docs/pl-pl/` | **works**: headless browser, data and code untouched, back to English without reload; the packs are machine translations, not read by a person |
 | The map of the whole law (sigma.js), from presets | `task map`, the viewer's tab | **works**: three presets made from the real dataset in 53 s (0.4-2.8 MB); headless browser draws them, hover and click checked |
 | Ties of an act drawn (mermaid, one drawing for api, MCP and viewer) and a minimap of them (Cytoscape.js) | `/api/acts/<eli>/diagram`, the viewer | **works**: headless browser over DU 2020, a click on a node opens that act |
 | MCP server for AI agents, read-only | `task mcp` | **built**: tools listed and called over stdio |

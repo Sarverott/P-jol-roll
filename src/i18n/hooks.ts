@@ -27,8 +27,11 @@ export function templateOf(text: string) {
 
 export const hookOf = (text: string) => sha256(templateOf(text).template);
 
-// worth a hook: has letters, is not only a number or a mark
-export const translatable = (text: string) => /\p{L}{2,}/u.test(text);
+// worth a hook: has letters, is not only a number or a mark, and is not one identifier - a
+// path, an address, a name_with_underscores (datasets/Sarverott/polish_national_law_docs)
+export const translatable = (text: string) =>
+	/\p{L}{2,}/u.test(text) &&
+	!(/^\S+$/.test(text.trim()) && /[/_.:@]/.test(text));
 
 // the text in the pack's language, or undefined when the pack has no hook for it
 export function translate(pack: Pack | undefined, text: string) {
