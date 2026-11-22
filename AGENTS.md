@@ -33,7 +33,12 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    `--no-verify`. When a batch is done, `dev/<name>` is merged into
    `development` with `--no-ff` (`task flow:land` does it and pushes). A confirmed member pushes `development`
    and its own `dev/<name>` freely (Q2, answered 2026-11-15); `master`, tags,
-   releases and repository settings are always asked for first.
+   releases and repository settings are always asked for first. The one way
+   into `master` without a person is the gate (`gate.yml`, phase 26): a pull
+   request `development` → `master` whose author is listed in `AUTHORS` of
+   `master` and which passes every check and scan (verify, CodeQL, Snyk,
+   OSSAR) merges itself and starts the release. The checks and scans run
+   there, not on every push; on this machine the pre-push hook checks.
    **The owner's edits** found in the working tree go first, as they are,
    one commit per change on `dev/Sarverott`, with a message saying how the
    agent understood them; then that branch is merged into `development`.
@@ -203,8 +208,10 @@ docs/almanac/     what was learnt the hard way: cataclistics/ (a case per page, 
                   each), patterning/ and rulesets/ (JSON, as in BOS), faq.md; a solved problem gets its case here
 docs/changelog/   what happened per phase, the owner's words word for word, append-only
 .github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues, AUTHORS;
-                  bos.json (the loop as data), dependabot.yml, workflows/ (checks, bots, bots-land, release,
-                  copilot-setup-steps), copilot-instructions.md and prompts/ (Jarvis's guide)
+                  bos.json (the loop as data), dependabot.yml, workflows/ (gate - every check and scan of a
+                  pull request into master, then automerge; checks, codeql, snyk-security, ossar called by it;
+                  bots, bots-land, automerge, phase-close, release, copilot-setup-steps), copilot-instructions.md
+                  and prompts/ (Jarvis's guide); task github:* runs and follows them from a terminal
 .obsidian/        the repository is an Obsidian vault; plugins/ holds separate repositories
 ```
 
@@ -243,7 +250,8 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task resources:pull -- dataset` / `push` / `prune` | take what is missing here / send what is new here / delete there what is not here (asks; never the bucket) |
 | `task unittesting:parrot-os` / `parrot-os-drive` | Parrot OS headless server in a container: case `-gather-and-parse` / `-bare-repo-on-drive` (privileged; needs Docker) |
 | `task flow:land -- "..."` / `flow:sync` | every check (`task check`), then your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
-| `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow |
+| `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow; its gate merges it when everything passes |
+| `task github:run -- <workflow>` / `github:gate -- <pr>` / `github:pending` / `github:checks -- <pr>` | a workflow started from here (on development; `--ref`, `-f key=value`) / the gate of a pull request into master again / runs waiting for approval (`-- --approve`) / the checks of a pull request - no website needed |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it); `task serve -- --allow-writing`: the viewer starts writing functions too, each after a yes (this machine only) |
