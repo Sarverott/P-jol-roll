@@ -24,6 +24,7 @@ import { href, useRoute } from "./assets/route.js";
 import { applyTheme, settings } from "./assets/settings.js";
 import { ColorPick } from "./assets/setup.js";
 import { listen } from "./assets/socket.js";
+import { offerTools } from "./assets/webmcp.js";
 import LayoutFooter from "./layout/footer.vue";
 import LayoutHeader from "./layout/header.vue";
 import LayoutMain from "./layout/main.vue";
@@ -63,9 +64,11 @@ provide("openAct", openAct);
 library.follow(route);
 
 let unlisten;
+let withdraw;
 onMounted(async () => {
 	ColorPick.paint(root.value);
 	applyTheme();
+	if (settings.webmcp) withdraw = offerTools(library);
 	await use(chosen());
 	await library.loadJournals();
 	await library.probe();
@@ -78,6 +81,7 @@ onMounted(async () => {
 });
 onUnmounted(() => {
 	unlisten?.();
+	withdraw?.();
 	stop();
 });
 </script>

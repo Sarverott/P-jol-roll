@@ -238,7 +238,7 @@ The owner's inquiries and orders, 2026-11-22 (changelog phase 22).
 - [x] The viewer: more of the dataset in tabs - the work of Sejm and the lists of the source
 - [x] The viewer: plots, and statistics with a playable history of the law (a histogram with a slider, play and pause, speed)
 - [x] The viewer: settings, and every function of the catalog - disabled where the host may not (Q19)
-- [ ] The viewer: WebMCP, the reading tools for an agent in the browser
+- [x] The viewer: WebMCP, the reading tools for an agent in the browser
 - [ ] The desktop app prints the act from the window and the tray (Q17)
 - [ ] The main webpage: a p5.js background with the logo, text kept readable
 - [ ] The new words in every language pack; docs, almanac and AGENTS.md rows
