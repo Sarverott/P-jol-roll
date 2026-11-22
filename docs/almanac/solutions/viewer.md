@@ -12,3 +12,4 @@ for ties, Cytoscape.js for their minimap, sigma.js for the map of the law.
 
 - [The map of the law shows hidden edges in wrong colours](../cataclistics/sigma-edges.md)
 - [The viewer cannot read the vectors](../cataclistics/hyparquet-zstd.md)
+- [Notices of changed files stop when two api servers run](../cataclistics/inotify-watches.md)

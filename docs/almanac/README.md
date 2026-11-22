@@ -54,12 +54,12 @@ into the page.
 | [Texts of PDFs](solutions/pdf-texts.md) | [a damaged PDF](cataclistics/damaged-pdf.md) · [a producer in UTF-16](cataclistics/utf16-producer.md) |
 | [Security](solutions/security.md) | [the first CodeQL scan](cataclistics/codeql-first-scan.md) |
 | [Containers](solutions/containers.md) | [language packs left out of the image](cataclistics/container-missing-locales.md) · [port 5353](cataclistics/mdns-port.md) |
-| [Dependencies](solutions/dependencies.md) | [hooks that blocked nothing](cataclistics/hooks-never-blocked.md) · [a forced audit fix](cataclistics/forced-audit-downgrade.md) · [install scripts of npm 11](cataclistics/npm-install-scripts.md) |
+| [Dependencies](solutions/dependencies.md) | [hooks that blocked nothing](cataclistics/hooks-never-blocked.md) · [a forced audit fix](cataclistics/forced-audit-downgrade.md) · [install scripts of npm 11](cataclistics/npm-install-scripts.md) · [Biome breaks quoted Vue attributes](cataclistics/biome-html-quotes.md) |
 | [GitHub workflows](solutions/github-workflows.md) | [Dependabot](cataclistics/dependabot-flow.md) · ["action required"](cataclistics/action-required.md) · [a bump left behind](cataclistics/bump-left-behind.md) · [Copilot's pull requests into master](cataclistics/copilot-prs-to-master.md) |
 | [Translations](solutions/translations.md) | [Vite skips dotfiles](cataclistics/vite-glob-dotfiles.md) · [linkedom and the observer](cataclistics/i18n-test-dom.md) · [names changed by the model](cataclistics/argos-mangles-names.md) |
-| [The viewer](solutions/viewer.md) | [sigma's edges](cataclistics/sigma-edges.md) · [parquet in zstd](cataclistics/hyparquet-zstd.md) |
+| [The viewer](solutions/viewer.md) | [sigma's edges](cataclistics/sigma-edges.md) · [parquet in zstd](cataclistics/hyparquet-zstd.md) · [two servers, no notices](cataclistics/inotify-watches.md) |
 | [The source API](solutions/source-api.md) | [`/changes` wants a time](cataclistics/eli-changes-400.md) |
-| [The terminal](solutions/terminal.md) | [Ctrl+C in the launcher](cataclistics/launcher-ctrl-c.md) |
+| [The terminal](solutions/terminal.md) | [Ctrl+C in the launcher](cataclistics/launcher-ctrl-c.md) · [no workflows in the web interface](cataclistics/workflow-web-manifest.md) |
 | [The repository](solutions/repository.md) | [the media submodule](cataclistics/gist-submodule.md) |
 
 ## Topics

@@ -9,10 +9,12 @@
 		"tsBuildInfoFile": "dist/tsconfig.tsbuildinfo",
 		"noUnusedLocals": false,
 		"skipLibCheck": true,
-		"lib": ["ES2022", "DOM"]
+		"lib": ["ES2022", "DOM"],
+		"rewriteRelativeImportExtensions": true
 	},
 	"include": ["./src/**/*"],
 	"exclude": [
+		"./src/web",
 		"./src/workflows/nitro.config.ts",
 		"./src/workflows/.output",
 		"./src/tui/index.tsx",

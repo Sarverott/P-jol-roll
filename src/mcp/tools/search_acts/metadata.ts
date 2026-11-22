@@ -1,6 +1,5 @@
 import { z } from "zod";
-
-const readOnly = { readOnlyHint: true, openWorldHint: false };
+import { readOnly } from "../shared.js";
 
 export default {
 	title: "Search acts of a year",

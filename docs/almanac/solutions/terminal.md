@@ -9,3 +9,4 @@ output lands in its log.
 ## Cases
 
 - [Ctrl+C in a task of the launcher does not stop it](../cataclistics/launcher-ctrl-c.md)
+- [The web interface of the workflows lists none](../cataclistics/workflow-web-manifest.md)

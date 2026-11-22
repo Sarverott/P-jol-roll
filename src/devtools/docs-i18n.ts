@@ -8,7 +8,7 @@ import {
 } from "node:fs";
 import { join, relative } from "node:path";
 import { parseHTML } from "linkedom";
-import { apply } from "../i18n/dom.js";
+import { apply, SLOT } from "../i18n/dom.js";
 import type { Pack } from "../i18n/hooks.js";
 import {
 	index,
@@ -56,8 +56,12 @@ function lay(
 ) {
 	const { document } = parseHTML(readFileSync(file, "utf8"));
 	const listed = languages().find((one) => one.code === code);
-	if (pack && TRANSLATED.some((pattern) => pattern.test(path)))
+	if (pack && TRANSLATED.some((pattern) => pattern.test(path))) {
+		// a page of the documentation is all interface: one slot, for the time of laying over
+		document.body.classList.add(SLOT);
 		apply(document.body as unknown as Node, pack);
+		document.body.classList.remove(SLOT);
+	}
 	document.documentElement.setAttribute("lang", listed?.locale ?? "en-US");
 	// a page is laid over once: a menu or style left by an earlier run goes first
 	for (const old of document.querySelectorAll(

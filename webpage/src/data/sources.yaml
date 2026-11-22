@@ -1,0 +1,22 @@
+# What is gathered, from where, and where it is kept
+# read by webpage/vite.config.mjs (yaml into the page at build), shown by App.jsx
+- name: Dziennik Ustaw
+  since: since 1918
+  source: ELI API of Sejm
+  what: "acts: details, PDF, HTML, references"
+  where: bucket/DU/, dataset/acts/DU/
+- name: Monitor Polski
+  since: since 1930
+  source: ELI API of Sejm
+  what: the same
+  where: bucket/MP/, dataset/acts/MP/
+- name: Work of Sejm
+  since: terms 6-10
+  source: API of Sejm
+  what: legislative processes, prints with justifications
+  where: bucket/sejm/, dataset/sejm/
+- name: Court judgments
+  since: by month
+  source: SAOS
+  what: judgments with their texts
+  where: dataset/SAOS/

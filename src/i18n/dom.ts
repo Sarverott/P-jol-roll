@@ -7,31 +7,48 @@ import {
 } from "./hooks.js";
 
 /*
-A language pack laid over a page that stays as it was written: every text node and the
-readable attributes are found, hooked by the SHA-256 of their English (hooks.ts) and given the
-pack's text. The English is remembered per node, so a page goes back to it or to another
-language. What is data - titles and texts of acts - is marked translate="no" (the attribute of
-HTML for that) and is never touched; so is code. A MutationObserver lays the pack over what a
-framework renders later: Vue patches a node -> it holds English again -> it is translated again.
+A language pack laid over a page that stays as it was written: what the page marks as its
+interface is found, hooked by the SHA-256 of its English (hooks.ts) and given the pack's text.
+The English is remembered per node, so a page goes back to it or to another language.
+A MutationObserver lays the pack over what a framework renders later: Vue patches a node ->
+it holds English again -> it is translated again.
+
+Only what is marked is translated (phase 21), by classes:
+  i18n-texts-slot          every text under it and the readable attributes of what is under it
+  i18n-texts-placeholder   the placeholder of this element; -title, -alt, -label (aria-label) alike
+Inside a slot, what is data - titles and texts of acts - is marked translate="no" (the attribute
+of HTML for that) and never touched; so is code. The documentation is all interface: its builder
+marks the body as one slot (src/devtools/docs-i18n.ts, i18n.ts).
 */
 
-const ATTRIBUTES = ["placeholder", "title", "aria-label", "alt"];
+// NOTE: nope, instead of look across all and exclude chosen elements include only SPAN, BUTTON, P and other items that contains inside important for us elements... sounds smarter?
+// NOTE: for even more immersive integration we can just siply mark stuff we want to consider as i18n translating items by special set of classes
+// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-slot"))
+// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-placeholder"))
+// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-title"))
+// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-alt"))
+// NOTE:  cool, right?
+// ANSWER: cool, and done - the classes are the only way in now, a list of tags would still have
+// taken a <span> of data; i18n-texts-label added for aria-label. The few tags below stay out
+// even inside a slot, as a block of code in the documentation is code
+
+export const SLOT = "i18n-texts-slot";
+// a readable attribute and the class that marks it on one element
+const ATTRIBUTES: Record<string, string> = {
+	placeholder: "i18n-texts-placeholder",
+	title: "i18n-texts-title",
+	alt: "i18n-texts-alt",
+	"aria-label": "i18n-texts-label",
+};
+const NAMES = Object.keys(ATTRIBUTES);
 const SKIPPED = new Set([
-	// NOTE: nope, instead of look across all and exclude chosen elements include only SPAN, BUTTON, P and other items that contains inside important for us elements... sounds smarter?
 	"SCRIPT",
 	"STYLE",
 	"CODE",
 	"PRE",
 	"TEXTAREA",
 	"NOSCRIPT",
-]); // NOTE: for even more immersive integration we can just siply mark stuff we want to consider as i18n translating items by special set of classes
-
-// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-slot"))
-// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-placeholder"))
-// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-title"))
-// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-alt"))
-
-// NOTE:  cool, right?
+]);
 
 const english = new WeakMap<Node, string>();
 const englishAttributes = new WeakMap<Element, Record<string, string>>();
@@ -39,6 +56,10 @@ const englishAttributes = new WeakMap<Element, Record<string, string>>();
 const written = new WeakMap<Node, string>();
 const writtenAttributes = new WeakMap<Element, Record<string, string>>();
 
+const classes = (element: Element) =>
+	(element.getAttribute("class") ?? "").split(/\s+/);
+
+// left as it is: data (translate="no") or code, here or above
 function kept(node: Node | null): boolean {
 	for (let at = node; at; at = at.parentNode) {
 		if (at.nodeType !== 1) continue;
@@ -48,6 +69,19 @@ function kept(node: Node | null): boolean {
 	}
 	return false;
 }
+
+// under a slot: this element or one above it is marked i18n-texts-slot
+function slotted(node: Node | null): boolean {
+	for (let at = node; at; at = at.parentNode)
+		if (at.nodeType === 1 && classes(at as Element).includes(SLOT)) return true;
+	return false;
+}
+
+// the readable attributes of an element that are to be translated
+const marked = (element: Element) =>
+	slotted(element)
+		? NAMES
+		: NAMES.filter((name) => classes(element).includes(ATTRIBUTES[name]));
 
 function under(root: Node) {
 	const texts: Text[] = [];
@@ -61,8 +95,13 @@ function under(root: Node) {
 	};
 	walk(root);
 	return {
-		texts: texts.filter((node) => !kept(node.parentNode)),
-		elements: found.filter((element) => !kept(element)),
+		texts: texts.filter(
+			(node) => slotted(node.parentNode) && !kept(node.parentNode),
+		),
+		elements: found
+			.filter((element) => !kept(element))
+			.map((element) => ({ element, names: marked(element) }))
+			.filter(({ names }) => names.length),
 	};
 }
 
@@ -73,8 +112,8 @@ export function collect(root: Node, into: Record<string, string> = {}) {
 	};
 	const { texts, elements } = under(root);
 	for (const node of texts) add(english.get(node) ?? node.nodeValue ?? "");
-	for (const element of elements)
-		for (const name of ATTRIBUTES) {
+	for (const { element, names } of elements)
+		for (const name of names) {
 			const value =
 				englishAttributes.get(element)?.[name] ?? element.getAttribute(name);
 			if (value) add(value);
@@ -93,8 +132,8 @@ export function apply(root: Node, pack: Pack | undefined) {
 		written.set(node, wanted);
 		if (node.nodeValue !== wanted) node.nodeValue = wanted;
 	}
-	for (const element of elements)
-		for (const name of ATTRIBUTES) {
+	for (const { element, names } of elements)
+		for (const name of names) {
 			const remembered = englishAttributes.get(element) ?? {};
 			const source = remembered[name] ?? element.getAttribute(name);
 			if (!source) continue;
@@ -145,7 +184,7 @@ export function follow(
 		childList: true,
 		characterData: true,
 		attributes: true,
-		attributeFilter: ATTRIBUTES,
+		attributeFilter: NAMES,
 	});
 	return () => observer.disconnect();
 }

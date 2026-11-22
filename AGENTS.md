@@ -137,12 +137,14 @@ src/core/              the gatherer itself; everything below is its tree
     embeddings.ts      the vectors of task embed, and a question as a vector of the same model (Ollama)
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
-src/mcp/               MCP server over stdio for AI agents, read-only
+src/mcp/               MCP server for AI agents, read-only: server.ts and tools/ (a folder per tool); main.ts over stdio, /mcp of the api over http; client.ts
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
-src/gui/               index.vue - the one viewer that every interface shows (Bulma); components/ the ties drawn (mermaid), their minimap (Cytoscape.js), the map of the whole law (sigma.js)
+src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map;
+                       #acts, #act/DU/2026/1, #map) and components/; assets/ what they share (state, route, ColorPick, graph, socket)
 src/web/               Astro website carrying the viewer (pages/), built into dist/web
-src/desktop/           Electron window: starts the api, shows the viewer
+src/desktop/           Electron app: main.js puts together core (the api), window, loadingmodal, menus, hotkeys-shortcuts,
+                       apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1); task desktop:check, no screen
 src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
@@ -175,7 +177,7 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   secrets/        generated secrets, one file each, ignored; .env wins over them
 examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported
                   into site/examples/ by scripts/devops/examples/build.sh, with the website
-webpage/          the React introduction at the root of the website (Vite, own package.json); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
+webpage/          the React introduction at the root of the website (Vite, own package.json; src/components/, its lists in src/data/*.yaml); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md
@@ -227,7 +229,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
-| `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
+| `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it) |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
 | `task examples:build` / `examples:edit` | the Python examples run and exported into `site/examples/` / opened in marimo |

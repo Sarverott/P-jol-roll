@@ -122,20 +122,24 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/workflows/server/api/daily.post.ts` | `POST /api/daily` starts a run and answers with its approval token. `task workflows:daily`. |
 | `src/workflows/server/api/daily/approve.post.ts` | `POST /api/daily/approve` answers a waiting run. The server listens on this machine only, which is what makes the answer a person's. `task workflows:approve`. |
 | `src/workflows/nitro.config.ts` | Nitro with the `workflow/nitro` module. Built from inside `src/workflows` (`task workflows:build`), because names of workflows are paths from where the build runs. |
-| `src/mcp/main.ts` | MCP server over stdio: tools `journals`, `search_acts`, `act`, `act_text`, `act_references`. Read-only, so an agent cannot start a crawl of the source. `task mcp`. |
+| `src/mcp/server.ts` | The MCP server: tools `journals`, `search_acts`, `act`, `act_text`, `act_references`, a folder each in `tools/` (`metadata.ts`, `function.ts`; `shared.ts` what they share). Read-only, so an agent cannot start gathering. One factory for both ways in. |
+| `src/mcp/main.ts` | The server over stdio, for an agent on this machine. Over http it is `/mcp` of the api (`src/openapi/server.ts`), so the container and the space serve it too. |
+| `src/mcp/client.ts` | A client: what an agent gets, from a terminal (`task mcp:ask`) and in tests. |
 
 ### viewer
 
 | File | What, why and where |
 | --- | --- |
-| `src/gui/index.vue` | The one viewer: pick a journal and a year, search titles, open an act, read its markdown, follow its ties, open its PDF. Takes the address of the api as `api`. Every interface shows this. Laid out with Bulma. |
-| `src/gui/components/TiesDiagram.vue` | The ties of an act as the mermaid flowchart of the core (`/diagram`), rendered by mermaid (loaded only when needed); a click on a node opens that act. |
-| `src/gui/components/LawMap.vue` | The map of the whole law (sigma.js): a preset made by `task map`, a colour per type of act; hovering an act lights its ties, a click opens it. |
+| `src/gui/index.vue` | The one viewer every interface shows (Bulma), put together from the parts below: a header, the tabs of the screens, the screen, a footer, an error dialog. Takes the address of the api as `api`. |
+| `src/gui/assets/` | What the parts share: `library.js` (the state and every call to the api, handed down by provide/inject), `route.js` (the screen and the act in the address after `#`: `#acts`, `#act/DU/2026/1`, `#map`), `setup.js` (`ColorPick`, every colour, also as `--p-*` CSS variables), `graph.js` (the graph of a map), `socket.js` (notices of the api). |
+| `src/gui/layout/` | The frame: `header.vue` (brand and language), `main.vue` (tabs and the screen), `footer.vue`, `aside-left.vue` / `aside-right.vue` (columns of a screen), `modals/errordialog.vue`. |
+| `src/gui/screens/` | `actsListing.vue` (the search on the left, the acts with their pages), `contentDisplay.vue` (one act: its text, its ties beside), `generalMap.vue` (the map of the whole law, loaded only when shown); `devilsAdvocate.vue` waits for a decision (BRAINSTORM). |
+| `src/gui/components/` | `ScreenTabs.vue`; `acts/` (search, list, pages), `act/` (header, text, ties), `map/` (`LawMap.vue` on sigma.js, its presets and legend), `ties/` (`TiesDiagram.vue` by mermaid, `TiesMinimap.vue` by Cytoscape.js, on both screens of acts). Heavy libraries come with the components that are loaded lazily. |
 | `src/core/methods/map.ts` | `task map`: the acts of a preset and the ties among them placed by ForceAtlas2 once, into `dataset/map/<preset>.json` (compact: nodes `[ELI, title, x, y, size, kind]`, edges `[from, to, tie]`). |
 | `src/core/methods/presets.ts` | The presets of the map: statutes in force (2.8 thousand acts), every statute (10 thousand), every act in force (20 thousand); apart from map.ts so readers know them without the layout. |
 | `src/core/reading/embeddings.ts` | The vectors of `task embed` (parquet, read by hyparquet), the model they were made by, and a question as a vector of the same model of Ollama (or nothing without it). |
 | `src/core/search/typesense.ts` | Search over every year by Typesense, plain http: `task search:index` fills the collection `acts` from the listings, keywords and (`--texts`) the first 2000 characters of each text; `search()` behind `/api/search`, which answers 503 with the way to start it when it is not there. |
-| `src/i18n/sha256.ts` | SHA-256 of a string, synchronous, the same in a browser and a terminal: the key of a text in a language pack. |
+| `src/i18n/sha256.ts` | SHA-256 of a string by `@noble/hashes`, synchronous, the same in a browser and a terminal: the key of a text in a language pack. |
 | `src/i18n/hooks.ts` | A text's hook: its English normalized, numbers as holes, hashed; `translate()` and `t()` give a pack's text with numbers and plural forms. |
 | `src/i18n/dom.ts` | A pack laid over a page that stays as written: `collect()` its English, `apply()` a pack (or the English back), `follow()` what a framework renders later; `translate="no"` keeps data untouched. |
 | `src/i18n/browser.ts` | The language of a page: the packs of `resources/locales/` (only the chosen one loaded), chosen by `?lang=`, the last choice, the browser's languages, else EN-US; laid over the page before it shows. |
@@ -143,9 +147,10 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/i18n/terminal.ts` | `tr(text, { name })`: the words of the launcher, the REPL and the lists of tasks in the terminal's language; named places filled after the pack. |
 | `src/i18n/node.ts` | The packs outside a browser: the index, `packFor(code)`, the language of a terminal (`P_JOL_ROLL_LANG`, else `LANG`). |
 | `src/devtools/i18n.ts` | `task i18n:collect`: the built introduction and viewer opened in a headless browser, in several states; their English collected by the page's own runtime into `resources/locales/EN-US.json`. |
-| `src/gui/components/TiesMinimap.vue` | A minimap of the ties in the corner (Cytoscape.js): the act in the middle, a colour per kind of tie, a click opens an act; it can be hidden. |
 | `src/core/reading/diagram.ts` | The ties of an act as one mermaid flowchart - the one drawing the api, the MCP server (`act_references` with `as: mermaid`) and the viewer give. |
 | `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host; `PUBLIC_SITE` is its own address for the card of a shared link (the demo by default). |
+| `src/web/pages/robots.txt.ts`, `sitemap.xml.ts`, `llms.txt.ts` | Files for machines, built into `dist/web`: crawlers kept off `/api/` and `/mcp`, the one page, and the ways in for a language model (llmstxt.org). |
+| `src/web/data/` | `site.yaml` - the words of the website (title, description, the card, the ways in); `site.ts` reads it and makes whole addresses from `PUBLIC_SITE` or the demo. |
 | `src/web/public/` | Favicons, manifest icons and `og.jpg`, made by `scripts/devops/media/build.sh` from the gist `resources/mediafiles` and committed; the introduction (`webpage/`) takes them too. |
 | `astro.config.mjs` (root) | Where Astro finds `src/web` and writes `dist/web`. |
 
@@ -153,7 +158,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 
 | File | What, why and where |
 | --- | --- |
-| `src/desktop/main.js` | Electron window: starts the api for itself on this machine only and shows the viewer. `task desktop`. |
+| `src/desktop/main.js` | The Electron app put together: the api started for itself on this machine only (`core.js`), a loading window while it reads (`loadingmodal.js`), the viewer's window (`window.js`), the menu with its keys (`menus.js`, `hotkeys-shortcuts.js`), a tray icon (`apptray.js`), notices of changed files (`notifications.js`), boxes of the system (`dialogs.js`), links `p-jol-roll://act/DU/2026/1` (`deeplinks.js`). `task desktop`; `task desktop:check` runs it hidden and prints what the viewer shows. `webserial.js` and `webbluethooth.js` wait for Q17. |
 | `src/app/manifest.json` | Web app manifest of the viewer, linked by the website, so it can also be installed from a browser. |
 | `src/app/capacitor.config.json` | Capacitor settings of the android app: its web part is `dist/web`. `task app:sync -- add android` the first time. |
 | `src/firefox-ext/manifest.json`, `popup.html`, `main.js` | Browser extension: looks up an act cited in the open tab or typed in (`Dz.U. 2026 poz. 1`, ISAP addresses, ELI) in a P_JOL_ROLL host. Loads in Firefox, and unpacked in Chrome. `task extension` says how. |
