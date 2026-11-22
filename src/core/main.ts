@@ -2,7 +2,7 @@
 
 import { parseArgs } from "node:util";
 import { PARTS } from "./apihandlers/eli.js";
-import log from "./logging/setup.js";
+import log, { logRun } from "./logging/setup.js";
 import type { GatheringScope as GatheringTypes } from "./vars/types/index.js";
 
 /*
@@ -67,6 +67,15 @@ const { values, positionals } = parseArgs({
 		files: { type: "boolean", default: false },
 	},
 });
+
+// the file of this run in logs/: gather, gather-changes, seal, hub-push, ...
+logRun(
+	command === "gather" && values.since
+		? "gather-changes"
+		: command === "hub"
+			? `hub-${positionals[0] ?? ""}`
+			: command,
+);
 
 if (command === "gather") {
 	const asked = values.parts

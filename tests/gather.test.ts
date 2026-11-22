@@ -49,7 +49,7 @@ const server = createServer((request, response) => {
 			references: { "Podstawa prawna": [{ id: "DU/1997/483", art: "art. 5" }] },
 		},
 		"/acts/DU/2026/1/struct": [{ id: "part_1", children: [] }],
-		"/changes/acts?since=2026-10-01&limit=500&offset=0": {
+		"/changes/acts?since=2026-10-01T00%3A00%3A00&limit=500&offset=0": {
 			count: 1,
 			totalCount: 1,
 			offset: 0,
@@ -177,7 +177,7 @@ test("acts changed since a day are taken again", async () => {
 		"/acts/DU/2026",
 		"/acts/DU/2026/1",
 		"/acts/DU/2026/1/references",
-		"/changes/acts?since=2026-10-01&limit=500&offset=0",
+		"/changes/acts?since=2026-10-01T00%3A00%3A00&limit=500&offset=0",
 		"/statuses",
 	]);
 	expect(JSON.parse(read(store.actPath(acts[1], ".json"))).status).toBe(

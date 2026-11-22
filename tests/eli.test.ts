@@ -1,5 +1,7 @@
 import { expect, test } from "vitest";
 import {
+	changesSince,
+	changesUrl,
 	filesOf,
 	pickLists,
 	pickPublishers,
@@ -97,4 +99,12 @@ test("other texts are these of details that are not the published one", () => {
 			suffix: ".U.pdf",
 		},
 	]);
+});
+
+test("a day for changes becomes its beginning, as the API asks", () => {
+	expect(changesSince("2026-10-15")).toBe("2026-10-15T00:00:00");
+	expect(changesSince("2026-10-09T08:00:00")).toBe("2026-10-09T08:00:00");
+	expect(changesUrl("2026-10-15", 0)).toContain(
+		"since=2026-10-15T00%3A00%3A00&limit=500&offset=0",
+	);
 });

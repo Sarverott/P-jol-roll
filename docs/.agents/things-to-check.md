@@ -6,6 +6,11 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-22. Dependabot on `dev/dependabot`** acts once `dependabot.yml`
+  reaches `master` (Dependabot reads it there). Until then its pull
+  requests still aim at `development`. The branch `dev/dependabot` was made
+  from `development` and pushed.
+
 - **2026-11-21. Dependabot's #6 (`@types/node` 26)** is not taken: the
   project runs on Node 24. Closing it, or an `ignore` for majors of
   `@types/node` in `dependabot.yml`, is yours.

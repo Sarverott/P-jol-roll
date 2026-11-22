@@ -42,3 +42,4 @@ in the country, as open source.
 | 6 | services: every part of the project a container of its own, logs collected in one place |
 | 7 | init and launcher: a newcomer types `task` and is led |
 | 8 | releases and routines: a release on every merge into master, versions and phases closed by workflows, the rest of the routine by tasks |
+| 9 | logs where they are found, the demo space on the project's own server, Dependabot on its own branch |
