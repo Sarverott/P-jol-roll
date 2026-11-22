@@ -28,6 +28,10 @@ exclude_docs: |
 theme:
   name: material
   language: en
+  # the images of the project (scripts/devops/media/build.sh); the card of a link in overrides/
+  custom_dir: _mkdocs/overrides
+  favicon: assets/images/favicon.png
+  logo: assets/images/logo.png
   features:
     - navigation.sections
     - navigation.top

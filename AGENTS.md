@@ -137,7 +137,7 @@ src/devtools/          tools of the repository itself: version.ts (one version: 
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
-  devops/              every step of the workflows as a .sh (pages, release, docs, flow, checks), local/ routines behind task flow:*
+  devops/              every step of the workflows as a .sh (pages, release, docs, flow, checks, media), local/ routines behind task flow:*
 logs/             a file per run: log-<Date.now()>-<log mode>-<command>.log (LOG_DIR, LOG_LEVEL), ignored by git
 tests/            vitest; gather.test.ts runs whole gathering against a local copy of API
   unittesting/    the project on other systems in containers: <system>/<setup>/Dockerfile, cases -<case>/run.sh
@@ -151,6 +151,8 @@ resources/        .map.json lists huggingface repositories, their local sides ar
     webapp-server/  Dockerfile and start.sh of the slim server image (ghcr.io, the demo space)
     routing-proxy/, internal-dns/, llms-api-host/, log-collector/  settings of those services
     agentic-shell/  the image of the shell for agents (Q13: why it exists, in changelog phase 6)
+  mediafiles/     the images of the project: the gist MEDIAFILES as a submodule; task resources:media makes
+                  icons and og.jpg out of them into src/web/public (the webpage takes them too), docs/assets/images, src/firefox-ext/icons
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
 examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported
@@ -188,6 +190,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
+| `task resources:media` | favicons, manifest icons, `og.jpg` and the extension icons made from `resources/mediafiles` (ffmpeg); committed |
 | `task resources:merge` | the directories sources had before phase 10 moved into the one dataset and bucket |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
