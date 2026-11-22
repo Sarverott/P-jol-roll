@@ -119,6 +119,7 @@ src/core/              the gatherer itself; everything below is its tree
   logging/             setup.ts: the one logger of every command (text or JSON lines, a file per run in logs/, syslog when asked) - import it first, then logRun(<command>)
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
+    remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
 src/mcp/               MCP server over stdio for AI agents, read-only
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;

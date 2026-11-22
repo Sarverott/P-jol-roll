@@ -104,6 +104,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/core/resources/store.ts` | Where every gathered thing is written and how: `.part` first, then the real name. |
 | `src/core/resources/hub.ts` | Comparison and sync of `resources/` with Hugging Face, file by file. |
 | `src/core/reading/library.ts` | Gathered data as readers see it: journals, pages of acts, one act, its text, its ties, its files. Only reads `resources/`. The hosts stand on this and nothing else. |
+| `src/core/reading/remote.ts` | The remote mode (the demo): with `DATASET_URL` and `BUCKET_URL`, each file a reader needs is taken once from the copies on Hugging Face into `resources/` (a cache then, fresh for `REMOTE_HOURS`); raw files are addresses on the bucket. `library.prepare()` names what each address needs. Never asks the sources of the law. |
 | `src/core/vars/interfaces/*.interface.ts` | Every interface, one per file. `index.ts` there groups them into `GatheringScope`, `HuggingfaceScope` and `ReadingScope`. |
 | `src/core/vars/types/*.type.ts` | Every type alias, one per file, grouped the same way in its `index.ts`. |
 

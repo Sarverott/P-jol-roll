@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import express from "express";
 import { Server as SocketServer } from "socket.io";
 import * as library from "../core/reading/library.js";
+import { remote } from "../core/reading/remote.js";
 import { DATASET_DIR } from "../core/resources/store.js";
 import { routes } from "./routes.js";
 
@@ -37,21 +38,23 @@ export function serve({ port = 8080, host = "127.0.0.1", web = WEB_DIR } = {}) {
 
 	// every client gets what is here now, and a notice when a table of dataset changes
 	io.on("connection", (socket) => {
-		socket.emit("journals", library.journals());
+		library.prepare().then(() => socket.emit("journals", library.journals()));
 	});
 	let pending: NodeJS.Timeout | undefined;
 	const changed = new Set<string>();
-	const watcher = existsSync(DATASET_DIR)
-		? watch(DATASET_DIR, { recursive: true }, (_event, name) => {
-				if (!name || name.endsWith(".part")) return;
-				changed.add(name.toString());
-				clearTimeout(pending);
-				pending = setTimeout(() => {
-					io.emit("changed", [...changed]);
-					changed.clear();
-				}, 1000);
-			})
-		: undefined;
+	// remotely the dataset here is a cache: what lands in it is no news
+	const watcher =
+		!remote && existsSync(DATASET_DIR)
+			? watch(DATASET_DIR, { recursive: true }, (_event, name) => {
+					if (!name || name.endsWith(".part")) return;
+					changed.add(name.toString());
+					clearTimeout(pending);
+					pending = setTimeout(() => {
+						io.emit("changed", [...changed]);
+						changed.clear();
+					}, 1000);
+				})
+			: undefined;
 	server.on("close", () => {
 		watcher?.close();
 		clearTimeout(pending);

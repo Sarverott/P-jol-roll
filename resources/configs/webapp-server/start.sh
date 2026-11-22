@@ -1,7 +1,8 @@
 #!/bin/sh
-# Start of webapp-server: RESOURCES_DIR gets the map of repositories when it has none; with
-# PULL=dataset (the demo space) the dataset is taken from Hugging Face in the background while
-# the api already answers - it reads what is there and sees new files as they come.
+# Start of webapp-server: RESOURCES_DIR gets the map of repositories when it has none.
+# DATASET_URL and BUCKET_URL (the demo space) read the copies on Hugging Face page by page
+# (src/core/reading/remote.ts); PULL=dataset instead takes the whole dataset in the background
+# while the api already answers - for a server that is to have all of it.
 set -eu
 mkdir -p "$RESOURCES_DIR" "$LOG_DIR" 2> /dev/null || true
 for f in .map.json frontends.json; do
