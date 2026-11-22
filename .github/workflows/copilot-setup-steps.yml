@@ -1,0 +1,30 @@
+# The machine of Jarvis (GitHub Copilot's coding agent): GitHub runs this job before the agent
+# starts, so it finds the repository ready for `task check` - node and its packages, the task
+# binary, poppler for the texts of PDFs. Read only; no secrets, nothing sent anywhere.
+name: "Copilot Setup Steps"
+
+on:
+  workflow_dispatch:
+  push:
+    paths: [.github/workflows/copilot-setup-steps.yml]
+  pull_request:
+    paths: [.github/workflows/copilot-setup-steps.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  # the name GitHub looks for
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - uses: go-task/setup-task@v2
+      # scripts off: no browser download, no git hooks (the task binary comes from setup-task)
+      - run: npm ci --ignore-scripts
+      - run: command -v pdftotext || (sudo apt-get update && sudo apt-get install -y poppler-utils)

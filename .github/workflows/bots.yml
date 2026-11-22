@@ -1,0 +1,49 @@
+# The bots' pull requests, each bot on its own contributor branch, as the owner asked
+# (Dependabot 2026-11-22; Jarvis, GitHub Copilot, 2026-11-22, changelog phase 19):
+#   1. a pull request of a bot is turned to its branch whatever it was opened against
+#      (Dependabot's security updates and Copilot's pull requests open against master) and
+#      merged there - Dependabot's at once, Jarvis's when it is no longer a draft
+#   2. the branch is checked: checks.yml is dispatched on it, so it checks its own commit with
+#      read rights only - nothing of a pull request runs in this privileged workflow
+#   3. green: bots-land.yml lands the checked commit in development (a merge commit) and
+#      brings the branch up to it
+# pull_request_target gives the write token that a pull request of a bot does not get; with it
+# only gh commands run, and the scripts come from development.
+name: "flow › bots: Dependabot and Jarvis into their branches, checked, landed"
+
+on:
+  pull_request_target:
+    branches: [master, development, dev/dependabot, dev/Jarvis]
+    types: [opened, reopened, synchronize, edited, ready_for_review]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bots-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    # Dependabot, or Copilot (its agent's copilot/* branches, its autofixes on dev/Copilot*),
+    # only from this repository
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository
+      && (github.event.pull_request.user.login == 'dependabot[bot]'
+        || github.event.pull_request.user.login == 'Copilot'
+        || startsWith(github.event.pull_request.head.ref, 'copilot/')
+        || startsWith(github.event.pull_request.head.ref, 'dev/Copilot'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      # the scripts come from development: the branch of a bot may be older than they are
+      - uses: actions/checkout@v7
+        with: { ref: development }
+      - name: Into the bot's branch, merged, its checks dispatched
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: scripts/devops/flow/bot-merge.sh "$PR"
