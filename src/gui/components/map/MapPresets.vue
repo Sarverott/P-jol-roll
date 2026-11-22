@@ -16,7 +16,7 @@ defineProps({
 			<div class="select">
 				<select
 					v-model="preset"
-					class="i18n-texts-label"
+					class="i18n-texts-slot"
 					aria-label="preset of the map"
 				>
 					<option
