@@ -156,15 +156,19 @@ export async function push(name: string, batch: number) {
 }
 
 // files that are there and not here come here; changed ones are only named,
-// local work is never overwritten
-export async function pull(name: string) {
+// local work is never overwritten. {parallel} files at a time (the dataset holds tens of
+// thousands of small texts); each appears under its name only when it is whole.
+export async function pull(name: string, parallel = 8) {
 	const { repo, dir, download, changed } = await plan(name);
-	log.info(`${repo}: ${download.length} to take`, {
+	log.info(`${repo}: ${download.length} to take, ${parallel} at a time`, {
 		repo,
 		take: download.length,
+		parallel,
 	});
 
-	for (const path of download) {
+	let next = 0;
+	let taken = 0;
+	const take = async (path: string) => {
 		const blob = await downloadFile({ repo, path, accessToken });
 		if (!blob) throw new Error(`${path} vanished from ${repo}`);
 		const file = join(dir, path);
@@ -174,7 +178,18 @@ export async function pull(name: string) {
 			createWriteStream(`${file}.part`),
 		);
 		await rename(`${file}.part`, file);
-	}
+		taken += 1;
+		if (taken % 500 === 0 || taken === download.length)
+			log.info(`${taken} of ${download.length}`, {
+				taken,
+				all: download.length,
+			});
+	};
+	await Promise.all(
+		Array.from({ length: Math.max(1, parallel) }, async () => {
+			while (next < download.length) await take(download[next++]);
+		}),
+	);
 	if (changed.length)
 		log.warning(`differs on both sides, left as it is here: ${changed}`, {
 			changed,
