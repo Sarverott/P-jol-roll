@@ -133,6 +133,7 @@ src/core/              the gatherer itself; everything below is its tree
   search/              typesense.ts: every act into Typesense (task search:index) and /api/search over every year
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
+    dataset.ts         the rest of the dataset: work of Sejm, judgments, lists of the source, acts counted (task stats)
     diagram.ts         the ties of an act as one mermaid flowchart, for every interface
     embeddings.ts      the vectors of task embed, and a question as a vector of the same model (Ollama)
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
@@ -210,6 +211,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task gather:everything` | all of it, asks before it starts |
 | `task gather:changes` | acts changed since the previous such run |
 | `task seal` / `task seal -- --check` | write checksums of files without a record / compare files with records |
+| `task stats` | the acts counted year by year, by type and status, into `dataset/statistics/acts.json` (the viewer's plots and history) |
 | `task map` / `task map -- statutes` | the map of the whole law, every preset or one, into `dataset/map/` (the viewer draws it with sigma.js) |
 | `task search:index` (`-- --texts`) | every act into Typesense, started by `docker compose --profile search up -d typesense`; the api and the viewer search every year |
 | `task embed` (`-- 2026`) | vectors of the texts by a local multilingual model of Ollama into `dataset/embeddings/` |

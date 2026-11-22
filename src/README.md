@@ -122,7 +122,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/workflows/server/api/daily.post.ts` | `POST /api/daily` starts a run and answers with its approval token. `task workflows:daily`. |
 | `src/workflows/server/api/daily/approve.post.ts` | `POST /api/daily/approve` answers a waiting run. The server listens on this machine only, which is what makes the answer a person's. `task workflows:approve`. |
 | `src/workflows/nitro.config.ts` | Nitro with the `workflow/nitro` module. Built from inside `src/workflows` (`task workflows:build`), because names of workflows are paths from where the build runs. |
-| `src/mcp/server.ts` | The MCP server: tools `journals`, `search_acts`, `act`, `act_text`, `act_references`, a folder each in `tools/` (`metadata.ts`, `function.ts`; `shared.ts` what they share). Read-only, so an agent cannot start gathering. One factory for both ways in. |
+| `src/mcp/server.ts` | The MCP server: tools `journals`, `search_acts`, `act`, `act_text`, `act_references`, `statistics`, `sejm_work`, `source_list`, a folder each in `tools/` (`metadata.ts`, `function.ts`; `shared.ts` what they share). Read-only, so an agent cannot start gathering. One factory for both ways in. |
 | `src/mcp/main.ts` | The server over stdio, for an agent on this machine. Over http it is `/mcp` of the api (`src/openapi/server.ts`), so the container and the space serve it too. |
 | `src/mcp/client.ts` | A client: what an agent gets, from a terminal (`task mcp:ask`) and in tests. |
 
@@ -147,6 +147,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/i18n/terminal.ts` | `tr(text, { name })`: the words of the launcher, the REPL and the lists of tasks in the terminal's language; named places filled after the pack. |
 | `src/i18n/node.ts` | The packs outside a browser: the index, `packFor(code)`, the language of a terminal (`P_JOL_ROLL_LANG`, else `LANG`). |
 | `src/devtools/i18n.ts` | `task i18n:collect`: the built introduction and viewer opened in a headless browser, in several states; their English collected by the page's own runtime into `resources/locales/EN-US.json`. |
+| `src/core/reading/dataset.ts` | The rest of the dataset as readers see it (phase 22): terms, processes and prints of Sejm, months of court judgments, the lists of the source, the acts counted year by year (`task stats` writes them for the demo). Only reads `resources/`. |
 | `src/core/reading/diagram.ts` | The ties of an act as one mermaid flowchart - the one drawing the api, the MCP server (`act_references` with `as: mermaid`) and the viewer give. |
 | `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host; `PUBLIC_SITE` is its own address for the card of a shared link (the demo by default). |
 | `src/web/pages/robots.txt.ts`, `sitemap.xml.ts`, `llms.txt.ts` | Files for machines, built into `dist/web`: crawlers kept off `/api/` and `/mcp`, the one page, and the ways in for a language model (llmstxt.org). |

@@ -18,6 +18,8 @@ const acts = [
 		year: 1918,
 		pos: 1,
 		title: "Dekret o Radzie Regencyjnej",
+		type: "Dekret",
+		status: "uchylony",
 		textPDF: true,
 		textHTML: false,
 	},
@@ -28,6 +30,8 @@ const acts = [
 		year: 1918,
 		pos: 2,
 		title: "Ustawa o Radzie Stanu",
+		type: "Ustawa",
+		status: "uchylony",
 		textPDF: true,
 		textHTML: true,
 	},
@@ -69,6 +73,16 @@ await put(
 	})}\n`,
 );
 await put(".map.json", "{}");
+// the rest of the dataset: a list of the source, a term of Sejm, a month of judgments
+await put("dataset/lists/statuses.json", JSON.stringify(["obowiązujący"]));
+await put(
+	"dataset/sejm/term10/processes.jsonl",
+	`${JSON.stringify({ term: 10, number: "1", title: "Projekt uchwały o wicemarszałkach" })}\n${JSON.stringify({ term: 10, number: "2", title: "Projekt ustawy o podatkach" })}\n`,
+);
+await put(
+	"dataset/SAOS/judgments/2020/2020-03.jsonl",
+	`${JSON.stringify({ id: 7, courtType: "COMMON" })}\n`,
+);
 
 const library = await import("../src/core/reading/library.js");
 const { serve } = await import("../src/openapi/server.js");
@@ -133,6 +147,34 @@ test("http api answers from the same files and nothing outside them", async () =
 	expect((await (await get("/openapi.json")).json()).openapi).toBe("3.1.0");
 });
 
+test("the rest of the dataset: statistics, lists, Sejm, judgments", async () => {
+	const get = async (path: string) => (await fetch(`${url}${path}`)).json();
+	const counted = await get("/api/statistics");
+	expect(counted.years).toEqual([
+		{
+			journal: "DU",
+			year: 1918,
+			total: 2,
+			types: { Dekret: 1, Ustawa: 1 },
+			statuses: { uchylony: 2 },
+		},
+	]);
+	expect(counted.statuses).toEqual(["uchylony"]);
+	expect(await get("/api/lists")).toEqual(["publishers", "statuses"]);
+	expect(await get("/api/lists/statuses")).toEqual(["obowiązujący"]);
+	expect((await fetch(`${url}/api/lists/..%2F.map`)).status).toBe(404);
+	expect(await get("/api/sejm")).toEqual([
+		{ term: 10, processes: 2, prints: 0 },
+	]);
+	const found = await get("/api/sejm/10/processes?q=podatkach");
+	expect(found.items.map((one: { number: string }) => one.number)).toEqual([
+		"2",
+	]);
+	expect((await fetch(`${url}/api/sejm/10/votes`)).status).toBe(404);
+	expect(await get("/api/judgments")).toEqual(["2020-03"]);
+	expect((await get("/api/judgments/2020/3")).total).toBe(1);
+});
+
 test("socket.io tells what is here and what changed", async () => {
 	const socket = io(url, { transports: ["websocket"] });
 	const journals = await new Promise((done) => socket.once("journals", done));
@@ -148,7 +190,16 @@ test("the MCP server answers at /mcp of the api with the same reading", async ()
 	const client = await connect(`${url}/mcp`);
 	const { tools } = await client.listTools();
 	expect(tools.map((tool) => tool.name).sort()).toEqual(
-		["act", "act_references", "act_text", "journals", "search_acts"].sort(),
+		[
+			"act",
+			"act_references",
+			"act_text",
+			"journals",
+			"search_acts",
+			"sejm_work",
+			"source_list",
+			"statistics",
+		].sort(),
 	);
 	const text = (result: Awaited<ReturnType<typeof client.callTool>>) =>
 		(result.content as { text: string }[])[0].text;
@@ -166,6 +217,11 @@ test("the MCP server answers at /mcp of the api with the same reading", async ()
 	expect(text(read)).toMatch(
 		/^\[text layer of the PDF .*\n\n# Ustawa o Radzie Stanu/,
 	);
+	const work = await client.callTool({
+		name: "sejm_work",
+		arguments: { term: 10, query: "uchwały" },
+	});
+	expect(JSON.parse(text(work)).total).toBe(1);
 	const missing = await client.callTool({
 		name: "act",
 		arguments: { eli: "DU/1918/9" },

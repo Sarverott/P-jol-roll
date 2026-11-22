@@ -88,6 +88,11 @@ tasks:
     cmds:
       - npm run --silent map -- {{.CLI_ARGS}}
 
+  stats:
+    desc: The acts counted year by year, by type and status, into dataset/statistics/acts.json - the viewer's plots and history read it on the demo space.
+    cmds:
+      - npm run --silent stats
+
   search:index:
     desc: Every act into Typesense (start it - docker compose --profile search up -d typesense); "task search:index -- --texts" with the beginning of each text.
     cmds:

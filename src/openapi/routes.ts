@@ -1,5 +1,6 @@
 import { resolve } from "node:path";
 import { type Request, type Response, Router } from "express";
+import * as dataset from "../core/reading/dataset.js";
 import * as library from "../core/reading/library.js";
 import { remote } from "../core/reading/remote.js";
 import { spec } from "./spec.js";
@@ -35,14 +36,17 @@ if (remote)
 		// a journal is letters only (DU, MP); anything else is not taken from Hugging Face
 		const named =
 			journal && /^[A-Za-z]{1,16}$/.test(journal) ? journal : undefined;
+		const OTHER = ["statistics", "lists", "sejm", "judgments"];
 		const ready =
 			kind === "map"
 				? library.prepareMap(named)
-				: library.prepare(
-						kind === "acts" ? named : undefined,
-						number(year),
-						number(pos),
-					);
+				: OTHER.includes(kind)
+					? dataset.prepareDataset(kind, journal, year)
+					: library.prepare(
+							kind === "acts" ? named : undefined,
+							number(year),
+							number(pos),
+						);
 		ready.then(() => next(), next);
 	});
 
@@ -82,6 +86,73 @@ routes.get("/api/map/:preset", (request, response) => {
 	const made = library.lawMap(String(request.params.preset));
 	if (made) response.type("application/json").send(made);
 	else notHere(response);
+});
+
+// the rest of the dataset (phase 22): statistics, the lists of the source, the work of Sejm,
+// court judgments - each a page of lines found by words, as the acts of a year are
+const paging = (request: Request) => {
+	const { q, offset, limit } = request.query;
+	return {
+		query: typeof q === "string" ? q : "",
+		offset: Number(offset) || 0,
+		limit: Number(limit) || 50,
+	};
+};
+
+routes.get("/api/statistics", (_request, response) => {
+	response.json(dataset.statistics());
+});
+
+routes.get("/api/lists", (_request, response) => {
+	response.json(dataset.lists());
+});
+
+routes.get("/api/lists/:name", (request, response) => {
+	const found = dataset.list(String(request.params.name));
+	if (found === undefined) notHere(response);
+	else response.json(found);
+});
+
+routes.get("/api/sejm", (_request, response) => {
+	response.json(dataset.terms());
+});
+
+routes.get("/api/sejm/:term/:kind", (request, response) => {
+	const term = String(request.params.term);
+	const kind = String(request.params.kind);
+	if (
+		!/^\d{1,2}$/.test(term) ||
+		!(dataset.SEJM_KINDS as readonly string[]).includes(kind)
+	) {
+		notHere(response);
+		return;
+	}
+	response.json(
+		dataset.sejmWork(
+			Number(term),
+			kind as (typeof dataset.SEJM_KINDS)[number],
+			paging(request),
+		),
+	);
+});
+
+routes.get("/api/judgments", (_request, response) => {
+	response.json(dataset.judgmentMonths());
+});
+
+routes.get("/api/judgments/:year/:month", (request, response) => {
+	const month = String(request.params.month);
+	if (!/^\d{1,2}$/.test(month)) {
+		notHere(response);
+		return;
+	}
+	response.json(
+		dataset.judgments(
+			Number(request.params.year),
+			Number(month),
+			paging(request),
+		),
+	);
 });
 
 routes.get("/api/journals", (_request, response) => {
