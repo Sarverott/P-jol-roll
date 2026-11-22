@@ -23,7 +23,7 @@ const LOCKED =
 const COPIES: [string, RegExp][] = [
 	["src/firefox-ext/manifest.json", field('"version":')],
 	["src/openapi/spec.ts", field("version:")],
-	["src/mcp/main.ts", field(String.raw`name:\s*"p-jol-roll",\s*version:`)],
+	["src/mcp/server.ts", field(String.raw`name:\s*"p-jol-roll",\s*version:`)],
 	...["docs", "examples", "scripts"].flatMap((dir): [string, RegExp][] => [
 		[`${dir}/pyproject.toml`, PYTHON],
 		[`${dir}/uv.lock`, LOCKED],

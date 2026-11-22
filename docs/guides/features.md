@@ -62,7 +62,7 @@ State of 2026-11-13.
 | Search by meaning in any language (Typesense hybrid, the question by the same model) and a map by meaning | `/api/search?meaning=1`, the viewer's "by meaning"; `task map -- statutes-in-force-by-meaning` | **works** on DU 2020 in a copy: an English question found Polish acts; 63 statutes tied to their nearest |
 | The map of the whole law (sigma.js), from presets | `task map`, the viewer's tab | **works**: three presets made from the real dataset in 53 s (0.4-2.8 MB); headless browser draws them, hover and click checked |
 | Ties of an act drawn (mermaid, one drawing for api, MCP and viewer) and a minimap of them (Cytoscape.js) | `/api/acts/<eli>/diagram`, the viewer | **works**: headless browser over DU 2020, a click on a node opens that act |
-| MCP server for AI agents, read-only | `task mcp` | **built**: tools listed and called over stdio |
+| MCP server for AI agents, read-only | `task mcp`, `/mcp` of the api and the space, `task mcp:ask` | **built**: tools listed and called over stdio and over http |
 | Desktop window | `task desktop` | **built**: opened by the owner, the port problem fixed afterwards and not opened again |
 | Android app | `task app:sync` | **wanted**: configured, Capacitor not installed |
 | Browser extension (Firefox, Chrome) | `task extension` | **built**: citations read from seven examples; not loaded in a browser |

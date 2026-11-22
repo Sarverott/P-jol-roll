@@ -11,9 +11,14 @@ tasks:
       - npm run serve
 
   mcp:
-    desc: MCP server over stdio for AI agents, read-only (e.g. claude mcp add p-jol-roll -- npx tsx src/mcp/main.ts).
+    desc: MCP server over stdio for AI agents, read-only (e.g. claude mcp add p-jol-roll -- npx tsx src/mcp/main.ts); over http it is /mcp of task serve and of the space.
     cmds:
       - npm run --silent mcp
+
+  mcp:ask:
+    desc: Ask the MCP server what an agent would - its tools, or one with arguments (task mcp:ask -- act eli=DU/2026/1); MCP_URL=http://.../mcp asks a running api instead of stdio.
+    cmds:
+      - npx tsx src/mcp/client.ts {{.CLI_ARGS}}
 
   web:build:
     desc: Website of src/web with the viewer of src/gui, into dist/web.

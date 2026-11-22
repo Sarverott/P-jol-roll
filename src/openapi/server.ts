@@ -1,17 +1,20 @@
 import { existsSync, watch } from "node:fs";
 import { createServer } from "node:http";
 import { resolve } from "node:path";
+import { toNodeHandler } from "@modelcontextprotocol/node";
 import express from "express";
 import { rateLimit } from "express-rate-limit";
 import { Server as SocketServer } from "socket.io";
 import * as library from "../core/reading/library.js";
 import { remote } from "../core/reading/remote.js";
 import { DATASET_DIR } from "../core/resources/store.js";
+import { mcpHandler } from "../mcp/server.js";
 import { routes } from "./routes.js";
 
 /*
-Headless host of gathered data: http api (described at /openapi.json), live
-notices over socket.io, and the built website (dist/web) when it is there.
+Headless host of gathered data: http api (described at /openapi.json), the MCP server of
+src/mcp at /mcp (streamable http, stateless), live notices over socket.io, and the built
+website (dist/web) when it is there.
 Read-only and open to every origin, because the data is public and the
 extensions and the android app ask it from elsewhere.
 */
@@ -47,6 +50,8 @@ export function serve({ port = 8080, host = "127.0.0.1", web = WEB_DIR } = {}) {
 		response.set("Access-Control-Expose-Headers", "X-Text-From");
 		next();
 	});
+	// the tools of src/mcp for agents elsewhere; a fresh server per request
+	app.all("/mcp", toNodeHandler(mcpHandler()));
 	app.use(routes);
 	if (existsSync(web)) app.use(express.static(resolve(web)));
 	else
