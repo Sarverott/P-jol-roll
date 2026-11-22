@@ -219,6 +219,6 @@ The owner's message, 2026-11-22, and the notes left in the code
 - [x] SHA-256 of the language packs made readable
 - [x] MCP: a folder per tool, answers shared, one server for stdio and for http - `/mcp` of webapp-server, so the space serves it too
 - [x] The website's data from yaml; `robots.txt`, `sitemap.xml`, `llms.txt`
-- [ ] The introduction's data from yaml, and the page split into components
+- [x] The introduction's data from yaml, and the page split into components
 - [ ] The web interface of the workflows finds the workflows
 - [ ] The desktop app split into the modules laid out

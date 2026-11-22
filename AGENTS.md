@@ -176,7 +176,7 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   secrets/        generated secrets, one file each, ignored; .env wins over them
 examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported
                   into site/examples/ by scripts/devops/examples/build.sh, with the website
-webpage/          the React introduction at the root of the website (Vite, own package.json); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
+webpage/          the React introduction at the root of the website (Vite, own package.json; src/components/, its lists in src/data/*.yaml); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md
