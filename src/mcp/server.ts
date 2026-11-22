@@ -25,7 +25,7 @@ Gathering is started by a person, so an agent cannot set off a crawl of the sour
 */
 
 export function createServer() {
-	const server = new McpServer({ name: "p-jol-roll", version: "0.18.19" });
+	const server = new McpServer({ name: "p-jol-roll", version: "0.18.20" });
 	server.registerTool("journals", journalsMeta, journals);
 	server.registerTool("search_acts", searchActsMeta, searchActs);
 	server.registerTool("act", actMeta, act);

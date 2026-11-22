@@ -143,11 +143,14 @@ src/openapi/           http api (/api, /openapi.json) with socket.io notices, se
 src/mcp/               MCP server for AI agents, read-only: server.ts and tools/ (a folder per tool); main.ts over stdio, /mcp of the api over http; client.ts
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
-src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map;
-                       #acts, #act/DU/2026/1, #map) and components/; assets/ what they share (state, route, ColorPick, graph, socket)
+src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map,
+                       the rest of the dataset, plots, statistics with the history, settings; #acts, #act/DU/2026/1, #map, #data,
+                       #plots, #statistics, #settings) and components/; assets/ what they share (state, route, ColorPick, graph,
+                       socket, settings, counting, webmcp); data/credits.js (AUTHORS and links for "Terms of use")
 src/web/               Astro website carrying the viewer (pages/), built into dist/web
 src/desktop/           Electron app: main.js puts together core (the api), window, loadingmodal, menus, hotkeys-shortcuts,
-                       apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1); task desktop:check, no screen
+                       apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1), printing (print, PDF);
+                       task desktop:check, no screen
 src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
@@ -181,7 +184,8 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   secrets/        generated secrets, one file each, ignored; .env wins over them
 examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported
                   into site/examples/ by scripts/devops/examples/build.sh, with the website
-webpage/          the React introduction at the root of the website (Vite, own package.json; src/components/, its lists in src/data/*.yaml); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
+webpage/          the React introduction at the root of the website (Vite, own package.json; src/components/ with a p5.js background,
+                  its lists in src/data/*.yaml); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md

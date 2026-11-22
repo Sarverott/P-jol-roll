@@ -4,6 +4,36 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-22 · Cleo · phase 22: every function everywhere, a viewer that shines
+
+- The map of functionalities (`docs/devlog/scrapnote-1795373814912.md`)
+  found the terminals reading nothing, the launcher speaking in Taskfiles,
+  half of the dataset shown nowhere and every way declaring its functions
+  on its own. The patch is one catalog (`src/core/catalog/`) every way
+  takes its functions from; `docs/guides/functions.md` is written from it
+  and shows the holes left: mostly writing functions on hosts (Q19), and
+  MCP without search and the map.
+- Rule 4 and the owner's "every function in every interface" disagree for
+  hosts: asked as Q19, nothing settled in code - the viewer shows writing
+  functions disabled, as the owner asked for the space.
+- The space's `Dockerfile` takes the release as a build argument; that a
+  space's variables reach the build as arguments is from Hugging Face's
+  documentation, not tried here (no token was used).
+- In the remote mode the data tab knows only terms of Sejm and months of
+  judgments already cached: the space reads directories, and the dataset
+  has no index of them yet. Statistics reach the demo once `task stats`
+  writes `dataset/statistics/acts.json` and the dataset is pushed.
+- 186 new texts collected; the Polish of 28 corrected by me and marked
+  `reviewed` in the pack (argostranslate had "play" as a game, "prints" as
+  fingerprints, "plots" as plots of land); German and Ukrainian are machine
+  work.
+- `@mcp-b/global` pinned to 6.0.3 and p5 to 2.3.4, both older than two
+  weeks. The first landed in the commit of "Terms of use" (the hook of
+  versions staged `package.json` there), not in the one of WebMCP.
+- My `pgrep -f "http.server 8193" | xargs kill` matched its own shell once
+  more; only the preview server and that shell ended. Next time: by the
+  pid of `ss -ltnp`.
+
 ## 2026-11-22 · Cleo · phase 21: the owner's notes across src
 
 - The owner judged the code "not bad but could be better" and left notes

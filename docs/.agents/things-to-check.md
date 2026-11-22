@@ -21,6 +21,15 @@ point was added.
   argostranslate (phase 21); machine work, not read by a person.
 - **2026-11-22. MCP of the space.** `/mcp` comes to the demo with the next
   image (a release) and its refresh.
+- **2026-11-22. The new words of phase 22** (the data tab, plots,
+  statistics, settings, the catalog): German and Ukrainian are
+  argostranslate's, not read by a person; Polish of the short words was
+  corrected by Cleo and marked `reviewed`.
+- **2026-11-22. The demo's data tab and statistics.** The space lists
+  terms of Sejm and months of judgments only once cached (no index of them
+  in the dataset yet); statistics need `task stats` and a push of the
+  dataset. WebMCP was registered in a headless browser, not yet called by
+  a real agent.
 
 - **2026-11-22. The demo space, in this order.** (1) The next release
   pushes `ghcr.io/sarverott/p-jol-roll-webapp-server`; a new package on
