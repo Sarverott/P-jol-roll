@@ -79,20 +79,28 @@ took.
 ## The space after a release
 
 A restart of the space builds nothing new: Hugging Face keeps the image it
-had. The space's `Dockerfile` names one release of the image, so a release
-reaches the demo with three steps:
+had. Since phase 22 the release is not written into the space's
+`Dockerfile`: it is kept in git as `resources/configs/space/Dockerfile` and
+takes the release as a build argument, `P_JOL_ROLL_VERSION`. Hugging Face
+passes the variables of a space to its build as build arguments, so a
+release sets that variable and asks for a fresh build:
 
 ```sh
-task resources:space               # FROM ...webapp-server:<newest release>
-task resources:push -- space       # the changed Dockerfile: Hugging Face builds again
-task resources:prune -- space      # once: app.py, development.md, requirements.txt of the marimo days
+task resources:space               # once: the Dockerfile of resources/configs/space into resources/space
+task resources:push -- space       # once: that Dockerfile on the space
+task resources:space:refresh       # the variable set to the newest release, the space built again (HF_TOKEN)
 ```
+
+The release workflow runs the last step by itself after the image is on
+ghcr.io, when the repository has the secret `HF_TOKEN`; without it the job
+says so and the space keeps what it has. `resources/configs/space/space.env`
+names the space and may pin a release; an environment variable wins over
+it (`P_JOL_ROLL_VERSION=0.18.0 task resources:space:refresh`).
 
 The space mounts the bucket at `/data`, the place where the image keeps its
 cache and logs by default. Its `Dockerfile` moves both to `/tmp`
 (`RESOURCES_DIR`, `LOG_DIR`); without that line every page read is written
-into the bucket as `resources/` and `logs/` (phase 20). `task resources:space`
-adds the line when it is missing.
+into the bucket as `resources/` and `logs/` (phase 20).
 
 ## Which data goes where
 

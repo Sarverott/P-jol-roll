@@ -7,7 +7,9 @@
 // NOTE: load it from links.yaml / sources.yaml / ways.yaml (LINKS, SOURCES, WAYS)
 // ANSWER: done - data/links.yaml, data/sources.yaml, data/ways.yaml, read at build (vite.config.mjs)
 // NOTE: split that code into components!
-// ANSWER: done - components/: Intro, Languages, Idea, Sources, Ways, Progress, Links, LinkList
+// ANSWER: done - components/: Intro, Languages, Idea, Sources, Ways, Progress, Links, LinkList;
+// Background draws the living background of p5.js behind them (phase 22)
+import Background from "./components/Background.jsx";
 import Idea from "./components/Idea.jsx";
 import Intro from "./components/Intro.jsx";
 import Links from "./components/Links.jsx";
@@ -19,19 +21,22 @@ import state from "./state.json";
 export default function App() {
 	const { version, phases, features } = state;
 	return (
-		<main className="i18n-texts-slot">
-			<Intro version={version} />
-			<Idea />
-			<Sources />
-			<Ways />
-			<Progress phases={phases} features={features} />
-			<Links />
-			<footer>
-				<p>
-					Nothing here is legal advice. A project of the Blacksmith Organization
-					System workshop, by Sett Sarverott.
-				</p>
-			</footer>
-		</main>
+		<>
+			<Background />
+			<main className="i18n-texts-slot">
+				<Intro version={version} />
+				<Idea />
+				<Sources />
+				<Ways />
+				<Progress phases={phases} features={features} />
+				<Links />
+				<footer>
+					<p>
+						Not (formally) legal advices. A project of the Blacksmith
+						Organization System workshop, by Sett Sarverott.
+					</p>
+				</footer>
+			</main>
+		</>
 	);
 }

@@ -12,7 +12,7 @@ markdown, ties acts to each other, and shows it all through an api, a
 website and an MCP server for AI agents. The far goal: an open
 **devil's advocate for every person**, built on the whole written law.
 
-Nothing here is legal advice. See [what the data is and is not](docs/guides/data.md#what-it-is-not).
+Not (formally) legal advices. See [what the data is and is not](docs/guides/data.md#what-it-is-not).
 
 ## Links
 

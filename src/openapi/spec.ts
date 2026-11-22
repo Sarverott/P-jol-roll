@@ -37,11 +37,21 @@ const eli = [
 
 const missing = { description: "not gathered here" };
 
+const paging = [
+	{ name: "q", in: "query", schema: { type: "string" } },
+	{ name: "offset", in: "query", schema: { type: "integer" } },
+	{
+		name: "limit",
+		in: "query",
+		schema: { type: "integer", maximum: 500, default: 50 },
+	},
+];
+
 export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.18.2",
+		version: "0.18.21",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
@@ -153,6 +163,99 @@ export const spec = {
 					},
 					503: { description: "Typesense is not running or not filled" },
 				},
+			},
+		},
+		"/api/catalog": {
+			get: {
+				summary:
+					"every function of the project (src/core/catalog): name, group, title, parameters, whether it writes, its task, where each interface offers it, and whether this host may start it",
+				responses: { 200: { description: "the functions" } },
+			},
+		},
+		"/api/statistics": {
+			get: {
+				summary:
+					"the acts counted year by year: total, by type, by status (task stats writes it for the demo)",
+				responses: {
+					200: {
+						description:
+							"made, years ([journal, year, total, types, statuses]), types and statuses, the most common first",
+					},
+				},
+			},
+		},
+		"/api/lists": {
+			get: {
+				summary:
+					"names of the lists of the source: statuses, document_types, institutions, keywords...",
+				responses: { 200: { description: "names" } },
+			},
+		},
+		"/api/lists/{name}": {
+			get: {
+				summary: "one list of the source, as ELI API gave it",
+				parameters: [
+					{
+						name: "name",
+						in: "path",
+						required: true,
+						schema: { type: "string", example: "statuses" },
+					},
+				],
+				responses: { 200: { description: "the list" }, 404: missing },
+			},
+		},
+		"/api/sejm": {
+			get: {
+				summary:
+					"terms of Sejm gathered here, with how many processes and prints each has",
+				responses: { 200: { description: "term, processes, prints" } },
+			},
+		},
+		"/api/sejm/{term}/{kind}": {
+			get: {
+				summary: "legislative processes or prints of a term, by words",
+				parameters: [
+					{
+						name: "term",
+						in: "path",
+						required: true,
+						schema: { type: "integer", example: 10 },
+					},
+					{
+						name: "kind",
+						in: "path",
+						required: true,
+						schema: { type: "string", enum: ["processes", "prints"] },
+					},
+					...paging,
+				],
+				responses: {
+					200: { description: "total, offset, items" },
+					404: missing,
+				},
+			},
+		},
+		"/api/judgments": {
+			get: {
+				summary: "months of court judgments (SAOS) gathered here, YYYY-MM",
+				responses: { 200: { description: "months" } },
+			},
+		},
+		"/api/judgments/{year}/{month}": {
+			get: {
+				summary: "court judgments of a month, by words",
+				parameters: [
+					eli[1],
+					{
+						name: "month",
+						in: "path",
+						required: true,
+						schema: { type: "integer", example: 3 },
+					},
+					...paging,
+				],
+				responses: { 200: { description: "total, offset, items" } },
 			},
 		},
 		"/api/map": {

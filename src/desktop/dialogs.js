@@ -15,6 +15,6 @@ export function about(window) {
 		title: "About P_JOL_ROLL",
 		message: `P_JOL_ROLL ${app.getVersion()}`,
 		detail:
-			"Every act of the Polish journals of laws, gathered in the open - read it, follow its ties, search it.\nNot legal advice: the journal published by the state is the law.\nOpen source, AGPL-3.0-only: https://github.com/Sarverott/P-jol-roll",
+			"Every act of the Polish journals of laws, gathered in the open - read it, follow its ties, search it.\nNot (formally) legal advices: the journal published by the state is the law.\nOpen source, AGPL-3.0-only: https://github.com/Sarverott/P-jol-roll",
 	});
 }

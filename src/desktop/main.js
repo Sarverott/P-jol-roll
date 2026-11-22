@@ -1,7 +1,8 @@
 // NOTE: give me here base for windowed app. it will be good to promotion this way of our opensource work.
 // ANSWER: done - the app is put together here from the modules laid out beside: core (the api),
-// window, loadingmodal, menus with hotkeys-shortcuts, apptray, notifications, dialogs, deeplinks;
-// webserial and webbluethooth wait for what they are to serve (BRAINSTORM Q17)
+// window, loadingmodal, menus with hotkeys-shortcuts, apptray, notifications, dialogs, deeplinks,
+// printing (Q17: print and PDF from the menus and the tray); webserial and webbluethooth wait
+// for the devices of Q17 (Bluetooth printers and phones, FIDO keys) - ROADMAP M5
 
 import { app } from "electron";
 import { setTray } from "./apptray.js";
@@ -11,6 +12,7 @@ import { failure } from "./dialogs.js";
 import { showLoading } from "./loadingmodal.js";
 import { setMenu } from "./menus.js";
 import { notifyChanges } from "./notifications.js";
+import { setContextMenu } from "./printing.js";
 import { bringUp, createWindow } from "./window.js";
 
 /*
@@ -57,12 +59,13 @@ async function open() {
 	const start = hashOf(linkIn(process.argv)) ?? "";
 	window = createWindow(`${address}/${start}`, { show: false });
 	setMenu(() => window);
+	setContextMenu(window);
 	window.once("ready-to-show", () => {
 		closeLoading();
 		if (!CHECK) window.show();
 	});
 	if (CHECK) return check();
-	setTray(showWindow);
+	setTray(showWindow, () => window);
 	const stopNotices = notifyChanges(address, showWindow);
 	app.on("will-quit", stopNotices);
 }

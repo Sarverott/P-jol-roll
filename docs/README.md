@@ -18,7 +18,7 @@ judgments that apply it. The far goal is a small model and an agent that
 read all of it: an open **devil's advocate for every person**
 ([vision](devlog/VISION.md)).
 
-Nothing here is legal advice. See [what the data is and is not](guides/data.md#what-it-is-not).
+Not (formally) legal advices. See [what the data is and is not](guides/data.md#what-it-is-not).
 
 ## State
 

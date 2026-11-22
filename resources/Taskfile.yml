@@ -22,9 +22,14 @@ tasks:
       - npm run --silent hub -- push {{.CLI_ARGS}}
 
   space:
-    desc: The space's Dockerfile set to the image of the newest release (or the tag after "--"), so its next push builds it again; only the local side.
+    desc: The space's Dockerfile from resources/configs/space into its local side; the release is not written in it but set by "task resources:space:refresh".
     cmds:
-      - scripts/devops/release/space.sh {{.CLI_ARGS}}
+      - scripts/devops/release/space.sh local
+
+  space:refresh:
+    desc: 'The space set to a release and built again on huggingface: its variable P_JOL_ROLL_VERSION (space.env, the environment wins, else the newest tag), needs HF_TOKEN; e.g. P_JOL_ROLL_VERSION=0.18.0 task resources:space:refresh'
+    cmds:
+      - scripts/devops/release/space.sh refresh
 
   prune:
     desc: Delete on huggingface the files that are not here, name after "--" (dataset or space, never the bucket), needs HF_TOKEN; "task resources:plan" shows them first as "download".

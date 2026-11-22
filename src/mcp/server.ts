@@ -9,6 +9,12 @@ import journals from "./tools/journals/function.js";
 import journalsMeta from "./tools/journals/metadata.js";
 import searchActs from "./tools/search_acts/function.js";
 import searchActsMeta from "./tools/search_acts/metadata.js";
+import sejmWork from "./tools/sejm_work/function.js";
+import sejmWorkMeta from "./tools/sejm_work/metadata.js";
+import sourceList from "./tools/source_list/function.js";
+import sourceListMeta from "./tools/source_list/metadata.js";
+import statistics from "./tools/statistics/function.js";
+import statisticsMeta from "./tools/statistics/metadata.js";
 
 /*
 The MCP server of gathered law: every tool of tools/ (a folder each - metadata.ts says what it
@@ -19,12 +25,15 @@ Gathering is started by a person, so an agent cannot set off a crawl of the sour
 */
 
 export function createServer() {
-	const server = new McpServer({ name: "p-jol-roll", version: "0.18.2" });
+	const server = new McpServer({ name: "p-jol-roll", version: "0.18.21" });
 	server.registerTool("journals", journalsMeta, journals);
 	server.registerTool("search_acts", searchActsMeta, searchActs);
 	server.registerTool("act", actMeta, act);
 	server.registerTool("act_text", actTextMeta, actText);
 	server.registerTool("act_references", actReferencesMeta, actReferences);
+	server.registerTool("statistics", statisticsMeta, statistics);
+	server.registerTool("sejm_work", sejmWorkMeta, sejmWork);
+	server.registerTool("source_list", sourceListMeta, sourceList);
 	return server;
 }
 
