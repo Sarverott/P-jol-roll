@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.14'",
@@ -1679,14 +1679,14 @@ wheels = [
 
 [[package]]
 name = "opentelemetry-api"
-version = "1.45.1"
+version = "1.45.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2e/02/6e0ae9cc61bd3169d401077b507b3ebc344745171e1051ab430be012dcd9/opentelemetry_api-1.45.1.tar.gz", hash = "sha256:aa38ed19bcc084ba42782a73255b3582283eced7ad6dddbd6695189e69adfb75", size = 72804, upload-time = "2026-10-06T17:32:58.133Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/14/cf3a6b6448849656e1e5f4e2101f3988dc6789724050096aba1bc5ccf592/opentelemetry_api-1.45.2.tar.gz", hash = "sha256:d7b0008e21e5fd61cbe7a7f34ca3b6905a78ab677d9bc395e299359c75cda6b4", size = 73277, upload-time = "2026-10-29T17:29:37.888Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1e/41/f7dcf80b81ee8e71c1a2b59f14208bc723edbd89ed027a73b175abf6348e/opentelemetry_api-1.45.1-py3-none-any.whl", hash = "sha256:b31553efa588ae44bc306f863c785c5333a9ecc091248c6ee68b4b6c87fdedfb", size = 60256, upload-time = "2026-10-06T17:32:33.506Z" },
+    { url = "https://files.pythonhosted.org/packages/a9/2d/610db864d7513158cebb8f36cc88e67e73bd6c7aa1905ef18d89e1281c81/opentelemetry_api-1.45.2-py3-none-any.whl", hash = "sha256:2cbd737377e710ee740d261c94e93fa0f08e6d037c18f17513cc0a2d94479a34", size = 60335, upload-time = "2026-10-29T17:29:06.955Z" },
 ]
 
 [[package]]
@@ -1741,6 +1741,31 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/42/92/cc564bf6381ff43ce1f4d06852fc19a2f11d180f23dc32d9588bee2f149d/pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f", size = 166450, upload-time = "2023-11-25T09:07:26.339Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9e/c3/059298687310d527a58bb01f3b1965787ee3b40dce76752eda8b44e9a2c5/pexpect-4.9.0-py2.py3-none-any.whl", hash = "sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523", size = 63772, upload-time = "2023-11-25T06:56:14.81Z" },
+]
+
+[[package]]
+name = "pjolroll-scripts-and-tools"
+version = "0.5.9"
+source = { editable = "." }
+dependencies = [
+    { name = "appimage-builder" },
+    { name = "commitizen" },
+    { name = "marimo" },
+    { name = "notebook" },
+    { name = "paramiko" },
+    { name = "pure-python-adb" },
+    { name = "pydrive" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "appimage-builder", specifier = ">=1.1.0" },
+    { name = "commitizen", specifier = ">=4.19.2" },
+    { name = "marimo", specifier = ">=0.25.1" },
+    { name = "notebook", specifier = ">=7.6.3" },
+    { name = "paramiko", specifier = ">=5.0.0" },
+    { name = "pure-python-adb", specifier = ">=0.3.0.dev0" },
+    { name = "pydrive", specifier = ">=1.3.1" },
 ]
 
 [[package]]
@@ -2369,31 +2394,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/fb/2e/8da627b65577a8f130fe9dfa88ce94fcb24b1f8b59e0fc763ee61abef8b8/schema-0.7.8.tar.gz", hash = "sha256:e86cc08edd6fe6e2522648f4e47e3a31920a76e82cce8937535422e310862ab5", size = 45540, upload-time = "2025-10-11T13:15:40.281Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c9/75/aad85817266ac5285c93391711d231ca63e9ae7d42cd3ca37549e24ebe52/schema-0.7.8-py2.py3-none-any.whl", hash = "sha256:00bd977fadc7d9521bf289850cd8a8aa5f4948f575476b8daaa5c1b57af2dce1", size = 19108, upload-time = "2025-10-11T17:13:07.323Z" },
-]
-
-[[package]]
-name = "scripts"
-version = "0.5.9"
-source = { editable = "." }
-dependencies = [
-    { name = "appimage-builder" },
-    { name = "commitizen" },
-    { name = "marimo" },
-    { name = "notebook" },
-    { name = "paramiko" },
-    { name = "pure-python-adb" },
-    { name = "pydrive" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "appimage-builder", specifier = ">=1.1.0" },
-    { name = "commitizen", specifier = ">=4.19.2" },
-    { name = "marimo", specifier = ">=0.25.1" },
-    { name = "notebook", specifier = ">=7.6.3" },
-    { name = "paramiko", specifier = ">=5.0.0" },
-    { name = "pure-python-adb", specifier = ">=0.3.0.dev0" },
-    { name = "pydrive", specifier = ">=1.3.1" },
 ]
 
 [[package]]
