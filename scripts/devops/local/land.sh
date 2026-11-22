@@ -13,6 +13,12 @@ case "$branch" in
   dev/*) ;;
   *) echo "on $branch; land runs on a contributor's dev/<name>" >&2; exit 1 ;;
 esac
+# commitlint takes a header of 100 characters at most; said before the checks, not after them
+header="chore(merge): $branch - $summary"
+if [ "${#header}" -gt 100 ]; then
+  echo "the merge's message would be ${#header} characters, commitlint takes 100: a shorter summary" >&2
+  exit 1
+fi
 if [ -n "$(git status --porcelain)" ]; then
   echo "the working tree has changes; commit them first" >&2
   exit 1
@@ -26,7 +32,7 @@ merge_driver
 git fetch -q origin
 git checkout -q development
 git merge -q --ff-only origin/development
-git merge --no-ff -m "chore(merge): $branch - $summary" "$branch"
+git merge --no-ff -m "$header" "$branch"
 git push -q origin development "$branch"
 git checkout -q "$branch"
 git merge -q --ff-only development
