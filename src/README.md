@@ -139,6 +139,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/i18n/dom.ts` | A pack laid over a page that stays as written: `collect()` its English, `apply()` a pack (or the English back), `follow()` what a framework renders later; `translate="no"` keeps data untouched. |
 | `src/i18n/browser.ts` | The language of a page: the packs of `resources/locales/` (only the chosen one loaded), chosen by `?lang=`, the last choice, the browser's languages, else EN-US; laid over the page before it shows. |
 | `src/devtools/docs-i18n.ts` | The built documentation copied into `site/docs/<language>/` per pack and translated (guides, glossary, home), a list of languages in every header; run by `scripts/devops/pages/build.sh`. |
+| `src/i18n/terminal.ts` | `tr(text, { name })`: the words of the launcher, the REPL and the lists of tasks in the terminal's language; named places filled after the pack. |
 | `src/i18n/node.ts` | The packs outside a browser: the index, `packFor(code)`, the language of a terminal (`P_JOL_ROLL_LANG`, else `LANG`). |
 | `src/devtools/i18n.ts` | `task i18n:collect`: the built introduction and viewer opened in a headless browser, in several states; their English collected by the page's own runtime into `resources/locales/EN-US.json`. |
 | `src/gui/components/TiesMinimap.vue` | A minimap of the ties in the corner (Cytoscape.js): the act in the middle, a colour per kind of tie, a click opens an act; it can be hidden. |

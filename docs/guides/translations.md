@@ -114,3 +114,26 @@ Identifiers are never translated: a text that is one path or name
 (`datasets/Sarverott/polish_national_law_docs`) gets no hook, and one inside
 a sentence (`resources/.map.json`, `SHA-256`, `v0.11.0`) stands in as a
 number while the model works, like the names of `keep`.
+
+## The terminal
+
+The launcher (bare `task`), its REPL and the lists of tasks speak the
+language of the terminal: `P_JOL_ROLL_LANG=PL-PL task`, else `LANG`
+(`pl_PL.UTF-8` gives PL-PL), else English. The descriptions of the tasks
+are the manual of the CLI, so they are translated too.
+
+In code a text is written once, in English, through `tr()`
+(`src/i18n/terminal.ts`):
+
+```ts
+tr("task {name} ended with {code}", { name, code })
+```
+
+The English is the hook, as on pages. Named places in braces are filled
+after the pack is laid over, so a translation puts them where its language
+wants them. While the model works they stand in as numbers, like quoted
+commands (`"list"`, `"gather -- 2026"`), so neither is translated.
+`task i18n:collect` finds every `tr("...")` of `src/` and the description
+of every task by itself. Tests run in English whatever `LANG` the machine
+has (`vitest.config.ts`).
+

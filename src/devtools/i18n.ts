@@ -11,7 +11,9 @@ import { homedir } from "node:os";
 import { extname, join, normalize } from "node:path";
 import { parseHTML } from "linkedom";
 import { chromium, type Page } from "playwright";
+import { readTasks } from "../cli/tasks.js";
 import { collect } from "../i18n/dom.js";
+import { hookOf, templateOf, translatable } from "../i18n/hooks.js";
 import { DOCS_TRANSLATED, languages } from "../i18n/node.js";
 import { serve } from "../openapi/server.js";
 
@@ -19,7 +21,8 @@ import { serve } from "../openapi/server.js";
 task i18n:collect - the English of every page, read through the pages themselves (phase 16):
 the built introduction (site/) and the viewer (dist/web, served by the api over resources/)
 are opened in a headless browser, put in several states, and the runtime of src/i18n in them
-collects each text with its hook. The documentation (site/docs) is read as static HTML, only its pages that get translated
+collects each text with its hook. The terminal's words are every tr("...") of src/ and the descriptions of the tasks. The
+documentation (site/docs) is read as static HTML, only its pages that get translated
 (DOCS_TRANSLATED). The result is resources/locales/EN-US.json, the default pack
 that task i18n:translate turns into the others. Run after a build of both.
 */
@@ -147,6 +150,29 @@ for (const path of globSync("**/*.html", { cwd: "site/docs" })) {
 	pages += 1;
 }
 console.log(`the documentation: ${pages} pages read`);
+
+// the terminal: every tr("...") of src/ and the description of every task (the manual of the CLI)
+const said = (text: string) => {
+	if (translatable(text)) texts[hookOf(text)] = templateOf(text).template;
+};
+let words = 0;
+for (const path of globSync("src/**/*.ts")) {
+	const source = readFileSync(path, "utf8");
+	for (const [, double, single] of source.matchAll(
+		/\btr\(\s*(?:"((?:[^"\\]|\\.)*)"|'((?:[^'\\]|\\.)*)')/g,
+	)) {
+		// the escapes a string of source code can hold, as the string means them
+		said(
+			(double ?? single).replace(/\\(.)/g, (_all, sign) =>
+				sign === "n" ? "\n" : sign,
+			),
+		);
+		words += 1;
+	}
+}
+const tasks = readTasks();
+for (const task of tasks) if (task.desc) said(task.desc);
+console.log(`the terminal: ${words} texts of tr(), ${tasks.length} tasks`);
 
 const sorted = Object.fromEntries(
 	Object.entries(texts).sort(([, a], [, b]) => a.localeCompare(b)),

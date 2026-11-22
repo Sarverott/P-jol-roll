@@ -72,6 +72,19 @@
 		"PDF",
 		"HTML",
 		"markdown",
-		"AGPL-3.0-only"
+		"AGPL-3.0-only",
+		"huggingface",
+		"Taskfile",
+		"gist",
+		"ffmpeg",
+		"Typesense",
+		"sigma.js",
+		"mermaid",
+		"Cytoscape.js",
+		"Bulma",
+		"MkDocs",
+		"Docker",
+		"WireGuard",
+		"IPFS"
 	]
 }
