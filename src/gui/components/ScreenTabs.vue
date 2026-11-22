@@ -8,6 +8,10 @@ defineProps({
 	screen: { type: String, default: "acts" },
 	chosen: { type: String, default: "" },
 });
+const MORE = [
+	{ screen: "map", title: "map of the whole law" },
+	{ screen: "data", title: "Sejm, judgments, lists" },
+];
 </script>
 
 <template>
@@ -21,8 +25,12 @@ defineProps({
 					>the act <span class="ml-1" translate="no">{{ chosen }}</span></a
 				>
 			</li>
-			<li :class="{ 'is-active': screen === 'map' }">
-				<a :href="href('map')">map of the whole law</a>
+			<li
+				v-for="one in MORE"
+				:key="one.screen"
+				:class="{ 'is-active': screen === one.screen }"
+			>
+				<a :href="href(one.screen)">{{ one.title }}</a>
 			</li>
 		</ul>
 	</nav>

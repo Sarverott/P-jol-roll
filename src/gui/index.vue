@@ -1,8 +1,8 @@
 <script setup>
 // NOTE: this frontend should be shared with all viewer webapp interfaces: android app, desktop app, website host
-// The viewer: a header, the tabs of the screens (the acts, one act, the map of the whole law)
-// and a footer; what the screens share is the library (assets/library.js), where the viewer is
-// is the address after "#" (assets/route.js).
+// The viewer: a header, the tabs of the screens (the acts, one act, the map of the whole law,
+// the rest of the dataset) and a footer; what the screens share is the library
+// (assets/library.js), where the viewer is is the address after "#" (assets/route.js).
 // Bulma: the layout and the look of every interface that shows the viewer, light and dark
 //
 // NOTE: this file is way too long and too dense - diverse it into imported components
@@ -28,6 +28,7 @@ import LayoutMain from "./layout/main.vue";
 import ErrorDialog from "./layout/modals/errordialog.vue";
 import ActsListing from "./screens/actsListing.vue";
 import ContentDisplay from "./screens/contentDisplay.vue";
+import DatasetBrowser from "./screens/datasetBrowser.vue";
 import GeneralMap from "./screens/generalMap.vue";
 
 // Cytoscape.js comes with the minimap, so it is loaded when there are ties to draw
@@ -81,9 +82,10 @@ onUnmounted(() => {
 			<ActsListing v-show="route.screen === 'acts'" />
 			<ContentDisplay v-if="route.screen === 'act'" />
 			<GeneralMap v-if="route.screen === 'map'" />
+			<DatasetBrowser v-if="route.screen === 'data'" />
 		</LayoutMain>
 		<TiesMinimap
-			v-if="route.screen !== 'map'"
+			v-if="['acts', 'act'].includes(route.screen)"
 			:eli="state.chosen?.act.ELI ?? ''"
 			:ties="state.ties"
 			@open="openAct"
