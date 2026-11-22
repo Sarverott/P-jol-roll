@@ -25,3 +25,9 @@ tasks:
     desc: Every source into the one bucket and the one dataset - sejm-dataset, sejm-bucket, saos-dataset moved inside (local only).
     cmds:
       - node src/devtools/merge.ts
+
+  media:
+    desc: The images of the gist (submodule resources/mediafiles) made into favicons, manifest icons, og.jpg and the extension's icons - needs ffmpeg; the results are committed.
+    cmds:
+      - git submodule update --init resources/mediafiles
+      - scripts/devops/media/build.sh
