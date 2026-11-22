@@ -100,6 +100,21 @@ point was added.
 
 ## Written and not verified
 
+- **2026-11-22. CodeQL after phase 18.** The fixes are in code; the alerts
+  close only when CodeQL scans master again. `actions/cache-poisoning` may
+  stay: the checks of `dev/dependabot` run from `pull_request_target`, and
+  without the npm cache they write nothing a later run reads, yet the query
+  may still see untrusted code run in that context. If it stays, either
+  dismiss it with that reason, or let `dev/dependabot` be checked on its own
+  `push` (no privileged context) and land by `workflow_run` - Sett's call.
+- **2026-11-22. The rate limit in the demo** (600 a minute per address,
+  `TRUST_PROXY=1`): tried here against the api, not behind the space's
+  proxy. If every visitor of the space gets 429 together, the proxy is not
+  one hop and `TRUST_PROXY` wants its number of hops.
+- **2026-11-22. The almanac's issues are not opened.** `task almanac:issues:open
+  -- all` makes 22 issues with `gh` and closes the solved ones at once; it
+  was not run, as it writes to GitHub.
+
 - **The website's diagrams.** Mermaid did not render in a headless
   browser (Material loads it from a CDN); the rest of the site did.
 - **`dotenv` in the root Taskfile** was tried in a scratch Taskfile and by
@@ -178,5 +193,6 @@ point was added.
 `DU/1932/WDU19320060038.pdf` ends in zeros from some point on; its record in
 `dataset/files/` has the same checksum, so it was written as it arrived. Is the
 source serving it like that, or did the download break? Only the owner asks the
-source. `task text -- --pdf` names every such PDF in `texts/<journal>/<year>.scans.jsonl`
+source. The owner's full run found a second one, `DU/2007/189`, with the same
+complaint ("Couldn't find trailer dictionary"). `task text -- --pdf` names every such PDF in `texts/<journal>/<year>.scans.jsonl`
 with an `error`; `grep -h '"error"' resources/dataset/texts/*/*.scans.jsonl` lists them.
