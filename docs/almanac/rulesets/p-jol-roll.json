@@ -1,0 +1,102 @@
+{
+	"ruleset": "p-jol-roll",
+	"about": "The rules of this repository (AGENTS.md) as data, judged by src/almanac/ruling.ts: the first rule that applies decides; nothing applies - allowed. The universal rules of every BOS workshop are in the BOS repository (resources/almanac/rulesets/).",
+	"roles": {
+		"owner": ["Sarverott", "Sett"],
+		"agent": [
+			"Cleo",
+			"Claude*",
+			"Codex*",
+			"Gemini*",
+			"Copilot*",
+			"Cursor*",
+			"Aider*"
+		],
+		"bot": ["github-actions*", "*[bot]", "dependabot*"]
+	},
+	"rules": [
+		{
+			"id": "never-skip-hooks",
+			"statement": "Checks are never skipped: no --no-verify.",
+			"when": {
+				"action": ["commit", "push", "merge"],
+				"flags": ["--no-verify"]
+			},
+			"verdict": "violation",
+			"source": "AGENTS.md, rule 2"
+		},
+		{
+			"id": "bucket-is-never-pruned",
+			"statement": "The bucket keeps raw files that may live on one machine only: nothing deletes there.",
+			"when": { "action": ["prune", "delete"], "target": "bucket" },
+			"verdict": "violation",
+			"source": "src/core/resources/hub.ts, prune()"
+		},
+		{
+			"id": "agents-send-nothing-to-huggingface",
+			"statement": "Nothing is sent to Hugging Face by an agent: pushing and syncing dataset, space and bucket is the owner's move.",
+			"when": {
+				"action": ["push", "prune", "sync", "upload"],
+				"target": ["dataset", "space", "bucket", "huggingface"],
+				"actor": "agent"
+			},
+			"verdict": "violation",
+			"source": "AGENTS.md, rule 5"
+		},
+		{
+			"id": "owner-starts-gathering",
+			"statement": "The source is an open API: the owner runs the gathering and the checkup; an agent tests against a local copy.",
+			"when": { "action": ["gather", "checkup"], "actor": "agent" },
+			"verdict": "ask",
+			"source": "AGENTS.md, rule 4"
+		},
+		{
+			"id": "never-reveal-secrets",
+			"statement": "Values of .env and resources/secrets are never printed.",
+			"when": {
+				"action": ["print", "cat", "show", "send"],
+				"target": [".env", "secrets", "resources/secrets*"]
+			},
+			"verdict": "violation",
+			"source": "the owner, phase 9"
+		},
+		{
+			"id": "master-tags-releases-ask",
+			"statement": "master, tags, releases and repository settings are always asked for first.",
+			"when": {
+				"action": ["push", "merge", "tag", "release", "settings"],
+				"target": ["master", "v*", "tags", "release*", "settings"]
+			},
+			"verdict": "ask",
+			"source": "AGENTS.md, rule 2"
+		},
+		{
+			"id": "agents-push-their-branches",
+			"statement": "A confirmed member pushes development and its own dev/<name> freely.",
+			"when": {
+				"action": ["push", "merge"],
+				"target": ["development", "dev/*"]
+			},
+			"verdict": "allowed",
+			"source": "AGENTS.md, rule 2 (Q2)"
+		},
+		{
+			"id": "agents-domain",
+			"statement": "docs/.agents/ is the agents' domain: humans read it and do not write there.",
+			"when": {
+				"action": ["edit", "write", "delete"],
+				"target": "docs/.agents/*",
+				"actor": "owner"
+			},
+			"verdict": "ask",
+			"source": "AGENTS.md, rule 2"
+		},
+		{
+			"id": "issues-opened-by-owner",
+			"statement": "Issues of the almanac go to GitHub when the owner opens them (task almanac:issues:open).",
+			"when": { "action": ["open-issue"], "actor": "agent" },
+			"verdict": "ask",
+			"source": "changelog phase 18"
+		}
+	]
+}

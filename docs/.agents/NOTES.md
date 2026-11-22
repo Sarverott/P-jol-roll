@@ -4,6 +4,30 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-22 · Cleo · phase 18: after v0.15.0, the almanac
+
+- The release of v0.15.0 (run 45005803900) failed in the image build, in
+  `tsc`: `.dockerignore` kept `resources/locales/` out. The owner read it as
+  CodeQL stopping the container; CodeQL fails nothing, its alerts only
+  appeared at the same time. Built here and served from the image.
+- The owner's push (log-1795338475468) died at 1000 of 114433: Hugging Face
+  refused `texts/MP/2025/WMP20250000029.md` as binary. 2205 texts held
+  control characters from pdftotext (unmapped glyphs, mostly byte 3 on
+  lines of their own). They are made again by the next `task text -- --pdf`,
+  which reads each old text once to find them; push holds back any left.
+- CodeQL: 15 alerts, one real flow - a journal `..` in the remote mode
+  reached a local path and the address fetched from Hugging Face (writes
+  stayed inside `resources/`, the host was fixed). The rest: same flow from
+  `writeWhole()`, the extension's host as a link, the devtool's server, no
+  rate limit, the npm cache of checks of `dev/dependabot`.
+- The other logs of that run: `text` 114207 from PDF, 1428 scans, 2 damaged
+  (DU/1932/38, DU/2007/189); `map` made `statutes` and `in-force`, the
+  preset by meaning had 0 acts (no `task embed` yet); `seal` and `compile`
+  had nothing new. No errors besides the push.
+- The almanac follows BOS's `docs/almanac/` (its README's sections) and its
+  `src/core/patterning.ts`; only cataclistics, solutions, patterning and
+  rulesets are used here. 22 cases from the notes and changelogs.
+
 ## 2026-11-22 · Cleo · Q15, Q16: phases 15, 16, 17
 
 - The owner's PDF run stopped on DU/1932/38 (zeros to its end, checksum as

@@ -1,6 +1,6 @@
 {
   "name": "P-jol-roll",
-  "version": "0.15.0",
+  "version": "0.15.11",
   "private": true,
   "type": "module",
   "description": "crawler to garher every PDF from https://dziennikustaw.gov.pl/DU",
@@ -16,6 +16,7 @@
     "crawlee": "^3.18.2",
     "cytoscape": "^3.35.0",
     "express": "^5.3.0",
+    "express-rate-limit": "~8.7.3",
     "graphology": "^0.26.0",
     "graphology-layout-forceatlas2": "^0.10.1",
     "hyparquet": "^1.33.1",

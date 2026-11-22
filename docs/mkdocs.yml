@@ -23,6 +23,7 @@ exclude_docs: |
   /_mkdocs/
   /devlog/AGENTS.md
   /devlog/Taskfile.yml
+  /almanac/Taskfile.yml
   /devlog/STATE.md
 
 theme:
@@ -82,6 +83,21 @@ nav:
       - guides/development.md
       - guides/translations.md
   - Glossary: glossary/README.md
+  - Almanac:
+      - almanac/README.md
+      - almanac/faq.md
+      - Topics:
+          - almanac/solutions/hugging-face.md
+          - almanac/solutions/pdf-texts.md
+          - almanac/solutions/security.md
+          - almanac/solutions/containers.md
+          - almanac/solutions/dependencies.md
+          - almanac/solutions/github-workflows.md
+          - almanac/solutions/translations.md
+          - almanac/solutions/viewer.md
+          - almanac/solutions/source-api.md
+          - almanac/solutions/terminal.md
+          - almanac/solutions/repository.md
   - Devlog:
       - devlog/README.md
       - devlog/VISION.md
@@ -106,6 +122,7 @@ nav:
       - changelog/phase-9.md
       - changelog/phase-10.md
       - changelog/phase-12.md
+      - changelog/phase-18.md
   - For agents:
       - .agents/NOTES.md
       - .agents/things-to-check.md

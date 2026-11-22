@@ -8,7 +8,7 @@ import {
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { homedir } from "node:os";
-import { extname, join, normalize } from "node:path";
+import { extname, join, relative, resolve } from "node:path";
 import { parseHTML } from "linkedom";
 import { chromium, type Page } from "playwright";
 import { readTasks } from "../cli/tasks.js";
@@ -42,11 +42,14 @@ const TYPES: Record<string, string> = {
 // the site/ folder over http, so the introduction runs as on its website
 function serveFolder(folder: string) {
 	const server = createServer((request, response) => {
-		const path = normalize(
-			decodeURIComponent((request.url ?? "/").split("?")[0]),
+		const path = decodeURIComponent((request.url ?? "/").split("?")[0]);
+		// only a file below the folder; anything else gets the page itself
+		let file = resolve(
+			folder,
+			`.${path.endsWith("/") ? `${path}index.html` : path}`,
 		);
-		let file = join(folder, path.endsWith("/") ? `${path}index.html` : path);
-		if (!file.startsWith(folder) || !existsSync(file))
+		const below = relative(folder, file);
+		if (below.startsWith("..") || !existsSync(file))
 			file = join(folder, "index.html");
 		response.setHeader(
 			"content-type",

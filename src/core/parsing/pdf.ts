@@ -90,8 +90,32 @@ export const isScan = (text: string) =>
 const UNIT =
 	/^(Art\.\s*\d+[a-z]*\.|§\s*\d+[a-z]*\.|(Rozdział|Dział|Tytuł|Księga|Oddział)\s+[\dIVXLC]+[a-z]*\.?)\s*/u;
 
+/*
+Control characters: glyphs a font of a PDF maps to nothing come out of pdftotext as bytes 1-31
+(MP/2025/29 had 670 of them, 2205 texts had some). Hugging Face takes such a file as binary
+and refuses the whole commit (2026-11-22, docs/almanac/cataclistics/hub-binary-text.md).
+Every character of C0 and C1 but tab, new line, carriage return and form feed (a page break
+here) is dropped.
+*/
+// biome-ignore lint/suspicious/noControlCharactersInRegex: finding them is the point
+const CONTROL = /[\u0000-\u0008\u000b\u000e-\u001f\u007f-\u009f]/;
+export const hasControl = (text: string) => CONTROL.test(text);
+const CONTROLS = new RegExp(CONTROL.source, "gu");
+// a line that held only such characters goes away whole, so it does not become a gap that
+// ends a paragraph
+export const printable = (text: string) =>
+	hasControl(text)
+		? text
+				.split("\n")
+				.filter(
+					(line) => !hasControl(line) || line.replace(CONTROLS, "").trim(),
+				)
+				.join("\n")
+				.replace(CONTROLS, "")
+		: text;
+
 export function pdfToMarkdown(text: string) {
-	const paragraphs = text
+	const paragraphs = printable(text)
 		.replace(/\r/g, "")
 		.replace(/ /g, " ")
 		// pages end with a form feed; a page break also ends a paragraph, and so does a line

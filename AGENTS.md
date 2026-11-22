@@ -63,6 +63,7 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
 | a question for the owner | `docs/devlog/BRAINSTORM.md` as `## Q<n>. <title>` with a *Lean:*; never settled in code before the answer |
 | an idea for debate | `docs/devlog/PROPOSALS.md` as `PP<n>`; the owner decides it in `ORDERS.md` |
 | an agent's findings and what was not verified | `docs/.agents/` (`NOTES.md`, `things-to-check.md`) |
+| a problem met and solved | `docs/almanac/`: its case, its chain, a line in its topic |
 | work for another repository | `~/__WORKSHOP/forge/NOTES-for-repositories.md`, never the other repository itself |
 
 ## Source
@@ -138,6 +139,7 @@ src/chrome-ext/        empty, kept
 src/tui/               the launcher (launcher/: main.ts the menu bare `task` opens, select.ts); Sett's TermUI experiment (index.tsx, main.js, termui.config.*) out of the checks
 src/cli/               commands of the launcher: tasks.ts (every task of every Taskfile, grouped, run inside `script` so the output lands in the launcher's log and Ctrl+C stops the task alone), repl.ts (tasks as commands)
 src/i18n/              translations by hooks: sha256.ts, hooks.ts (hookOf, translate, t for terminals), dom.ts (collect, apply, follow), browser.ts (the chosen pack on a page), terminal.ts (tr() for the launcher and the CLI) - docs/guides/translations.md
+src/almanac/           the almanac's mechanics, as in BOS: patterning.ts (chains of events recalled, the next predicted), ruling.ts (rules judged), main.ts (task almanac:*) - docs/almanac/
 src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init), merge.ts (task resources:merge)
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
@@ -171,6 +173,8 @@ docs/glossary/    words of the source and of the project, each with one meaning
 docs/.agents/     the agents' own domain (humans read only): NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
                   or was not verified - keep it current); point-of-view.md is personal
 docs/devlog/      the BOS devlog: VISION, ROADMAP, TODO, BRAINSTORM, ORDERS, INQUIRIES, PROPOSALS, scrapnotes
+docs/almanac/     what was learnt the hard way: cataclistics/ (a case per page, an issue ready for GitHub), solutions/ (a topic
+                  each), patterning/ and rulesets/ (JSON, as in BOS), faq.md; a solved problem gets its case here
 docs/changelog/   what happened per phase, the owner's words word for word, append-only
 .github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues, AUTHORS;
                   bos.json (the loop as data), dependabot.yml, workflows/checks.yml
@@ -201,6 +205,8 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:media` | favicons, manifest icons, `og.jpg` and the extension icons made from `resources/mediafiles` (ffmpeg); committed |
 | `task resources:space` | the space's Dockerfile set to the image of the newest release, so its next push builds it again |
+| `task almanac:recall -- hub:push` / `almanac:judge -- push dataset --actor agent` | cases that began with these events, with solutions / the verdict of the rulesets |
+| `task almanac:issues` / `almanac:issues:open -- <id>` | the cases with their issues / one opened on GitHub, closed when solved (the owner's) |
 | `task i18n:collect` / `task i18n:translate` | the English of the built pages into `resources/locales/EN-US.json` / the other packs by argostranslate |
 | `task resources:merge` | the directories sources had before phase 10 moved into the one dataset and bucket |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |

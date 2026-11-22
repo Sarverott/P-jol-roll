@@ -7,6 +7,19 @@ import { spec } from "./spec.js";
 // every route only reads gathered files - nothing here asks the source or writes
 export const routes = Router();
 
+// parts of an address of an act are checked before any route reads a file by them:
+// a journal is letters (DU, MP), a year and a position are numbers
+const PARTS: Record<string, RegExp> = {
+	journal: /^[A-Za-z]{1,16}$/,
+	year: /^\d{1,4}$/,
+	pos: /^\d{1,7}$/,
+};
+for (const [name, pattern] of Object.entries(PARTS))
+	routes.param(name, (_request, response, next, value) => {
+		if (pattern.test(String(value))) next();
+		else response.status(404).json({ error: `not a ${name}` });
+	});
+
 const eliOf = (request: Request) =>
 	`${request.params.journal}/${request.params.year}/${request.params.pos}`;
 
@@ -19,11 +32,14 @@ if (remote)
 		const [, kind, journal, year, pos] = request.path.split("/");
 		const number = (value?: string) =>
 			value && /^\d+$/.test(value) ? Number(value) : undefined;
+		// a journal is letters only (DU, MP); anything else is not taken from Hugging Face
+		const named =
+			journal && /^[A-Za-z]{1,16}$/.test(journal) ? journal : undefined;
 		const ready =
 			kind === "map"
-				? library.prepareMap(journal)
+				? library.prepareMap(named)
 				: library.prepare(
-						kind === "acts" ? journal : undefined,
+						kind === "acts" ? named : undefined,
 						number(year),
 						number(pos),
 					);

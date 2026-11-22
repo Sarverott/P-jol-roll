@@ -178,3 +178,14 @@ Q15, answered 2026-11-22: after phase 12, a small local multilingual model.
 
 - [x] Vectors of the texts by a small local multilingual model, kept in the dataset beside the texts (`task embed`, Ollama, bge-m3)
 - [x] Search by meaning through them (Typesense takes vectors) and acts placed by meaning on the map (`meaning=1`, the preset `statutes-in-force-by-meaning`)
+
+## Phase 18: what broke after v0.15.0, and the almanac
+
+The owner's message, 2026-11-22 (changelog phase 18).
+
+- [x] The image of webapp-server builds again: the language packs go into it
+- [x] Texts hold no control characters (Hugging Face refused them as binary); texts made before are made again once, and push holds back any left
+- [x] CodeQL alerts resolved: paths of the remote mode, parts of addresses, a rate limit, the extension's host, the folder server of i18n, the npm cache of checks
+- [x] `docs/almanac/`: the cases met so far as issues ready for GitHub, the topics they belong to, a FAQ, and the rulesets and chains of events as in BOS
+- [x] The almanac's mechanics in code: chains recalled by their events and the next event predicted (`task almanac:recall`), issues opened from the cases by the owner (`task almanac:issues`)
+

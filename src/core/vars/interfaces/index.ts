@@ -7,6 +7,7 @@ import type ActTextInterface from "./ActText.interface.js";
 import type ActViewInterface from "./ActView.interface.js";
 import type ApprovalInterface from "./Approval.interface.js";
 import type AskedInterface from "./Asked.interface.js";
+import type ChainInterface from "./Chain.interface.js";
 import type ChangesInterface from "./Changes.interface.js";
 import type CheckupInterface from "./Checkup.interface.js";
 import type CheckupPlanInterface from "./CheckupPlan.interface.js";
@@ -26,6 +27,7 @@ import type PrintInterface from "./Print.interface.js";
 import type ProcessInterface from "./Process.interface.js";
 import type PublisherInterface from "./Publisher.interface.js";
 import type RemoteFileInterface from "./RemoteFile.interface.js";
+import type RuleInterface from "./Rule.interface.js";
 import type SaosPlanInterface from "./SaosPlan.interface.js";
 import type ScanRecordInterface from "./ScanRecord.interface.js";
 import type SearchPageInterface from "./SearchPage.interface.js";
@@ -36,6 +38,12 @@ import type TextOriginInterface from "./TextOrigin.interface.js";
 import type TextRecordInterface from "./TextRecord.interface.js";
 import type YearListingInterface from "./YearListing.interface.js";
 import type YearWorkInterface from "./YearWork.interface.js";
+
+// the almanac (docs/almanac/): chains of events met before and the rules of the project
+export namespace AlmanacScope {
+	export type Chain = ChainInterface;
+	export type Rule = RuleInterface;
+}
 
 export namespace HuggingfaceScope {
 	export type Difference = DifferenceInterface;
