@@ -1,17 +1,20 @@
 # webapp-server: the http api with the website, over gathered resources mounted read-only.
+# Its image (resources/configs/webapp-server/Dockerfile, no browser) is published by every
+# release as ghcr.io/sarverott/p-jol-roll-webapp-server - the demo space runs the same one.
 # Included by compose.yaml at the root, with the root as its project directory, so the
 # paths below are relative to the root of the repository.
 services:
   webapp-server:
-    build: .
-    entrypoint: ["node", "dist/openapi/main.js"]
+    build:
+      context: .
+      dockerfile: resources/configs/webapp-server/Dockerfile
+    image: p-jol-roll-webapp-server
     environment:
-      HOST: 0.0.0.0
-      PORT: "8080"
+      LOG_DIR: /tmp/logs
     ports:
       - "8080:8080"
     volumes:
-      - ./resources:/home/myuser/resources:ro
+      - ./resources:/data/resources:ro
     restart: unless-stopped
     # its logs to log-collector (udp: the service starts even when the collector does not run;
     # `docker compose logs` still shows them)

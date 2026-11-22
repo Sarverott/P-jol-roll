@@ -24,3 +24,4 @@ dist
 resources/*
 !resources/frontends.json
 !resources/.map.json
+!resources/configs/
