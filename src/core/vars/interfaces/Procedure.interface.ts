@@ -9,7 +9,8 @@ export default interface Procedure {
 	title: string; // what it does, one line
 	params: CatalogScope.Parameter[];
 	// it changes resources/, the repository or a remote (the source, Hugging Face) - offered
-	// by terminals; a host shows it disabled (Q19)
+	// by terminals, and by a host on this machine with --allow-writing (Q19); a public host
+	// shows it disabled
 	writes: boolean;
 	task?: string; // the task that runs it
 	// the answer here, through src/core/reading/ - for reading functions

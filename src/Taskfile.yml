@@ -6,9 +6,9 @@ version: '3'
 tasks:
 
   serve:
-    desc: Http api with live notices (socket.io) and the built website, on http://127.0.0.1:8080 - PORT and HOST in environment change it.
+    desc: 'Http api with live notices (socket.io) and the built website, on http://127.0.0.1:8080 - PORT and HOST in environment change it; task serve -- --allow-writing: the viewer starts the writing functions too, each after a yes (this machine only, Q19)'
     cmds:
-      - npm run serve
+      - npm run serve -- {{.CLI_ARGS}}
 
   mcp:
     desc: MCP server over stdio for AI agents, read-only (e.g. claude mcp add p-jol-roll -- npx tsx src/mcp/main.ts); over http it is /mcp of task serve and of the space.

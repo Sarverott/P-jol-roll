@@ -5,23 +5,28 @@ import { fileURLToPath } from "node:url";
 The api (src/openapi) as a child of the app: one process only - node with the tsx loader, not
 npx -> tsx -> node, whose last child outlived the window and kept the port. PORT=0: the system
 gives a port that is free, on this machine only. The api watches its stdin and ends when the
-app is gone, even after a crash (EXIT_WITH_PARENT).
+app is gone, even after a crash (EXIT_WITH_PARENT). --allow-writing: the window may start the
+writing functions of the catalog, each after a yes (Q19, phase 25).
 */
 
 export const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 
 export function startApi() {
-	const child = spawn("node", ["--import", "tsx", "src/openapi/main.ts"], {
-		cwd: ROOT,
-		env: {
-			...process.env,
-			PORT: "0",
-			HOST: "127.0.0.1",
-			EXIT_WITH_PARENT: "1",
+	const child = spawn(
+		"node",
+		["--import", "tsx", "src/openapi/main.ts", "--allow-writing"],
+		{
+			cwd: ROOT,
+			env: {
+				...process.env,
+				PORT: "0",
+				HOST: "127.0.0.1",
+				EXIT_WITH_PARENT: "1",
+			},
+			stdio: ["pipe", "pipe", "inherit"],
+			shell: process.platform === "win32",
 		},
-		stdio: ["pipe", "pipe", "inherit"],
-		shell: process.platform === "win32",
-	});
+	);
 	// the address the api says it listens on
 	const address = new Promise((done, fail) => {
 		let said = "";

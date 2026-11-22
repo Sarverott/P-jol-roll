@@ -6,9 +6,12 @@ point was added.
 
 ## Decisions for Sett
 
-- **2026-11-22. Q19 (BRAINSTORM).** May the desktop app or an api on
-  127.0.0.1 start writing functions (gather, text, map, push)? Rule 4 says
-  no host may; until it is answered they show disabled everywhere.
+- **2026-11-22. Jobs of writing functions (Q19, phase 25)** were tested
+  with `stats` on a copy of resources (tests/writing.test.ts), not with a
+  gathering against the source nor a push - those are Sett's to try, from
+  the desktop app or `task serve -- --allow-writing`. A job runs its task
+  with `--yes`: the viewer's dialog is the only yes the task's own prompt
+  gets.
 - **2026-11-22. The space's refresh needs the secret `HF_TOKEN`** in the
   repository (a token that may write to the space; settings are Sett's).
   Without it the release job says so and the space keeps what it has. The

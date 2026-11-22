@@ -56,10 +56,13 @@ routes.get("/openapi.json", (_request, response) => {
 	response.json(spec);
 });
 
-// every function of the project (the catalog), with whether this host may start it: a host
-// starts none that writes until Q19 is answered, and the viewer shows them disabled
-routes.get("/api/catalog", (_request, response) => {
-	response.json(described(PROCEDURES, { writing: false }));
+// every function of the project (the catalog), with whether this host may start it: a writing
+// one only when the api runs with --allow-writing on this machine (Q19, writing.ts); elsewhere
+// the viewer shows them disabled
+routes.get("/api/catalog", (request, response) => {
+	response.json(
+		described(PROCEDURES, { writing: Boolean(request.app.locals.writing) }),
+	);
 });
 
 // every year at once, by Typesense; without it 503 says how to start it

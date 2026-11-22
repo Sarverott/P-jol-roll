@@ -29,8 +29,9 @@ export function functionsMap() {
 		"`task functions:map` from the catalog (`src/core/catalog/procedures.ts`),",
 		"so do not edit it by hand. The launcher (bare `task`), its REPL and",
 		"`task do` offer every function; the other ways where a cell names how. A",
-		"writing function (✎) is offered on a host only after Q19; the viewer shows",
-		"it disabled until then. `–` is a hole.",
+		"writing function (✎) is started by the viewer and the api only on this",
+		"machine, when the api runs with `--allow-writing` (the desktop app does),",
+		"each after a person's yes; a public host shows it disabled (Q19). `–` is a hole.",
 		"",
 		`| Function | | launcher, REPL, \`task do\` | ${WAYS.map(([, title]) => title).join(" | ")} |`,
 		`| -------- | - | :-: | ${WAYS.map(() => ":-:").join(" | ")} |`,
@@ -40,8 +41,8 @@ export function functionsMap() {
 		for (const one of PROCEDURES.filter((p) => p.group === group)) {
 			const here = one.read ? "✓" : `✓ \`task ${one.task}\``;
 			const ways = WAYS.map(([way]) => {
-				if (one.writes && (way === "viewer" || way === "api"))
-					return "disabled (Q19)";
+				if (one.writes && way === "viewer") return "local, after a yes";
+				if (one.writes && way === "api") return "`POST /api/jobs` (local)";
 				return cell(one.ways[way]);
 			});
 			lines.push(
