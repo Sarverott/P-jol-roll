@@ -5,10 +5,11 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
-import { fileURLToPath } from "node:url";
+import { ROOT } from "../core/paths/at.js";
 import type { LaunchingScope } from "../core/vars/interfaces/index.js";
 
-export const ROOT = fileURLToPath(new URL("../../", import.meta.url));
+// the root of the repository, from core (src/core/paths/at.ts)
+export { ROOT };
 
 // the task binary of node_modules (npm install brings it), else the one on PATH
 export function taskBinary() {
