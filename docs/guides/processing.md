@@ -142,3 +142,9 @@ in a hundred) gets no markdown; it is named in
 gets its HTML later, the markdown is made from the HTML again.
 
 Without `--pdf`, `task text` keeps the texts made from PDFs as they are.
+
+Readers say which texts these are: an act in the api has `text.from`
+(`html` or `pdf`) with the producer and the source's address, the answer of
+`/api/acts/<journal>/<year>/<pos>/text` carries the header `X-Text-From`,
+the MCP tool `act_text` opens such a text with a line naming its PDF, and
+the viewer puts a note above it.

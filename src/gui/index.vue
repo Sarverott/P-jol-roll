@@ -129,14 +129,19 @@ onUnmounted(() => socket?.close());
 						</li>
 					</ul>
 				</details>
+				<p v-if="text && chosen.text?.from === 'pdf'" class="origin">
+					Text read from the PDF<template v-if="/Paper Capture/.test(chosen.text.producer ?? '')">, recognised from a scan of the printed journal</template>:
+					it is not corrected and may hold mistakes - the <a :href="chosen.text.url" target="_blank" rel="noopener">PDF at the source</a> is the text.
+				</p>
 				<div v-if="text" class="text" v-html="text"></div>
-				<p v-else>No markdown of this act here: it has no HTML at the source, or "task text" was not run.</p>
+				<p v-else>No markdown of this act here: "task text" was not run for it, or its PDF is a scan without text.</p>
 			</article>
 		</div>
 	</main>
 </template>
 
 <style scoped>
+.origin { font-size: 0.9rem; opacity: 0.8; border-left: 3px solid currentColor; padding-left: 0.6rem; }
 .viewer { font-family: system-ui, sans-serif; max-width: 80rem; margin: 0 auto; padding: 1rem; }
 .pick { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
 .columns { display: grid; grid-template-columns: minmax(16rem, 1fr) 2fr; gap: 1rem; }

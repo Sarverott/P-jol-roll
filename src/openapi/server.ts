@@ -22,6 +22,8 @@ export function serve({ port = 8080, host = "127.0.0.1", web = WEB_DIR } = {}) {
 	app.disable("x-powered-by");
 	app.use((_request, response, next) => {
 		response.set("Access-Control-Allow-Origin", "*");
+		// readers on other origins (extension, pages) may read where a text came from
+		response.set("Access-Control-Expose-Headers", "X-Text-From");
 		next();
 	});
 	app.use(routes);

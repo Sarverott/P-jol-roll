@@ -132,7 +132,7 @@ PP2, approved in the chat on 2026-11-22 (changelog phase 12). 125759 of 165006 a
 
 - [x] `task text -- --pdf`: the text layer of every PDF-only act into `dataset/texts/<journal>/<year>/<address>.md`, with the checksums of both files, the same as markdown from HTML
 - [x] PDFs without a text layer (scans) named in a list in the dataset, not guessed; OCR left for later
-- [ ] The readers (api, MCP, demo) show a PDF's text where there is no HTML, saying where it came from
+- [x] The readers (api, MCP, demo) show a PDF's text where there is no HTML, saying where it came from
 - [ ] Texts packed a year in a file, or not (Q16)
 
 ## Phase 13: images, icons and what links show

@@ -29,6 +29,7 @@ import type ScanRecordInterface from "./ScanRecord.interface.js";
 import type SejmPlanInterface from "./SejmPlan.interface.js";
 import type TaskEntryInterface from "./TaskEntry.interface.js";
 import type TermInterface from "./Term.interface.js";
+import type TextOriginInterface from "./TextOrigin.interface.js";
 import type TextRecordInterface from "./TextRecord.interface.js";
 import type YearListingInterface from "./YearListing.interface.js";
 import type YearWorkInterface from "./YearWork.interface.js";
@@ -68,6 +69,7 @@ export namespace ReadingScope {
 	export type Journal = JournalInterface;
 	export type ActPage = ActPageInterface;
 	export type ActView = ActViewInterface;
+	export type TextOrigin = TextOriginInterface;
 }
 
 // durable runs of src/workflows: what they are asked, what their steps return
