@@ -6,5 +6,7 @@ import { defineConfig } from "vite";
 export default defineConfig({
 	plugins: [react()],
 	base: "./",
+	// the icons and the card of a link, the same as the viewer's (scripts/devops/media/build.sh)
+	publicDir: "../src/web/public",
 	build: { outDir: "../site", emptyOutDir: false },
 });

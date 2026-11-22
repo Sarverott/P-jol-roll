@@ -139,8 +139,8 @@ PP2, approved in the chat on 2026-11-22 (changelog phase 12). 125759 of 165006 a
 
 PP3, partly solved by the owner (the gist submodule `resources/mediafiles`); the rest asked in the chat on 2026-11-22 (changelog phase 12).
 
-- [ ] Scripts with ffmpeg that make, from `resources/mediafiles`, favicons, icons of the web app manifest and an `og:image`, into the places each site takes them from
-- [ ] The main page, the website of the viewer, the docs and the demo carry them: favicon, manifest, `og:image` and the rest of the meta that makes a shared link show a card
+- [x] Scripts with ffmpeg that make, from `resources/mediafiles`, favicons, icons of the web app manifest and an `og:image`, into the places each site takes them from
+- [x] The main page, the website of the viewer, the docs and the demo carry them: favicon, manifest, `og:image` and the rest of the meta that makes a shared link show a card
 
 ## Phase 14: a friendlier webapp
 

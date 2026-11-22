@@ -129,7 +129,8 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | File | What, why and where |
 | --- | --- |
 | `src/gui/index.vue` | The one viewer: pick a journal and a year, search titles, open an act, read its markdown, follow its ties, open its PDF. Takes the address of the api as `api`. Every interface shows this. |
-| `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host. |
+| `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host; `PUBLIC_SITE` is its own address for the card of a shared link (the demo by default). |
+| `src/web/public/` | Favicons, manifest icons and `og.jpg`, made by `scripts/devops/media/build.sh` from the gist `resources/mediafiles` and committed; the introduction (`webpage/`) takes them too. |
 | `astro.config.mjs` (root) | Where Astro finds `src/web` and writes `dist/web`. |
 
 ### shells
