@@ -69,5 +69,35 @@ serves the browser and the terminal.
 
 ## Language packs
 
-`resources/locales/` holds a JSON file per language, `EN-US.json` the
-default, listed in `resources/locales/.index.json`.
+`resources/locales/` holds a JSON file per language, listed in
+`resources/locales/.index.json` with EN-US the default:
+
+| Pack | Made by |
+| --- | --- |
+| `EN-US.json` | `task i18n:collect`: the built introduction and viewer opened in a headless browser, their own runtime collects every text with its hook |
+| `PL-PL.json`, `UK-UA.json`, `DE-DE.json` | `task i18n:translate`: argostranslate (the engine of LibreTranslate), models downloaded once |
+
+```sh
+task web:build && npm run --prefix webpage build    # both pages built
+task i18n:collect                                   # their English -> EN-US.json
+task i18n:translate                                 # what the other packs miss
+task i18n:translate -- PL-PL --again                # one pack anew (not its reviewed entries)
+```
+
+- A text with a number is translated once per plural form of the language,
+  with the number that form takes (`plural` in the index: Polish one 1,
+  few 3, many 5), and the number becomes the hole again.
+- Names in `keep` of the index (Dziennik Ustaw, Sejm, SAOS, P_JOL_ROLL...)
+  are never translated: they stand in as numbers while the model works,
+  because letters get transliterated by some models and numbers never do.
+- Machine translation makes mistakes ("Bucket" became "Bukiet"). A person
+  fixes an entry in the pack and lists its hook in `reviewed`. The script
+  never overwrites a reviewed entry and never drops it.
+- A language is added by a line in the index (with its `argos` pair) and
+  `task i18n:translate`.
+
+The viewer and the introduction take the pack of `?lang=PL-PL`, else the
+last choice, else the browser's languages, else English. They load only
+that pack and lay it over the page before it shows, and a switch in the
+header changes it without a reload. The documentation, the launcher and the
+CLI manuals come next (phase 16).

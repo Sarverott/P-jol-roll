@@ -136,3 +136,12 @@ pre {
 		display: none;
 	}
 }
+.language {
+	float: right;
+	font: inherit;
+	font-size: 0.85rem;
+	background: var(--bg);
+	color: var(--text);
+	border: 1px solid var(--line);
+	padding: 0.2rem 0.4rem;
+}

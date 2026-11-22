@@ -125,7 +125,7 @@ onUnmounted(() => renderer?.kill());
 			</div>
 			<p class="control has-text-grey is-size-7">{{ state }}</p>
 		</div>
-		<div class="tags">
+		<div class="tags" translate="no">
 			<span v-for="kind in kinds" :key="kind.name" class="tag is-light">
 				<span class="dot" :style="{ background: kind.colour }"></span>{{ kind.name }}
 			</span>

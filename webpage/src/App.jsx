@@ -1,6 +1,8 @@
 // The introduction of P_JOL_ROLL, one page. The documentation is the MkDocs site under ./docs/
 // (and on Read the Docs); the state comes from state.json, counted at build from TODO.md and
 // features.md (scripts/state.mjs), so the page never says more than they do.
+import { useState } from "react";
+import { chosen, languages, use } from "../../src/i18n/browser.ts";
 import state from "./state.json";
 
 const HF = "https://huggingface.co";
@@ -105,13 +107,40 @@ function word(phase) {
 	return phase.done ? "in progress" : "not started";
 }
 
+// the language of the page: a pack laid over it, the page itself stays as written
+function Languages() {
+	const [code, setCode] = useState(chosen());
+	if (languages.length < 2) return null;
+	return (
+		<select
+			className="language"
+			aria-label="language"
+			translate="no"
+			value={code}
+			onChange={(event) => {
+				setCode(event.target.value);
+				use(event.target.value);
+			}}
+		>
+			{languages.map((one) => (
+				<option key={one.code} value={one.code}>
+					{one.name}
+				</option>
+			))}
+		</select>
+	);
+}
+
 export default function App() {
 	const { version, phases, features } = state;
 	return (
 		<main>
 			<header>
-				<p className="version">v{version}</p>
-				<h1>P_JOL_ROLL</h1>
+				<Languages />
+				<p className="version" translate="no">
+					v{version}
+				</p>
+				<h1 translate="no">P_JOL_ROLL</h1>
 				<p className="lead">
 					Every act of the Polish journals of laws - Dziennik Ustaw since 1918,
 					Monitor Polski since 1930 - gathered in the open.
