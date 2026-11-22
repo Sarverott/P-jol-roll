@@ -50,7 +50,7 @@ into the page.
 
 | Topic | Cases |
 | --- | --- |
-| [Hugging Face](solutions/hugging-face.md) | [129th commit of an hour](cataclistics/hub-commit-limit.md) · [a text taken for binary](cataclistics/hub-binary-text.md) · [the space keeps old files](cataclistics/hub-push-never-deletes.md) |
+| [Hugging Face](solutions/hugging-face.md) | [129th commit of an hour](cataclistics/hub-commit-limit.md) · [a text taken for binary](cataclistics/hub-binary-text.md) · [the space keeps old files](cataclistics/hub-push-never-deletes.md) · [the space writes into the bucket](cataclistics/space-cache-in-bucket.md) |
 | [Texts of PDFs](solutions/pdf-texts.md) | [a damaged PDF](cataclistics/damaged-pdf.md) · [a producer in UTF-16](cataclistics/utf16-producer.md) |
 | [Security](solutions/security.md) | [the first CodeQL scan](cataclistics/codeql-first-scan.md) |
 | [Containers](solutions/containers.md) | [language packs left out of the image](cataclistics/container-missing-locales.md) · [port 5353](cataclistics/mdns-port.md) |

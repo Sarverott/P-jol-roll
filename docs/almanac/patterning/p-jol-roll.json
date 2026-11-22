@@ -274,6 +274,20 @@
 			"title": "Copilot's pull requests open against master",
 			"topic": "github-workflows",
 			"page": "cataclistics/copilot-prs-to-master.md"
+		},
+		{
+			"id": "space-cache-in-bucket",
+			"events": [
+				"space:bucket-mounted",
+				"space:page-read",
+				"bucket:stray-dirs"
+			],
+			"cataclysm": "bucket:stray-dirs",
+			"solution": "The space's `Dockerfile` sets `RESOURCES_DIR` and `LOG_DIR` in `/tmp`, and `task resources:space` adds that line when it is missing; the 25945 files the space wrote were deleted from the bucket by their paths (`resources/`, `logs/`), the raw files left as they were.",
+			"seen": ["2026-11-22: changelog phase 20", "v0.17.0"],
+			"title": "The demo space writes its cache into the bucket",
+			"topic": "hugging-face",
+			"page": "cataclistics/space-cache-in-bucket.md"
 		}
 	]
 }

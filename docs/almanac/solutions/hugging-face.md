@@ -12,6 +12,9 @@ What the hub does to a push, learnt by pushing 165 thousand files.
   `task resources:prune` (it asks first, and never touches the bucket).
 - **The bucket is not git.** Raw files go there by their own sync and are
   never pruned: a file may live on one machine only.
+- **The space mounts the bucket at `/data`.** The image keeps its cache
+  and logs there by default, so the space's `Dockerfile` moves them to
+  `/tmp`; otherwise each page read lands in the bucket.
 - Pushing is the owner's move; agents prepare and check (AGENTS.md rule 5).
 
 ## Cases
@@ -19,5 +22,6 @@ What the hub does to a push, learnt by pushing 165 thousand files.
 - [Hugging Face refuses the 129th commit of an hour](../cataclistics/hub-commit-limit.md)
 - [A markdown text taken for a binary file](../cataclistics/hub-binary-text.md)
 - [The demo space keeps files of its old version](../cataclistics/hub-push-never-deletes.md)
+- [The demo space writes its cache into the bucket](../cataclistics/space-cache-in-bucket.md)
 
 See also [the guide](../../guides/huggingface.md).
