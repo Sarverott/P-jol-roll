@@ -1,0 +1,19 @@
+# gatherer-daemon: the gatherer as a unit of its own (the image of the Dockerfile at the root,
+# with the browser of checkup), over resources/. Started only by a person, never with the rest:
+#   docker compose --profile gathering run --rm gatherer-daemon                    changes since the last run
+#   docker compose --profile gathering run --rm gatherer-daemon gather 2026 --acts --limit 5
+services:
+  gatherer-daemon:
+    profiles: [gathering]
+    build: .
+    image: p-jol-roll-gatherer
+    command: ["gather", "--since", "last"]
+    environment:
+      RESOURCES_DIR: /home/myuser/resources
+      LOG_DIR: /home/myuser/resources/.containerdatavol/logs
+      SYSLOG_ADDRESS: udp://host.docker.internal:5514
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./resources:/home/myuser/resources
+    restart: "no"

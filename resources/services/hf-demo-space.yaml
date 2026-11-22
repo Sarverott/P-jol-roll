@@ -1,0 +1,23 @@
+# hf-demo-space: the demo space of Hugging Face run here - the published webapp-server image
+# that takes the dataset from Hugging Face when it starts, on the space's port 7860.
+# What it takes stays in resources/.containerdatavol/hf-demo-space/.
+#   docker compose --profile demo up -d hf-demo-space   ->   http://localhost:7860
+services:
+  hf-demo-space:
+    profiles: [demo]
+    image: ghcr.io/sarverott/p-jol-roll-webapp-server:latest
+    environment:
+      PORT: "7860"
+      PULL: dataset
+      PULL_PARALLEL: "16"
+      RESOURCES_DIR: /data/resources
+    ports:
+      - "127.0.0.1:7860:7860"
+    volumes:
+      - ./resources/.containerdatavol/hf-demo-space:/data
+    restart: unless-stopped
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://127.0.0.1:5514
+        tag: p-jol-roll-hf-demo-space

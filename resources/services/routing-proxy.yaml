@@ -1,0 +1,22 @@
+# routing-proxy: Traefik, one name per service instead of ports - for local use, with the
+# desktop window too: webapp.p-jol-roll.localhost, docs..., demo... (also .internal through
+# internal-dns). Routes are a file (resources/configs/routing-proxy/routes.yaml), so Traefik
+# needs no access to Docker itself.
+#   docker compose --profile local-network up -d   ->   http://webapp.p-jol-roll.localhost
+#   the dashboard of Traefik                       ->   http://127.0.0.1:8081
+services:
+  routing-proxy:
+    profiles: [local-network]
+    image: traefik:v3.6
+    command: ["--configFile=/etc/traefik/traefik.yaml"]
+    ports:
+      - "127.0.0.1:${ROUTING_PORT:-80}:80"
+      - "127.0.0.1:8081:8080"
+    volumes:
+      - ./resources/configs/routing-proxy:/etc/traefik:ro
+    restart: unless-stopped
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://127.0.0.1:5514
+        tag: p-jol-roll-routing-proxy

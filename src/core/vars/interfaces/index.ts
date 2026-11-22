@@ -19,12 +19,14 @@ import type FrontendInterface from "./Frontend.interface.js";
 import type GatherPlanInterface from "./GatherPlan.interface.js";
 import type JournalInterface from "./Journal.interface.js";
 import type JudgmentInterface from "./Judgment.interface.js";
+import type MenuOptionInterface from "./MenuOption.interface.js";
 import type PrintInterface from "./Print.interface.js";
 import type ProcessInterface from "./Process.interface.js";
 import type PublisherInterface from "./Publisher.interface.js";
 import type RemoteFileInterface from "./RemoteFile.interface.js";
 import type SaosPlanInterface from "./SaosPlan.interface.js";
 import type SejmPlanInterface from "./SejmPlan.interface.js";
+import type TaskEntryInterface from "./TaskEntry.interface.js";
 import type TermInterface from "./Term.interface.js";
 import type TextRecordInterface from "./TextRecord.interface.js";
 import type YearListingInterface from "./YearListing.interface.js";
@@ -71,4 +73,10 @@ export namespace WorkflowScope {
 	export type DailyPlan = DailyPlanInterface;
 	export type CommandResult = CommandResultInterface;
 	export type Approval = ApprovalInterface;
+}
+
+// the launcher of src/tui/ and the commands of src/cli/: tasks of every Taskfile, menus
+export namespace LaunchingScope {
+	export type TaskEntry = TaskEntryInterface;
+	export type MenuOption<Value> = MenuOptionInterface<Value>;
 }

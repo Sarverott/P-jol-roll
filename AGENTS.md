@@ -128,7 +128,8 @@ src/desktop/           Electron window: starts the api, shows the viewer
 src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
-src/tui/               Sett's terminal interface experiment (TermUI), out of the checks until its packages are added
+src/tui/               the launcher (launcher/: main.ts the menu bare `task` opens, select.ts); Sett's TermUI experiment (index.tsx, main.js, termui.config.*) out of the checks
+src/cli/               commands of the launcher: tasks.ts (every task of every Taskfile, grouped, run), repl.ts (tasks as commands)
 src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init)
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
@@ -143,6 +144,7 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   services/       one compose file per service, included by compose.yaml at the root
   configs/        configurations of services, one directory per purpose, in git
     webapp-server/  Dockerfile and start.sh of the slim server image (ghcr.io, the demo space)
+    routing-proxy/, internal-dns/, llms-api-host/, log-collector/  settings of those services
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
 webpage/          the React introduction at the root of the website (Vite, own package.json); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
@@ -166,6 +168,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 
 | Command | What it does |
 | --- | --- |
+| `task` | the launcher: a menu of every Taskfile and its tasks, and a REPL (`task help` lists them) |
 | `task init` | first launch on a machine: tools checked, `.env` from `.env.example`, secrets generated; once |
 | `task gather` | lists and metadata of the newest year, every journal |
 | `task gather -- 2026 --acts --limit 5` | and all files of 5 acts that miss any |

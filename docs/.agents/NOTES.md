@@ -4,6 +4,21 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-22 · Cleo · phase 9, the launcher, the services
+
+- `gather:changes` broke on the API, not on us: `/changes/acts` answers
+  400 to a bare day since about November 2026; it wants
+  `yyyy-MM-ddTHH:mm:ss`. Seen by one request with the project's
+  User-Agent. Crawlee only logged the failure and the run ended with 0;
+  now such a run ends with 1.
+- Logs of every run in `logs/`; a crash is logged before the exit.
+- The first image on `ghcr.io` (v0.4.0) can be pulled without logging in.
+- The launcher is plain `node:readline`; Sett's TermUI files are still out
+  of the checks, the rest of `src/tui/` is in.
+- A hook stopped a commit after the version was bumped; the bump now runs
+  after Biome.
+- Port 5353 is mDNS (avahi); internal-dns listens on 15353.
+
 ## 2026-11-22 · Cleo · phase 8, releases and routines
 
 - Every workflow step is a script of `scripts/devops/` (shellcheck and

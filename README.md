@@ -57,6 +57,7 @@ comes with the dependencies as `npx task`.
 git clone --recurse-submodules https://github.com/Sarverott/P-jol-roll.git
 cd P-jol-roll && npm install        # also downloads the browser and sets up git hooks
 task init                           # once: tools checked, .env from .env.example, secrets
+task                                # the launcher: every way to run it, in a menu
 task verify                         # checks, build, tests - nothing asks the internet
 task gather -- 2026 --acts --limit 5   # a small gathering: listing of 2026, files of 5 acts
 task compile && task text           # tables and markdown from what was gathered

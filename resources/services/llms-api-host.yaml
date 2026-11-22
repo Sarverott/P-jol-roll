@@ -1,0 +1,35 @@
+# llms-api-host: Ollama running models here, behind a LiteLLM proxy that gives them one
+# OpenAI-like api with a key (for the advisor agent of milestone M4, and for trying models).
+#   task init                                      generates the key: resources/secrets/litellm_master_key
+#   docker compose --profile llms up -d            ->  http://127.0.0.1:4000 (key in that file)
+#   docker compose --profile llms exec llms-ollama ollama pull qwen3:4b
+# Models stay in resources/.containerdatavol/ollama/. OLLAMA_TOKEN in .env is not needed here.
+services:
+  llms-ollama:
+    profiles: [llms]
+    image: ollama/ollama:0.40.17
+    volumes:
+      - ./resources/.containerdatavol/ollama:/root/.ollama
+    restart: unless-stopped
+
+  llms-api-host:
+    profiles: [llms]
+    image: ghcr.io/berriai/litellm:main-stable
+    command: ["--config", "/app/config.yaml", "--port", "4000"]
+    entrypoint: ["sh", "-c", "LITELLM_MASTER_KEY=$$(cat /run/secrets/litellm_master_key) exec litellm \"$$@\"", "--"]
+    secrets: [litellm_master_key]
+    ports:
+      - "127.0.0.1:4000:4000"
+    volumes:
+      - ./resources/configs/llms-api-host/litellm.yaml:/app/config.yaml:ro
+    depends_on: [llms-ollama]
+    restart: unless-stopped
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://127.0.0.1:5514
+        tag: p-jol-roll-llms-api-host
+
+secrets:
+  litellm_master_key:
+    file: ./resources/secrets/litellm_master_key

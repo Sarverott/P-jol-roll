@@ -1,0 +1,10 @@
+# llms-api-host: LiteLLM, one OpenAI-like api over the models of the Ollama beside it.
+# Pull a model into Ollama first, then name it here:
+#   docker compose --profile llms exec llms-ollama ollama pull qwen3:4b
+model_list:
+  - model_name: local
+    litellm_params:
+      model: ollama_chat/qwen3:4b
+      api_base: http://llms-ollama:11434
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
