@@ -1,7 +1,10 @@
 <script setup>
 // a minimap of the ties in the corner: the act in the middle, the acts it ties to around it,
-// a colour per kind of tie (Cytoscape.js); a click on an act opens it
+// a colour per kind of tie (Cytoscape.js); a click on an act opens it. The screens load this
+// component lazily (defineAsyncComponent), so Cytoscape.js comes only with it
+import cytoscape from "cytoscape";
 import { onUnmounted, ref, watch } from "vue";
+import { ColorPick } from "../../assets/setup.js";
 
 const props = defineProps({
 	eli: { type: String, default: "" },
@@ -12,21 +15,10 @@ const box = ref(null);
 const folded = ref(false);
 let graph;
 
-const COLOURS = [
-	"#c0392b",
-	"#2e86c1",
-	"#28b463",
-	"#d68910",
-	"#8e44ad",
-	"#17a589",
-	"#7f8c8d",
-];
-
-async function draw() {
+function draw() {
 	graph?.destroy();
 	graph = undefined;
 	if (!box.value || !props.eli || !props.ties.length || folded.value) return;
-	const { default: cytoscape } = await import("cytoscape");
 	const kinds = [...new Set(props.ties.map((tie) => tie.type))];
 	const targets = [...new Set(props.ties.map((tie) => tie.to))];
 	graph = cytoscape({
@@ -39,7 +31,7 @@ async function draw() {
 					id: `e${at}`,
 					source: props.eli,
 					target: tie.to,
-					colour: COLOURS[kinds.indexOf(tie.type) % COLOURS.length],
+					colour: ColorPick.kind(kinds.indexOf(tie.type)),
 				},
 			})),
 		],
@@ -49,10 +41,10 @@ async function draw() {
 				style: {
 					width: 8,
 					height: 8,
-					"background-color": "#5f6b8a",
+					"background-color": ColorPick.named("node"),
 					label: targets.length <= 12 ? "data(label)" : "",
 					"font-size": 7,
-					color: "#888",
+					color: ColorPick.named("node-label"),
 				},
 			},
 			{
@@ -60,7 +52,7 @@ async function draw() {
 				style: {
 					width: 14,
 					height: 14,
-					"background-color": "#1d2440",
+					"background-color": ColorPick.named("brand"),
 					label: "data(label)",
 				},
 			},
@@ -92,15 +84,40 @@ onUnmounted(() => graph?.destroy());
 <template>
 	<aside v-if="ties.length" class="minimap box p-2">
 		<p class="is-size-7 has-text-grey is-flex is-justify-content-space-between">
-			<span>{{ ties.length }} {{ ties.length === 1 ? "tie" : "ties" }}</span>
-			<a href="#" @click.prevent="folded = !folded">{{ folded ? "show" : "hide" }}</a>
+			<span class="i18n-texts-slot"
+				>{{ ties.length }} {{ ties.length === 1 ? "tie" : "ties" }}</span
+			>
+			<button
+				type="button"
+				class="button is-ghost is-small p-0 i18n-texts-slot"
+				@click="folded = !folded"
+			>
+				{{ folded ? "show" : "hide" }}
+			</button>
 		</p>
 		<div v-show="!folded" ref="box" class="graph"></div>
 	</aside>
 </template>
 
 <style scoped>
-.minimap { position: fixed; right: 1rem; bottom: 1rem; width: 16rem; z-index: 30; margin: 0; }
-.graph { width: 100%; height: 12rem; }
-@media (max-width: 48rem) { .minimap { width: 11rem; } .graph { height: 8rem; } }
+.minimap {
+	position: fixed;
+	right: 1rem;
+	bottom: 1rem;
+	width: 16rem;
+	z-index: 30;
+	margin: 0;
+}
+.graph {
+	width: 100%;
+	height: 12rem;
+}
+@media (max-width: 48rem) {
+	.minimap {
+		width: 11rem;
+	}
+	.graph {
+		height: 8rem;
+	}
+}
 </style>

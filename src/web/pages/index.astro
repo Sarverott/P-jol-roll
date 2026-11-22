@@ -1,42 +1,41 @@
 ---
-
+// NOTE: ow... alright then, cool that you consider coolify ^^
 // NOTE: this will be selfhosted best case for coolify, docker apps etc. - api mode also here
 import manifest from "../../app/manifest.json?url";
 import Viewer from "../../gui/index.vue";
+import { at, site } from "../data/site.ts";
 
 // built as static files into dist/web; the api (src/openapi) serves them next to /api,
 // so one container is website and api at once. PUBLIC_API points the viewer elsewhere
 const api = import.meta.env.PUBLIC_API ?? "";
-// a card of a shared link needs a whole address: the host's own (PUBLIC_SITE), the demo by default
-const site = (
-	import.meta.env.PUBLIC_SITE ??
-	"https://sarverott-docs-of-law-by-gov-in-poland.hf.space"
-).replace(/\/$/, "");
-const description =
-	"Every act of the Polish journals of laws since 1918, gathered in the open: read it, follow its ties, search it.";
+// NOTE: can we read it and other data bbelow from yaml file or at least js file imports? i thought about something static but then i spot that templating strings there...
+// ANSWER: done - the words are in data/site.yaml; what needs the host (the whole addresses of a
+// card, PUBLIC_SITE or the demo) is made in data/site.ts, so the yaml stays plain data
 ---
+
 <html lang="pl">
 	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<title>P_JOL_ROLL</title>
-		<meta name="description" content={description} />
-		<meta name="theme-color" content="#1d2440" />
-		<link rel="manifest" href={manifest} />
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{site.name}</title>
+		<meta name="description" content={site.description}>
+		<meta name="theme-color" content={site.theme}>
+		<link rel="manifest" href={manifest}>
 		<!-- the images of the project: scripts/devops/media/build.sh, in src/web/public -->
-		<link rel="icon" href="/favicon.ico" sizes="48x48" />
-		<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<meta property="og:type" content="website" />
-		<meta property="og:site_name" content="P_JOL_ROLL" />
-		<meta property="og:title" content="P_JOL_ROLL - Polish journals of laws" />
-		<meta property="og:description" content={description} />
-		<meta property="og:url" content={`${site}/`} />
-		<meta property="og:image" content={`${site}/og.jpg`} />
-		<meta property="og:image:width" content="1200" />
-		<meta property="og:image:height" content="630" />
-		<meta property="og:image:alt" content="Journals of laws from 1924 to 2024 in a line, tied by red threads, and a woman reading" />
-		<meta name="twitter:card" content="summary_large_image" />
+		<link rel="icon" href="/favicon.ico" sizes="48x48">
+		<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+		<link rel="sitemap" href="/sitemap.xml">
+		<meta property="og:type" content="website">
+		<meta property="og:site_name" content={site.name}>
+		<meta property="og:title" content={site.title}>
+		<meta property="og:description" content={site.description}>
+		<meta property="og:url" content={at("/")}>
+		<meta property="og:image" content={at(`/${site.card.image}`)}>
+		<meta property="og:image:width" content={String(site.card.width)}>
+		<meta property="og:image:height" content={String(site.card.height)}>
+		<meta property="og:image:alt" content={site.card.alt}>
+		<meta name="twitter:card" content="summary_large_image">
 	</head>
 	<body>
 		<Viewer client:only="vue" api={api} />

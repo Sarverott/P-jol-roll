@@ -44,14 +44,17 @@ test("a terminal asks t(): the pack's text with its numbers and plural, or the E
 	expect(t(undefined, "search")).toBe("search");
 });
 
-test("a page is laid over without being rewritten; data and code are never touched", () => {
+test("a page is laid over without being rewritten; only what is marked, never data and code", () => {
 	const { document } = parseHTML(`<main>
-		<p>Polish journals of laws, as gathered here.</p>
-		<input placeholder="words of title">
-		<button>search</button>
-		<p>115 acts</p>
-		<article translate="no"><h2>Ustawa</h2></article>
-		<code>search</code>
+		<p class="i18n-texts-slot">Polish journals of laws, as gathered here.</p>
+		<input class="i18n-texts-placeholder" placeholder="words of title" title="not marked">
+		<div class="i18n-texts-slot">
+			<button>search</button>
+			<p>115 acts</p>
+			<article translate="no"><h2>Ustawa</h2></article>
+			<code>search</code>
+		</div>
+		<span>not marked</span>
 	</main>`);
 	const main = document.querySelector("main") as unknown as Node;
 	const english = collect(main);
@@ -75,6 +78,10 @@ test("a page is laid over without being rewritten; data and code are never touch
 	expect(document.querySelectorAll("p")[1]?.textContent).toBe("115 aktów");
 	expect(document.querySelector("h2")?.textContent).toBe("Ustawa");
 	expect(document.querySelector("code")?.textContent).toBe("search");
+	expect(document.querySelector("span")?.textContent).toBe("not marked");
+	expect(document.querySelector("input")?.getAttribute("title")).toBe(
+		"not marked",
+	);
 	// the English is remembered: collected again it is the same, and it comes back
 	expect(collect(main)).toEqual(english);
 	apply(main, undefined);
@@ -84,7 +91,9 @@ test("a page is laid over without being rewritten; data and code are never touch
 
 test("what the page renders later is laid over too, and a framework's write wins over the old English", async () => {
 	// jsdom, as a browser, reports a text node written again (linkedom does not)
-	const { window } = new JSDOM("<main><p>3 acts</p></main>");
+	const { window } = new JSDOM(
+		'<main class="i18n-texts-slot"><p>3 acts</p></main>',
+	);
 	const { document } = window;
 	const main = document.querySelector("main") as unknown as Node;
 	apply(main, pack);

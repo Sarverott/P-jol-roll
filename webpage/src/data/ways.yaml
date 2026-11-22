@@ -1,0 +1,21 @@
+# The ways in, from the lightest
+# read by webpage/vite.config.mjs (yaml into the page at build), shown by App.jsx
+- name: Browse
+  href: https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland
+  what: "the demo: the project's own server reading the dataset online, nothing to
+    install"
+- name: Read the data
+  href: https://huggingface.co/datasets/Sarverott/polish_national_law_docs
+  what: tables of every source in one dataset (the training collection), raw files
+    in one bucket
+- name: Use it from Python
+  href: ./examples/
+  what: "notebooks: the acts of a year, one act checked against its checksum, the
+    api"
+- name: Run it at home
+  href: ./docs/guides/installation/
+  what: the api with the website, an MCP server for AI agents, a desktop window, a
+    browser extension, containers
+- name: Gather it yourself
+  href: ./docs/guides/gathering/
+  what: politely, from the open sources - the same tools that filled the dataset

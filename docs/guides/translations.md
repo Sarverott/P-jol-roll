@@ -27,13 +27,28 @@ pack PL-PL: "6f1c...e2": { "one": "{0} akt", "few": "{0} akty", "many": "{0} akt
   English back, which is remembered per node. `follow(root, pack)` keeps the
   pack over what a framework renders later.
 
+## What is translated: what is marked
+
+Since phase 21 a page names what is its interface, by classes; nothing
+else is touched:
+
+| Class | Translated |
+| --- | --- |
+| `i18n-texts-slot` | every text under the element, and the readable attributes of what is under it |
+| `i18n-texts-placeholder` | the `placeholder` of this element |
+| `i18n-texts-title` / `i18n-texts-alt` / `i18n-texts-label` | its `title` / `alt` / `aria-label` |
+
+Inside a slot, data stays under `translate="no"` and code is skipped. The
+introduction is one slot (its `<main>`), the viewer marks its parts one by
+one, and the documentation is marked as one slot by its builder.
+
 ## What works
 
 | Checked | How |
 | --- | --- |
 | text nodes and the attributes people read (`placeholder`, `title`, `aria-label`, `alt`) | a page in linkedom |
 | numbers and plural forms (1 akt, 3 akty, 115 aktów) | `t()` and the page |
-| data is never translated: titles and texts of acts sit under `translate="no"`, the attribute HTML has for it; `code` and `pre` are skipped too | the page |
+| only what is marked by the classes above; inside it, data is never translated: titles and texts of acts sit under `translate="no"`, the attribute HTML has for it; `code` and `pre` are skipped too | the page |
 | back to English, or to another language, without reloading | the page |
 | what Vue renders later: a text node written again holds English, the observer translates it again; the English it remembered is dropped | jsdom, as a browser |
 | one pack for every interface: the same hook in a page, the launcher and the CLI | `t()` takes plain strings |
@@ -64,8 +79,8 @@ translates it again. The page and the framework do not fight.
   the viewer mounts.
 
 So the idea holds, with no texts named in code: the pages stay as written,
-data is marked once with a standard attribute, and one small library
-serves the browser and the terminal.
+the interface is marked by classes and data by a standard attribute, and
+one small library serves the browser and the terminal.
 
 ## Language packs
 

@@ -197,3 +197,28 @@ The owner's message, 2026-11-22 (changelog phase 19).
 - [x] One flow for the bots (`bots.yml`, `bots-land.yml`): a pull request of Dependabot or Jarvis turned to its branch, merged, the branch checked by a dispatch of its own commit and landed in `development`; checks never take a ref from outside (CodeQL cache poisoning)
 - [x] Jarvis written in: `.github/AUTHORS`, `AGENTS.md`, its guide `.github/copilot-instructions.md`, prompts in `.github/prompts/`, its machine in `copilot-setup-steps.yml`, and `docs/.agents/jarvis.md` kept for it
 
+
+## Phase 20: the bucket tidied, the banner
+
+The owner's message, 2026-11-22 (changelog phase 20).
+
+- [x] `dev/Copilot`, `dev/Copilot-2`, `dev/Copilot-3` deleted, merged in `dev/Jarvis` before
+- [x] The space keeps its cache and logs off the bucket it mounts at `/data` (`task resources:space` writes it); the 25945 files it had written there (`resources/`) deleted
+- [x] The almanac: the case of the space writing into the bucket, its chain and its line in the topic (the banner, Sett's, landed from `dev/Sarverott`; the image is already in `resources/mediafiles`)
+
+## Phase 21: the owner's notes across src
+
+The owner's message, 2026-11-22, and the notes left in the code
+(changelog phase 21).
+
+- [x] Biome formats what is committed and merged, and checks what is pushed (`pre-commit`, `pre-merge-commit`, `pre-push`)
+- [x] `at()` in core for every script, and the version patterns built from one part
+- [x] The viewer's assets: one colour picker, one graph maker, socket.io in its own file; the map with its imports on top, named handlers and its blocks as components
+- [x] The viewer split: layout, screens (acts, an act, the map) and their tabs, the minimap on both screens of acts; Biome formats and lints the templates and styles too
+- [x] Translations of the pages: only what is marked by the `i18n-texts-*` classes
+- [x] SHA-256 of the language packs made readable
+- [x] MCP: a folder per tool, answers shared, one server for stdio and for http - `/mcp` of webapp-server, so the space serves it too
+- [x] The website's data from yaml; `robots.txt`, `sitemap.xml`, `llms.txt`
+- [x] The introduction's data from yaml, and the page split into components
+- [x] The web interface of the workflows finds the workflows
+- [x] The desktop app split into the modules laid out

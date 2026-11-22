@@ -1,0 +1,26 @@
+# Links at the end of the introduction: where the project is, each with what it holds
+# read by webpage/vite.config.mjs (yaml into the page at build), shown by App.jsx
+- name: Documentation
+  href: ./docs/
+  what: guides, glossary, the plan - on this website
+- name: Examples
+  href: ./examples/
+  what: using it from Python, run when this page was built
+- name: Read the Docs
+  href: https://lex-polonica.readthedocs.io/
+  what: the same documentation, by version
+- name: Demo
+  href: https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland
+  what: browse the acts
+- name: Dataset
+  href: https://huggingface.co/datasets/Sarverott/polish_national_law_docs
+  what: tables and markdown of the acts
+- name: Bucket
+  href: https://huggingface.co/buckets/Sarverott/raw-law-of-poland
+  what: raw files of every act
+- name: Podcasts
+  href: https://drive.google.com/drive/folders/1yklwKu-k9AXvT_CJlFhjhtmbaY3VSD7k
+  what: about the project, in 12 languages
+- name: Code
+  href: https://github.com/Sarverott/P-jol-roll
+  what: AGPL-3.0-only

@@ -13,7 +13,7 @@ import { extname, join, sep } from "node:path";
 import { parseHTML } from "linkedom";
 import { chromium, type Page } from "playwright";
 import { readTasks } from "../cli/tasks.js";
-import { collect } from "../i18n/dom.js";
+import { collect, SLOT } from "../i18n/dom.js";
 import { hookOf, templateOf, translatable } from "../i18n/hooks.js";
 import { DOCS_TRANSLATED, languages } from "../i18n/node.js";
 import { serve } from "../openapi/server.js";
@@ -158,6 +158,8 @@ for (const path of globSync("**/*.html", { cwd: "site/docs" })) {
 	if (folders.some((folder) => path.startsWith(`${folder}/`))) continue;
 	if (!DOCS_TRANSLATED.some((pattern) => pattern.test(path))) continue;
 	const { document } = parseHTML(readFileSync(join("site/docs", path), "utf8"));
+	// a page of the documentation is all interface: one slot, as docs-i18n.ts lays it over
+	document.body.classList.add(SLOT);
 	take(collect(document.body as unknown as Node));
 	pages += 1;
 }

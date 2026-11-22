@@ -11,9 +11,14 @@ tasks:
       - npm run serve
 
   mcp:
-    desc: MCP server over stdio for AI agents, read-only (e.g. claude mcp add p-jol-roll -- npx tsx src/mcp/main.ts).
+    desc: MCP server over stdio for AI agents, read-only (e.g. claude mcp add p-jol-roll -- npx tsx src/mcp/main.ts); over http it is /mcp of task serve and of the space.
     cmds:
       - npm run --silent mcp
+
+  mcp:ask:
+    desc: Ask the MCP server what an agent would - its tools, or one with arguments (task mcp:ask -- act eli=DU/2026/1); MCP_URL=http://.../mcp asks a running api instead of stdio.
+    cmds:
+      - npx tsx src/mcp/client.ts {{.CLI_ARGS}}
 
   web:build:
     desc: Website of src/web with the viewer of src/gui, into dist/web.
@@ -26,10 +31,17 @@ tasks:
       - npm run web:dev
 
   desktop:
-    desc: Electron window around the viewer - builds the website, starts the api for itself.
+    desc: Electron window around the viewer - builds the website, starts the api for itself; p-jol-roll://act/DU/2026/1 after "--" opens an act.
     cmds:
       - task: web:build
-      - npm run desktop
+      - npm run desktop -- {{.CLI_ARGS}}
+
+  desktop:check:
+    desc: The desktop app started with every window hidden - it prints what the viewer shows and quits (no screen needed; the website built first).
+    env:
+      DESKTOP_CHECK: "1"
+    cmds:
+      - npm run desktop -- {{.CLI_ARGS}}
 
   app:sync:
     desc: Android app by Capacitor in src/app - first time "task app:sync -- add android", then plain; needs Android SDK. PUBLIC_API has to name a reachable host.
@@ -56,6 +68,8 @@ tasks:
     env:
       HOST: 127.0.0.1
       PORT: "8090"
+      # the same place workflows:web reads, wherever the task is started from
+      WORKFLOW_LOCAL_DATA_DIR: "{{.ROOT_DIR}}/.workflow-data"
     cmds:
       - node src/workflows/.output/server/index.mjs
 
@@ -75,6 +89,13 @@ tasks:
         echo
 
   workflows:web:
-    desc: Web interface of the Workflow SDK over runs kept in .workflow-data - steps, outputs, what waits.
+    desc: Web interface of the Workflow SDK - the workflows built (workflows:build first), and the runs of workflows:serve with their steps, outputs, what waits.
+    env:
+      # NOTE (src/workflows/nitro.config.ts): i tested it once but nothing was there. interface looks like workflows are missing
+      # ANSWER: it looks for the manifest of the workflows in .well-known/ of the folder it starts in;
+      # Nitro writes it into its build folder, so it is named here - and the runs, as the server keeps them
+      WORKFLOW_MANIFEST_PATH: "{{.ROOT_DIR}}/src/workflows/node_modules/.nitro/workflow/manifest.json"
+      WORKFLOW_LOCAL_DATA_DIR: "{{.ROOT_DIR}}/.workflow-data"
+      WORKFLOW_LOCAL_BASE_URL: http://127.0.0.1:8090
     cmds:
-      - npx workflow web
+      - npx workflow web {{.CLI_ARGS}}

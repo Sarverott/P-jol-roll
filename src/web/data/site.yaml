@@ -1,0 +1,34 @@
+# What the website says of itself (src/web/data/site.ts reads it): its head, the card of a
+# shared link, and what robots.txt, sitemap.xml and llms.txt tell machines. Addresses are
+# made from the host's own address in site.ts, as they differ per host.
+name: P_JOL_ROLL
+title: P_JOL_ROLL - Polish journals of laws
+description: >-
+  Every act of the Polish journals of laws since 1918, gathered in the open:
+  read it, follow its ties, search it.
+theme: "#1d2440"
+# the address when PUBLIC_SITE does not name the host: the demo space
+demo: https://sarverott-docs-of-law-by-gov-in-poland.hf.space
+card:
+  image: og.jpg
+  width: 1200
+  height: 630
+  alt: Journals of laws from 1924 to 2024 in a line, tied by red threads, and a woman reading
+# what crawlers leave alone: every answer of these reads files of the host
+private:
+  - /api/
+  - /mcp
+# llms.txt: the ways in for a language model, after the description
+ways:
+  - name: MCP server
+    path: /mcp
+    what: the tools journals, search_acts, act, act_text, act_references over streamable http
+  - name: http api
+    path: /openapi.json
+    what: the same reading as JSON, described as OpenAPI
+  - name: the dataset
+    url: https://huggingface.co/datasets/Sarverott/polish_national_law_docs
+    what: every table and text, to download
+  - name: the project
+    url: https://github.com/Sarverott/P-jol-roll
+    what: the code, the documentation, how to run it yourself

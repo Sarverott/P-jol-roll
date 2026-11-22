@@ -142,3 +142,34 @@ test("socket.io tells what is here and what changed", async () => {
 	expect((await changed).some((path) => path.includes("1919"))).toBe(true);
 	socket.close();
 }, 10000);
+
+test("the MCP server answers at /mcp of the api with the same reading", async () => {
+	const { connect } = await import("../src/mcp/client.js");
+	const client = await connect(`${url}/mcp`);
+	const { tools } = await client.listTools();
+	expect(tools.map((tool) => tool.name).sort()).toEqual(
+		["act", "act_references", "act_text", "journals", "search_acts"].sort(),
+	);
+	const text = (result: Awaited<ReturnType<typeof client.callTool>>) =>
+		(result.content as { text: string }[])[0].text;
+	const found = await client.callTool({
+		name: "search_acts",
+		arguments: { journal: "DU", year: 1918, query: "stanu" },
+	});
+	expect(
+		JSON.parse(text(found)).items.map((act: { ELI: string }) => act.ELI),
+	).toEqual(["DU/1918/2"]);
+	const read = await client.callTool({
+		name: "act_text",
+		arguments: { eli: "DU/1918/2" },
+	});
+	expect(text(read)).toMatch(
+		/^\[text layer of the PDF .*\n\n# Ustawa o Radzie Stanu/,
+	);
+	const missing = await client.callTool({
+		name: "act",
+		arguments: { eli: "DU/1918/9" },
+	});
+	expect(missing.isError).toBe(true);
+	await client.close();
+});

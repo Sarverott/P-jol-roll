@@ -1,0 +1,20 @@
+<script setup>
+// where the data comes from and where the project lives, under every screen
+</script>
+
+<template>
+	<footer class="footer py-4 has-text-centered is-size-7 has-text-grey">
+		<p class="i18n-texts-slot">
+			Acts from the ELI API of Sejm, gathered by
+			<a
+				href="https://github.com/Sarverott/P-jol-roll"
+				target="_blank"
+				rel="noopener"
+				translate="no"
+				>P_JOL_ROLL</a
+			>
+			- open source. Not legal advice: the journal published by the state is the
+			law.
+		</p>
+	</footer>
+</template>
