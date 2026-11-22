@@ -6,7 +6,7 @@ version: '3'
 
 tasks:
   land:
-    desc: 'Your dev/<name> merged into development (--no-ff), both pushed, dev/<name> brought up again: task flow:land -- "what the batch did"'
+    desc: 'Every check first (task check), then your dev/<name> merged into development (--no-ff), both pushed, dev/<name> brought up again: task flow:land -- "what the batch did"'
     cmds:
       - scripts/devops/local/land.sh {{.CLI_ARGS}}
 

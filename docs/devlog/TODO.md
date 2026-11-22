@@ -255,4 +255,4 @@ The owner's message, 2026-11-22 (changelog phase 23).
 The owner's message, 2026-11-22 (changelog phase 24).
 
 - [x] The almanac case of phase 23 named the same on its page and in its chain, so the checks of #39 pass
-- [ ] `task flow:land` runs every check on the commit that lands; the almanac case of checks run before the last change
+- [x] `task flow:land` runs every check on the commit that lands; the almanac case of checks run before the last change

@@ -236,7 +236,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` / `prune` | take what is missing here / send what is new here / delete there what is not here (asks; never the bucket) |
 | `task unittesting:parrot-os` / `parrot-os-drive` | Parrot OS headless server in a container: case `-gather-and-parse` / `-bare-repo-on-drive` (privileged; needs Docker) |
-| `task flow:land -- "..."` / `flow:sync` | your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
+| `task flow:land -- "..."` / `flow:sync` | every check (`task check`), then your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
 | `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
