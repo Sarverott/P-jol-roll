@@ -13,7 +13,7 @@ Each hook here is one line that runs the task of the same name in
 | `pre-commit` | Biome formats and fixes the staged files and stages them again (`scripts/devops/local/format-staged.sh`), then the commit's own version |
 | `commit-msg` | commitlint: a conventional commit |
 | `pre-merge-commit` | the same formatting on what a merge brings, before its commit |
-| `pre-push` | `biome check` of the whole tree: nothing unformatted leaves this machine |
+| `pre-push` | every check (`task check`: Biome, the build, the tests) on what is pushed (`scripts/devops/local/verify-push.sh`); a tree `task flow:land` already checked is not checked again, a branch not checked out is not pushed from here, workflows skip it (phase 25) |
 
 A file with edits that are not staged is only checked, never staged again,
 so nothing slips into a commit unasked. After a commit is made, formatting

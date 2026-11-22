@@ -57,7 +57,12 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    runs the gathering and the checkup; an agent verifies with tests and a
    local copy of the API, and does not run them against the real source
    unless asked. Hosts and interfaces (api, MCP, website, extension) only
-   read `resources/`; none of them may start gathering.
+   read `resources/`; none of them may start gathering - except a host on
+   this machine started with `--allow-writing` (the desktop app, `task
+   serve -- --allow-writing`), which starts the writing functions of the
+   catalog as jobs, each after a person's yes (Q19, changelog phase 25).
+   A public host (the space, the container, the website) never does. An
+   agent does not start a job against the real source unless asked.
 5. **Nothing is sent to huggingface by an agent.** `resources/dataset`,
    `resources/space` and `resources/bucket` are filled locally; pushing and
    syncing them is Sett's move.
@@ -132,14 +137,15 @@ src/core/              the gatherer itself; everything below is its tree
   logging/             setup.ts: the one logger of every command (text or JSON lines, a file per run in logs/, syslog when asked) - import it first, then logRun(<command>)
   search/              typesense.ts: every act into Typesense (task search:index) and /api/search over every year
   catalog/             every function of the project once (procedures.ts), for every way it runs: the launcher, the REPL,
-                       task do, /api/catalog, the viewer; run.ts words into values and task arguments, map.ts the map of functions
+                       task do, /api/catalog, the viewer; run.ts words into values and task arguments, map.ts the map of functions,
+                       jobs.ts the writing ones run as jobs by a host on this machine (--allow-writing, Q19)
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
     dataset.ts         the rest of the dataset: work of Sejm, judgments, lists of the source, acts counted (task stats)
     diagram.ts         the ties of an act as one mermaid flowchart, for every interface
     embeddings.ts      the vectors of task embed, and a question as a vector of the same model (Ollama)
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
-src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
+src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too; writing.ts /api/jobs, only with --allow-writing on this machine
 src/mcp/               MCP server for AI agents, read-only: server.ts and tools/ (a folder per tool); main.ts over stdio, /mcp of the api over http; client.ts
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
@@ -240,14 +246,14 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
-| `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it) |
+| `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it); `task serve -- --allow-writing`: the viewer starts writing functions too, each after a yes (this machine only) |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
 | `task examples:build` / `examples:edit` | the Python examples run and exported into `site/examples/` / opened in marimo |
 | `task docs:build` / `docs:serve` | the website of the project into `site/` / live preview |
 | `task devlog:state` / `devlog:scrapnote` | where the project stands (the `bos` command) / a new scrapnote |
 | `task web:build` / `task desktop` | website into `dist/web` / Electron window around it |
-| `task check` (or `task verify`) | Biome, build (TypeScript and website), tests — the same in CI; run before a commit is reported done |
+| `task check` (or `task verify`) | Biome, build (TypeScript and website), tests — the same in CI; run before a commit is reported done, and by the pre-push hook |
 
 ## Conventions
 

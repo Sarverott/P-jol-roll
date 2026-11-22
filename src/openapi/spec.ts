@@ -51,7 +51,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.21.0",
+		version: "0.22.0",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
@@ -170,6 +170,48 @@ export const spec = {
 				summary:
 					"every function of the project (src/core/catalog): name, group, title, parameters, whether it writes, its task, where each interface offers it, and whether this host may start it",
 				responses: { 200: { description: "the functions" } },
+			},
+		},
+		"/api/jobs": {
+			get: {
+				summary:
+					"the writing functions started here (only when the api runs with --allow-writing on this machine - Q19; absent elsewhere), from this api's own pages only",
+				responses: {
+					200: { description: "jobs: id, name, task, args, state, times" },
+					403: { description: "not on this machine, or from another origin" },
+				},
+			},
+			post: {
+				summary:
+					'start a writing function as a job: { "name": "stats", "words": ["2026"], "yes": true } - words as for "task do", yes after a person agreed; one job at a time',
+				requestBody: {
+					required: true,
+					content: { "application/json": { schema: { type: "object" } } },
+				},
+				responses: {
+					202: { description: "the job, running" },
+					400: { description: "no yes, or words the function does not take" },
+					404: { description: "no such writing function" },
+					409: { description: "another job runs" },
+					415: { description: "not JSON" },
+				},
+			},
+		},
+		"/api/jobs/{id}": {
+			get: {
+				summary: "one job with the newest lines of its output",
+				parameters: [
+					{
+						name: "id",
+						in: "path",
+						required: true,
+						schema: { type: "integer" },
+					},
+				],
+				responses: {
+					200: { description: "the job and its lines" },
+					404: { description: "no such job" },
+				},
 			},
 		},
 		"/api/statistics": {

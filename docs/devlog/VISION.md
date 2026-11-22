@@ -16,7 +16,8 @@ in the country, as open source.
 
 - **Polite to the source.** Own User-Agent, two requests at a time, a pace
   per minute, nothing asked twice. A person starts every gathering; hosts and
-  interfaces only read what is here.
+  interfaces only read what is here, except a host on this machine started
+  with `--allow-writing`, where a person's yes starts a job (Q19).
 - **Every file can be checked.** A gathered file gets a checksum record the
   moment it lands; markdown keeps the checksums of both itself and its HTML.
   Anyone can go back to the source and compare.

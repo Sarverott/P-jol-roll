@@ -256,3 +256,11 @@ The owner's message, 2026-11-22 (changelog phase 24).
 
 - [x] The almanac case of phase 23 named the same on its page and in its chain, so the checks of #39 pass
 - [x] `task flow:land` runs every check on the commit that lands; the almanac case of checks run before the last change
+
+## Phase 25: checks before a push, writing functions behind a switch
+
+The owner's message and the answer to Q19, 2026-11-22 (changelog phase 25).
+
+- [x] The pre-push hook runs every check (`task check`) on what is pushed; a tree `task flow:land` checked is not checked twice
+- [x] Q19: the writing functions started by a host on this machine when it runs with `--allow-writing`; disabled everywhere else; rule 4 says so
+- [x] `task flow:land` refuses a summary too long for the merge message before it runs the checks, not after

@@ -19,9 +19,10 @@ tasks:
       - scripts/devops/local/format-staged.sh
 
   pre-push:
-    desc: Biome checks the whole tree - nothing unformatted is pushed (task format fixes it).
+    desc: Every check (task check - Biome, the build, the tests) on what is pushed; a tree already checked (by task flow:land) is not checked again; skipped in workflows.
     cmds:
-      - npx biome check
+      # git's lines (ref, sha, remote ref, sha) reach the script through stdin
+      - scripts/devops/local/verify-push.sh
 
   bump-commit:
     desc: 'On a dev/* branch every commit has its own version: the patch bumped, every copy synced and staged (.github/bos.json versioning.commits)'

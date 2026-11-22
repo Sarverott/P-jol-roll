@@ -6,3 +6,7 @@ on `PP<n>` of [PROPOSALS.md](PROPOSALS.md), each under `### Q<n>` or
 changelog and leave this file with its header only.
 
 ---
+
+### Q19
+
+sounds cool to me, add it with that command switch flag argument.

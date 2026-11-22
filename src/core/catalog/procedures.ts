@@ -10,7 +10,7 @@ them at /api/catalog and the viewer shows them; docs/guides/functions.md is the 
 from here (task functions:map), so a hole shows itself.
 
 A reading function answers here through src/core/reading/, the same code as the api and MCP.
-A writing function is always its task, so a terminal, a workflow and a host (after Q19) start
+A writing function is always its task, so a terminal, a workflow and a local host (Q19, jobs.ts) start
 the same code. Data and addresses stay in their handlers; this file only names and asks.
 */
 
