@@ -320,6 +320,16 @@
 			"page": "cataclistics/container-bundler-imports.md"
 		},
 		{
+			"id": "checked-before-last-change",
+			"events": ["check:pass", "commit:after-check", "flow:land", "ci:fail"],
+			"cataclysm": "ci:fail",
+			"solution": "`task flow:land` runs `task check` itself on exactly the commit that lands, and lands nothing when it fails (`scripts/devops/local/land.sh`); the check is part of landing, not something remembered before it.",
+			"seen": ["2026-11-22: phase 23, pull request #39"],
+			"title": "A batch landed after its checks ran, before its last change",
+			"topic": "repository",
+			"page": "cataclistics/checked-before-last-change.md"
+		},
+		{
 			"id": "workflow-web-manifest",
 			"events": ["workflows:build", "workflows:web", "web:no-workflows"],
 			"cataclysm": "web:no-workflows",

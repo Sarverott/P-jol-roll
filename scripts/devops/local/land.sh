@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Lands the contributor's branch the BOS way: dev/<name> merged into development with
 # --no-ff, both pushed to origin, and dev/<name> brought up to development again.
-# Run on your dev/<name> with a clean working tree.
+# Run on your dev/<name> with a clean working tree. Every check runs first (task check: Biome,
+# the build, the tests) on exactly what is landed, so nothing checked before its last change
+# reaches development (almanac: checked-before-last-change).
 # Usage: land.sh "<what the batch did>"   (task flow:land -- "...")
 # shellcheck source=../_common.sh
 source "$(dirname "$0")/../_common.sh"
@@ -15,6 +17,11 @@ if [ -n "$(git status --porcelain)" ]; then
   echo "the working tree has changes; commit them first" >&2
   exit 1
 fi
+
+# the checks of CI, here and now, on the commit that lands
+task_bin=node_modules/.bin/task
+[ -x "$task_bin" ] || task_bin=task
+"$task_bin" check || { echo "task check failed - nothing landed" >&2; exit 1; }
 
 merge_driver
 git fetch -q origin

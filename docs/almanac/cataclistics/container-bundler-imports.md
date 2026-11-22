@@ -5,7 +5,7 @@ status: solved
 issue:
 ---
 
-# The release image does not build: the viewer imported a file outside `src/` by `?raw`
+# The release image does not build: the viewer imported a file outside src/ by ?raw
 
 **Status:** solved · **Topic:** [containers](../solutions/containers.md) ·
 **Chain:** `release:container → astro:build → vite:unresolved-import`
