@@ -12,7 +12,9 @@
 import Sigma from "sigma";
 import { onMounted, onUnmounted, ref, watch } from "vue";
 import { kindsOf, lawGraph } from "../../assets/graph.js";
+import { settings } from "../../assets/settings.js";
 import { ColorPick } from "../../assets/setup.js";
+import MapControls from "./MapControls.vue";
 import MapLegend from "./MapLegend.vue";
 import MapPresets from "./MapPresets.vue";
 
@@ -24,6 +26,10 @@ const box = ref(null);
 const state = ref("");
 const kinds = ref([]);
 const hovered = ref("");
+// [eli, label] of every act, for the search of the controls
+const acts = ref([]);
+// what the search of the controls says when an act is not on this map
+const notice = ref("");
 let renderer;
 let graph;
 // the act under the pointer and its neighbours
@@ -45,11 +51,40 @@ function clickNodeAction({ node }) {
 	emit("open", { ELI: node });
 }
 
+// the controls: the camera zooms, shows the whole map again, or goes to an act and lights it
+const ZOOM = { duration: 300 };
+const zoomInAction = () => renderer?.getCamera().animatedZoom(ZOOM);
+const zoomOutAction = () => renderer?.getCamera().animatedUnzoom(ZOOM);
+const fitAction = () => renderer?.getCamera().animatedReset(ZOOM);
+function findAction(eli) {
+	notice.value = "";
+	if (!renderer) return;
+	if (!graph.hasNode(eli)) {
+		notice.value = `${eli} is not on this map`;
+		return;
+	}
+	const place = renderer.getNodeDisplayData(eli);
+	if (place)
+		renderer
+			.getCamera()
+			.animate({ x: place.x, y: place.y, ratio: 0.15 }, { duration: 600 });
+	enterNodeAction({ node: eli });
+}
+
 // acts away from the one under the pointer fade, and lose their labels
+// the act under the pointer (or found) is drawn bigger, with its label
 function nodeReducer(node, data) {
-	return hovered.value && !near.has(node)
-		? { ...data, color: ColorPick.named("dimmed"), label: "" }
-		: data;
+	if (!hovered.value) return data;
+	if (node === hovered.value)
+		return {
+			...data,
+			highlighted: true,
+			forceLabel: true,
+			size: Math.max(data.size, 8),
+		};
+	return near.has(node)
+		? data
+		: { ...data, color: ColorPick.named("dimmed"), label: "" };
 }
 
 // only the ties of the act under the pointer, lit
@@ -75,6 +110,7 @@ async function load() {
 	const made = await response.json();
 	graph = lawGraph(made);
 	kinds.value = kindsOf(made);
+	acts.value = made.nodes.map(([eli, title]) => [eli, `${eli} ${title}`]);
 	state.value = `${made.nodes.length} acts, ${made.edges.length} ties - ${made.description}; made ${made.made.slice(0, 10)}`;
 	near = new Set();
 	renderer = new Sigma(graph, box.value, {
@@ -94,21 +130,40 @@ async function load() {
 onMounted(async () => {
 	const answer = await fetch(`${props.api}/api/map`).catch(() => undefined);
 	presets.value = answer?.ok ? await answer.json() : [];
+	// the preset chosen in the settings when it is made here, else the first one made
+	const made = presets.value.filter((one) => one.made);
 	preset.value =
-		presets.value.find((one) => one.made)?.name ?? presets.value[0]?.name ?? "";
+		made.find((one) => one.name === settings.mapPreset)?.name ??
+		made[0]?.name ??
+		presets.value[0]?.name ??
+		"";
 });
 watch(preset, load, { flush: "post" });
+watch(preset, (name) => {
+	settings.mapPreset = name;
+});
 onUnmounted(() => renderer?.kill());
 </script>
 
 <template>
 	<section class="law-map">
 		<MapPresets v-model="preset" :presets="presets" :state="state" />
+		<MapControls
+			:acts="acts"
+			@zoom-in="zoomInAction"
+			@zoom-out="zoomOutAction"
+			@fit="fitAction"
+			@find="findAction"
+		/>
+		<p v-if="notice" class="help is-warning" translate="no">
+			{{ notice }}
+		</p>
 		<MapLegend :kinds="kinds" />
 		<div ref="box" class="plane box p-0"></div>
 		<p class="is-size-7 has-text-grey i18n-texts-slot">
-			Hover an act to see its ties, click it to open it. Acts that tie to many
-			others are bigger.
+			Hover an act to see its ties, click it to open it, scroll or the buttons
+			to zoom, find one by its ELI or title. Acts that tie to many others are
+			bigger.
 		</p>
 	</section>
 </template>

@@ -234,7 +234,7 @@ The owner's inquiries and orders, 2026-11-22 (changelog phase 22).
 - [x] One catalog of functions in core, which every interface offers: the launcher, the REPL, the commands, the api; the map of functions written from it
 - [x] The launcher easier to use: by what a person wants to do, parameters asked one by one, help that explains
 - [x] The viewer: credits behind "Terms of use" - the authors, the licence, the links of the project
-- [ ] The viewer: the map zooms in and out, fits, and finds an act
+- [x] The viewer: the map zooms in and out, fits, and finds an act
 - [ ] The viewer: more of the dataset in tabs - the work of Sejm and the lists of the source
 - [ ] The viewer: plots, and statistics with a playable history of the law (a histogram with a slider, play and pause, speed)
 - [ ] The viewer: settings, and every function of the catalog - disabled where the host may not (Q19)
