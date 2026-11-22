@@ -98,3 +98,41 @@ footer {
 	color: var(--muted);
 	font-size: 0.9rem;
 }
+.sources {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.95rem;
+}
+.sources th {
+	text-align: left;
+	color: var(--muted);
+	font-weight: normal;
+	border-bottom: 1px solid var(--line);
+}
+.sources td {
+	vertical-align: top;
+	padding: 0.45rem 0.6rem 0.45rem 0;
+	border-bottom: 1px dotted var(--line);
+}
+.sources span {
+	color: var(--muted);
+}
+code,
+pre {
+	font-family: ui-monospace, monospace;
+	font-size: 0.85rem;
+}
+pre {
+	overflow-x: auto;
+	padding: 0.8rem 1rem;
+	border: 1px solid var(--line);
+	white-space: pre;
+}
+@media (max-width: 40rem) {
+	.sources td:nth-child(2) {
+		display: none;
+	}
+	.sources th:nth-child(2) {
+		display: none;
+	}
+}
