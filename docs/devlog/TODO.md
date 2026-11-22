@@ -176,5 +176,5 @@ Q15, answered 2026-11-22 (changelog phase 12).
 
 Q15, answered 2026-11-22: after phase 12, a small local multilingual model.
 
-- [ ] Vectors of the texts by a small local multilingual model, kept in the dataset beside the texts
+- [x] Vectors of the texts by a small local multilingual model, kept in the dataset beside the texts (`task embed`, Ollama, bge-m3)
 - [ ] Search by meaning through them (Typesense takes vectors) and acts placed by meaning on the map

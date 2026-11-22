@@ -193,6 +193,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task seal` / `task seal -- --check` | write checksums of files without a record / compare files with records |
 | `task map` / `task map -- statutes` | the map of the whole law, every preset or one, into `dataset/map/` (the viewer draws it with sigma.js) |
 | `task search:index` (`-- --texts`) | every act into Typesense, started by `docker compose --profile search up -d typesense`; the api and the viewer search every year |
+| `task embed` (`-- 2026`) | vectors of the texts by a local multilingual model of Ollama into `dataset/embeddings/` |
 | `task compile` / `task text` | tables from raw files / markdown from html (`-- --pdf`: from PDFs too) |
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |

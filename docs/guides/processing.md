@@ -189,3 +189,23 @@ viewer shows a box "every year" when the search answers. Without Typesense,
 `/api/search` answers 503 and says how to start it, and nothing else
 changes. All 165 thousand acts take 10 seconds; with texts 20 seconds and
 about 450 MB of memory in the service.
+
+## Vectors of texts: `embed`
+
+```sh
+ollama serve &              # or: docker compose --profile llms up -d llms-ollama
+ollama pull bge-m3          # once, about 1.2 GB
+task embed                  # every text; task embed -- 2026 for one year
+```
+
+Every act with markdown gets one vector: its title and the first 2000
+characters of its text, given to a local multilingual model through Ollama
+(`EMBED_MODEL`, bge-m3 by default: 1024 numbers, Polish among its
+languages). They go beside the texts, in
+`dataset/embeddings/<model>/<journal>/<year>.parquet` (`ELI`, `sha256_md`,
+`vector`), and `model.json` says how they were made. An act whose markdown
+did not change keeps its vector, so a run is repeated to take what is new.
+
+DU 2020 (2453 acts) took 1 minute 46 seconds on a GeForce RTX 3060 and
+10 MB. All of the law would take about two hours and 670 MB.
+
