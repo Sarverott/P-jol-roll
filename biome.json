@@ -7,7 +7,14 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["**", "!!**/dist", "!.obsidian", "!src/tui"]
+		"includes": [
+			"**",
+			"!!**/dist",
+			"!.obsidian",
+			"!src/tui/index.tsx",
+			"!src/tui/main.js",
+			"!src/tui/termui.config.*"
+		]
 	},
 	"formatter": {
 		"enabled": true,
