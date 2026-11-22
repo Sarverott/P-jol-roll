@@ -7,6 +7,7 @@ import state from "./state.json";
 
 const HF = "https://huggingface.co";
 const LINKS = [
+	// NOTE: load it from links.yaml
 	["Documentation", "./docs/", "guides, glossary, the plan - on this website"],
 	[
 		"Examples",
@@ -43,6 +44,7 @@ const LINKS = [
 
 // what is gathered, from where, and where it is kept
 const SOURCES = [
+	// NOTE: load it from sources.yaml
 	[
 		"Dziennik Ustaw",
 		"since 1918",
@@ -75,6 +77,7 @@ const SOURCES = [
 
 // the ways in, from the lightest
 const WAYS = [
+	// NOTE: load it from ways.yaml
 	[
 		"Browse",
 		`${HF}/spaces/Sarverott/docs-of-law-by-gov-in-poland`,
@@ -257,3 +260,5 @@ npx task          # a menu of every way to run it`}</code>
 		</main>
 	);
 }
+
+// NOTE: split that code into components!
