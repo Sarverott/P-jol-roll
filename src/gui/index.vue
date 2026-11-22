@@ -5,6 +5,7 @@ import "bulma/css/bulma.min.css";
 import { marked } from "marked";
 import { io } from "socket.io-client";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import LawMap from "./components/LawMap.vue";
 import TiesDiagram from "./components/TiesDiagram.vue";
 import TiesMinimap from "./components/TiesMinimap.vue";
 
@@ -21,6 +22,8 @@ const chosen = ref(null);
 const text = ref("");
 const ties = ref([]);
 const diagram = ref("");
+// what is shown: the acts of a year, or the map of the whole law
+const view = ref("acts");
 const notice = ref("");
 const failure = ref("");
 
@@ -55,6 +58,7 @@ async function loadActs(offset = 0) {
 }
 
 async function open(act) {
+	view.value = "acts";
 	chosen.value = (await ask(`/api/acts/${act.ELI}`)) ?? { act, files: [] };
 	ties.value = (await ask(`/api/acts/${act.ELI}/references`)) ?? [];
 	diagram.value = ties.value.length
@@ -102,7 +106,16 @@ onUnmounted(() => socket?.close());
 			<div v-if="notice" class="notification is-success is-light py-2">{{ notice }}</div>
 			<div v-if="failure" class="notification is-danger is-light py-2">{{ failure }}</div>
 
-			<form class="field is-grouped is-grouped-multiline" @submit.prevent="loadActs()">
+			<div class="tabs">
+				<ul>
+					<li :class="{ 'is-active': view === 'acts' }"><a href="#" @click.prevent="view = 'acts'">acts</a></li>
+					<li :class="{ 'is-active': view === 'map' }"><a href="#" @click.prevent="view = 'map'">map of the whole law</a></li>
+				</ul>
+			</div>
+
+			<LawMap v-if="view === 'map'" :api="api" @open="open" />
+
+			<form v-show="view === 'acts'" class="field is-grouped is-grouped-multiline" @submit.prevent="loadActs()">
 				<div class="control">
 					<div class="select">
 						<select v-model="journal" aria-label="journal">
@@ -127,7 +140,7 @@ onUnmounted(() => socket?.close());
 				</div>
 			</form>
 
-			<div class="columns">
+			<div v-show="view === 'acts'" class="columns">
 				<section class="column is-two-fifths-desktop list">
 					<p class="has-text-grey mb-2">{{ page.total }} acts</p>
 					<div class="list-items">
@@ -187,7 +200,7 @@ onUnmounted(() => socket?.close());
 				</article>
 				<div v-else class="column has-text-grey">Choose an act on the left.</div>
 			</div>
-			<TiesMinimap :eli="chosen?.act.ELI ?? ''" :ties="ties" @open="open" />
+			<TiesMinimap v-if="view === 'acts'" :eli="chosen?.act.ELI ?? ''" :ties="ties" @open="open" />
 		</div>
 	</main>
 </template>

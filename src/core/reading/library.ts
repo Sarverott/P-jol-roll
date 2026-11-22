@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { edgesOf } from "../methods/compile.js";
+import { mapPath, PRESETS } from "../methods/presets.js";
 import { markdownPath, textsTablePath } from "../parsing/text.js";
 import * as store from "../resources/store.js";
 import type { GatheringScope, ReadingScope } from "../vars/interfaces/index.js";
@@ -227,4 +228,26 @@ export function diagram(eli: string) {
 			titles.set(to, title.length > 60 ? `${title.slice(0, 57)}...` : title);
 	}
 	return tiesDiagram(found.ELI, ties, { titles });
+}
+
+// the map of the whole law: presets, and one made by "task map" (or nothing when not made)
+export const mapPresets = () =>
+	Object.entries(PRESETS).map(([name, { description }]) => ({
+		name,
+		description,
+		made: existsSync(mapPath(name)),
+	}));
+
+export function lawMap(preset: string): string | undefined {
+	if (!Object.hasOwn(PRESETS, preset)) return undefined;
+	const path = mapPath(preset);
+	return existsSync(path) ? readFileSync(path, "utf8") : undefined;
+}
+
+// remote mode: a preset's map taken from the dataset before it is read
+export async function prepareMap(preset?: string) {
+	if (!remote.remote) return;
+	for (const name of preset ? [preset] : Object.keys(PRESETS))
+		if (Object.hasOwn(PRESETS, name))
+			await remote.fromDataset(`map/${name}.json`);
 }

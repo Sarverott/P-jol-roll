@@ -149,5 +149,5 @@ Asked in the chat on 2026-11-22 (changelog phase 12). Embeddings wait for Q15.
 - [x] Bulma for the layout of the viewer
 - [x] A minimap of an act's ties in a corner (Cytoscape.js)
 - [x] Relations of an act drawn the same way everywhere (mermaid.js)
-- [ ] A map of the whole law of Poland from the dataset, with presets (sigma.js)
+- [x] A map of the whole law of Poland from the dataset, with presets (sigma.js)
 - [ ] Search with Typesense: a service of its own, filled from the dataset, read by the api

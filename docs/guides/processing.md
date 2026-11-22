@@ -148,3 +148,26 @@ Readers say which texts these are: an act in the api has `text.from`
 `/api/acts/<journal>/<year>/<pos>/text` carries the header `X-Text-From`,
 the MCP tool `act_text` opens such a text with a line naming its PDF, and
 the viewer puts a note above it.
+
+## The map of the whole law: `map`
+
+```sh
+task map                        # every preset into dataset/map/
+task map -- statutes-in-force   # one
+```
+
+All 165 thousand acts with 750 thousand ties are too many for a page, so a
+preset takes a part of them, with the ties among its acts from
+`dataset/references/`:
+
+| Preset | Acts | Ties (2026-11-22) |
+| --- | --- | --- |
+| `statutes-in-force` | statutes (ustawy) in force | 2,848 / 2,234 |
+| `statutes` | every statute since 1918 | 9,985 / 71,489 |
+| `in-force` | every act in force | 20,484 / 11,953 |
+
+ForceAtlas2 places them once, here (about a minute for all three), so a
+browser only draws: the tab "map of the whole law" of the viewer shows them
+with sigma.js, `/api/map/<preset>` gives them. Run `task compile` first, so
+the ties are fresh. The files go to Hugging Face with the dataset, so the
+demo can show them.
