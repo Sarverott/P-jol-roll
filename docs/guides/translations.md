@@ -99,5 +99,41 @@ task i18n:translate -- PL-PL --again                # one pack anew (not its rev
 The viewer and the introduction take the pack of `?lang=PL-PL`, else the
 last choice, else the browser's languages, else English. They load only
 that pack and lay it over the page before it shows, and a switch in the
-header changes it without a reload. The documentation, the launcher and the
-CLI manuals come next (phase 16).
+header changes it without a reload.
+
+The documentation is translated when the website is built
+(`scripts/devops/pages/build.sh` runs `src/devtools/docs-i18n.ts`): the
+built MkDocs site is copied into `site/docs/pl-pl/`, `uk-ua/` and `de-de/`,
+and each pack is laid over the guides, the glossary and the home page by
+the same `apply()` the browser uses. The changelog and the devlog stay in
+English in every copy, because they keep the owner's words word for word.
+Every page gets a list of languages in its header, pointing at the same
+page in each copy. Read the Docs builds only the English.
+
+Identifiers are never translated: a text that is one path or name
+(`datasets/Sarverott/polish_national_law_docs`) gets no hook, and one inside
+a sentence (`resources/.map.json`, `SHA-256`, `v0.11.0`) stands in as a
+number while the model works, like the names of `keep`.
+
+## The terminal
+
+The launcher (bare `task`), its REPL and the lists of tasks speak the
+language of the terminal: `P_JOL_ROLL_LANG=PL-PL task`, else `LANG`
+(`pl_PL.UTF-8` gives PL-PL), else English. The descriptions of the tasks
+are the manual of the CLI, so they are translated too.
+
+In code a text is written once, in English, through `tr()`
+(`src/i18n/terminal.ts`):
+
+```ts
+tr("task {name} ended with {code}", { name, code })
+```
+
+The English is the hook, as on pages. Named places in braces are filled
+after the pack is laid over, so a translation puts them where its language
+wants them. While the model works they stand in as numbers, like quoted
+commands (`"list"`, `"gather -- 2026"`), so neither is translated.
+`task i18n:collect` finds every `tr("...")` of `src/` and the description
+of every task by itself. Tests run in English whatever `LANG` the machine
+has (`vitest.config.ts`).
+

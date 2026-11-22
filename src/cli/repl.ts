@@ -4,6 +4,7 @@
 //   p-jol-roll> help | menu | exit
 import { createInterface } from "node:readline/promises";
 import type { LaunchingScope } from "../core/vars/interfaces/index.js";
+import { tr } from "../i18n/terminal.js";
 import { groups, runTask, words } from "./tasks.js";
 
 const BUILTIN = ["help", "list", "menu", "exit"];
@@ -14,7 +15,7 @@ export function listing(tasks: LaunchingScope.TaskEntry[], group?: string) {
 		if (group && name !== group) continue;
 		lines.push(`\n${name}`);
 		for (const task of tasks.filter((t) => t.group === name))
-			lines.push(`  ${task.name.padEnd(26)} ${task.desc}`);
+			lines.push(`  ${task.name.padEnd(26)} ${tr(task.desc)}`);
 	}
 	return lines.join("\n");
 }
@@ -31,8 +32,7 @@ export function interpret(
 	if (first === "menu") return { leave: true, menu: true };
 	if (first === "help") {
 		console.log(
-			'Every task is a command: "gather -- 2026 --limit 5" runs task gather -- 2026 --limit 5.\n' +
-				'"list" names them all, "list docs" those of one Taskfile; Tab completes; "menu" goes back to the menu, "exit" leaves.',
+			`${tr('Every task is a command: "gather -- 2026 --limit 5" runs task gather -- 2026 --limit 5.')}\n${tr('"list" names them all, "list docs" those of one Taskfile; Tab completes; "menu" goes back to the menu, "exit" leaves.')}`,
 		);
 		return { leave: false };
 	}
@@ -41,12 +41,13 @@ export function interpret(
 		return { leave: false };
 	}
 	if (!tasks.some((task) => task.name === first)) {
-		console.log(`no task "${first}" - "list" names them`);
+		console.log(tr('no task "{name}" - "list" names them', { name: first }));
 		return { leave: false };
 	}
 	const args = rest[0] === "--" ? rest.slice(1) : rest;
 	const code = run(first, args);
-	if (code) console.log(`task ${first} ended with ${code}`);
+	if (code)
+		console.log(tr("task {name} ended with {code}", { name: first, code }));
 	return { leave: false };
 }
 
@@ -66,7 +67,7 @@ export async function repl(
 	// Ctrl+C at the prompt goes back to the menu
 	const stop = new AbortController();
 	rl.on("SIGINT", () => stop.abort());
-	console.log('P_JOL_ROLL - every task is a command; "help", Tab, "exit"');
+	console.log(tr('P_JOL_ROLL - every task is a command; "help", Tab, "exit"'));
 	try {
 		for (;;) {
 			const line = await rl

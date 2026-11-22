@@ -169,7 +169,8 @@ Q15, answered 2026-11-22 (changelog phase 12).
 - [x] `resources/locales/`: language packs as JSON (`EN-US.json` and the rest), listed in `.index.json` with EN-US the default
 - [x] Python scripts with argostranslate that make the packs from the English texts (`task i18n:collect`, `task i18n:translate`; PL-PL, UK-UA, DE-DE)
 - [x] The packs used by the viewer (GUI) and the introduction, with a switch of language
-- [ ] The packs used by the documentation (translated at build into `/<language>/`), the launcher (TUI) and the manuals of the CLI
+- [x] The documentation translated when the website is built, into `/docs/<language>/`, with a list of languages in every page (guides, glossary, home; the owner's words stay as written)
+- [x] The launcher (TUI) and the manuals of the CLI in the language of the terminal (`P_JOL_ROLL_LANG`, else `LANG`): `tr()`, task descriptions included
 
 ## Phase 17: embeddings
 

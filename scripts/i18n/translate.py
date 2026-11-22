@@ -77,7 +77,11 @@ def kept(translate, keep: list[str]):
 
     def run(text: str) -> str:
         used: list[tuple[str, str]] = []
-        for name in names:
+        # identifiers in a sentence too: paths, addresses, names_with_underscores, SHA-256
+        found = re.findall(r"(?<!\S)[\w./:@-]*(?:[/_.:@]\w|\w-\d)[\w./:@-]*", text)
+        # places a terminal fills ({name}), and what is quoted: commands, words to type
+        found += re.findall(r"\{[a-z]\w*\}|\"[^\"]+\"|`[^`]+`", text)
+        for name in [*names, *sorted(set(found), key=len, reverse=True)]:
             pattern = rf"(?<![\w-]){re.escape(name)}(?![\w-])"
             if re.search(pattern, text):
                 stand_in = str(NAMES_FROM + len(used))

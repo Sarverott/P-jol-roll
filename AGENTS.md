@@ -136,7 +136,7 @@ src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
 src/tui/               the launcher (launcher/: main.ts the menu bare `task` opens, select.ts); Sett's TermUI experiment (index.tsx, main.js, termui.config.*) out of the checks
 src/cli/               commands of the launcher: tasks.ts (every task of every Taskfile, grouped, run inside `script` so the output lands in the launcher's log and Ctrl+C stops the task alone), repl.ts (tasks as commands)
-src/i18n/              translations by hooks: sha256.ts, hooks.ts (hookOf, translate, t for terminals), dom.ts (collect, apply, follow), browser.ts (the chosen pack on a page) - docs/guides/translations.md
+src/i18n/              translations by hooks: sha256.ts, hooks.ts (hookOf, translate, t for terminals), dom.ts (collect, apply, follow), browser.ts (the chosen pack on a page), terminal.ts (tr() for the launcher and the CLI) - docs/guides/translations.md
 src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init), merge.ts (task resources:merge)
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
