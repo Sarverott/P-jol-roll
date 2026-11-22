@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "P_JOL_ROLL",
-	"version": "0.20.0",
+	"version": "0.20.1",
 	"description": "Looks up an act of Polish journals of laws in a P_JOL_ROLL host: status, ties, text.",
 	"icons": {
 		"48": "icons/icon-48.png",
