@@ -8,7 +8,7 @@ export const GET = () =>
 			"",
 			`> ${site.description}`,
 			"",
-			"Read-only: nothing here asks the source or gathers. Not legal advice - the journal published by the state is the law.",
+			"Read-only: nothing here asks the source or gathers. Not (formally) legal advices - the journal published by the state is the law.",
 			"",
 			"## Ways in",
 			"",

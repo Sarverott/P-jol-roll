@@ -40,6 +40,8 @@ export function createLibrary(api) {
 		filter: { type: "", status: "" },
 		notice: "",
 		failure: "",
+		// the acts counted year by year (/api/statistics), for the plots and the history
+		statistics: null,
 	});
 
 	const years = computed(
@@ -103,6 +105,13 @@ export function createLibrary(api) {
 		state.text = markdown ? marked.parse(markdown.replace(/</g, "&lt;")) : "";
 	}
 
+	// counted once per viewer; the plots and the history share it
+	async function loadStatistics() {
+		if (!state.statistics)
+			state.statistics = (await ask("/api/statistics")) ?? null;
+		return state.statistics;
+	}
+
 	// what the host offers besides the acts of a year
 	async function probe() {
 		const tried = await fetch(`${api}/api/search?q=*&limit=1`).catch(
@@ -152,6 +161,7 @@ export function createLibrary(api) {
 		ask,
 		loadJournals,
 		loadActs,
+		loadStatistics,
 		open,
 		probe,
 		follow,

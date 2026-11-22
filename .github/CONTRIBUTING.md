@@ -89,7 +89,7 @@ merged:
 - Acts are official publications. Some of them, mostly in Monitor Polski,
   name private persons. Do not build features that collect or profile
   persons named in acts.
-- Nothing in this project is legal advice. See
+- Nothing in this project is (formally) legal advices. See
   [what the data is and is not](../docs/guides/data.md#what-it-is-not).
 
 Security problems go privately to the maintainer, as written in

@@ -13,6 +13,7 @@ import { extname, join, sep } from "node:path";
 import { parseHTML } from "linkedom";
 import { chromium, type Page } from "playwright";
 import { readTasks } from "../cli/tasks.js";
+import { GROUPS, PROCEDURES } from "../core/catalog/procedures.js";
 import { collect, SLOT } from "../i18n/dom.js";
 import { hookOf, templateOf, translatable } from "../i18n/hooks.js";
 import { DOCS_TRANSLATED, languages } from "../i18n/node.js";
@@ -148,6 +149,26 @@ if (await first.count()) {
 await page.getByText("map of the whole law").click();
 await settle(page);
 take(await english(page));
+// the screens of phase 22: the rest of the dataset (each of its parts), plots, statistics with
+// the history, settings with every function; and the dialog of the terms of use
+for (const screen of ["data", "plots", "statistics", "settings"]) {
+	await page.evaluate((hash) => {
+		location.hash = hash;
+	}, `#${screen}`);
+	await settle(page);
+	take(await english(page));
+}
+await page.evaluate(() => {
+	location.hash = "#data";
+});
+for (const part of ["court judgments", "lists of the source"]) {
+	await page.getByText(part, { exact: true }).click();
+	await settle(page);
+	take(await english(page));
+}
+await page.getByRole("button", { name: "Terms of use" }).click();
+await settle(page);
+take(await english(page));
 server.close();
 await browser.close();
 
@@ -169,6 +190,12 @@ console.log(`the documentation: ${pages} pages read`);
 const said = (text: string) => {
 	if (translatable(text)) texts[hookOf(text)] = templateOf(text).template;
 };
+// the catalog of functions: what the launcher asks and says of each (src/core/catalog)
+for (const title of Object.values(GROUPS)) said(title);
+for (const one of PROCEDURES) {
+	said(one.title);
+	for (const param of one.params) said(param.title);
+}
 let words = 0;
 for (const path of globSync("src/**/*.ts")) {
 	const source = readFileSync(path, "utf8");

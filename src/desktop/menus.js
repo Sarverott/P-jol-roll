@@ -1,10 +1,11 @@
 import { app, Menu, shell } from "electron";
 import { about } from "./dialogs.js";
 import { KEYS } from "./hotkeys-shortcuts.js";
+import { print, saveAsPdf } from "./printing.js";
 import { go } from "./window.js";
 
 /*
-The menu of the app: the screens of the viewer, the view, and where the project is. Each item
+The menu of the app: printing, the screens of the viewer, the view, and where the project is. Each item
 carries its key (hotkeys-shortcuts.js).
 */
 
@@ -18,6 +19,17 @@ export function setMenu(getWindow) {
 			label: "P_JOL_ROLL",
 			submenu: [
 				{ label: "About", click: () => about(getWindow()) },
+				{ type: "separator" },
+				{
+					label: "Print...",
+					accelerator: KEYS.print,
+					click: () => print(getWindow()),
+				},
+				{
+					label: "Save as PDF...",
+					accelerator: KEYS.pdf,
+					click: () => saveAsPdf(getWindow()),
+				},
 				{ type: "separator" },
 				{ label: "Quit", accelerator: KEYS.quit, click: () => app.quit() },
 			],
@@ -42,6 +54,26 @@ export function setMenu(getWindow) {
 					label: "Map of the whole law",
 					accelerator: KEYS.map,
 					click: () => go(getWindow(), "#map"),
+				},
+				{
+					label: "Sejm, judgments, lists",
+					accelerator: KEYS.data,
+					click: () => go(getWindow(), "#data"),
+				},
+				{
+					label: "Plots",
+					accelerator: KEYS.plots,
+					click: () => go(getWindow(), "#plots"),
+				},
+				{
+					label: "Statistics and history",
+					accelerator: KEYS.statistics,
+					click: () => go(getWindow(), "#statistics"),
+				},
+				{
+					label: "Settings",
+					accelerator: KEYS.settings,
+					click: () => go(getWindow(), "#settings"),
 				},
 				{ type: "separator" },
 				{

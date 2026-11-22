@@ -9,7 +9,7 @@ site_url: !ENV [SITE_URL, READTHEDOCS_CANONICAL_URL, "http://127.0.0.1:8000/"]
 repo_url: https://github.com/Sarverott/P-jol-roll
 repo_name: Sarverott/P-jol-roll
 edit_uri: edit/development/docs/
-copyright: Copyright &copy; 2026 Sett Sarverott, AGPL-3.0-only. Nothing here is legal advice.
+copyright: Copyright &copy; 2026 Sett Sarverott, AGPL-3.0-only. Not (formally) legal advices.
 
 docs_dir: .
 site_dir: ../site
@@ -72,6 +72,7 @@ nav:
   - Home: README.md
   - Guides:
       - guides/features.md
+      - guides/functions.md
       - guides/installation.md
       - guides/gathering.md
       - guides/processing.md
@@ -126,6 +127,7 @@ nav:
       - changelog/phase-19.md
       - changelog/phase-20.md
       - changelog/phase-21.md
+      - changelog/phase-22.md
   - For agents:
       - .agents/NOTES.md
       - .agents/jarvis.md

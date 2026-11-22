@@ -23,7 +23,10 @@ import type JudgmentInterface from "./Judgment.interface.js";
 import type LawMapInterface from "./LawMap.interface.js";
 import type MapPresetInterface from "./MapPreset.interface.js";
 import type MenuOptionInterface from "./MenuOption.interface.js";
+import type PageInterface from "./Page.interface.js";
+import type ParameterInterface from "./Parameter.interface.js";
 import type PrintInterface from "./Print.interface.js";
+import type ProcedureInterface from "./Procedure.interface.js";
 import type ProcessInterface from "./Process.interface.js";
 import type PublisherInterface from "./Publisher.interface.js";
 import type RemoteFileInterface from "./RemoteFile.interface.js";
@@ -32,10 +35,12 @@ import type SaosPlanInterface from "./SaosPlan.interface.js";
 import type ScanRecordInterface from "./ScanRecord.interface.js";
 import type SearchPageInterface from "./SearchPage.interface.js";
 import type SejmPlanInterface from "./SejmPlan.interface.js";
+import type StatisticsInterface from "./Statistics.interface.js";
 import type TaskEntryInterface from "./TaskEntry.interface.js";
 import type TermInterface from "./Term.interface.js";
 import type TextOriginInterface from "./TextOrigin.interface.js";
 import type TextRecordInterface from "./TextRecord.interface.js";
+import type YearCountInterface from "./YearCount.interface.js";
 import type YearListingInterface from "./YearListing.interface.js";
 import type YearWorkInterface from "./YearWork.interface.js";
 
@@ -84,6 +89,9 @@ export namespace ReadingScope {
 	export type LawMap = LawMapInterface;
 	export type MapPreset = MapPresetInterface;
 	export type SearchPage = SearchPageInterface;
+	export type Page<Item> = PageInterface<Item>;
+	export type Statistics = StatisticsInterface;
+	export type YearCount = YearCountInterface;
 }
 
 // durable runs of src/workflows: what they are asked, what their steps return
@@ -97,4 +105,10 @@ export namespace WorkflowScope {
 export namespace LaunchingScope {
 	export type TaskEntry = TaskEntryInterface;
 	export type MenuOption<Value> = MenuOptionInterface<Value>;
+}
+
+// the catalog of functions (src/core/catalog/): every function once, for every way in
+export namespace CatalogScope {
+	export type Procedure = ProcedureInterface;
+	export type Parameter = ParameterInterface;
 }

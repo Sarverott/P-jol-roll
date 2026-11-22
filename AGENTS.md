@@ -131,8 +131,11 @@ src/core/              the gatherer itself; everything below is its tree
     types/             <Name>.type.ts, and index.ts with the same namespaces
   logging/             setup.ts: the one logger of every command (text or JSON lines, a file per run in logs/, syslog when asked) - import it first, then logRun(<command>)
   search/              typesense.ts: every act into Typesense (task search:index) and /api/search over every year
+  catalog/             every function of the project once (procedures.ts), for every way it runs: the launcher, the REPL,
+                       task do, /api/catalog, the viewer; run.ts words into values and task arguments, map.ts the map of functions
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
+    dataset.ts         the rest of the dataset: work of Sejm, judgments, lists of the source, acts counted (task stats)
     diagram.ts         the ties of an act as one mermaid flowchart, for every interface
     embeddings.ts      the vectors of task embed, and a question as a vector of the same model (Ollama)
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
@@ -140,11 +143,14 @@ src/openapi/           http api (/api, /openapi.json) with socket.io notices, se
 src/mcp/               MCP server for AI agents, read-only: server.ts and tools/ (a folder per tool); main.ts over stdio, /mcp of the api over http; client.ts
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
-src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map;
-                       #acts, #act/DU/2026/1, #map) and components/; assets/ what they share (state, route, ColorPick, graph, socket)
+src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map,
+                       the rest of the dataset, plots, statistics with the history, settings; #acts, #act/DU/2026/1, #map, #data,
+                       #plots, #statistics, #settings) and components/; assets/ what they share (state, route, ColorPick, graph,
+                       socket, settings, counting, webmcp); data/credits.js (AUTHORS and links for "Terms of use")
 src/web/               Astro website carrying the viewer (pages/), built into dist/web
 src/desktop/           Electron app: main.js puts together core (the api), window, loadingmodal, menus, hotkeys-shortcuts,
-                       apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1); task desktop:check, no screen
+                       apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1), printing (print, PDF);
+                       task desktop:check, no screen
 src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
@@ -168,6 +174,7 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   services/       one compose file per service, included by compose.yaml at the root
   configs/        configurations of services, one directory per purpose, in git
     webapp-server/  Dockerfile and start.sh of the slim server image (ghcr.io, the demo space)
+    space/          the demo space's Dockerfile and space.env: the release is a build argument, set by each release
     routing-proxy/, internal-dns/, llms-api-host/, log-collector/  settings of those services
     agentic-shell/  the image of the shell for agents (Q13: why it exists, in changelog phase 6)
   locales/        language packs: EN-US.json (task i18n:collect) and the others (task i18n:translate), .index.json lists them, EN-US the default
@@ -177,7 +184,8 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   secrets/        generated secrets, one file each, ignored; .env wins over them
 examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported
                   into site/examples/ by scripts/devops/examples/build.sh, with the website
-webpage/          the React introduction at the root of the website (Vite, own package.json; src/components/, its lists in src/data/*.yaml); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
+webpage/          the React introduction at the root of the website (Vite, own package.json; src/components/ with a p5.js background,
+                  its lists in src/data/*.yaml); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md
@@ -201,7 +209,9 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 
 | Command | What it does |
 | --- | --- |
-| `task` | the launcher: a menu of every Taskfile and its tasks, and a REPL (`task help` lists them) |
+| `task` | the launcher: what you want to do (read, gather, process, share, the project), each function asking what it takes; every Taskfile below; a REPL (`task help` lists the tasks) |
+| `task do` / `task do -- help acts` / `task do -- acts MP 2025 query=podatek` | every function of the catalog from a shell: their names / what one takes / a reading answered here, or a writing function's task |
+| `task functions:map` | `docs/guides/functions.md`: every function and every way the project runs, written from the catalog |
 | `task shell` | bash in the `agentic-shell` container, the repository at /workspace, no port (Q13) |
 | `task init` | first launch on a machine: tools checked, `.env` from `.env.example`, secrets generated; once |
 | `task gather` | lists and metadata of the newest year, every journal |
@@ -209,6 +219,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task gather:everything` | all of it, asks before it starts |
 | `task gather:changes` | acts changed since the previous such run |
 | `task seal` / `task seal -- --check` | write checksums of files without a record / compare files with records |
+| `task stats` | the acts counted year by year, by type and status, into `dataset/statistics/acts.json` (the viewer's plots and history) |
 | `task map` / `task map -- statutes` | the map of the whole law, every preset or one, into `dataset/map/` (the viewer draws it with sigma.js) |
 | `task search:index` (`-- --texts`) | every act into Typesense, started by `docker compose --profile search up -d typesense`; the api and the viewer search every year |
 | `task embed` (`-- 2026`) | vectors of the texts by a local multilingual model of Ollama into `dataset/embeddings/` |
@@ -217,7 +228,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:media` | favicons, manifest icons, `og.jpg` and the extension icons made from `resources/mediafiles` (ffmpeg); committed |
-| `task resources:space` | the space's Dockerfile set to the image of the newest release, so its next push builds it again |
+| `task resources:space` / `resources:space:refresh` | the space's Dockerfile from `resources/configs/space` into its local side / the space's variable `P_JOL_ROLL_VERSION` set to the newest release and the space built again (`HF_TOKEN`; the release workflow does it) |
 | `task almanac:recall -- hub:push` / `almanac:judge -- push dataset --actor agent` | cases that began with these events, with solutions / the verdict of the rulesets |
 | `task almanac:issues` / `almanac:issues:open -- <id>` | the cases with their issues / one opened on GitHub, closed when solved (the owner's) |
 | `task i18n:collect` / `task i18n:translate` | the English of the built pages into `resources/locales/EN-US.json` / the other packs by argostranslate |
