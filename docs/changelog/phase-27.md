@@ -25,3 +25,13 @@ sets its variable, builds it, and waits until the space serves the release
 - an error of Hugging Face fails the release with its own message. Then
 the whole loop runs (phase-close, the gate, the automerge, the release, the
 space) and what fails is fixed.
+
+## UNIXUSAT=1795386796188 · commit dc5043b
+
+The gate of #42 passed authors, verify, CodeQL and OSSAR; Snyk Code failed.
+Its 10 high findings (path traversal and an XSS in the routes, a "secret"
+that was the name of the settings in localStorage) were fixed in code. The
+16 left were medium and low. The owner chose, in the chat, the first of
+three choices put to it, word for word: "Fail on high only (Recommended)".
+Snyk Code and Snyk IaC now fail the gate on high findings only; the rest
+reaches the Security tab.

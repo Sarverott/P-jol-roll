@@ -64,7 +64,9 @@ jobs:
       - name: Snyk Code test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk code test --sarif > snyk-code.sarif # || true
+        # the owner's bar (phase 27): a high finding fails the gate; medium and low reach the
+        # Security tab only
+        run: snyk code test --severity-threshold=high --sarif > snyk-code.sarif
 
         # Runs Snyk Open Source (SCA) analysis and uploads result to Snyk.
       - name: Snyk Open Source monitor
@@ -77,7 +79,8 @@ jobs:
       - name: Snyk IaC test and report
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: snyk iac test --report # || true
+        # exit 3: no files of infrastructure as code here - nothing to scan is no failure
+        run: snyk iac test --report --severity-threshold=high || [ $? -eq 3 ]
 
         # Build the docker image for testing
       - name: Build a Docker image

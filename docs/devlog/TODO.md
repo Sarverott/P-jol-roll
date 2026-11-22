@@ -279,3 +279,4 @@ The owner's message, 2026-11-22 (changelog phase 27).
 
 - [x] The space's refresh: the trusted publisher's token (OIDC, `HF_TOKEN` the fallback), the space's files from git when they differ, the variable, a build, and waited for until the space serves the release
 - [x] What Snyk Code found high in the gate: no request's own words reach a file (journal, year, position, preset, ending taken from our side), the name of the settings in localStorage no longer looks like a secret
+- [x] Snyk fails the gate on high findings only, as the owner chose; medium and low reach the Security tab
