@@ -6,6 +6,14 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-22. The gate (phase 26) waits for three things of Sett's.**
+  The secret `SNYK_TOKEN` (without it Snyk fails and nothing merges by
+  itself). `AUTHORS` on master names Sett's GitHub address only after the
+  pull request that brings it is merged, so that first pull request fails
+  the gate's authors and is merged by hand once. Not run on GitHub yet: OSSAR
+  runs on Windows with tools of 2023 (`github/ossar-action@v1`); whether
+  Copilot answers an `@copilot` comment written by the workflow's bot is not
+  known - GitHub may take it only from a person with write rights.
 - **2026-11-22. Jobs of writing functions (Q19, phase 25)** were tested
   with `stats` on a copy of resources (tests/writing.test.ts), not with a
   gathering against the source nor a push - those are Sett's to try, from

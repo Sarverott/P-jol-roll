@@ -89,7 +89,9 @@ State of 2026-11-13.
 | Function | Command | State |
 | -------- | ------- | ----- |
 | All checks | `task verify` | **works**, except the termui experiment (Q4) |
-| Checks on GitHub | `.github/workflows/checks.yml` | **built**: simulated locally; nothing pushed yet (Q2) |
+| Checks on GitHub | `.github/workflows/checks.yml` | **works**: on the gate of a pull request into master, the release, the bots |
+| Gate into master | `.github/workflows/gate.yml` | **built**: authors, verify, CodeQL, Snyk, OSSAR, then automerge; not run on GitHub yet (phase 26) |
+| Workflows from a terminal | `task github:run`, `github:gate`, `github:pending` | **built**: `gh` of the owner's account |
 | Hooks: Biome before a commit, conventional messages | git hooks | **works**: both refuse bad input (since 2026-11-13; before that they never blocked) |
 | Dependency updates | `.github/dependabot.yml` | **built**: active once it reaches `master` |
 | Bots' branches (Dependabot, Jarvis) | `.github/workflows/bots.yml`, `bots-land.yml` | **built**: active once they reach `master` |

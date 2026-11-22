@@ -19,6 +19,8 @@ title="v$version: $head → $base${why:+ ($why)}"
 body=$(
   echo "Merging it releases v$version (the release workflow of master)."
   if [ -n "$why" ]; then echo; echo "Why now: $why."; fi
+  # who stands behind it, for the gate (authors.sh): the run of the workflow that opened it
+  if [ -n "${GITHUB_RUN_ID:-}" ]; then echo; echo "Opened by the run $GITHUB_RUN_ID of $GITHUB_WORKFLOW."; fi
   echo
   echo "## Commits"
   echo

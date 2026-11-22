@@ -1,19 +1,15 @@
-# The same checks as `task check` and the hooks: Biome, TypeScript, the website build, tests,
-# the build of the durable runs, and shellcheck of scripts/devops/. On every push to
-# development and a contributor's dev/** branch, on pull requests into master, called by the
+# The same checks as `task check` and the pre-push hook: Biome, TypeScript, the website build,
+# tests, the build of the durable runs, and shellcheck of scripts/devops/. Not on every push
+# any more (phase 26): called by the gate of a pull request into master (gate.yml), by the
 # release (release.yml) and by automerge.yml for pull requests into development, and
-# dispatched on the branch of a bot (dev/dependabot, dev/Jarvis) by bots.yml. It always
+# dispatched on the branch of a bot (dev/dependabot, dev/Jarvis) by bots.yml - the merges
+# nobody checked on a machine. It always
 # checks the commit of its own event - never a ref given from outside, so no code of a pull
 # request runs where a privileged workflow could share its cache (CodeQL
 # actions/cache-poisoning). It asks only to read.
 name: "checks › verify"
 
 on:
-  push:
-    # the branches of bots are checked by a dispatch of bots.yml, once per pile of merges
-    branches: [development, "dev/**", "!dev/dependabot", "!dev/Jarvis"]
-  pull_request:
-    branches: [master]
   workflow_call:
   workflow_dispatch:
 
