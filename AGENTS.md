@@ -146,8 +146,8 @@ src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and
 src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map,
                        the rest of the dataset, plots, statistics with the history, settings; #acts, #act/DU/2026/1, #map, #data,
                        #plots, #statistics, #settings) and components/; assets/ what they share (state, route, ColorPick, graph,
-                       socket, settings, counting, webmcp); data/credits.js (AUTHORS and links for "Terms of use")
-src/web/               Astro website carrying the viewer (pages/), built into dist/web
+                       socket, settings, counting, webmcp); "Terms of use" gets AUTHORS and links as a prop (src/web/data/credits.ts)
+src/web/               Astro website carrying the viewer (pages/), built into dist/web; data/ read by node:fs at build (no ?raw imports)
 src/desktop/           Electron app: main.js puts together core (the api), window, loadingmodal, menus, hotkeys-shortcuts,
                        apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1), printing (print, PDF);
                        task desktop:check, no screen
@@ -236,7 +236,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` / `prune` | take what is missing here / send what is new here / delete there what is not here (asks; never the bucket) |
 | `task unittesting:parrot-os` / `parrot-os-drive` | Parrot OS headless server in a container: case `-gather-and-parse` / `-bare-repo-on-drive` (privileged; needs Docker) |
-| `task flow:land -- "..."` / `flow:sync` | your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
+| `task flow:land -- "..."` / `flow:sync` | every check (`task check`), then your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
 | `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |

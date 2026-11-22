@@ -1,6 +1,6 @@
 [project]
 name = "pjolroll-scripts-and-tools"
-version = "0.19.0"
+version = "0.21.0"
 description = "P-JOL-ROL :: scripts and tools for installations, dev work and else non-typical cases"
 readme = "README.md"
 authors = [

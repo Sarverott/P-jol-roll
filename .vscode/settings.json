@@ -1,0 +1,52 @@
+{
+	"chat.mcp.serverSampling": {},
+	"files.autoSave": "onFocusChange",
+	"editor.formatOnSave": true,
+	"editor.formatOnPaste": true,
+	"files.autoSaveWorkspaceFilesOnly": true,
+	"files.autoSaveWhenNoErrors": true,
+	"files.candidateGuessEncodings": ["utf8"],
+	"files.readonlyInclude": {
+		"docs/.agents/**": true
+	},
+	"accessibility.signalOptions.debouncePositionChanges": false,
+	"terminal.integrated.cwd": "~/__WORKSHOP/forge/",
+	"emmet.triggerExpansionOnTab": false,
+	"githubIssues.queries": [
+		{
+			"label": "My Issues",
+			"query": "is:open assignee:${user} repo:${owner}/${repository}",
+			"groupBy": ["milestone"]
+		},
+		{
+			"label": "Created Issues",
+			"query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc"
+		},
+		{
+			"label": "Recent Issues",
+			"query": "state:open repo:${owner}/${repository} sort:updated-desc"
+		}
+	],
+	"markdown.math.macros": {
+		"X": "Y"
+	},
+	"npm.packageManager": "npm",
+	"npm.scriptRunner": "npm",
+	"python-env.workspaceSearchPaths": [
+		".venv",
+		"docs/.venv",
+		"~/__WORKSHOP/.BOS/.venv",
+		"~/__WORKSHOP/forge/*/**/.venv"
+	],
+	"javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+	"javascript.inlayHints.parameterNames.enabled": "all",
+	"javascript.inlayHints.parameterTypes.enabled": true,
+	"javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+	"javascript.inlayHints.variableTypes.enabled": true,
+	"typescript.inlayHints.enumMemberValues.enabled": true,
+	"typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+	"typescript.inlayHints.parameterNames.enabled": "all",
+	"typescript.inlayHints.parameterTypes.enabled": true,
+	"typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+	"typescript.inlayHints.variableTypes.enabled": true
+}

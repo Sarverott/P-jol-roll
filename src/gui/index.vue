@@ -48,7 +48,11 @@ const StatisticsHistory = defineAsyncComponent(
 );
 
 // address of the http api (src/openapi): empty means the host that served this page
-const props = defineProps({ api: { type: String, default: "" } });
+// the members and the links of "Terms of use", read by the website at build (src/web/data)
+const props = defineProps({
+	api: { type: String, default: "" },
+	credits: { type: Object, default: () => ({ authors: [], links: [] }) },
+});
 
 const library = createLibrary(props.api);
 const { state } = library;
@@ -61,6 +65,7 @@ function openAct({ ELI }) {
 
 provide("library", library);
 provide("openAct", openAct);
+provide("credits", props.credits);
 library.follow(route);
 
 let unlisten;
