@@ -115,7 +115,7 @@ The inquiries of 2026-11-22, the third (changelog phase 10).
 
 - [x] The launcher keeps a log too: its file in `logs/` with the output of every task it runs; Ctrl+C stops the task and goes back to the menu, written in the log
 - [x] `web:dev` stops watching `resources/` (it ran out of file watchers on the bucket)
-- [ ] One bucket: the raw files of every source in `resources/bucket/` (`DU/`, `MP/`, `sejm/`, `SAOS/`), with a README of links; one dataset: the tables of every source in `resources/dataset/`, the training collection; a task moving what is gathered into the new places
+- [x] One bucket: the raw files of every source in `resources/bucket/` (`DU/`, `MP/`, `sejm/`, `SAOS/`), with a README of links; one dataset: the tables of every source in `resources/dataset/`, the training collection; a task moving what is gathered into the new places
 - [ ] The demo reads the prepared dataset: the server in a remote mode takes `lists/index.json` and only what a page needs from the dataset on Hugging Face, and links raw files on the bucket; local use stays as it is
 - [ ] `examples/`: Jupyter notebooks of using the project from Python, turned into marimo notebooks and exported as static pages with the website
 - [ ] The main page tells a newcomer the whole scope: what is gathered, where it is, the demo, the examples, how to start

@@ -9,11 +9,12 @@ import type { GatheringScope } from "../vars/interfaces/index.js";
 How a statute was made: API of Sejm's work, https://api.sejm.gov.pl/sejm/openapi/
 Legislative processes carry ELI of the act they ended with, and prints carry
 drafts with justifications written by their authors. It is another source,
-so it has its own directories, apart from the journals.
+so it has its own directory inside the one dataset and the one bucket (phase 10):
+dataset/sejm/ for tables, bucket/sejm/ for raw files.
 */
 export const SEJM_API = process.env.SEJM_API ?? "https://api.sejm.gov.pl/sejm";
-export const SEJM_DATASET = join(store.RESOURCES_DIR, "sejm-dataset");
-export const SEJM_BUCKET = join(store.RESOURCES_DIR, "sejm-bucket");
+export const SEJM_DATASET = join(store.DATASET_DIR, "sejm");
+export const SEJM_BUCKET = join(store.BUCKET_DIR, "sejm");
 
 // processes are given in pages, prints of a term in one answer
 const PAGE = 500;

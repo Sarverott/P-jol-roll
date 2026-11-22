@@ -1,7 +1,9 @@
 # This file tells Git which files shouldn't be added to source control
 
-# https://huggingface.co/buckets/Sarverott/raw-law-of-poland
-resources/bucket
+# https://huggingface.co/buckets/Sarverott/raw-law-of-poland - raw files of every source:
+# DU/, MP/ (journals), sejm/ (work of Sejm); its README is kept here
+resources/bucket/*
+!resources/bucket/README.md
 
 # https://huggingface.co/datasets/Sarverott/polish_national_law_docs
 resources/dataset
@@ -9,7 +11,8 @@ resources/dataset
 # https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland
 resources/space
 
-# other sources, repositories for them are not created yet
+# the directories of other sources before phase 10 (task resources:merge moves them into
+# dataset/ and bucket/)
 resources/sejm-dataset
 resources/sejm-bucket
 resources/saos-dataset

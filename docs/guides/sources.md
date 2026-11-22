@@ -1,18 +1,20 @@
 # Other sources
 
 The journals say what the law is. Two more sources say how it was made and
-how it is applied. Each has its own command and its own directories, apart
-from the journals.
+how it is applied. Each has its own command, and all of them write into the
+one dataset (tables, the training collection) and the one bucket (raw files),
+each source in a directory of its own (phase 10).
 
 | Command | Source | Local directories |
 | --- | --- | --- |
 | `gather` | ELI API of Sejm: the journals | `resources/dataset`, `resources/bucket` |
-| `sejm` | API of Sejm's work: processes and prints | `resources/sejm-dataset`, `resources/sejm-bucket` |
-| `saos` | SAOS: court judgments | `resources/saos-dataset` |
+| `sejm` | API of Sejm's work: processes and prints | `resources/dataset/sejm`, `resources/bucket/sejm` |
+| `saos` | SAOS: court judgments | `resources/dataset/SAOS` |
 
-The new directories are ignored by git and are not in `resources/.map.json`
-yet. When their repositories exist on Hugging Face, add them to the map
-under the same names and `task resources:plan -- sejm-dataset` will work.
+So `task resources:push -- dataset` and `-- bucket` send every source.
+Before phase 10 they had directories of their own (`sejm-dataset`,
+`sejm-bucket`, `saos-dataset`); `task resources:merge` moves what was
+gathered there inside, never over a file that is there already.
 
 ## Work of Sejm: `sejm`
 
@@ -29,11 +31,11 @@ had 3426 prints on 2026-10-13.
 
 | File | What it is |
 | --- | --- |
-| `sejm-dataset/terms.json` | terms of Sejm with their dates |
-| `sejm-dataset/term10/processes.jsonl` | legislative processes, one per line |
-| `sejm-dataset/term10/prints.jsonl` | prints, one per line, with names of their files |
-| `sejm-bucket/term10/processes/<number>.json` | one process with its stages: referrals to committees, readings and what followed |
-| `sejm-bucket/term10/prints/<number>/<file>` | files of a print: the draft with its justification, opinions |
+| `dataset/sejm/terms.json` | terms of Sejm with their dates |
+| `dataset/sejm/term10/processes.jsonl` | legislative processes, one per line |
+| `dataset/sejm/term10/prints.jsonl` | prints, one per line, with names of their files |
+| `bucket/sejm/term10/processes/<number>.json` | one process with its stages: referrals to committees, readings and what followed |
+| `bucket/sejm/term10/prints/<number>/<file>` | files of a print: the draft with its justification, opinions |
 
 A process that ended with a published act carries the `ELI` and `address`
 of that act, so processes attach to the acts of the journals directly. The
@@ -62,11 +64,12 @@ administrative courts, with full texts.
 > **Remember!** SAOS is not a server of the state. It collects judgments
 > that courts publish. Who runs it today and under what terms the data may
 > be republished was not checked. [`TODO`] It is asked more slowly: 30
-> requests per minute by default. Decide about publishing before pushing
-> this directory anywhere.
+> requests per minute by default. It sits inside the dataset now, so
+> `task resources:push -- dataset` sends it: decide about publishing before
+> gathering it into a dataset that is pushed.
 
 One file per month, by date of judgment:
-`saos-dataset/judgments/2025/2025-01.jsonl`, one judgment per line, as the
+`dataset/SAOS/judgments/2025/2025-01.jsonl`, one judgment per line, as the
 API gave it. Fields that matter most here:
 
 | Field | Meaning |

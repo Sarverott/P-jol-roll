@@ -84,9 +84,10 @@ ELI API of Sejm, `https://api.sejm.gov.pl/eli` (OpenAPI under `/eli/openapi/`).
 | `/changes/acts?since=` | acts changed since a day | taken again by `gather --since` |
 
 Two more sources have their own directories (`docs/guides/sources.md`):
-work of Sejm, `https://api.sejm.gov.pl/sejm`, in `resources/sejm-dataset`
-and `resources/sejm-bucket`; court judgments of SAOS,
-`https://www.saos.org.pl/api`, in `resources/saos-dataset`.
+work of Sejm, `https://api.sejm.gov.pl/sejm`, in `resources/dataset/sejm`
+and `resources/bucket/sejm`; court judgments of SAOS,
+`https://www.saos.org.pl/api`, in `resources/dataset/SAOS`. One bucket of
+raw files and one dataset of tables hold every source (phase 10).
 
 Websites that show the same acts to people are listed in
 `resources/frontends.json`. They are visited only by `checkup`, with a
@@ -130,7 +131,7 @@ src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
 src/tui/               the launcher (launcher/: main.ts the menu bare `task` opens, select.ts); Sett's TermUI experiment (index.tsx, main.js, termui.config.*) out of the checks
 src/cli/               commands of the launcher: tasks.ts (every task of every Taskfile, grouped, run inside `script` so the output lands in the launcher's log and Ctrl+C stops the task alone), repl.ts (tasks as commands)
-src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init)
+src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init), merge.ts (task resources:merge)
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
@@ -139,8 +140,10 @@ logs/             a file per run: log-<Date.now()>-<log mode>-<command>.log (LOG
 tests/            vitest; gather.test.ts runs whole gathering against a local copy of API
   unittesting/    the project on other systems in containers: <system>/<setup>/Dockerfile, cases -<case>/run.sh
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
-  dataset/        tables: lists/, and per <journal>/<year> acts, files, details, references, texts, checkups
-  bucket/         raw files of acts: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf}
+  dataset/        tables of every source, the training collection: lists/, per <journal>/<year> acts, files, details,
+                  references, texts, checkups; sejm/ (terms, processes, prints), SAOS/ (judgments by month)
+  bucket/         raw files of every source: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf},
+                  sejm/term<n>/; its README.md is kept in git
   services/       one compose file per service, included by compose.yaml at the root
   configs/        configurations of services, one directory per purpose, in git
     webapp-server/  Dockerfile and start.sh of the slim server image (ghcr.io, the demo space)
@@ -181,6 +184,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
+| `task resources:merge` | the directories sources had before phase 10 moved into the one dataset and bucket |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
 | `task unittesting:parrot-os` / `parrot-os-drive` | Parrot OS headless server in a container: case `-gather-and-parse` / `-bare-repo-on-drive` (privileged; needs Docker) |
