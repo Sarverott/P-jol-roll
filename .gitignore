@@ -52,3 +52,7 @@ docs/devlog/STATE.md
 site/
 docs/.venv
 __pycache__/
+
+# marimo notebooks made from examples/notebooks/ (task examples:convert)
+examples/marimo
+examples/.venv

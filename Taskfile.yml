@@ -15,6 +15,7 @@ includes:
   unittesting: ./tests/unittesting/Taskfile.yml
   flow: ./scripts/devops/Taskfile.yml
   docs: ./docs/Taskfile.yml
+  examples: ./examples/Taskfile.yml
   devlog:
     taskfile: ./docs/devlog/Taskfile.yml
     dir: ./docs/devlog

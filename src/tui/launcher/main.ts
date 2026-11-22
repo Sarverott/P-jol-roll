@@ -41,6 +41,7 @@ const ABOUT: Record<string, string> = {
 	project: "gathering, processing, checks, versions",
 	src: "the api, MCP, website, desktop, app, extension",
 	docs: "the website of the project",
+	examples: "examples from Python: notebooks, marimo, pages",
 	devlog: "the plan: state, scrapnotes",
 	flow: "the routine: land, sync, close a phase",
 	resources: "moving data to and from Hugging Face",

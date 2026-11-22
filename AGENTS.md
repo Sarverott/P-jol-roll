@@ -152,6 +152,8 @@ resources/        .map.json lists huggingface repositories, their local sides ar
     agentic-shell/  the image of the shell for agents (Q13: why it exists, in changelog phase 6)
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
+examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported
+                  into site/examples/ by scripts/devops/examples/build.sh, with the website
 webpage/          the React introduction at the root of the website (Vite, own package.json); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
@@ -196,6 +198,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
+| `task examples:build` / `examples:edit` | the Python examples run and exported into `site/examples/` / opened in marimo |
 | `task docs:build` / `docs:serve` | the website of the project into `site/` / live preview |
 | `task devlog:state` / `devlog:scrapnote` | where the project stands (the `bos` command) / a new scrapnote |
 | `task web:build` / `task desktop` | website into `dist/web` / Electron window around it |

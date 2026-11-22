@@ -1,0 +1,33 @@
+# https://taskfile.dev
+
+version: '3'
+
+# Examples of using P_JOL_ROLL from Python: notebooks/ (Jupyter) is the source, marimo/ is
+# made from it, site/examples/ the pages of the website (scripts/devops/examples/build.sh).
+tasks:
+  convert:
+    desc: The Jupyter notebooks of examples/notebooks/ turned into marimo notebooks in examples/marimo/.
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - scripts/devops/examples/build.sh
+
+  build:
+    desc: The examples run and exported as static pages into site/examples/ (reads Hugging Face).
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - scripts/devops/examples/build.sh html
+
+  edit:
+    desc: marimo opened over examples/marimo/, to run and change the examples.
+    dir: '{{.ROOT_DIR}}'
+    interactive: true
+    cmds:
+      - task: convert
+      - uv run --project examples marimo edit examples/marimo
+
+  lab:
+    desc: JupyterLab opened over examples/notebooks/, the source of the examples.
+    dir: '{{.ROOT_DIR}}'
+    interactive: true
+    cmds:
+      - uv run --project examples --with jupyterlab jupyter lab examples/notebooks
