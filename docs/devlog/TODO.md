@@ -221,4 +221,4 @@ The owner's message, 2026-11-22, and the notes left in the code
 - [x] The website's data from yaml; `robots.txt`, `sitemap.xml`, `llms.txt`
 - [x] The introduction's data from yaml, and the page split into components
 - [x] The web interface of the workflows finds the workflows
-- [ ] The desktop app split into the modules laid out
+- [x] The desktop app split into the modules laid out

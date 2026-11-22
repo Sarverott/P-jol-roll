@@ -158,7 +158,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 
 | File | What, why and where |
 | --- | --- |
-| `src/desktop/main.js` | Electron window: starts the api for itself on this machine only and shows the viewer. `task desktop`. |
+| `src/desktop/main.js` | The Electron app put together: the api started for itself on this machine only (`core.js`), a loading window while it reads (`loadingmodal.js`), the viewer's window (`window.js`), the menu with its keys (`menus.js`, `hotkeys-shortcuts.js`), a tray icon (`apptray.js`), notices of changed files (`notifications.js`), boxes of the system (`dialogs.js`), links `p-jol-roll://act/DU/2026/1` (`deeplinks.js`). `task desktop`; `task desktop:check` runs it hidden and prints what the viewer shows. `webserial.js` and `webbluethooth.js` wait for Q17. |
 | `src/app/manifest.json` | Web app manifest of the viewer, linked by the website, so it can also be installed from a browser. |
 | `src/app/capacitor.config.json` | Capacitor settings of the android app: its web part is `dist/web`. `task app:sync -- add android` the first time. |
 | `src/firefox-ext/manifest.json`, `popup.html`, `main.js` | Browser extension: looks up an act cited in the open tab or typed in (`Dz.U. 2026 poz. 1`, ISAP addresses, ELI) in a P_JOL_ROLL host. Loads in Firefox, and unpacked in Chrome. `task extension` says how. |

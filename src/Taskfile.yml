@@ -31,10 +31,17 @@ tasks:
       - npm run web:dev
 
   desktop:
-    desc: Electron window around the viewer - builds the website, starts the api for itself.
+    desc: Electron window around the viewer - builds the website, starts the api for itself; p-jol-roll://act/DU/2026/1 after "--" opens an act.
     cmds:
       - task: web:build
-      - npm run desktop
+      - npm run desktop -- {{.CLI_ARGS}}
+
+  desktop:check:
+    desc: The desktop app started with every window hidden - it prints what the viewer shows and quits (no screen needed; the website built first).
+    env:
+      DESKTOP_CHECK: "1"
+    cmds:
+      - npm run desktop -- {{.CLI_ARGS}}
 
   app:sync:
     desc: Android app by Capacitor in src/app - first time "task app:sync -- add android", then plain; needs Android SDK. PUBLIC_API has to name a reachable host.

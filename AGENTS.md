@@ -143,7 +143,8 @@ src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and
 src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map;
                        #acts, #act/DU/2026/1, #map) and components/; assets/ what they share (state, route, ColorPick, graph, socket)
 src/web/               Astro website carrying the viewer (pages/), built into dist/web
-src/desktop/           Electron window: starts the api, shows the viewer
+src/desktop/           Electron app: main.js puts together core (the api), window, loadingmodal, menus, hotkeys-shortcuts,
+                       apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1); task desktop:check, no screen
 src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
