@@ -2,7 +2,7 @@
 # notebooks in marimo/ and exported as static pages with the website (task examples:build).
 [project]
 name = "p-jol-roll-examples"
-version = "0.11.4"
+version = "0.11.5"
 description = "Examples of P_JOL_ROLL from Python: the dataset, the bucket and the api"
 authors = [
     { name = "Sett Sarverott", email = "sett@sarverott.com" }

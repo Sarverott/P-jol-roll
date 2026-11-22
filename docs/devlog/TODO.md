@@ -165,7 +165,7 @@ The owner's answer to Q16 (changelog phase 12): the space kept files of its mari
 
 Q15, answered 2026-11-22 (changelog phase 12).
 
-- [ ] Check the owner's idea first: text nodes of a page found by a SHA-256 of their text, replaced from a language pack, without rewriting the page; a note of what works and what does not
+- [x] Check the owner's idea first: text nodes of a page found by a SHA-256 of their text, replaced from a language pack, without rewriting the page; a note of what works and what does not
 - [ ] `resources/locales/`: language packs as JSON (`EN-US.json` and the rest), listed in `.index.json` with EN-US the default
 - [ ] Python scripts with argostranslate that make the packs from the English texts
 - [ ] The packs used by the website of the project, the introduction, the viewer (GUI), the launcher (TUI) and the manuals of the CLI
