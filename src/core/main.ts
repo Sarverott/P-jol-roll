@@ -22,6 +22,14 @@ seal                                 -> write checksums of gathered files that h
 seal --check                         -> read every recorded file again and name these that differ
 compile                              -> tables of dataset from raw files: details and references of acts
 text                                 -> markdown from gathered html, with checksums of both
+text --pdf                           -> and from the text layer of PDFs of acts without html (poppler; --parallel 4)
+
+map                                  -> the map of the whole law: every preset placed by ForceAtlas2 into dataset/map/
+map statutes-in-force                -> one preset (statutes-in-force, statutes, in-force)
+stats                                -> the acts counted year by year, by type and status, into dataset/statistics/
+
+search index                         -> every act into Typesense (task search:index), titles and keywords
+search index --texts                 -> and the beginning of each text
 
 sejm                                 -> work of Sejm: processes and prints of the current term
 sejm 9 10 --files --limit 50         -> these terms, with details of processes and files of prints
@@ -34,6 +42,7 @@ checkup 2026 --headless              -> without window
 hub plan dataset                     -> what differs between resources/dataset and huggingface
 hub pull dataset                     -> take what is missing here, 8 files at a time (--parallel 16)
 hub push dataset                     -> send what is new or changed here (HF_TOKEN)
+hub prune space                      -> delete there what is not here (not for the bucket)
 */
 const COMMANDS = [
 	"gather",
@@ -44,6 +53,9 @@ const COMMANDS = [
 	"saos",
 	"checkup",
 	"hub",
+	"map",
+	"search",
+	"stats",
 ];
 const [first = "", ...rest] = process.argv.slice(2);
 const command = COMMANDS.includes(first) ? first : "gather";
@@ -61,11 +73,13 @@ const { values, positionals } = parseArgs({
 		rate: { type: "string" },
 		frontend: { type: "string", multiple: true, default: [] },
 		headless: { type: "boolean", default: false },
-		batch: { type: "string", default: "100" },
+		batch: { type: "string", default: "1000" },
 		parallel: { type: "string" },
 		since: { type: "string" },
 		check: { type: "boolean", default: false },
 		files: { type: "boolean", default: false },
+		pdf: { type: "boolean", default: false },
+		texts: { type: "boolean", default: false },
 	},
 });
 
@@ -121,8 +135,40 @@ if (command === "compile") {
 
 if (command === "text") {
 	const { text } = await import("./parsing/text.js");
-	const sum = await text();
-	log.info(`text: ${sum.parsed} parsed, ${sum.unchanged} unchanged`, sum);
+	const sum = await text({
+		pdf: values.pdf,
+		parallel: Number(values.parallel ?? 4),
+	});
+	log.info(
+		`text: ${sum.parsed} parsed (${sum.fromPdf} from PDF), ${sum.unchanged} unchanged, ${sum.scans} scans without text (${sum.unreadable} of them damaged)`,
+		sum,
+	);
+}
+
+if (command === "map") {
+	const { map } = await import("./methods/map.js");
+	await map(positionals.length ? positionals : undefined);
+}
+
+if (command === "stats") {
+	const { statistics, statisticsPath } = await import("./reading/dataset.js");
+	const { saveJson } = await import("./resources/store.js");
+	const counted = statistics();
+	await saveJson(statisticsPath(), counted);
+	log.info(
+		`stats: ${counted.years.length} years counted into ${statisticsPath()}`,
+		{ years: counted.years.length },
+	);
+}
+
+if (command === "search") {
+	const { index, TYPESENSE_URL } = await import("./search/typesense.js");
+	if (positionals[0] !== "index") throw new Error("search needs action: index");
+	const sum = await index({ texts: values.texts });
+	log.info(
+		`search: ${sum.acts} acts indexed in ${TYPESENSE_URL}, ${sum.failed} failed`,
+		sum,
+	);
 }
 
 if (command === "sejm") {
@@ -173,7 +219,8 @@ if (command === "hub") {
 				first: paths.slice(0, 10),
 			});
 	} else if (action === "push") await hub.push(name, Number(values.batch));
+	else if (action === "prune") await hub.prune(name, Number(values.batch));
 	else if (action === "pull")
 		await hub.pull(name, Number(values.parallel ?? 8));
-	else throw new Error("hub needs action: plan, pull or push");
+	else throw new Error("hub needs action: plan, pull, push or prune");
 }

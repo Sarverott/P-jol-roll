@@ -1,64 +1,89 @@
 // NOTE: give me here base for windowed app. it will be good to promotion this way of our opensource work.
+// ANSWER: done - the app is put together here from the modules laid out beside: core (the api),
+// window, loadingmodal, menus with hotkeys-shortcuts, apptray, notifications, dialogs, deeplinks,
+// printing (Q17: print and PDF from the menus and the tray); webserial and webbluethooth wait
+// for the devices of Q17 (Bluetooth printers and phones, FIDO keys) - ROADMAP M5
 
-import { spawn } from "node:child_process";
-import { fileURLToPath } from "node:url";
-import { app, BrowserWindow, shell } from "electron";
+import { app } from "electron";
+import { setTray } from "./apptray.js";
+import { startApi } from "./core.js";
+import { handleLinks, hashOf, linkIn } from "./deeplinks.js";
+import { failure } from "./dialogs.js";
+import { showLoading } from "./loadingmodal.js";
+import { setMenu } from "./menus.js";
+import { notifyChanges } from "./notifications.js";
+import { setContextMenu } from "./printing.js";
+import { bringUp, createWindow } from "./window.js";
 
 /*
-Window around the same viewer as the website: the api (src/openapi) runs as a
-child process on a free port of this machine only, and the window shows what it serves.
+Window around the same viewer as the website: the api (src/openapi) runs as a child process on
+a free port of this machine only, and the window shows what it serves.
 Build the website first - "task web:build" - then "task desktop".
+DESKTOP_CHECK=1 starts it with every window hidden, prints what the viewer shows and quits
+(task desktop:check) - a check that needs no screen.
 */
 
-const ROOT = fileURLToPath(new URL("../..", import.meta.url));
+const CHECK = Boolean(process.env.DESKTOP_CHECK);
 
-// one window is enough - a second start shows the first one
-if (!app.requestSingleInstanceLock()) app.quit();
-
-// one process only: node with the tsx loader, not npx -> tsx -> node, whose last child
-// outlived the window and kept the port. PORT=0 - the system gives a port that is free.
-// The api watches its stdin and ends when this process is gone, even after a crash
-const api = spawn("node", ["--import", "tsx", "src/openapi/main.ts"], {
-	cwd: ROOT,
-	env: { ...process.env, PORT: "0", HOST: "127.0.0.1", EXIT_WITH_PARENT: "1" },
-	stdio: ["pipe", "pipe", "inherit"],
-	shell: process.platform === "win32",
-});
-const address = new Promise((done, fail) => {
-	let said = "";
-	api.stdout.on("data", (chunk) => {
-		process.stdout.write(chunk);
-		said += chunk;
-		const found = /listening on (http:\/\/\S+)/.exec(said);
-		if (found) done(found[1]);
-	});
-	api.on("exit", (code) => fail(new Error(`api stopped with ${code}`)));
-});
-
-let window;
-
-async function open() {
-	const url = await address;
-	window = new BrowserWindow({
-		width: 1280,
-		height: 860,
-		title: "P_JOL_ROLL",
-		webPreferences: { contextIsolation: true, sandbox: true },
-	});
-	window.removeMenu();
-	// links that lead away from the viewer (PDF, sources) open in the system browser
-	window.webContents.setWindowOpenHandler(({ url: target }) => {
-		shell.openExternal(target);
-		return { action: "deny" };
-	});
-	await window.loadURL(url);
+// one window is enough - a second start shows the first one (and hands over its link), and
+// ends before it starts an api of its own
+if (!app.requestSingleInstanceLock()) {
+	app.quit();
+	process.exit(0);
 }
 
-app.on("second-instance", () => {
-	if (!window) return;
-	if (window.isMinimized()) window.restore();
-	window.focus();
-});
+const api = startApi();
+let window;
+
+const showWindow = () => bringUp(window);
+const openAt = (hash) => {
+	if (!hash || !window) return showWindow();
+	window.webContents.executeJavaScript(
+		`location.hash = ${JSON.stringify(hash)}`,
+	);
+	showWindow();
+};
+
+async function open() {
+	const closeLoading = showLoading({ show: !CHECK });
+	let address;
+	try {
+		address = await api.address;
+	} catch (error) {
+		closeLoading();
+		if (CHECK) console.error(error.message);
+		else failure(error);
+		return app.quit();
+	}
+	// a link the app was started with: the place to open
+	const start = hashOf(linkIn(process.argv)) ?? "";
+	window = createWindow(`${address}/${start}`, { show: false });
+	setMenu(() => window);
+	setContextMenu(window);
+	window.once("ready-to-show", () => {
+		closeLoading();
+		if (!CHECK) window.show();
+	});
+	if (CHECK) return check();
+	setTray(showWindow, () => window);
+	const stopNotices = notifyChanges(address, showWindow);
+	app.on("will-quit", stopNotices);
+}
+
+// what the viewer shows once it has read the journals, then the end
+async function check() {
+	await new Promise((done) => window.webContents.once("did-finish-load", done));
+	await new Promise((done) => setTimeout(done, 3000));
+	const seen = await window.webContents.executeJavaScript(
+		'[document.title, document.querySelectorAll(".list-items a").length, document.querySelector(".tabs")?.innerText.replace(/\\n/g, " | ")]',
+	);
+	console.log(`desktop check: ${JSON.stringify(seen)}`);
+	app.quit();
+}
+
+handleLinks(openAt);
 app.whenReady().then(open, () => app.quit());
+// closing the window ends the app: a tray is not shown on every desktop of Linux, and a hidden
+// app with no icon could not be found again
 app.on("window-all-closed", () => app.quit());
-app.on("will-quit", () => api.kill());
+app.on("will-quit", () => api.stop());

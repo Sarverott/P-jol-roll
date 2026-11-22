@@ -2,3 +2,7 @@
 	path = .obsidian/plugins/hefaisto
 	url = https://github.com/Sarverott/hefaisto.git
     branch = master
+[submodule "MEDIAFILES"]
+	path = resources/mediafiles
+	url = https://gist.github.com/025bda4b967642107b88345c0e465b1a.git
+	branch = master

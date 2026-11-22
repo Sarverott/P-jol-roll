@@ -21,7 +21,29 @@ tasks:
     cmds:
       - npm run --silent hub -- push {{.CLI_ARGS}}
 
+  space:
+    desc: The space's Dockerfile from resources/configs/space into its local side; the release is not written in it but set by "task resources:space:refresh".
+    cmds:
+      - scripts/devops/release/space.sh local
+
+  space:refresh:
+    desc: 'The space set to a release and built again on huggingface: its variable P_JOL_ROLL_VERSION (space.env, the environment wins, else the newest tag), needs HF_TOKEN; e.g. P_JOL_ROLL_VERSION=0.18.0 task resources:space:refresh'
+    cmds:
+      - scripts/devops/release/space.sh refresh
+
+  prune:
+    desc: Delete on huggingface the files that are not here, name after "--" (dataset or space, never the bucket), needs HF_TOKEN; "task resources:plan" shows them first as "download".
+    prompt: This DELETES files on huggingface that are not in the local directory. Run "task resources:plan" first. Delete?
+    cmds:
+      - npm run --silent hub -- prune {{.CLI_ARGS}}
+
   merge:
     desc: Every source into the one bucket and the one dataset - sejm-dataset, sejm-bucket, saos-dataset moved inside (local only).
     cmds:
       - node src/devtools/merge.ts
+
+  media:
+    desc: The images of the gist (submodule resources/mediafiles) made into favicons, manifest icons, og.jpg and the extension's icons - needs ffmpeg; the results are committed.
+    cmds:
+      - git submodule update --init resources/mediafiles
+      - scripts/devops/media/build.sh

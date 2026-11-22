@@ -132,3 +132,23 @@ maintainer, with `ANSWER:` lines as replies; both stay.
 | `Dockerfile` | rewritten for what `src/` is now; the image was not built yet |
 | `scripts/hf-push.py`, `scripts/Taskfile.yml` | kept; `task resources:push` does the same job file by file |
 | `storage/` | queue of the first gatherer, hundreds of thousands of small files; nothing reads it now |
+
+## Images, icons, the card of a link
+
+The images of the project live in a gist of the owner, `MEDIAFILES`, tied
+in as the submodule `resources/mediafiles`. `task resources:media` (ffmpeg)
+makes what pages need out of them, and the results are committed, so no
+build needs ffmpeg or the submodule:
+
+| Made | From | Into |
+| --- | --- | --- |
+| `favicon.ico`, `favicon-16/32/48.png` | the lynx's head of `lex-polonis.png` | `src/web/public/` |
+| `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png` | the whole `lex-polonis.png` (256 colours) | `src/web/public/`, named in `src/app/manifest.json` |
+| `og.jpg`, 1200x630 | `p-jol-roll_edited-color.png` | `src/web/public/` |
+| `favicon.png`, `logo.png` | the lynx's head | `docs/assets/images/` (MkDocs) |
+| `icon-48/96/128.png` | the lynx's head | `src/firefox-ext/icons/` |
+
+The viewer (`src/web`), the introduction (`webpage/`, its `publicDir` is
+`src/web/public`) and the documentation (`docs/_mkdocs/overrides/main.html`)
+carry the favicon, `theme-color` and the Open Graph card, so a link shared
+on social media shows `og.jpg`.

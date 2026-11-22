@@ -1,0 +1,37 @@
+# The branch of a bot (dev/dependabot, dev/Jarvis) checked green by a dispatch of bots.yml:
+# the commit that was checked lands in development with a merge commit, and the branch is
+# brought up to it. Runs from master's copy of this file (workflow_run), and checks out only
+# development: nothing of the bot's branch runs here, it is only merged.
+name: "flow › bots: a checked branch lands in development"
+
+on:
+  workflow_run:
+    workflows: ["checks › verify"]
+    types: [completed]
+    branches: [dev/dependabot, dev/Jarvis]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bots-land
+  cancel-in-progress: false
+
+jobs:
+  land:
+    if: >-
+      github.event.workflow_run.conclusion == 'success'
+      && github.event.workflow_run.event == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with: { ref: development, fetch-depth: 0 }
+      - uses: actions/setup-node@v7
+        with: { node-version-file: .nvmrc }
+      - name: The checked commit into development, the branch brought up to it
+        env:
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: scripts/devops/flow/bot-land.sh "$BRANCH" "$SHA"

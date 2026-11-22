@@ -30,12 +30,24 @@ const line = (tag, text) => {
 	return node;
 };
 
+// only an http(s) host: a "javascript:" typed into the field never becomes a link
+function hostOf(value) {
+	try {
+		const url = new URL(value || DEFAULT_API);
+		if (url.protocol === "http:" || url.protocol === "https:")
+			return url.origin + url.pathname.replace(/\/+$/, "");
+	} catch {}
+	return undefined;
+}
+
 async function look(eli) {
 	const answer = $("answer");
 	answer.replaceChildren();
-	const api = ($("api").value || DEFAULT_API).replace(/\/$/, "");
+	const api = hostOf($("api").value);
+	if (!api)
+		return answer.append(line("p", "the host must be an http(s) address"));
 	try {
-		const response = await fetch(`${api}/api/acts/${eli}`);
+		const response = await fetch(`${api}/api/acts/${encodeURI(eli)}`);
 		if (response.status === 404)
 			return answer.append(line("p", `${eli} is not gathered in ${api}`));
 		const { act, files, markdown } = await response.json();
@@ -60,7 +72,11 @@ async function look(eli) {
 		]) {
 			if (!path) continue;
 			const link = line("a", label);
-			link.href = `${api}${path}`;
+			// the host's own path stays in front (a host may live under a path)
+			const safeHref = new URL(`${api}${path}`);
+			if (safeHref.protocol !== "http:" && safeHref.protocol !== "https:")
+				continue;
+			link.href = safeHref.toString();
 			link.target = "_blank";
 			links.append(link, " ");
 		}

@@ -5,6 +5,7 @@ task resources:plan -- dataset     # what differs; changes nothing
 task resources:pull -- dataset     # take files that are there and not here
 task resources:push -- dataset     # send files that are new or changed here; asks first
 task resources:push -- bucket --batch 500   # commits of 500 files
+task resources:prune -- space      # delete there what is not here; asks first; never the bucket
 ```
 
 The name after `--` is a key of `resources/.map.json`:
@@ -45,7 +46,7 @@ moved twice.
 ## What it never does
 
 - `push` never deletes a file on Hugging Face. A file removed here stays
-  there.
+  there - until `prune` is asked for by name.
 - `pull` never overwrites a local file.
 - `.git`, `node_modules`, `.venv`, `__pycache__` and `.part` files are never
   moved in any direction.
@@ -54,10 +55,52 @@ moved twice.
 
 Needs `HF_TOKEN` in the environment or in `.env`, with write access.
 
-Files go in commits of 100, titled `P-jol-roll: 100 files (300 of 5000)`.
-`--batch` changes the number. If a push stops in the middle, start it again:
+Files go in commits of 1000, titled `P-jol-roll: 1000 files (3000 of 14170)`.
+`--batch` changes the number. A repository on Hugging Face takes at most 128
+commits an hour; when it refuses one, the push says how long it waits, waits
+and sends the same commit again (with commits of 100, a push of 14170 files
+stopped at the 128th). If a push stops in the middle, start it again:
 the commits already made are on the other side, and the comparison skips
 their files.
+
+## Prune
+
+`task resources:prune -- space` deletes on Hugging Face every file that is
+there and not here - the files `plan` lists as `download`. Look at them
+first with `task resources:plan -- space`. It goes in commits of 1000, waits
+out the hourly limit as push does, and asks before it starts. It refuses the
+bucket: raw files may live on one machine only.
+
+It was made for the space, which kept `app.py`, `development.md` and
+`requirements.txt` of its marimo days after it became a Docker space. On the
+dataset, prune only after a `pull`, or it deletes what this machine never
+took.
+
+## The space after a release
+
+A restart of the space builds nothing new: Hugging Face keeps the image it
+had. Since phase 22 the release is not written into the space's
+`Dockerfile`: it is kept in git as `resources/configs/space/Dockerfile` and
+takes the release as a build argument, `P_JOL_ROLL_VERSION`. Hugging Face
+passes the variables of a space to its build as build arguments, so a
+release sets that variable and asks for a fresh build:
+
+```sh
+task resources:space               # once: the Dockerfile of resources/configs/space into resources/space
+task resources:push -- space       # once: that Dockerfile on the space
+task resources:space:refresh       # the variable set to the newest release, the space built again (HF_TOKEN)
+```
+
+The release workflow runs the last step by itself after the image is on
+ghcr.io, when the repository has the secret `HF_TOKEN`; without it the job
+says so and the space keeps what it has. `resources/configs/space/space.env`
+names the space and may pin a release; an environment variable wins over
+it (`P_JOL_ROLL_VERSION=0.18.0 task resources:space:refresh`).
+
+The space mounts the bucket at `/data`, the place where the image keeps its
+cache and logs by default. Its `Dockerfile` moves both to `/tmp`
+(`RESOURCES_DIR`, `LOG_DIR`); without that line every page read is written
+into the bucket as `resources/` and `logs/` (phase 20).
 
 ## Which data goes where
 
@@ -83,9 +126,9 @@ year in a file wherever it can.
 `task text` writes one markdown file per act with HTML. The listings say
 39,110 acts have HTML (all in Dziennik Ustaw, counted on 2026-10-13), in
 folders of a year each, so the dataset stays inside these recommendations.
-If parsing of PDF is added later and every act gets a markdown file, that
-becomes 164 thousand files and the texts should then be packed a year in a
-file.
+Parsing of PDF came in phase 12: with `task text -- --pdf` almost every act
+gets a markdown file, about 164 thousand files, and the texts should then be
+packed a year in a file: Q16 of the devlog asks it before they are pushed.
 
 ## What was tested
 

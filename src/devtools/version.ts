@@ -6,33 +6,32 @@
 // As in the BOS core (`bos flow bump-commit`, `bos flow merge-version`), without needing `bos` installed.
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { at, ROOT } from "../core/paths/at.ts"; // NOTE: i love that one! bring it to core for be used in future and import that `at` here. it can bbe declared in separed file
 
-const root = fileURLToPath(new URL("../../", import.meta.url));
-const at = (file: string) => `${root}${file}`;
+// ANSWER: done - src/core/paths/at.ts (with ROOT), used here, in init.ts and in src/cli/tasks.ts
 const SEMVER = /^(\d+)\.(\d+)\.(\d+)$/;
 
-// files that carry a copy of the version, and where in them it stands
+// files that carry a copy of the version, and where in them it stands: what is before the
+// version, the version between quotes, what is after (kept by $1 and $2 when it is written)
+const QUOTED = String.raw`\s*")[^"]+(")`;
+const field = (before: string, flags = "") =>
+	new RegExp(`(${before}${QUOTED}`, flags);
+// a project of uv: its pyproject.toml and the line of the project itself in uv.lock
+const PYTHON = field(String.raw`^version\s*=`, "m");
+const LOCKED =
+	/(\nversion = ")[^"]+("\nsource = \{ (?:virtual|editable) = "\." \})/;
 const COPIES: [string, RegExp][] = [
-	["src/firefox-ext/manifest.json", /("version":\s*")[^"]+(")/],
-	["src/openapi/spec.ts", /(version:\s*")[^"]+(")/],
-	["src/mcp/main.ts", /(name:\s*"p-jol-roll",\s*version:\s*")[^"]+(")/],
-	["docs/pyproject.toml", /(^version\s*=\s*")[^"]+(")/m],
-	[
-		"docs/uv.lock",
-		/(\nversion = ")[^"]+("\nsource = \{ (?:virtual|editable) = "\." \})/,
-	],
-	["examples/pyproject.toml", /(^version\s*=\s*")[^"]+(")/m],
-	[
-		"examples/uv.lock",
-		/(\nversion = ")[^"]+("\nsource = \{ (?:virtual|editable) = "\." \})/,
-	],
-	["scripts/pyproject.toml", /(^version\s*=\s*")[^"]+(")/m],
-	[
-		"scripts/uv.lock",
-		/(\nversion = ")[^"]+("\nsource = \{ (?:virtual|editable) = "\." \})/,
-	],
+	["src/firefox-ext/manifest.json", field('"version":')],
+	["src/openapi/spec.ts", field("version:")],
+	["src/mcp/server.ts", field(String.raw`name:\s*"p-jol-roll",\s*version:`)],
+	...["docs", "examples", "scripts"].flatMap((dir): [string, RegExp][] => [
+		[`${dir}/pyproject.toml`, PYTHON],
+		[`${dir}/uv.lock`, LOCKED],
+	]),
 ];
+
+// NOTE: patterns are repeatable and instead of multiple copies we can use reusable subpatterns of regexp - pattern `\s*")[^"]+(")/` is almost in every field of version checkers
+// ANSWER: done - QUOTED is that part, field() builds a pattern of it; the python projects share theirs
 
 const readJson = (path: string) => JSON.parse(readFileSync(path, "utf8"));
 const writeJson = (path: string, value: unknown) =>
@@ -79,7 +78,7 @@ function sync() {
 }
 
 const git = (...args: string[]) =>
-	execFileSync("git", args, { cwd: root, encoding: "utf8" }).trim();
+	execFileSync("git", args, { cwd: ROOT, encoding: "utf8" }).trim();
 
 // "dev/*" -> every branch that starts with "dev/"
 const matches = (branch: string, pattern: string) =>

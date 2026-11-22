@@ -144,7 +144,9 @@ act changes, repeals or carries out which. The examples above are shortened.
 - **HTML** exists only for some acts. In the listing of 2026 none of 1321
   acts had it (checked on 2026-10-13).
 
-HTML is turned into markdown by `task text`. PDF is not parsed yet.
+HTML is turned into markdown by `task text`. `task text -- --pdf` also reads
+the text layer of the PDF of every act without HTML (phase 12, PP2): 125,759
+of 165,006 acts. See [processing](processing.md#texts-of-pdfs).
 
 ## Checkups
 
@@ -163,7 +165,7 @@ See [checkup](checkup.md#what-it-writes).
 
 ## What it is not
 
-- **Not legal advice**, and not a statement of the law in force today. An
+- **Not (formally) legal advices**, and not a statement of the law in force today. An
   act marked `obowiązujący` may have been amended many times; the published
   text of an act is the text of the day it was published. The current
   wording of a statute is in its newest consolidated text (`tekst
@@ -179,8 +181,8 @@ See [checkup](checkup.md#what-it-writes).
 
 Polish copyright law does not cover normative acts and official documents
 (article 4 of the act of 4 February 1994 on copyright and related rights),
-so the texts of acts can be copied and shared. This is my reading and not
-legal advice; the terms of the API itself were not found written anywhere.
+so the texts of acts can be copied and shared. This is my reading and not (formally)
+legal advices; the terms of the API itself were not found written anywhere.
 [`TODO`: confirm the terms with the source]
 
 The code of this repository is AGPL-3.0-only. The license of the dataset on

@@ -83,3 +83,45 @@ test("raw files are read on the bucket, not passed through the demo", async () =
 	expect((await get("/api/acts/DU/1918/2/file/.html")).status).toBe(404);
 	expect((await get("/api/acts/DU/1918/9")).status).toBe(404);
 });
+
+test("an address that is not a plain path never reaches Hugging Face or the disk", async () => {
+	const { inside } = await import("../src/core/reading/remote.js");
+	expect(inside("/r/dataset", "acts/DU/2026.jsonl")).toBe(
+		"/r/dataset/acts/DU/2026.jsonl",
+	);
+	for (const path of [
+		"../secrets/x",
+		"acts/../../x",
+		"/etc/passwd",
+		"acts/%2e%2e/x",
+		"acts//x",
+		"",
+	])
+		expect(inside("/r/dataset", path)).toBeUndefined();
+
+	asked.length = 0;
+	// a raw request, so ".." is not folded by the client
+	const raw = await new Promise<number>((done) => {
+		const port = new URL(url).port;
+		import("node:net").then(({ connect }) => {
+			const socket = connect(Number(port), "127.0.0.1", () =>
+				socket.write(
+					"GET /api/acts/../1918 HTTP/1.1\r\nHost: x\r\nConnection: close\r\n\r\n",
+				),
+			);
+			let text = "";
+			socket.on("data", (chunk) => {
+				text += chunk;
+			});
+			socket.on("end", () => done(Number(text.split(" ")[1])));
+		});
+	});
+	expect(raw).toBeGreaterThanOrEqual(400);
+	expect(asked.filter((path) => path.includes(".."))).toEqual([]);
+	expect(asked).not.toContain("/dataset/1918.jsonl");
+});
+
+test("answers carry the rate limit of an address (RATE_LIMIT a minute)", async () => {
+	const answer = await get("/api/journals");
+	expect(answer.headers.get("ratelimit-policy") ?? "").toMatch(/q=600/);
+});

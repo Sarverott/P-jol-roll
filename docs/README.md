@@ -2,6 +2,8 @@
 
 Polish **Journals of Laws resources operational lurker loader** - complex set of tools to handle datamining, crawling and parsing of all law documents released as published by polish goverment national legal code, package of approved acts or available constitution version
 
+[![P_JOL_ROLL___BANNER_IMAGE](https://gist.githubusercontent.com/Sarverott/025bda4b967642107b88345c0e465b1a/raw/6cf448f5ef52a55ba8efb94e6d95e65f4df4954d/p-jol-roll_edited-color.png)](https://sarverott.github.io/P-jol-roll/)
+
 
 ## The idea
 
@@ -16,7 +18,7 @@ judgments that apply it. The far goal is a small model and an agent that
 read all of it: an open **devil's advocate for every person**
 ([vision](devlog/VISION.md)).
 
-Nothing here is legal advice. See [what the data is and is not](guides/data.md#what-it-is-not).
+Not (formally) legal advices. See [what the data is and is not](guides/data.md#what-it-is-not).
 
 ## State
 

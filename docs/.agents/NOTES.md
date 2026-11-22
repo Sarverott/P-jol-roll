@@ -4,6 +4,153 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-22 · Cleo · phase 22: every function everywhere, a viewer that shines
+
+- The map of functionalities (`docs/devlog/scrapnote-1795373814912.md`)
+  found the terminals reading nothing, the launcher speaking in Taskfiles,
+  half of the dataset shown nowhere and every way declaring its functions
+  on its own. The patch is one catalog (`src/core/catalog/`) every way
+  takes its functions from; `docs/guides/functions.md` is written from it
+  and shows the holes left: mostly writing functions on hosts (Q19), and
+  MCP without search and the map.
+- Rule 4 and the owner's "every function in every interface" disagree for
+  hosts: asked as Q19, nothing settled in code - the viewer shows writing
+  functions disabled, as the owner asked for the space.
+- The space's `Dockerfile` takes the release as a build argument; that a
+  space's variables reach the build as arguments is from Hugging Face's
+  documentation, not tried here (no token was used).
+- In the remote mode the data tab knows only terms of Sejm and months of
+  judgments already cached: the space reads directories, and the dataset
+  has no index of them yet. Statistics reach the demo once `task stats`
+  writes `dataset/statistics/acts.json` and the dataset is pushed.
+- 186 new texts collected; the Polish of 28 corrected by me and marked
+  `reviewed` in the pack (argostranslate had "play" as a game, "prints" as
+  fingerprints, "plots" as plots of land); German and Ukrainian are machine
+  work.
+- `@mcp-b/global` pinned to 6.0.3 and p5 to 2.3.4, both older than two
+  weeks. The first landed in the commit of "Terms of use" (the hook of
+  versions staged `package.json` there), not in the one of WebMCP.
+- My `pgrep -f "http.server 8193" | xargs kill` matched its own shell once
+  more; only the preview server and that shell ended. Next time: by the
+  pid of `ss -ltnp`.
+
+## 2026-11-22 · Cleo · phase 21: the owner's notes across src
+
+- The owner judged the code "not bad but could be better" and left notes
+  in it. What they ask for, kept for the next code: imports on top of a
+  Vue script (heavy parts by `defineAsyncComponent`, not `import()` in a
+  function), named handlers above the code that wires them, one home per
+  concern (colours, graph, socket, state), helpers shared not copied, data
+  in yaml, small components. Each note is answered next to itself.
+- The space was already pushed by the owner with phase 20's `Dockerfile`
+  (image 0.17.0); the bucket had 12 files of its cache written before the
+  rebuild, deleted. Nothing written there since.
+- Biome's HTML support (`html.experimentalFullSupportEnabled`) formats and
+  lints templates and styles of `.vue`, `.astro` and `.html`, but breaks
+  some attributes that hold strings when it writes (almanac
+  `biome-html-quotes`); and the Jinja of MkDocs is not HTML.
+- Two api servers over the full dataset take every inotify watch of the
+  user; `fs.watch` then fails silently and no notice is sent (almanac
+  `inotify-watches`). My `pkill -f <pattern>` killed its own shell twice -
+  nothing else; Sett's api (pid 3873288) stayed up.
+- `task workflows:web` was run once without `--noBrowser` reaching it (the
+  task dropped arguments), so it may have opened a browser tab on the
+  owner's desktop around 17:14. Arguments reach it now.
+- The viewer checked in headless Chromium (acts, an act, the map, a link
+  `#act/DU/2026/2`, Polish); the desktop app by `task desktop:check`, with
+  every window hidden; MCP over stdio, over `/mcp`, and the 2025 way by
+  curl.
+
+## 2026-11-22 · Cleo · phase 18: after v0.15.0, the almanac
+
+- The release of v0.15.0 (run 45005803900) failed in the image build, in
+  `tsc`: `.dockerignore` kept `resources/locales/` out. The owner read it as
+  CodeQL stopping the container; CodeQL fails nothing, its alerts only
+  appeared at the same time. Built here and served from the image.
+- The owner's push (log-1795338475468) died at 1000 of 114433: Hugging Face
+  refused `texts/MP/2025/WMP20250000029.md` as binary. 2205 texts held
+  control characters from pdftotext (unmapped glyphs, mostly byte 3 on
+  lines of their own). They are made again by the next `task text -- --pdf`,
+  which reads each old text once to find them; push holds back any left.
+- CodeQL: 15 alerts, one real flow - a journal `..` in the remote mode
+  reached a local path and the address fetched from Hugging Face (writes
+  stayed inside `resources/`, the host was fixed). The rest: same flow from
+  `writeWhole()`, the extension's host as a link, the devtool's server, no
+  rate limit, the npm cache of checks of `dev/dependabot`.
+- The other logs of that run: `text` 114207 from PDF, 1428 scans, 2 damaged
+  (DU/1932/38, DU/2007/189); `map` made `statutes` and `in-force`, the
+  preset by meaning had 0 acts (no `task embed` yet); `seal` and `compile`
+  had nothing new. No errors besides the push.
+- The almanac follows BOS's `docs/almanac/` (its README's sections) and its
+  `src/core/patterning.ts`; only cataclistics, solutions, patterning and
+  rulesets are used here. 22 cases from the notes and changelogs.
+
+## 2026-11-22 · Cleo · Q15, Q16: phases 15, 16, 17
+
+- The owner's PDF run stopped on DU/1932/38 (zeros to its end, checksum as
+  recorded): a damaged PDF is now listed with its error. Whether the source
+  serves it so is in things-to-check.md.
+- The demo already ran 0.11 (the owner pinned the Dockerfile); "updates not
+  presented" was the space keeping app.py and the rest: push never deleted.
+  `task resources:prune` and `task resources:space` are built, not run -
+  they write to Hugging Face, which is the owner's.
+- Translations: the owner's idea holds (tests on linkedom and jsdom, both
+  pages and the docs in a browser). Traps met: Vite's glob skips dotfiles
+  (.index.json imported by name); linkedom reports no characterData
+  mutations (jsdom does, as browsers); argos transliterates letters in
+  Ukrainian but never numbers, so names and identifiers stand in as
+  numbers; a number in a template is filled with one digit, so SHA-256
+  needed its own pattern. The packs are machine translations - not read by
+  a person; Polish is the one the owner can review first.
+- Embeddings: bge-m3 by `ollama serve` on the RTX 3060, DU 2020 only, in a
+  scratch copy. Typesense here got those 2453 vectors (field added by PATCH)
+  - a local test index, the owner's `task search:index` after `task embed`
+  makes the real one. Ollama and Typesense were stopped afterwards.
+- hyparquet reads snappy only without an extra package, so embed.py writes
+  snappy.
+
+## 2026-11-22 · Cleo · phases 12, 13, 14
+
+- PDF texts: pdftotext keeps the two columns apart; most old PDFs are scans
+  with Adobe Paper Capture's recognised text, kept uncorrected, the producer
+  in the record. About 1 in 100 PDF-only acts has no text layer (sample of
+  300). Some PDFs keep the producer as UTF-16 without its mark - repaired,
+  the last letter of an odd length is lost. Not run over the whole bucket:
+  tried on DU 1953 and MP 2021 in a copy, so the dataset is untouched.
+  Q16 asks whether texts go packed a year in a file before any push.
+- Media: the owner's first staged pointer of resources/mediafiles was the
+  gist's empty first commit; committed the one with the graphics as a
+  second change. Biome formatted the gist's .index.json and failed task
+  check - the submodule is excluded now.
+- Sigma 4 hides an edge by `visibility: "hidden"`, not `hidden: true`, and
+  an 8-digit short hex colour renders wrong. The api of sigma for the
+  position of a node: graphToViewport(graph.getNodeAttributes(node)).
+- Maps were made in a scratch copy (symlinks to acts and references), not
+  in resources/dataset/map/ - `task map` there is the owner's, as it goes to
+  the dataset. Typesense was started here, filled from the local dataset
+  (resources/.containerdatavol/typesense) and stopped.
+- Mermaid adds about 6 MB of lazily loaded chunks to dist/web; they load
+  only when an act has ties.
+
+## 2026-11-22 · Cleo · after the merges, phase 11
+
+- Logs: the owner's `hub push dataset` (log-1795316429823) crashed at 12800
+  of 14170: Hugging Face takes 128 commits an hour per repository, the push
+  made one per 100 files. Fixed (waits, retries; commits of 1000). The rest,
+  1370 files, goes with the next push.
+- Run 44977583906 (Dependabot, certifi on master) failed: master already
+  has certifi 2026.11.20, there was nothing to update. Run 44977067595 (#26,
+  uv-build) failed to land on a conflict in `scripts/uv.lock`; the owner's
+  #27 landed it by hand. Nothing left to do.
+- The demo space is RUNNING in the remote mode: journals, a year, an act
+  and its text answer. It still holds `app.py` and `requirements.txt` of
+  the marimo days - push never deletes, so removing them is the owner's.
+- CodeQL (`codeql.yml`, the owner's) runs on master and pull requests to
+  it; the repository is private, so code scanning needs GitHub Code
+  Security there - not verified, its first run will tell.
+- 125759 of 165006 acts have only a PDF: PP2. The owner's images: PP3.
+  The posts for social media were not found on this machine.
+
 ## 2026-11-22 · Cleo · orders, phase 10
 
 - Dependabot's first pull request (#18) failed in the merge job: it

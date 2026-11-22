@@ -3,11 +3,16 @@
 #   task init                                      generates the key: resources/secrets/litellm_master_key
 #   docker compose --profile llms up -d            ->  http://127.0.0.1:4000 (key in that file)
 #   docker compose --profile llms exec llms-ollama ollama pull qwen3:4b
+#   docker compose --profile llms exec llms-ollama ollama pull bge-m3   (task embed, phase 17)
 # Models stay in resources/.containerdatavol/ollama/. OLLAMA_TOKEN in .env is not needed here.
 services:
   llms-ollama:
     profiles: [llms]
     image: ollama/ollama:0.40.17
+    # for task embed and the search by meaning (phase 17) - the same address as "ollama serve"
+    # on the machine; one of the two runs
+    ports:
+      - "127.0.0.1:11434:11434"
     volumes:
       - ./resources/.containerdatavol/ollama:/root/.ollama
     restart: unless-stopped

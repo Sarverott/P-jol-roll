@@ -119,3 +119,126 @@ The inquiries of 2026-11-22, the third (changelog phase 10).
 - [x] The demo reads the prepared dataset: the server in a remote mode (`DATASET_URL`, `BUCKET_URL`) takes only what a page needs from the dataset on Hugging Face - `lists/publishers.json`, the acts of a year, one act's details, records and markdown - and sends readers of raw files to the bucket; local use stays as it is (`lists/index.json` turned out to be the index of the API, not of the dataset)
 - [x] `examples/`: Jupyter notebooks of using the project from Python, turned into marimo notebooks and exported as static pages with the website
 - [x] The main page tells a newcomer the whole scope: what is gathered, where it is, the demo, the examples, how to start
+
+## Phase 11: what the first big push showed
+
+Found in the logs on 2026-11-22: the owner's push of the dataset stopped at 12800 of 14170 files.
+
+- [x] `hub push` waits out the refusal of Hugging Face (128 commits an hour) and sends the same commit again; commits of 1000 files instead of 100
+
+## Phase 12: texts of acts that have only a PDF
+
+PP2, approved in the chat on 2026-11-22 (changelog phase 12). 125759 of 165006 acts have only a PDF.
+
+- [x] `task text -- --pdf`: the text layer of every PDF-only act into `dataset/texts/<journal>/<year>/<address>.md`, with the checksums of both files, the same as markdown from HTML
+- [x] PDFs without a text layer (scans) named in a list in the dataset, not guessed; OCR left for later
+- [x] The readers (api, MCP, demo) show a PDF's text where there is no HTML, saying where it came from
+- [x] Texts packed a year in a file, or not (Q16): a file per act stays, pushed 1000 a commit, 128 commits an hour
+- [x] A damaged PDF stops nothing: what poppler still reads is kept, or the PDF is named in the list of scans with its error (DU/1932/38 stopped the owner's run)
+
+## Phase 13: images, icons and what links show
+
+PP3, partly solved by the owner (the gist submodule `resources/mediafiles`); the rest asked in the chat on 2026-11-22 (changelog phase 12).
+
+- [x] Scripts with ffmpeg that make, from `resources/mediafiles`, favicons, icons of the web app manifest and an `og:image`, into the places each site takes them from
+- [x] The main page, the website of the viewer, the docs and the demo carry them: favicon, manifest, `og:image` and the rest of the meta that makes a shared link show a card
+
+## Phase 14: a friendlier webapp
+
+Asked in the chat on 2026-11-22 (changelog phase 12). Embeddings wait for Q15.
+
+- [x] Bulma for the layout of the viewer
+- [x] A minimap of an act's ties in a corner (Cytoscape.js)
+- [x] Relations of an act drawn the same way everywhere (mermaid.js)
+- [x] A map of the whole law of Poland from the dataset, with presets (sigma.js)
+- [x] Search with Typesense: a service of its own, filled from the dataset, read by the api
+
+## Phase 15: the space and the push, as the owner met them
+
+The owner's answer to Q16 (changelog phase 12): the space kept files of its marimo days, a push stopped on a damaged PDF.
+
+- [x] `task resources:prune`: files there that are not here are deleted there, after a question, never in the bucket (the space keeps `app.py`, `development.md`, `requirements.txt`)
+- [x] The space's Dockerfile follows the releases: `task resources:space` writes the version of the release into it
+- [x] `hub plan` and the rest without a name say which names there are, instead of crashing
+
+## Phase 16: translations
+
+Q15, answered 2026-11-22 (changelog phase 12).
+
+- [x] Check the owner's idea first: text nodes of a page found by a SHA-256 of their text, replaced from a language pack, without rewriting the page; a note of what works and what does not
+- [x] `resources/locales/`: language packs as JSON (`EN-US.json` and the rest), listed in `.index.json` with EN-US the default
+- [x] Python scripts with argostranslate that make the packs from the English texts (`task i18n:collect`, `task i18n:translate`; PL-PL, UK-UA, DE-DE)
+- [x] The packs used by the viewer (GUI) and the introduction, with a switch of language
+- [x] The documentation translated when the website is built, into `/docs/<language>/`, with a list of languages in every page (guides, glossary, home; the owner's words stay as written)
+- [x] The launcher (TUI) and the manuals of the CLI in the language of the terminal (`P_JOL_ROLL_LANG`, else `LANG`): `tr()`, task descriptions included
+
+## Phase 17: embeddings
+
+Q15, answered 2026-11-22: after phase 12, a small local multilingual model.
+
+- [x] Vectors of the texts by a small local multilingual model, kept in the dataset beside the texts (`task embed`, Ollama, bge-m3)
+- [x] Search by meaning through them (Typesense takes vectors) and acts placed by meaning on the map (`meaning=1`, the preset `statutes-in-force-by-meaning`)
+
+## Phase 18: what broke after v0.15.0, and the almanac
+
+The owner's message, 2026-11-22 (changelog phase 18).
+
+- [x] The image of webapp-server builds again: the language packs go into it
+- [x] Texts hold no control characters (Hugging Face refused them as binary); texts made before are made again once, and push holds back any left
+- [x] CodeQL alerts resolved: paths of the remote mode, parts of addresses, a rate limit, the extension's host, the folder server of i18n, the npm cache of checks
+- [x] `docs/almanac/`: the cases met so far as issues ready for GitHub, the topics they belong to, a FAQ, and the rulesets and chains of events as in BOS
+- [x] The almanac's mechanics in code: chains recalled by their events and the next event predicted (`task almanac:recall`), issues opened from the cases by the owner (`task almanac:issues`)
+
+## Phase 19: Jarvis joins
+
+The owner's message, 2026-11-22 (changelog phase 19).
+
+- [x] Copilot's pull requests (#31-#33) merged into its own branch `dev/Jarvis`, and that branch into `development`
+- [x] One flow for the bots (`bots.yml`, `bots-land.yml`): a pull request of Dependabot or Jarvis turned to its branch, merged, the branch checked by a dispatch of its own commit and landed in `development`; checks never take a ref from outside (CodeQL cache poisoning)
+- [x] Jarvis written in: `.github/AUTHORS`, `AGENTS.md`, its guide `.github/copilot-instructions.md`, prompts in `.github/prompts/`, its machine in `copilot-setup-steps.yml`, and `docs/.agents/jarvis.md` kept for it
+
+
+## Phase 20: the bucket tidied, the banner
+
+The owner's message, 2026-11-22 (changelog phase 20).
+
+- [x] `dev/Copilot`, `dev/Copilot-2`, `dev/Copilot-3` deleted, merged in `dev/Jarvis` before
+- [x] The space keeps its cache and logs off the bucket it mounts at `/data` (`task resources:space` writes it); the 25945 files it had written there (`resources/`) deleted
+- [x] The almanac: the case of the space writing into the bucket, its chain and its line in the topic (the banner, Sett's, landed from `dev/Sarverott`; the image is already in `resources/mediafiles`)
+
+## Phase 21: the owner's notes across src
+
+The owner's message, 2026-11-22, and the notes left in the code
+(changelog phase 21).
+
+- [x] Biome formats what is committed and merged, and checks what is pushed (`pre-commit`, `pre-merge-commit`, `pre-push`)
+- [x] `at()` in core for every script, and the version patterns built from one part
+- [x] The viewer's assets: one colour picker, one graph maker, socket.io in its own file; the map with its imports on top, named handlers and its blocks as components
+- [x] The viewer split: layout, screens (acts, an act, the map) and their tabs, the minimap on both screens of acts; Biome formats and lints the templates and styles too
+- [x] Translations of the pages: only what is marked by the `i18n-texts-*` classes
+- [x] SHA-256 of the language packs made readable
+- [x] MCP: a folder per tool, answers shared, one server for stdio and for http - `/mcp` of webapp-server, so the space serves it too
+- [x] The website's data from yaml; `robots.txt`, `sitemap.xml`, `llms.txt`
+- [x] The introduction's data from yaml, and the page split into components
+- [x] The web interface of the workflows finds the workflows
+- [x] The desktop app split into the modules laid out
+
+## Phase 22: every function everywhere, a viewer that shines
+
+The owner's inquiries and orders, 2026-11-22 (changelog phase 22).
+
+- [x] The plan: the owner's words in the changelog, Q17 and Q18 decided, PP4 (ESP32 mesh nodes), the law mastermind in VISION and ROADMAP, Q19 asked
+- [x] "Not (formally) legal advices" everywhere "not legal advice" was said (Q18)
+- [x] The space follows each release by itself: its version a build argument kept in a config file, set by a task (the environment wins) and by the release workflow
+- [x] A map of the functionalities: every way the project runs, what each can do, the holes (a scrapnote)
+- [x] One catalog of functions in core, which every interface offers: the launcher, the REPL, the commands, the api; the map of functions written from it
+- [x] The launcher easier to use: by what a person wants to do, parameters asked one by one, help that explains
+- [x] The viewer: credits behind "Terms of use" - the authors, the licence, the links of the project
+- [x] The viewer: the map zooms in and out, fits, and finds an act
+- [x] The viewer: more of the dataset in tabs - the work of Sejm and the lists of the source
+- [x] The viewer: plots, and statistics with a playable history of the law (a histogram with a slider, play and pause, speed)
+- [x] The viewer: settings, and every function of the catalog - disabled where the host may not (Q19)
+- [x] The viewer: WebMCP, the reading tools for an agent in the browser
+- [x] The desktop app prints the act from the window and the tray (Q17)
+- [x] The main webpage: a p5.js background with the logo, text kept readable
+- [x] The new words in every language pack; docs, almanac and AGENTS.md rows

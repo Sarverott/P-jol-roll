@@ -15,6 +15,7 @@ includes:
   unittesting: ./tests/unittesting/Taskfile.yml
   flow: ./scripts/devops/Taskfile.yml
   docs: ./docs/Taskfile.yml
+  almanac: ./docs/almanac/Taskfile.yml
   examples: ./examples/Taskfile.yml
   devlog:
     taskfile: ./docs/devlog/Taskfile.yml
@@ -49,6 +50,16 @@ tasks:
       - task --list
     silent: true
 
+  do:
+    desc: 'Every function of the project from here (the catalog, src/core/catalog) - "task do" names them, "task do -- help acts" says what one takes, "task do -- acts MP 2025 query=podatek" reads, "task do -- gather 2026 --acts" runs its task.'
+    cmds:
+      - npm run --silent do -- {{.CLI_ARGS}}
+
+  functions:map:
+    desc: The map of functions, docs/guides/functions.md, written from the catalog - every function and every way the project runs.
+    cmds:
+      - npx tsx src/core/catalog/map.ts
+
   init:
     desc: First launch on this machine - checks what is installed, makes .env from .env.example, generates secrets; once (task init -f again).
     cmds:
@@ -82,10 +93,40 @@ tasks:
     cmds:
       - npm run --silent compile
 
-  text:
-    desc: Markdown from gathered html texts, with checksums of both and address of source.
+  map:
+    desc: The map of the whole law - acts of each preset placed by ForceAtlas2 into dataset/map/ (task map -- statutes-in-force for one).
     cmds:
-      - npm run --silent text
+      - npm run --silent map -- {{.CLI_ARGS}}
+
+  stats:
+    desc: The acts counted year by year, by type and status, into dataset/statistics/acts.json - the viewer's plots and history read it on the demo space.
+    cmds:
+      - npm run --silent stats
+
+  search:index:
+    desc: Every act into Typesense (start it - docker compose --profile search up -d typesense); "task search:index -- --texts" with the beginning of each text.
+    cmds:
+      - npm run --silent search -- index {{.CLI_ARGS}}
+
+  i18n:collect:
+    desc: The English of the introduction and the viewer, read through the built pages in a headless browser, into resources/locales/EN-US.json (build both first).
+    cmds:
+      - npx tsx src/devtools/i18n.ts
+
+  i18n:translate:
+    desc: The other language packs of resources/locales/ made from EN-US.json by argostranslate (Python, models downloaded once); "-- PL-PL" for one.
+    cmds:
+      - uv run --script scripts/i18n/translate.py {{.CLI_ARGS}}
+
+  embed:
+    desc: Vectors of the texts by a local multilingual model of Ollama (EMBED_MODEL, bge-m3) into dataset/embeddings/ - "task embed -- 2026" for some years; Ollama must run.
+    cmds:
+      - uv run --script scripts/embeddings/embed.py {{.CLI_ARGS}}
+
+  text:
+    desc: Markdown from gathered html texts, with checksums of both and address of source; "task text -- --pdf" also from PDFs of acts without html (poppler).
+    cmds:
+      - npm run --silent text -- {{.CLI_ARGS}}
 
   sejm:
     desc: Work of Sejm - processes and prints of a term, arguments after "--" (e.g. task sejm -- 10 --files --limit 50).

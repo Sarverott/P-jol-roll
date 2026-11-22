@@ -7,12 +7,14 @@ import { pipeline } from "node:stream/promises";
 import type { ReadableStream as WebStream } from "node:stream/web";
 import { pathToFileURL } from "node:url";
 import {
+	deleteFiles,
 	downloadFile,
 	listFiles,
 	type RepoDesignation,
 	uploadFiles,
 } from "@huggingface/hub";
 import log from "../logging/setup.js";
+import { hasControl } from "../parsing/pdf.js";
 import type { HuggingfaceScope } from "../vars/interfaces/index.js";
 import type { HuggingfaceScope as HuggingfaceTypes } from "../vars/types/index.js";
 import { RESOURCES_DIR } from "./store.js";
@@ -42,7 +44,11 @@ export function target(name: string) {
 		readFileSync(join(RESOURCES_DIR, ".map.json"), "utf8"),
 	);
 	if (!map[name])
-		throw new Error(`${name} is not in .map.json: ${Object.keys(map)}`);
+		throw new Error(
+			name
+				? `${name} is not in .map.json - one of: ${Object.keys(map).join(", ")}`
+				: `name a repository after the action - one of: ${Object.keys(map).join(", ")}`,
+		);
 	return { repo: repoOf(map[name]), dir: join(RESOURCES_DIR, name) };
 }
 
@@ -125,12 +131,75 @@ export async function plan(name: string) {
 	return { repo, dir, ...difference };
 }
 
+/*
+Huggingface lets a repository take 128 commits an hour; the 129th is refused with 429 and
+"You can retry this action in about 1 hour". The push of 14170 files in commits of 100 died
+there (2026-11-22). Such a refusal is waited out and the same commit is tried again; the time
+is read from the message, an hour when it names none.
+*/
+export function rateLimitWait(error: unknown): number | undefined {
+	const status = (error as { statusCode?: number })?.statusCode;
+	const message = error instanceof Error ? error.message : String(error);
+	if (status !== 429 && !/rate limit/i.test(message)) return undefined;
+	const named = message.match(/about (\d+|an?) (second|minute|hour)/i);
+	if (!named) return 3_600_000;
+	const count = /^\d+$/.test(named[1]) ? Number(named[1]) : 1;
+	const unit = { second: 1_000, minute: 60_000, hour: 3_600_000 }[
+		named[2].toLowerCase() as "second" | "minute" | "hour"
+	];
+	return count * unit + 60_000; // a minute more, so the hour has surely passed
+}
+
+const sleep = (ms: number) => new Promise((done) => setTimeout(done, ms));
+
+// one commit, sent again after the wait when Hugging Face refuses it for its hourly limit
+async function committed(
+	repo: RepoDesignation,
+	count: number,
+	commit: () => Promise<unknown>,
+	wait: (ms: number) => Promise<unknown>,
+) {
+	for (;;) {
+		try {
+			return await commit();
+		} catch (error) {
+			const ms = rateLimitWait(error);
+			if (ms === undefined) throw error;
+			log.warning(
+				`${repo} takes no more commits for now - waiting ${Math.round(ms / 60_000)} min, then the same ${count} files again`,
+				{ repo, waitMs: ms },
+			);
+			await wait(ms);
+		}
+	}
+}
+
+/*
+A text holding control characters is taken by Hugging Face as a binary file, and the whole
+commit of 1000 files is refused for it (2026-11-22: texts/MP/2025/WMP20250000029.md, the
+push died at 1000 of 114433). Such texts are held back and named before anything is sent;
+task text makes them clean again (docs/almanac/cataclistics/hub-binary-text.md).
+*/
+const TEXTS = /\.(md|txt|csv|tsv)$/i;
+export function heldBack(dir: string, paths: string[]) {
+	return paths.filter(
+		(path) =>
+			TEXTS.test(path) && hasControl(readFileSync(join(dir, path), "utf8")),
+	);
+}
+
 // files that are new or changed here go there, in commits of {batch} files;
-// nothing is ever deleted there
-export async function push(name: string, batch: number) {
+// nothing is deleted there - that is prune()
+export async function push(name: string, batch: number, wait = sleep) {
 	if (!accessToken) throw new Error("HF_TOKEN is missing");
 	const { repo, dir, upload, changed, same } = await plan(name);
-	const paths = [...upload, ...changed];
+	const held = new Set(heldBack(dir, [...upload, ...changed]));
+	if (held.size)
+		log.warning(
+			`${held.size} texts hold control characters and stay here - task text -- --pdf makes them again`,
+			{ repo, held: held.size, first: [...held].slice(0, 10) },
+		);
+	const paths = [...upload, ...changed].filter((path) => !held.has(path));
 	log.info(`${repo}: ${paths.length} to send, ${same} already there`, {
 		repo,
 		send: paths.length,
@@ -139,18 +208,61 @@ export async function push(name: string, batch: number) {
 
 	for (let sent = 0; sent < paths.length; sent += batch) {
 		const files = paths.slice(sent, sent + batch);
-		await uploadFiles({
+		await committed(
 			repo,
-			accessToken,
-			files: files.map((path) => ({
-				path,
-				content: pathToFileURL(join(dir, path)),
-			})),
-			commitTitle: `P-jol-roll: ${files.length} files (${sent + files.length} of ${paths.length})`,
-		});
+			files.length,
+			() =>
+				uploadFiles({
+					repo,
+					accessToken,
+					files: files.map((path) => ({
+						path,
+						content: pathToFileURL(join(dir, path)),
+					})),
+					commitTitle: `P-jol-roll: ${files.length} files (${sent + files.length} of ${paths.length})`,
+				}),
+			wait,
+		);
 		log.info(`${sent + files.length} of ${paths.length}`, {
 			sent: sent + files.length,
 			all: paths.length,
+		});
+	}
+}
+
+/*
+Files that are there and not here are deleted there, in commits of {batch}: the space kept
+app.py of its marimo days, as push never deletes (phase 15). Only for git repositories
+(dataset, space) - a bucket keeps raw files that may live on one machine only, so it is
+refused. Named by the owner on purpose: task resources:prune asks first.
+*/
+export async function prune(name: string, batch: number, wait = sleep) {
+	if (!accessToken) throw new Error("HF_TOKEN is missing");
+	const { repo, download } = await plan(name);
+	if (String(repo).startsWith("buckets/"))
+		throw new Error(`${repo} is a bucket: nothing is pruned there`);
+	log.info(`${repo}: ${download.length} to delete there`, {
+		repo,
+		delete: download.length,
+		first: download.slice(0, 10),
+	});
+	for (let done = 0; done < download.length; done += batch) {
+		const paths = download.slice(done, done + batch);
+		await committed(
+			repo,
+			paths.length,
+			() =>
+				deleteFiles({
+					repo,
+					accessToken,
+					paths,
+					commitTitle: `P-jol-roll: ${paths.length} files deleted (${done + paths.length} of ${download.length})`,
+				}),
+			wait,
+		);
+		log.info(`${done + paths.length} of ${download.length} deleted`, {
+			deleted: done + paths.length,
+			all: download.length,
 		});
 	}
 }

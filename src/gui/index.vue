@@ -1,150 +1,128 @@
 <script setup>
 // NOTE: this frontend should be shared with all viewer webapp interfaces: android app, desktop app, website host
-import { marked } from "marked";
-import { io } from "socket.io-client";
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+// The viewer: a header, the tabs of the screens (the acts, one act, the map of the whole law,
+// the rest of the dataset, plots, statistics with the history, settings) and a footer; what
+// the screens share is the library (assets/library.js), where the viewer is is the address
+// after "#" (assets/route.js).
+// Bulma: the layout and the look of every interface that shows the viewer, light and dark
+//
+// NOTE: this file is way too long and too dense - diverse it into imported components
+// ANSWER: done - layout/ (header, main, footer, the asides, the error dialog), screens/ (acts,
+// an act, the map), components/ (acts/, act/, map/, ties/, the tabs); this file only puts them
+// together
+import "bulma/css/bulma.min.css";
+import {
+	defineAsyncComponent,
+	onMounted,
+	onUnmounted,
+	provide,
+	ref,
+} from "vue";
+import { chosen, use } from "../i18n/browser.js";
+import { createLibrary } from "./assets/library.js";
+import { href, useRoute } from "./assets/route.js";
+import { applyTheme, settings } from "./assets/settings.js";
+import { ColorPick } from "./assets/setup.js";
+import { listen } from "./assets/socket.js";
+import { offerTools } from "./assets/webmcp.js";
+import LayoutFooter from "./layout/footer.vue";
+import LayoutHeader from "./layout/header.vue";
+import LayoutMain from "./layout/main.vue";
+import ErrorDialog from "./layout/modals/errordialog.vue";
+import ActsListing from "./screens/actsListing.vue";
+import ContentDisplay from "./screens/contentDisplay.vue";
+import DatasetBrowser from "./screens/datasetBrowser.vue";
+import GeneralMap from "./screens/generalMap.vue";
+import SettingsPanel from "./screens/settingsPanel.vue";
+
+// Cytoscape.js comes with the minimap, so it is loaded when there are ties to draw; the plots
+// and the history only when their screens are shown
+const TiesMinimap = defineAsyncComponent(
+	() => import("./components/ties/TiesMinimap.vue"),
+);
+const PlotsDiagrams = defineAsyncComponent(
+	() => import("./screens/plotsDiagrams.vue"),
+);
+const StatisticsHistory = defineAsyncComponent(
+	() => import("./screens/statisticsHistory.vue"),
+);
 
 // address of the http api (src/openapi): empty means the host that served this page
 const props = defineProps({ api: { type: String, default: "" } });
-const PAGE = 50;
 
-const journals = ref([]);
-const journal = ref("");
-const year = ref(0);
-const query = ref("");
-const page = ref({ total: 0, offset: 0, items: [] });
-const chosen = ref(null);
-const text = ref("");
-const ties = ref([]);
-const notice = ref("");
-const failure = ref("");
+const library = createLibrary(props.api);
+const { state } = library;
+const { route, stop } = useRoute();
+const root = ref(null);
 
-const years = computed(
-	() => journals.value.find((one) => one.code === journal.value)?.years ?? [],
-);
-
-async function ask(path, as = "json") {
-	failure.value = "";
-	try {
-		const response = await fetch(`${props.api}${path}`);
-		if (response.status === 404) return undefined;
-		if (!response.ok) throw new Error(`${response.status} ${path}`);
-		return as === "json" ? response.json() : response.text();
-	} catch (error) {
-		failure.value = `the api does not answer: ${error.message}`;
-	}
+function openAct({ ELI }) {
+	location.hash = href("act", ELI);
 }
 
-async function loadJournals() {
-	journals.value = (await ask("/api/journals")) ?? [];
-	if (!journal.value && journals.value.length)
-		journal.value = journals.value[0].code;
-}
+provide("library", library);
+provide("openAct", openAct);
+library.follow(route);
 
-async function loadActs(offset = 0) {
-	if (!journal.value || !year.value) return;
-	const words = encodeURIComponent(query.value);
-	page.value = (await ask(
-		`/api/acts/${journal.value}/${year.value}?q=${words}&offset=${offset}&limit=${PAGE}`,
-	)) ?? { total: 0, offset: 0, items: [] };
-}
-
-async function open(act) {
-	chosen.value = (await ask(`/api/acts/${act.ELI}`)) ?? { act, files: [] };
-	ties.value = (await ask(`/api/acts/${act.ELI}/references`)) ?? [];
-	const markdown = await ask(`/api/acts/${act.ELI}/text`, "text");
-	// text comes from the source through turndown - raw html is shown as text, never run
-	text.value = markdown ? marked.parse(markdown.replace(/</g, "&lt;")) : "";
-}
-
-watch(journal, () => {
-	year.value = years.value.at(-1) ?? 0;
-});
-watch(year, () => loadActs());
-
-let socket;
+let unlisten;
+let withdraw;
 onMounted(async () => {
-	await loadJournals();
-	socket = io(props.api || undefined, { reconnectionAttempts: 3 });
-	socket.on("changed", (paths) => {
-		notice.value = `${paths.length} files of the dataset changed - ${new Date().toLocaleTimeString()}`;
-		loadJournals();
+	ColorPick.paint(root.value);
+	applyTheme();
+	if (settings.webmcp) withdraw = offerTools(library);
+	await use(chosen());
+	await library.loadJournals();
+	await library.probe();
+	unlisten = listen(props.api, {
+		changed(paths) {
+			state.notice = `${paths.length} files of the dataset changed - ${new Date().toLocaleTimeString()}`;
+			library.loadJournals();
+		},
 	});
 });
-onUnmounted(() => socket?.close());
+onUnmounted(() => {
+	unlisten?.();
+	withdraw?.();
+	stop();
+});
 </script>
 
 <template>
-	<main class="viewer">
-		<header>
-			<h1>P_JOL_ROLL</h1>
-			<p>Polish journals of laws, as gathered here. Not legal advice.</p>
-			<p v-if="notice" class="notice">{{ notice }}</p>
-			<p v-if="failure" class="failure">{{ failure }}</p>
-		</header>
-
-		<form class="pick" @submit.prevent="loadActs()">
-			<select v-model="journal" aria-label="journal">
-				<option v-for="one in journals" :key="one.code" :value="one.code">
-					{{ one.code }}{{ one.name ? ` - ${one.name}` : "" }}
-				</option>
-			</select>
-			<select v-model.number="year" aria-label="year">
-				<option v-for="one in [...years].reverse()" :key="one" :value="one">{{ one }}</option>
-			</select>
-			<input v-model="query" type="search" placeholder="words of title" />
-			<button type="submit">search</button>
-		</form>
-
-		<div class="columns">
-			<section class="list">
-				<p>{{ page.total }} acts</p>
-				<ol>
-					<li v-for="act in page.items" :key="act.ELI">
-						<a href="#" @click.prevent="open(act)">
-							<b>{{ act.ELI }}</b> {{ act.title }}
-						</a>
-						<small>{{ act.type }} · {{ act.status }}</small>
-					</li>
-				</ol>
-				<nav>
-					<button :disabled="page.offset === 0" @click="loadActs(page.offset - PAGE)">previous</button>
-					<button :disabled="page.offset + PAGE >= page.total" @click="loadActs(page.offset + PAGE)">next</button>
-				</nav>
-			</section>
-
-			<article v-if="chosen" class="act">
-				<h2>{{ chosen.act.title }}</h2>
-				<p>
-					{{ chosen.act.displayAddress ?? chosen.act.ELI }} · {{ chosen.act.status }}
-					<template v-for="ending in chosen.files.filter((one) => one.endsWith('.pdf'))" :key="ending">
-						· <a :href="`${api}/api/acts/${chosen.act.ELI}/file/${ending}`" target="_blank" rel="noopener">{{ ending }}</a>
-					</template>
-				</p>
-				<details v-if="ties.length">
-					<summary>{{ ties.length }} ties to other acts</summary>
-					<ul>
-						<li v-for="tie in ties" :key="`${tie.type}${tie.to}`">
-							{{ tie.type }}: <a href="#" @click.prevent="open({ ELI: tie.to })">{{ tie.to }}</a>
-						</li>
-					</ul>
-				</details>
-				<div v-if="text" class="text" v-html="text"></div>
-				<p v-else>No markdown of this act here: it has no HTML at the source, or "task text" was not run.</p>
-			</article>
-		</div>
+	<main ref="root" class="viewer">
+		<LayoutHeader />
+		<LayoutMain
+			:screen="route.screen"
+			:chosen="state.chosen?.act.ELI ?? ''"
+			:notice="state.notice"
+		>
+			<ActsListing v-show="route.screen === 'acts'" />
+			<ContentDisplay v-if="route.screen === 'act'" />
+			<GeneralMap v-if="route.screen === 'map'" />
+			<DatasetBrowser v-if="route.screen === 'data'" />
+			<PlotsDiagrams v-if="route.screen === 'plots'" />
+			<StatisticsHistory v-if="route.screen === 'statistics'" />
+			<SettingsPanel v-if="route.screen === 'settings'" />
+		</LayoutMain>
+		<TiesMinimap
+			v-if="settings.minimap && ['acts', 'act'].includes(route.screen)"
+			:eli="state.chosen?.act.ELI ?? ''"
+			:ties="state.ties"
+			@open="openAct"
+		/>
+		<LayoutFooter />
+		<ErrorDialog v-model="state.failure" />
 	</main>
 </template>
 
 <style scoped>
-.viewer { font-family: system-ui, sans-serif; max-width: 80rem; margin: 0 auto; padding: 1rem; }
-.pick { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
-.columns { display: grid; grid-template-columns: minmax(16rem, 1fr) 2fr; gap: 1rem; }
-.list ol { padding-left: 1.2rem; }
-.list li { margin-bottom: 0.4rem; }
-.list small { display: block; opacity: 0.7; }
-.text { line-height: 1.5; }
-.notice { color: #2a6; }
-.failure { color: #c33; }
-@media (max-width: 48rem) { .columns { grid-template-columns: 1fr; } }
+/* printed (and saved as PDF by the desktop app): only what the screen shows, without the
+header, the tabs, the asides, the minimap and the footer */
+@media print {
+	.viewer > header,
+	.viewer > footer,
+	.viewer :deep(.tabs),
+	.viewer :deep(aside),
+	.viewer :deep(.notification) {
+		display: none;
+	}
+}
 </style>

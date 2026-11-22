@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+# The almanac (docs/almanac/README.md): cases met before, recalled by their events, rules judged,
+# issues opened from the cases. From the repository root: task almanac:recall -- hub:push
+
+version: '3'
+
+vars:
+  ALMANAC: node_modules/.bin/tsx src/almanac/main.ts
+
+tasks:
+  recall:
+    desc: The cases whose chains of events hold these events, with their solutions (task almanac:recall -- hub:push hub:).
+    dir: '{{.TASKFILE_DIR}}/../..'
+    cmds: ['{{.ALMANAC}} recall {{.CLI_ARGS}}']
+    silent: true
+
+  predict:
+    desc: What followed these events before, by the chains of the almanac (task almanac:predict -- hub:push).
+    dir: '{{.TASKFILE_DIR}}/../..'
+    cmds: ['{{.ALMANAC}} predict {{.CLI_ARGS}}']
+    silent: true
+
+  judge:
+    desc: The verdict of the rulesets on a case (task almanac:judge -- push dataset --actor agent).
+    dir: '{{.TASKFILE_DIR}}/../..'
+    cmds: ['{{.ALMANAC}} judge {{.CLI_ARGS}}']
+    silent: true
+
+  cases:
+    desc: Every case of the almanac with its status and its issue on GitHub.
+    dir: '{{.TASKFILE_DIR}}/../..'
+    cmds: ['{{.ALMANAC}} cases']
+    silent: true
+
+  issues:
+    desc: The cases as issues, with their numbers on GitHub or "not opened".
+    dir: '{{.TASKFILE_DIR}}/../..'
+    cmds: ['{{.ALMANAC}} issues']
+    silent: true
+
+  issues:open:
+    desc: Cases opened as issues on GitHub by gh, the solved ones closed at once (task almanac:issues:open -- hub-binary-text, or -- all).
+    dir: '{{.TASKFILE_DIR}}/../..'
+    prompt: This opens issues on GitHub. Go on?
+    cmds: ['{{.ALMANAC}} issues --open {{.CLI_ARGS}}']

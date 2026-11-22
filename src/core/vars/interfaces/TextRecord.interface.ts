@@ -3,6 +3,10 @@ export default interface TextRecord {
 	ELI: string;
 	markdown: string; // path inside of dataset
 	sha256_md: string;
-	sha256_html: string;
-	url: string; // html at the source
+	from?: "pdf"; // left out: made from html (every record before phase 12)
+	sha256_html?: string;
+	sha256_pdf?: string;
+	producer?: string; // of the PDF, as pdfinfo names it: "Paper Capture" means recognised text of a scan
+	url: string; // the file at the source it was made from
+	printable?: true; // checked to hold no control characters (phase 18); left out: written before
 }

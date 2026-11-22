@@ -6,6 +6,31 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-22. Q19 (BRAINSTORM).** May the desktop app or an api on
+  127.0.0.1 start writing functions (gather, text, map, push)? Rule 4 says
+  no host may; until it is answered they show disabled everywhere.
+- **2026-11-22. The space's refresh needs the secret `HF_TOKEN`** in the
+  repository (a token that may write to the space; settings are Sett's).
+  Without it the release job says so and the space keeps what it has. The
+  space's `Dockerfile` changes once more (`task resources:space`, then
+  `task resources:push -- space`): from then on releases only set its
+  variable. Not verified against Hugging Face: that a variable reaches the
+  build as an argument is from their documentation of Docker spaces.
+- **2026-11-22. The new words of the viewer** ("first", "last", "page {0}
+  of {1}", the footer, the act's tab...) were collected and translated by
+  argostranslate (phase 21); machine work, not read by a person.
+- **2026-11-22. MCP of the space.** `/mcp` comes to the demo with the next
+  image (a release) and its refresh.
+- **2026-11-22. The new words of phase 22** (the data tab, plots,
+  statistics, settings, the catalog): German and Ukrainian are
+  argostranslate's, not read by a person; Polish of the short words was
+  corrected by Cleo and marked `reviewed`.
+- **2026-11-22. The demo's data tab and statistics.** The space lists
+  terms of Sejm and months of judgments only once cached (no index of them
+  in the dataset yet); statistics need `task stats` and a push of the
+  dataset. WebMCP was registered in a headless browser, not yet called by
+  a real agent.
+
 - **2026-11-22. The demo space, in this order.** (1) The next release
   pushes `ghcr.io/sarverott/p-jol-roll-webapp-server`; a new package on
   ghcr.io is private, so make it public once (the package's settings,
@@ -100,6 +125,21 @@ point was added.
 
 ## Written and not verified
 
+- **2026-11-22. The bots' flow (phase 19) runs first when it reaches
+  master.** `bots.yml` (pull_request_target) and `bots-land.yml`
+  (workflow_run) act only from master's copy. Tried: shellcheck and
+  actionlint; not tried: a real run. The first Dependabot or Jarvis pull
+  request after the merge will show it - `task github:runs`. Copilot's own
+  login may differ from `Copilot`; the branch names `copilot/*` and
+  `dev/Copilot*` catch it anyway.
+- **2026-11-22. The rate limit in the demo** (600 a minute per address,
+  `TRUST_PROXY=1`): tried here against the api, not behind the space's
+  proxy. If every visitor of the space gets 429 together, the proxy is not
+  one hop and `TRUST_PROXY` wants its number of hops.
+- **2026-11-22. The almanac's issues are not opened.** `task almanac:issues:open
+  -- all` makes 22 issues with `gh` and closes the solved ones at once; it
+  was not run, as it writes to GitHub.
+
 - **The website's diagrams.** Mermaid did not render in a headless
   browser (Material loads it from a CDN); the rest of the site did.
 - **`dotenv` in the root Taskfile** was tried in a scratch Taskfile and by
@@ -172,3 +212,12 @@ point was added.
   a file to take it again needs its record deleted too.
 - `hub` still compares a bucket by path and size. Records make it possible
   to check files here, and they do not check what is on Hugging Face.
+
+## Damaged PDFs in the bucket (2026-11-22, Cleo)
+
+`DU/1932/WDU19320060038.pdf` ends in zeros from some point on; its record in
+`dataset/files/` has the same checksum, so it was written as it arrived. Is the
+source serving it like that, or did the download break? Only the owner asks the
+source. The owner's full run found a second one, `DU/2007/189`, with the same
+complaint ("Couldn't find trailer dictionary"). `task text -- --pdf` names every such PDF in `texts/<journal>/<year>.scans.jsonl`
+with an `error`; `grep -h '"error"' resources/dataset/texts/*/*.scans.jsonl` lists them.

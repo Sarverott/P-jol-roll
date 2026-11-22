@@ -7,14 +7,12 @@
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { fileURLToPath } from "node:url";
-
-const root = fileURLToPath(new URL("../../", import.meta.url));
-const at = (file: string) => `${root}${file}`;
+import { at } from "../core/paths/at.ts";
 
 // secrets the services of resources/services/ need, by file name
 const SECRETS: string[] = [
 	"litellm_master_key", // llms-api-host (profile llms)
+	"typesense_api_key", // typesense (profile search)
 ];
 
 // [command, arguments, needed, what for]

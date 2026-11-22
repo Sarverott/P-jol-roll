@@ -219,8 +219,20 @@ test("tables, markdown and checksums are made from what was gathered", async () 
 		},
 	]);
 
-	expect(await text()).toEqual({ parsed: 1, unchanged: 0 });
-	expect(await text()).toEqual({ parsed: 0, unchanged: 1 });
+	expect(await text()).toEqual({
+		parsed: 1,
+		unchanged: 0,
+		fromPdf: 0,
+		scans: 0,
+		unreadable: 0,
+	});
+	expect(await text()).toEqual({
+		parsed: 0,
+		unchanged: 1,
+		fromPdf: 0,
+		scans: 0,
+		unreadable: 0,
+	});
 	const [record] = store.readJsonl<Record<string, string>>(
 		textsTablePath("DU", 2026),
 	);
@@ -232,6 +244,7 @@ test("tables, markdown and checksums are made from what was gathered", async () 
 		sha256_md: store.sha256(markdown),
 		sha256_html: store.sha256(read(store.actPath(acts[1], ".html"))),
 		url: `${process.env.ELI_API}/acts/DU/2026/1/text.html`,
+		printable: true,
 	});
 
 	// the file that was here before gathering gets its record, and a spoiled file is found

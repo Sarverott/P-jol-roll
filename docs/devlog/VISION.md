@@ -26,6 +26,9 @@ in the country, as open source.
   types and interfaces one per file in `src/core/vars/`.
 - **One core, many ways in.** The core gathers and reads; the api, MCP
   server, website, desktop window, app and extension only show what it reads.
+  Every function is declared once, in one catalog, and every way in - the
+  viewer, the launcher, the REPL, the commands, the api, MCP - offers it from
+  there; a host that may not do it shows it disabled (phase 22).
 - **The BOS craft loop.** Branches `development` and `dev/<name>`, one
   finished step per commit, phases of TODO.md, questions in BRAINSTORM.md.
 
@@ -44,3 +47,35 @@ in the country, as open source.
 | 8 | releases and routines: a release on every merge into master, versions and phases closed by workflows, the rest of the routine by tasks |
 | 9 | logs where they are found, the demo space on the project's own server, Dependabot on its own branch |
 | 10 | one bucket of raw files and one dataset for training, every source inside; a demo that reads what the dataset prepared; examples of using it from Python |
+| 11 | what the first big push showed: pushes that finish |
+| 12 | the text of every act that has any: PDFs without HTML read too (PP2) |
+| 13 | the images of the project made into icons and cards, so every link shows it |
+| 14 | a friendlier webapp: a layout, a minimap of ties, drawn relations, a map of the whole law, search |
+| 15 | the space and the push as the owner met them: old files pruned, the space following releases |
+| 16 | every interface in more languages: packs made by argostranslate, applied without rewriting the pages |
+| 17 | acts by meaning: vectors of the texts from a small local model, for search and the map |
+| 18 | the almanac: what was learnt the hard way, as cases, chains and rules |
+| 19 | Jarvis joins: the bots' pull requests flow through branches of their own |
+| 20 | the bucket tidied: the space keeps its cache off it |
+| 21 | the owner's notes across src: small components, data in yaml, Biome in every hook |
+| 22 | every function in every way the project runs, mapped first; a viewer that shines: more data, plots, a playable history of the law |
+
+## The law mastermind (Q18, phase 22)
+
+The devil's advocate is advice that everyone can afford - "not (formally)
+legal advices", as the owner put it, not a lawyer's hour per question.
+The owner's plan for it:
+
+- several instances of **deepseek-R1** at once: small ones and the embedder
+  in Ollama on the host, the advanced strategy on a deepseek hosted by
+  Hugging Face;
+- a small **qwen** as the executive agent in the shell (an opencode host),
+  reading the law through the MCP tools;
+- **social simulations** and the processing of parliamentary discussion,
+  offline, by MiroFish or OASIS;
+- the whole code of law of Poland analysed deeply, and improvements to it
+  proposed;
+- a **second stack in Python** for the models and simulations, and a **third
+  in Go** for the decentralisation circuits (Cosmos SDK, IPFS, Traefik,
+  WireGuard, torrents), so they keep their integrity inside.
+

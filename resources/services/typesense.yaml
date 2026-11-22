@@ -1,0 +1,25 @@
+# typesense: search over every act of every year for the api (/api/search) and the viewer
+# (phase 14). Its key is a secret task init makes; the index lives in a volume of its own.
+#   task init                                        generates resources/secrets/typesense_api_key
+#   docker compose --profile search up -d typesense  ->  http://127.0.0.1:8108
+#   task search:index                                fills it from the dataset (-- --texts: with texts)
+services:
+  typesense:
+    profiles: [search]
+    image: typesense/typesense:30.2
+    entrypoint: ["sh", "-c", "exec /opt/typesense-server --data-dir /data --api-key \"$$(cat /run/secrets/typesense_api_key)\" --enable-cors"]
+    secrets: [typesense_api_key]
+    ports:
+      - "127.0.0.1:8108:8108"
+    volumes:
+      - ./resources/.containerdatavol/typesense:/data
+    restart: unless-stopped
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://127.0.0.1:5514
+        tag: p-jol-roll-typesense
+
+secrets:
+  typesense_api_key:
+    file: ./resources/secrets/typesense_api_key

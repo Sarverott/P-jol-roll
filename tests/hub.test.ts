@@ -5,8 +5,11 @@ import { expect, test } from "vitest";
 import {
 	compare,
 	hashOf,
+	heldBack,
 	localFiles,
+	rateLimitWait,
 	repoOf,
+	target,
 } from "../src/core/resources/hub.js";
 
 test("repository is named by path of its address", () => {
@@ -43,4 +46,41 @@ test("only what differs is moved", async () => {
 		download: ["only-there.txt"],
 		same: 1,
 	});
+});
+
+test("a refused commit is waited out for the time huggingface names", () => {
+	const refused = Object.assign(
+		new Error(
+			"You have exceeded the rate limit for repository commit creation (128 per hour). You can retry this action in about 1 hour.",
+		),
+		{ statusCode: 429 },
+	);
+	expect(rateLimitWait(refused)).toBe(3_660_000);
+	expect(rateLimitWait(new Error("rate limit, retry in about 5 minutes"))).toBe(
+		360_000,
+	);
+	expect(rateLimitWait({ statusCode: 429 })).toBe(3_600_000);
+	expect(rateLimitWait(new Error("401 unauthorized"))).toBeUndefined();
+});
+
+test("a missing or wrong name says which names there are", () => {
+	expect(() => target("")).toThrow(
+		"name a repository after the action - one of: dataset, bucket, space",
+	);
+	expect(() => target("datset")).toThrow(
+		"datset is not in .map.json - one of: dataset, bucket, space",
+	);
+	expect(target("space").repo).toBe(
+		"spaces/Sarverott/docs-of-law-by-gov-in-poland",
+	);
+});
+
+test("texts with control characters are held back from a push, other files are not", async () => {
+	const dir = await mkdtemp(join(tmpdir(), "pjolroll-held-"));
+	await writeFile(join(dir, "clean.md"), "Art. 1. Tekst\n");
+	await writeFile(join(dir, "glyphs.md"), "Art. 1.\u0003\n\u0003\n");
+	await writeFile(join(dir, "act.pdf"), "%PDF\u0003\u0000");
+	expect(heldBack(dir, ["clean.md", "glyphs.md", "act.pdf"])).toEqual([
+		"glyphs.md",
+	]);
 });

@@ -5,7 +5,8 @@
 #   2. a version reaching master released already gets the patch (a hotfix); then the tag
 #      v<version> and the GitHub release, skipped when that tag exists
 #   3. Read the Docs activates and builds the tag (only with READTHEDOCS_API_TOKEN); beside
-#      it the image of webapp-server goes to ghcr.io (the demo space runs it)
+#      it the image of webapp-server goes to ghcr.io, and the demo space is set to it and
+#      built again (only with HF_TOKEN)
 #   4. the website built (the React introduction of webpage/ at the root, the MkDocs
 #      documentation under docs/) and pushed to the github-pages branch
 #   5. master merged back into development
@@ -51,7 +52,8 @@ jobs:
         run: scripts/devops/release/release.sh
 
   container:
-    # the image of webapp-server on ghcr.io - the demo space on Hugging Face runs :latest
+    # the image of webapp-server on ghcr.io, tagged X.Y.Z, X.Y and latest - the demo space builds
+    # from the one its variable P_JOL_ROLL_VERSION names (the job "space" below)
     needs: release
     if: needs.release.outputs.tag
     runs-on: ubuntu-latest
@@ -65,6 +67,19 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: scripts/devops/release/container.sh "${{ needs.release.outputs.tag }}"
+
+  space:
+    # the demo space set to this release and built again (resources/configs/space); without the
+    # secret HF_TOKEN it says so and keeps the release it has
+    needs: [release, container]
+    if: needs.release.outputs.tag
+    runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+        with: { ref: "${{ needs.release.outputs.tag }}" }
+      - run: P_JOL_ROLL_VERSION="${{ needs.release.outputs.tag }}" scripts/devops/release/space.sh refresh
 
   readthedocs:
     needs: release
@@ -95,7 +110,7 @@ jobs:
       - run: scripts/devops/pages/publish.sh "${{ needs.release.outputs.tag || needs.release.outputs.version }}"
 
   back:
-    needs: [release, container, readthedocs, pages]
+    needs: [release, container, space, readthedocs, pages]
     if: ${{ !cancelled() && needs.release.result == 'success' }}
     runs-on: ubuntu-latest
     permissions:

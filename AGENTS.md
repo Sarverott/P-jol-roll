@@ -18,7 +18,10 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    name and signs every commit with a co-authorship line carrying that name
    and its lineage (the model it runs on), the same as its line in
    `.github/AUTHORS`: Cleo signs
-   `Co-Authored-By: Cleo (Claude Opus 5.5) <noreply@anthropic.com>`. An agent
+   `Co-Authored-By: Cleo (Claude Opus 5.5) <noreply@anthropic.com>`.
+   Jarvis (GitHub Copilot) was confirmed by Sett on 2026-11-22 and signs
+   `Co-authored-by: Jarvis (GitHub Copilot) <198982749+Copilot@users.noreply.github.com>`;
+   its guide is `.github/copilot-instructions.md`. An agent
    not yet confirmed leaves its edits uncommitted in the working tree and
    says what it changed and why; a member commits them or confirms it.
 2. **Where edits go: the BOS craft loop.** A member works on its own
@@ -36,6 +39,13 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    agent understood them; then that branch is merged into `development`.
    Edits the owner makes on GitHub land on `development`; take them in with
    a fast-forward before branching.
+   **Bots' branches.** Dependabot and Jarvis work through pull requests,
+   each into its own branch (`dev/dependabot`, `dev/Jarvis`); one opened
+   against `master` or `development` is turned there by `bots.yml`, merged
+   (Jarvis's when it is no longer a draft), the branch checked once and
+   landed in `development` (`bots-land.yml`). Cleo may merge or land
+   `dev/Jarvis` by hand the same way, and writes what it saw for Jarvis
+   in `docs/.agents/jarvis.md`, as Jarvis cannot keep notes here.
    **Agents' own domain** is `docs/.agents/`: agents write there, humans
    read it and do not write, edit or delete.
 3. **Tasks arrive as `// NOTE: ` comments** (in READMEs and Taskfiles too).
@@ -63,6 +73,7 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
 | a question for the owner | `docs/devlog/BRAINSTORM.md` as `## Q<n>. <title>` with a *Lean:*; never settled in code before the answer |
 | an idea for debate | `docs/devlog/PROPOSALS.md` as `PP<n>`; the owner decides it in `ORDERS.md` |
 | an agent's findings and what was not verified | `docs/.agents/` (`NOTES.md`, `things-to-check.md`) |
+| a problem met and solved | `docs/almanac/`: its case, its chain, a line in its topic |
 | work for another repository | `~/__WORKSHOP/forge/NOTES-for-repositories.md`, never the other repository itself |
 
 ## Source
@@ -106,10 +117,12 @@ src/core/              the gatherer itself; everything below is its tree
   methods/             what a command does
     gather.ts          index -> lists -> years, then files of acts year by year; --since for changes
     seal.ts            checksums of gathered files: records, and check against them
+    map.ts             the map of the whole law: acts of a preset (presets.ts) placed by ForceAtlas2 into dataset/map/
     compile.ts         tables of details and references from raw files
     checkup.ts         browser (Camoufox) visits websites that show acts, writes what it saw
   parsing/             raw files into text
-    text.ts            markdown from html, with checksums of both
+    text.ts            markdown from html, with checksums of both; from PDFs of acts without html too (--pdf)
+    pdf.ts             the text layer of a PDF through pdftotext of poppler
   resources/           the local sides and their way to huggingface
     store.ts           where gathered things are written
     hub.ts             sync of resources/ with huggingface, file by file (@huggingface/hub)
@@ -117,26 +130,39 @@ src/core/              the gatherer itself; everything below is its tree
     interfaces/        <Name>.interface.ts, and index.ts with namespaces GatheringScope, HuggingfaceScope
     types/             <Name>.type.ts, and index.ts with the same namespaces
   logging/             setup.ts: the one logger of every command (text or JSON lines, a file per run in logs/, syslog when asked) - import it first, then logRun(<command>)
+  search/              typesense.ts: every act into Typesense (task search:index) and /api/search over every year
+  catalog/             every function of the project once (procedures.ts), for every way it runs: the launcher, the REPL,
+                       task do, /api/catalog, the viewer; run.ts words into values and task arguments, map.ts the map of functions
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
+    dataset.ts         the rest of the dataset: work of Sejm, judgments, lists of the source, acts counted (task stats)
+    diagram.ts         the ties of an act as one mermaid flowchart, for every interface
+    embeddings.ts      the vectors of task embed, and a question as a vector of the same model (Ollama)
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
-src/mcp/               MCP server over stdio for AI agents, read-only
+src/mcp/               MCP server for AI agents, read-only: server.ts and tools/ (a folder per tool); main.ts over stdio, /mcp of the api over http; client.ts
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
-src/gui/               index.vue - the one viewer that every interface shows
+src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map,
+                       the rest of the dataset, plots, statistics with the history, settings; #acts, #act/DU/2026/1, #map, #data,
+                       #plots, #statistics, #settings) and components/; assets/ what they share (state, route, ColorPick, graph,
+                       socket, settings, counting, webmcp); data/credits.js (AUTHORS and links for "Terms of use")
 src/web/               Astro website carrying the viewer (pages/), built into dist/web
-src/desktop/           Electron window: starts the api, shows the viewer
+src/desktop/           Electron app: main.js puts together core (the api), window, loadingmodal, menus, hotkeys-shortcuts,
+                       apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1), printing (print, PDF);
+                       task desktop:check, no screen
 src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
 src/tui/               the launcher (launcher/: main.ts the menu bare `task` opens, select.ts); Sett's TermUI experiment (index.tsx, main.js, termui.config.*) out of the checks
 src/cli/               commands of the launcher: tasks.ts (every task of every Taskfile, grouped, run inside `script` so the output lands in the launcher's log and Ctrl+C stops the task alone), repl.ts (tasks as commands)
+src/i18n/              translations by hooks: sha256.ts, hooks.ts (hookOf, translate, t for terminals), dom.ts (collect, apply, follow), browser.ts (the chosen pack on a page), terminal.ts (tr() for the launcher and the CLI) - docs/guides/translations.md
+src/almanac/           the almanac's mechanics, as in BOS: patterning.ts (chains of events recalled, the next predicted), ruling.ts (rules judged), main.ts (task almanac:*) - docs/almanac/
 src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init), merge.ts (task resources:merge)
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
-  devops/              every step of the workflows as a .sh (pages, release, docs, flow, checks), local/ routines behind task flow:*
+  devops/              every step of the workflows as a .sh (pages, release, docs, flow, checks, media), local/ routines behind task flow:*
 logs/             a file per run: log-<Date.now()>-<log mode>-<command>.log (LOG_DIR, LOG_LEVEL), ignored by git
 tests/            vitest; gather.test.ts runs whole gathering against a local copy of API
   unittesting/    the project on other systems in containers: <system>/<setup>/Dockerfile, cases -<case>/run.sh
@@ -148,13 +174,18 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   services/       one compose file per service, included by compose.yaml at the root
   configs/        configurations of services, one directory per purpose, in git
     webapp-server/  Dockerfile and start.sh of the slim server image (ghcr.io, the demo space)
+    space/          the demo space's Dockerfile and space.env: the release is a build argument, set by each release
     routing-proxy/, internal-dns/, llms-api-host/, log-collector/  settings of those services
     agentic-shell/  the image of the shell for agents (Q13: why it exists, in changelog phase 6)
+  locales/        language packs: EN-US.json (task i18n:collect) and the others (task i18n:translate), .index.json lists them, EN-US the default
+  mediafiles/     the images of the project: the gist MEDIAFILES as a submodule; task resources:media makes
+                  icons and og.jpg out of them into src/web/public (the webpage takes them too), docs/assets/images, src/firefox-ext/icons
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
 examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported
                   into site/examples/ by scripts/devops/examples/build.sh, with the website
-webpage/          the React introduction at the root of the website (Vite, own package.json); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
+webpage/          the React introduction at the root of the website (Vite, own package.json; src/components/ with a p5.js background,
+                  its lists in src/data/*.yaml); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
 docs/_mkdocs/     its hook: the state on the home page from TODO.md and features.md
@@ -162,9 +193,12 @@ docs/glossary/    words of the source and of the project, each with one meaning
 docs/.agents/     the agents' own domain (humans read only): NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
                   or was not verified - keep it current); point-of-view.md is personal
 docs/devlog/      the BOS devlog: VISION, ROADMAP, TODO, BRAINSTORM, ORDERS, INQUIRIES, PROPOSALS, scrapnotes
+docs/almanac/     what was learnt the hard way: cataclistics/ (a case per page, an issue ready for GitHub), solutions/ (a topic
+                  each), patterning/ and rulesets/ (JSON, as in BOS), faq.md; a solved problem gets its case here
 docs/changelog/   what happened per phase, the owner's words word for word, append-only
 .github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues, AUTHORS;
-                  bos.json (the loop as data), dependabot.yml, workflows/checks.yml
+                  bos.json (the loop as data), dependabot.yml, workflows/ (checks, bots, bots-land, release,
+                  copilot-setup-steps), copilot-instructions.md and prompts/ (Jarvis's guide)
 .obsidian/        the repository is an Obsidian vault; plugins/ holds separate repositories
 ```
 
@@ -175,7 +209,9 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 
 | Command | What it does |
 | --- | --- |
-| `task` | the launcher: a menu of every Taskfile and its tasks, and a REPL (`task help` lists them) |
+| `task` | the launcher: what you want to do (read, gather, process, share, the project), each function asking what it takes; every Taskfile below; a REPL (`task help` lists the tasks) |
+| `task do` / `task do -- help acts` / `task do -- acts MP 2025 query=podatek` | every function of the catalog from a shell: their names / what one takes / a reading answered here, or a writing function's task |
+| `task functions:map` | `docs/guides/functions.md`: every function and every way the project runs, written from the catalog |
 | `task shell` | bash in the `agentic-shell` container, the repository at /workspace, no port (Q13) |
 | `task init` | first launch on a machine: tools checked, `.env` from `.env.example`, secrets generated; once |
 | `task gather` | lists and metadata of the newest year, every journal |
@@ -183,19 +219,28 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task gather:everything` | all of it, asks before it starts |
 | `task gather:changes` | acts changed since the previous such run |
 | `task seal` / `task seal -- --check` | write checksums of files without a record / compare files with records |
-| `task compile` / `task text` | tables from raw files / markdown from html |
+| `task stats` | the acts counted year by year, by type and status, into `dataset/statistics/acts.json` (the viewer's plots and history) |
+| `task map` / `task map -- statutes` | the map of the whole law, every preset or one, into `dataset/map/` (the viewer draws it with sigma.js) |
+| `task search:index` (`-- --texts`) | every act into Typesense, started by `docker compose --profile search up -d typesense`; the api and the viewer search every year |
+| `task embed` (`-- 2026`) | vectors of the texts by a local multilingual model of Ollama into `dataset/embeddings/` |
+| `task compile` / `task text` | tables from raw files / markdown from html (`-- --pdf`: from PDFs too) |
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
+| `task resources:media` | favicons, manifest icons, `og.jpg` and the extension icons made from `resources/mediafiles` (ffmpeg); committed |
+| `task resources:space` / `resources:space:refresh` | the space's Dockerfile from `resources/configs/space` into its local side / the space's variable `P_JOL_ROLL_VERSION` set to the newest release and the space built again (`HF_TOKEN`; the release workflow does it) |
+| `task almanac:recall -- hub:push` / `almanac:judge -- push dataset --actor agent` | cases that began with these events, with solutions / the verdict of the rulesets |
+| `task almanac:issues` / `almanac:issues:open -- <id>` | the cases with their issues / one opened on GitHub, closed when solved (the owner's) |
+| `task i18n:collect` / `task i18n:translate` | the English of the built pages into `resources/locales/EN-US.json` / the other packs by argostranslate |
 | `task resources:merge` | the directories sources had before phase 10 moved into the one dataset and bucket |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
-| `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
+| `task resources:pull -- dataset` / `push` / `prune` | take what is missing here / send what is new here / delete there what is not here (asks; never the bucket) |
 | `task unittesting:parrot-os` / `parrot-os-drive` | Parrot OS headless server in a container: case `-gather-and-parse` / `-bare-repo-on-drive` (privileged; needs Docker) |
 | `task flow:land -- "..."` / `flow:sync` | your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
 | `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
-| `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
+| `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it) |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
 | `task examples:build` / `examples:edit` | the Python examples run and exported into `site/examples/` / opened in marimo |
