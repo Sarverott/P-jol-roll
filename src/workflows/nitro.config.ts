@@ -6,4 +6,4 @@ export default defineConfig({
 	serverDir: "./server",
 	modules: ["workflow/nitro"],
 	workflow: { dirs: ["./flows"] },
-});
+}); // NOTE: i tested it once but nothing was there. interface looks like workflows here are missing
