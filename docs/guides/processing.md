@@ -171,3 +171,21 @@ browser only draws: the tab "map of the whole law" of the viewer shows them
 with sigma.js, `/api/map/<preset>` gives them. Run `task compile` first, so
 the ties are fresh. The files go to Hugging Face with the dataset, so the
 demo can show them.
+
+## Search over every year: `search:index`
+
+```sh
+task init                                         # once: resources/secrets/typesense_api_key
+docker compose --profile search up -d typesense   # Typesense 30.2 on 127.0.0.1:8108
+task search:index                                 # titles, types, statuses, keywords
+task search:index -- --texts                      # and the first 2000 characters of each text
+```
+
+Every act goes into the collection `acts` (an act already there is
+replaced). Titles, keywords and texts are tokenized as Polish. The api
+answers `/api/search?q=...&type=&status=&journal=&page=` with acts, the
+marked words of their texts and counts per type, status and journal. The
+viewer shows a box "every year" when the search answers. Without Typesense,
+`/api/search` answers 503 and says how to start it, and nothing else
+changes. All 165 thousand acts take 10 seconds; with texts 20 seconds and
+about 450 MB of memory in the service.

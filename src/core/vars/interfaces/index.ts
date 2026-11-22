@@ -28,6 +28,7 @@ import type PublisherInterface from "./Publisher.interface.js";
 import type RemoteFileInterface from "./RemoteFile.interface.js";
 import type SaosPlanInterface from "./SaosPlan.interface.js";
 import type ScanRecordInterface from "./ScanRecord.interface.js";
+import type SearchPageInterface from "./SearchPage.interface.js";
 import type SejmPlanInterface from "./SejmPlan.interface.js";
 import type TaskEntryInterface from "./TaskEntry.interface.js";
 import type TermInterface from "./Term.interface.js";
@@ -74,6 +75,7 @@ export namespace ReadingScope {
 	export type TextOrigin = TextOriginInterface;
 	export type LawMap = LawMapInterface;
 	export type MapPreset = MapPresetInterface;
+	export type SearchPage = SearchPageInterface;
 }
 
 // durable runs of src/workflows: what they are asked, what their steps return

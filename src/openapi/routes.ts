@@ -34,6 +34,28 @@ routes.get("/openapi.json", (_request, response) => {
 	response.json(spec);
 });
 
+// every year at once, by Typesense; without it 503 says how to start it
+routes.get("/api/search", async (request, response) => {
+	const { search, SearchMissing } = await import("../core/search/typesense.js");
+	const word = (name: string) => String(request.query[name] ?? "");
+	try {
+		response.json(
+			await search(word("q"), {
+				journal: word("journal"),
+				status: word("status"),
+				type: word("type"),
+				page: Number(word("page")) || 1,
+				limit: Number(word("limit")) || 20,
+			}),
+		);
+	} catch (error) {
+		if (!(error instanceof SearchMissing)) throw error;
+		response.status(503).json({
+			error: `search is not running here (${error.message}): docker compose --profile search up -d typesense, then task search:index`,
+		});
+	}
+});
+
 routes.get("/api/map", (_request, response) => {
 	response.json(library.mapPresets());
 });

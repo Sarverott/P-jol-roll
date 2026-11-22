@@ -27,6 +27,9 @@ text --pdf                           -> and from the text layer of PDFs of acts 
 map                                  -> the map of the whole law: every preset placed by ForceAtlas2 into dataset/map/
 map statutes-in-force                -> one preset (statutes-in-force, statutes, in-force)
 
+search index                         -> every act into Typesense (task search:index), titles and keywords
+search index --texts                 -> and the beginning of each text
+
 sejm                                 -> work of Sejm: processes and prints of the current term
 sejm 9 10 --files --limit 50         -> these terms, with details of processes and files of prints
 saos 2024 2025 --limit 3             -> court judgments of these years, 3 months that are not here yet
@@ -49,6 +52,7 @@ const COMMANDS = [
 	"checkup",
 	"hub",
 	"map",
+	"search",
 ];
 const [first = "", ...rest] = process.argv.slice(2);
 const command = COMMANDS.includes(first) ? first : "gather";
@@ -72,6 +76,7 @@ const { values, positionals } = parseArgs({
 		check: { type: "boolean", default: false },
 		files: { type: "boolean", default: false },
 		pdf: { type: "boolean", default: false },
+		texts: { type: "boolean", default: false },
 	},
 });
 
@@ -140,6 +145,16 @@ if (command === "text") {
 if (command === "map") {
 	const { map } = await import("./methods/map.js");
 	await map(positionals.length ? positionals : undefined);
+}
+
+if (command === "search") {
+	const { index, TYPESENSE_URL } = await import("./search/typesense.js");
+	if (positionals[0] !== "index") throw new Error("search needs action: index");
+	const sum = await index({ texts: values.texts });
+	log.info(
+		`search: ${sum.acts} acts indexed in ${TYPESENSE_URL}, ${sum.failed} failed`,
+		sum,
+	);
 }
 
 if (command === "sejm") {

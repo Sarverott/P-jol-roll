@@ -56,6 +56,7 @@ State of 2026-11-13.
 | -------- | ------- | ----- |
 | Http api with OpenAPI description and live notices | `task serve` | **works**: tests, and a browser over the real listings |
 | Website: the viewer of acts | `task web:build`, then `task serve` | **works**: headless browser over the real listings (list, act, PDF link) |
+| Search over every year (Typesense): titles, keywords, beginnings of texts, filters by type and status | `task search:index`, `/api/search`, the viewer's "every year" | **works**: 165,006 acts indexed in 10 s (20 s with texts, 444 MB in memory); headless browser searched, filtered, saw the marked words |
 | The map of the whole law (sigma.js), from presets | `task map`, the viewer's tab | **works**: three presets made from the real dataset in 53 s (0.4-2.8 MB); headless browser draws them, hover and click checked |
 | Ties of an act drawn (mermaid, one drawing for api, MCP and viewer) and a minimap of them (Cytoscape.js) | `/api/acts/<eli>/diagram`, the viewer | **works**: headless browser over DU 2020, a click on a node opens that act |
 | MCP server for AI agents, read-only | `task mcp` | **built**: tools listed and called over stdio |
@@ -63,7 +64,7 @@ State of 2026-11-13.
 | Android app | `task app:sync` | **wanted**: configured, Capacitor not installed |
 | Browser extension (Firefox, Chrome) | `task extension` | **built**: citations read from seven examples; not loaded in a browser |
 | Container: website and api (`webapp-server`) | `docker compose up` | **works**: the slim image built, published to ghcr.io by every release, served on 7860 for the demo |
-| Services: docs, demo, daemons, routing, DNS, LLMs | `docker compose --profile <name> up` | **built**: each started once and answered; the daemons were not run, they would gather |
+| Services: docs, demo, daemons, routing, DNS, LLMs, search | `docker compose --profile <name> up` | **built**: each started once and answered; the daemons were not run, they would gather |
 | A shell for agents (`agentic-shell`) | `task shell` | **built**: started, node, task, uv and git answer, the repository is writable, no Docker socket, no root (Q13) |
 | Launcher: a menu of every task, and a REPL | `task` | **built**: driven in a pseudo-terminal; termui itself stays an experiment (Q4) |
 | Website of the project: idea and state | `task docs:build` | **works**: published on GitHub Pages and Read the Docs by every release |
