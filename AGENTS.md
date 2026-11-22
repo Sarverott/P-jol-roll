@@ -168,6 +168,7 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   services/       one compose file per service, included by compose.yaml at the root
   configs/        configurations of services, one directory per purpose, in git
     webapp-server/  Dockerfile and start.sh of the slim server image (ghcr.io, the demo space)
+    space/          the demo space's Dockerfile and space.env: the release is a build argument, set by each release
     routing-proxy/, internal-dns/, llms-api-host/, log-collector/  settings of those services
     agentic-shell/  the image of the shell for agents (Q13: why it exists, in changelog phase 6)
   locales/        language packs: EN-US.json (task i18n:collect) and the others (task i18n:translate), .index.json lists them, EN-US the default
@@ -217,7 +218,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:media` | favicons, manifest icons, `og.jpg` and the extension icons made from `resources/mediafiles` (ffmpeg); committed |
-| `task resources:space` | the space's Dockerfile set to the image of the newest release, so its next push builds it again |
+| `task resources:space` / `resources:space:refresh` | the space's Dockerfile from `resources/configs/space` into its local side / the space's variable `P_JOL_ROLL_VERSION` set to the newest release and the space built again (`HF_TOKEN`; the release workflow does it) |
 | `task almanac:recall -- hub:push` / `almanac:judge -- push dataset --actor agent` | cases that began with these events, with solutions / the verdict of the rulesets |
 | `task almanac:issues` / `almanac:issues:open -- <id>` | the cases with their issues / one opened on GitHub, closed when solved (the owner's) |
 | `task i18n:collect` / `task i18n:translate` | the English of the built pages into `resources/locales/EN-US.json` / the other packs by argostranslate |

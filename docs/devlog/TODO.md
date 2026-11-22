@@ -229,7 +229,7 @@ The owner's inquiries and orders, 2026-11-22 (changelog phase 22).
 
 - [x] The plan: the owner's words in the changelog, Q17 and Q18 decided, PP4 (ESP32 mesh nodes), the law mastermind in VISION and ROADMAP, Q19 asked
 - [x] "Not (formally) legal advices" everywhere "not legal advice" was said (Q18)
-- [ ] The space follows each release by itself: its version a build argument kept in a config file, set by a task (the environment wins) and by the release workflow
+- [x] The space follows each release by itself: its version a build argument kept in a config file, set by a task (the environment wins) and by the release workflow
 - [ ] A map of the functionalities: every way the project runs, what each can do, the holes (a scrapnote)
 - [ ] One catalog of functions in core, which every interface offers: the launcher, the REPL, the commands, the api; the map of functions written from it
 - [ ] The launcher easier to use: by what a person wants to do, parameters asked one by one, help that explains

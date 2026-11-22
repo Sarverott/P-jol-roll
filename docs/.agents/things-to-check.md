@@ -6,14 +6,21 @@ point was added.
 
 ## Decisions for Sett
 
-- **2026-11-22. Q17 and Q18 (BRAINSTORM).** What Web Serial and Web
-  Bluetooth of the desktop app are for; which model the devil's advocate
-  screen talks to, and where it runs. Both files wait, closed.
+- **2026-11-22. Q19 (BRAINSTORM).** May the desktop app or an api on
+  127.0.0.1 start writing functions (gather, text, map, push)? Rule 4 says
+  no host may; until it is answered they show disabled everywhere.
+- **2026-11-22. The space's refresh needs the secret `HF_TOKEN`** in the
+  repository (a token that may write to the space; settings are Sett's).
+  Without it the release job says so and the space keeps what it has. The
+  space's `Dockerfile` changes once more (`task resources:space`, then
+  `task resources:push -- space`): from then on releases only set its
+  variable. Not verified against Hugging Face: that a variable reaches the
+  build as an argument is from their documentation of Docker spaces.
 - **2026-11-22. The new words of the viewer** ("first", "last", "page {0}
   of {1}", the footer, the act's tab...) were collected and translated by
   argostranslate (phase 21); machine work, not read by a person.
 - **2026-11-22. MCP of the space.** `/mcp` comes to the demo with the next
-  image (a release), then `task resources:space` and the push of the space.
+  image (a release) and its refresh.
 
 - **2026-11-22. The demo space, in this order.** (1) The next release
   pushes `ghcr.io/sarverott/p-jol-roll-webapp-server`; a new package on

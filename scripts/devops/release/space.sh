@@ -1,28 +1,60 @@
 #!/usr/bin/env bash
-# The demo space follows the releases: the FROM of resources/space/Dockerfile is set to the
-# image of a release (the newest tag by default), so the next push of the space changes a file
-# and Hugging Face builds it again - a restart alone keeps the image it had (phase 15). Only
-# the local side is written; pushing the space stays the owner's (task resources:push -- space).
-# It also keeps the cache and logs of the space off the bucket mounted at /data.
-# Usage: space.sh [vX.Y.Z]
+# The demo space follows the releases without its Dockerfile being edited (phase 22): the
+# Dockerfile kept in resources/configs/space/ takes the release as a build argument, and
+# Hugging Face hands the space's variables to the build as build arguments.
+#   space.sh            the Dockerfile of the config into resources/space (the local side only;
+#                       pushing it stays the owner's: task resources:push -- space)
+#   space.sh refresh    the space's variable P_JOL_ROLL_VERSION set to the release and a fresh
+#                       build asked for (needs HF_TOKEN; the release workflow runs it)
+# The release comes from resources/configs/space/space.env, an environment variable winning,
+# else the newest tag v<version>. The token is never printed.
 # shellcheck source=../_common.sh
 source "$(dirname "$0")/../_common.sh"
-dockerfile=resources/space/Dockerfile
-[ -f "$dockerfile" ] || { echo "$dockerfile is missing - task resources:pull -- space" >&2; exit 1; }
-git fetch -q --tags origin 2> /dev/null || true
-tag="${1:-$(git tag --list 'v*' --sort=-v:refname | head -n 1)}"
-[ -n "$tag" ] || { echo "no release tag found" >&2; exit 1; }
-version="${tag#v}"
-image="ghcr.io/sarverott/p-jol-roll-webapp-server"
-before=$(grep -m 1 '^FROM ' "$dockerfile" || true)
-sed -i -E "s|^FROM ${image}:[^[:space:]]+|FROM ${image}:${version}|" "$dockerfile"
-after=$(grep -m 1 '^FROM ' "$dockerfile")
-if [ "$before" = "$after" ]; then echo "already $after"; else echo "$before -> $after"; fi
-# the space mounts the bucket at /data, where the image keeps its cache and logs by default:
-# they are kept in /tmp, or every page read is written into the bucket (phase 20)
-if ! grep -q '^ENV RESOURCES_DIR=' "$dockerfile"; then
-  printf '%s\n' '# the bucket is mounted at /data: the cache of pages and the logs stay off it (phase 20)' \
-    'ENV RESOURCES_DIR=/tmp/p-jol-roll/resources LOG_DIR=/tmp/p-jol-roll/logs' >> "$dockerfile"
-  echo "RESOURCES_DIR and LOG_DIR moved off /data (the bucket)"
-fi
-echo "now: task resources:push -- space (and task resources:prune -- space for old files)"
+config=resources/configs/space
+# a line of space.env counts only when the environment does not set that name
+while IFS='=' read -r name value; do
+  [[ "$name" =~ ^[A-Z_][A-Z0-9_]*$ ]] || continue
+  [ -n "${!name:-}" ] || export "$name=$value"
+done < "$config/space.env"
+
+release() {
+  if [ -n "${P_JOL_ROLL_VERSION:-}" ]; then echo "${P_JOL_ROLL_VERSION#v}"; return; fi
+  git fetch -q --tags origin 2> /dev/null || true
+  local tag
+  tag=$(git tag --list 'v*' --sort=-v:refname | head -n 1)
+  [ -n "$tag" ] || { echo "no release tag found" >&2; exit 1; }
+  echo "${tag#v}"
+}
+
+case "${1:-local}" in
+  local)
+    mkdir -p resources/space
+    if cmp -s "$config/Dockerfile" resources/space/Dockerfile; then
+      echo "resources/space/Dockerfile is already the one of $config"
+    else
+      cp "$config/Dockerfile" resources/space/Dockerfile
+      echo "resources/space/Dockerfile written from $config - push it once: task resources:push -- space"
+    fi
+    echo "the release comes from the space's variable: task resources:space:refresh (now $(release))"
+    ;;
+  refresh)
+    version=$(release)
+    if [ -z "${HF_TOKEN:-}" ]; then
+      echo "HF_TOKEN is not set - the space keeps the release it has (wanted: $version)"
+      exit 0
+    fi
+    api="https://huggingface.co/api/spaces/${SPACE_REPO}"
+    # the token goes in a header read from stdin, so it is not on the command line
+    hf() { curl -fsS -H @- "$@" <<< "Authorization: Bearer ${HF_TOKEN}"; }
+    hf -X POST "$api/variables" -H 'Content-Type: application/json' \
+      -d "{\"key\":\"P_JOL_ROLL_VERSION\",\"value\":\"$version\",\"description\":\"the release of ghcr.io/sarverott/p-jol-roll-webapp-server the space builds from\"}" > /dev/null
+    echo "space $SPACE_REPO: P_JOL_ROLL_VERSION=$version"
+    # a factory reboot builds the image again; a plain restart keeps the old one (phase 15)
+    hf -X POST "$api/restart?factory=true" > /dev/null
+    echo "space $SPACE_REPO: built again"
+    ;;
+  *)
+    echo "usage: space.sh [local|refresh]" >&2
+    exit 2
+    ;;
+esac
