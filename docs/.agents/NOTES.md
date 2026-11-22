@@ -4,6 +4,29 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-22 · Cleo · phases 12, 13, 14
+
+- PDF texts: pdftotext keeps the two columns apart; most old PDFs are scans
+  with Adobe Paper Capture's recognised text, kept uncorrected, the producer
+  in the record. About 1 in 100 PDF-only acts has no text layer (sample of
+  300). Some PDFs keep the producer as UTF-16 without its mark - repaired,
+  the last letter of an odd length is lost. Not run over the whole bucket:
+  tried on DU 1953 and MP 2021 in a copy, so the dataset is untouched.
+  Q16 asks whether texts go packed a year in a file before any push.
+- Media: the owner's first staged pointer of resources/mediafiles was the
+  gist's empty first commit; committed the one with the graphics as a
+  second change. Biome formatted the gist's .index.json and failed task
+  check - the submodule is excluded now.
+- Sigma 4 hides an edge by `visibility: "hidden"`, not `hidden: true`, and
+  an 8-digit short hex colour renders wrong. The api of sigma for the
+  position of a node: graphToViewport(graph.getNodeAttributes(node)).
+- Maps were made in a scratch copy (symlinks to acts and references), not
+  in resources/dataset/map/ - `task map` there is the owner's, as it goes to
+  the dataset. Typesense was started here, filled from the local dataset
+  (resources/.containerdatavol/typesense) and stopped.
+- Mermaid adds about 6 MB of lazily loaded chunks to dist/web; they load
+  only when an act has ties.
+
 ## 2026-11-22 · Cleo · after the merges, phase 11
 
 - Logs: the owner's `hub push dataset` (log-1795316429823) crashed at 12800

@@ -87,6 +87,11 @@ tasks:
     cmds:
       - npm run --silent map -- {{.CLI_ARGS}}
 
+  search:index:
+    desc: Every act into Typesense (start it - docker compose --profile search up -d typesense); "task search:index -- --texts" with the beginning of each text.
+    cmds:
+      - npm run --silent search -- index {{.CLI_ARGS}}
+
   text:
     desc: Markdown from gathered html texts, with checksums of both and address of source; "task text -- --pdf" also from PDFs of acts without html (poppler).
     cmds:

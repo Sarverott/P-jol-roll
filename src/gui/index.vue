@@ -24,6 +24,11 @@ const ties = ref([]);
 const diagram = ref("");
 // what is shown: the acts of a year, or the map of the whole law
 const view = ref("acts");
+// search of every year by Typesense (/api/search), offered only when the host has it
+const searchable = ref(false);
+const everywhere = ref(false);
+const facets = ref({});
+const filter = ref({ type: "", status: "" });
 const notice = ref("");
 const failure = ref("");
 
@@ -50,11 +55,34 @@ async function loadJournals() {
 }
 
 async function loadActs(offset = 0) {
+	if (everywhere.value) return searchEverywhere(offset);
 	if (!journal.value || !year.value) return;
 	const words = encodeURIComponent(query.value);
 	page.value = (await ask(
 		`/api/acts/${journal.value}/${year.value}?q=${words}&offset=${offset}&limit=${PAGE}`,
 	)) ?? { total: 0, offset: 0, items: [] };
+}
+
+// a snippet of Typesense: only its <mark> stays markup
+const marks = (snippet) =>
+	snippet
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/&lt;(\/?)mark>/g, "<$1mark>");
+
+async function searchEverywhere(offset = 0) {
+	const words = new URLSearchParams({
+		q: query.value,
+		page: String(Math.floor(offset / PAGE) + 1),
+		limit: String(PAGE),
+		...(filter.value.type ? { type: filter.value.type } : {}),
+		...(filter.value.status ? { status: filter.value.status } : {}),
+	});
+	const found = await ask(`/api/search?${words}`);
+	facets.value = found?.facets ?? {};
+	page.value = found
+		? { total: found.total, offset, items: found.items }
+		: { total: 0, offset: 0, items: [] };
 }
 
 async function open(act) {
@@ -73,10 +101,16 @@ watch(journal, () => {
 	year.value = years.value.at(-1) ?? 0;
 });
 watch(year, () => loadActs());
+watch(everywhere, () => loadActs());
+watch(filter, () => loadActs(), { deep: true });
 
 let socket;
 onMounted(async () => {
 	await loadJournals();
+	const probe = await fetch(`${props.api}/api/search?q=*&limit=1`).catch(
+		() => undefined,
+	);
+	searchable.value = Boolean(probe?.ok);
 	socket = io(props.api || undefined, { reconnectionAttempts: 3 });
 	socket.on("changed", (paths) => {
 		notice.value = `${paths.length} files of the dataset changed - ${new Date().toLocaleTimeString()}`;
@@ -138,7 +172,20 @@ onUnmounted(() => socket?.close());
 				<div class="control">
 					<button class="button is-link" type="submit">search</button>
 				</div>
+				<div v-if="searchable" class="control is-flex is-align-items-center">
+					<label class="checkbox"><input v-model="everywhere" type="checkbox" /> every year, titles, keywords and texts</label>
+				</div>
 			</form>
+			<div v-if="view === 'acts' && everywhere" class="field is-grouped is-grouped-multiline">
+				<div v-for="name in ['type', 'status']" :key="name" class="control">
+					<div class="select is-small">
+						<select v-model="filter[name]" :aria-label="name">
+							<option value="">every {{ name }}</option>
+							<option v-for="one in facets[name] ?? []" :key="one.value" :value="one.value">{{ one.value }} ({{ one.count }})</option>
+						</select>
+					</div>
+				</div>
+			</div>
 
 			<div v-show="view === 'acts'" class="columns">
 				<section class="column is-two-fifths-desktop list">
@@ -153,6 +200,8 @@ onUnmounted(() => socket?.close());
 							@click.prevent="open(act)"
 						>
 							<strong>{{ act.ELI }}</strong> {{ act.title }}
+							<!-- marks of Typesense around the found words; the rest of the snippet escaped -->
+							<span v-if="act.snippet" class="is-block is-size-7 has-text-grey mt-1" v-html="marks(act.snippet)"></span>
 							<span class="tags mt-1">
 								<span class="tag">{{ act.type }}</span>
 								<span class="tag" :class="act.status === 'obowiązujący' ? 'is-success is-light' : 'is-light'">{{ act.status }}</span>

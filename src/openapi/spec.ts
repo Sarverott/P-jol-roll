@@ -41,7 +41,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.8.15",
+		version: "0.8.17",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address.",
 		license: { name: "AGPL-3.0-only" },
@@ -136,6 +136,22 @@ export const spec = {
 				responses: {
 					200: { description: "ties: from, type, to, date, art" },
 					404: missing,
+				},
+			},
+		},
+		"/api/search": {
+			get: {
+				summary:
+					"words in titles, keywords and texts of every year, by Typesense; filters by journal, status, type",
+				parameters: ["q", "journal", "status", "type", "page", "limit"].map(
+					(name) => ({ name, in: "query", schema: { type: "string" } }),
+				),
+				responses: {
+					200: {
+						description:
+							"total, page, items (ELI, title, type, status, year, snippet), facets",
+					},
+					503: { description: "Typesense is not running or not filled" },
 				},
 			},
 		},

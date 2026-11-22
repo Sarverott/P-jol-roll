@@ -15,6 +15,7 @@ const at = (file: string) => `${root}${file}`;
 // secrets the services of resources/services/ need, by file name
 const SECRETS: string[] = [
 	"litellm_master_key", // llms-api-host (profile llms)
+	"typesense_api_key", // typesense (profile search)
 ];
 
 // [command, arguments, needed, what for]
