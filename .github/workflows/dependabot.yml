@@ -1,6 +1,7 @@
 # Dependabot's pull requests (into dev/dependabot, .github/dependabot.yml), as the owner asked
 # on 2026-11-22:
-#   1. each one merges into dev/dependabot at once, with no checks of its own
+#   1. each one merges into dev/dependabot at once, with no checks of its own; a security
+#      update, which GitHub always opens against master, is turned to dev/dependabot first
 #   2. dev/dependabot is checked (checks.yml) - one run at a time, a newer one cancels an older,
 #      so a pile of pull requests is checked once
 #   3. green: dev/dependabot lands in development (a merge commit) and is brought up to it
@@ -11,8 +12,8 @@ name: "flow › Dependabot: merge into dev/dependabot, check once, land in devel
 
 on:
   pull_request_target:
-    branches: [dev/dependabot]
-    types: [opened, reopened, synchronize]
+    branches: [dev/dependabot, master]
+    types: [opened, reopened, synchronize, edited]
   workflow_dispatch:
 
 permissions:
@@ -26,8 +27,9 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      # the scripts come from development: dev/dependabot may be older than they are
       - uses: actions/checkout@v7
-        with: { ref: dev/dependabot }
+        with: { ref: development }
       - name: Merge into dev/dependabot
         env:
           GH_TOKEN: ${{ github.token }}
@@ -53,7 +55,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v7
-        with: { fetch-depth: 0 }
+        with: { ref: development, fetch-depth: 0 }
       - uses: actions/setup-node@v7
         with: { node-version-file: .nvmrc }
       - name: dev/dependabot into development, then brought up to it
