@@ -1,0 +1,16 @@
+# docs-server: the website of the project served locally - the React introduction at / and the
+# documentation under /docs/, as GitHub Pages has them. Build site/ first:
+#   scripts/devops/pages/build.sh      then   docker compose up -d docs-server  ->  http://localhost:8000
+services:
+  docs-server:
+    image: nginx:1.29-alpine
+    ports:
+      - "127.0.0.1:8000:80"
+    volumes:
+      - ./site:/usr/share/nginx/html:ro
+    restart: unless-stopped
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://127.0.0.1:5514
+        tag: p-jol-roll-docs-server

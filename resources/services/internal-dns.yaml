@@ -1,0 +1,14 @@
+# internal-dns: dnsmasq, every name under p-jol-roll.internal -> this machine (routing-proxy).
+# On 127.0.0.1:15353 (DNS_PORT; 5353 is mDNS), so the resolver of the system on 53 stays as it is.
+#   docker compose --profile local-network up -d internal-dns
+services:
+  internal-dns:
+    profiles: [local-network]
+    image: dockurr/dnsmasq:2.91
+    ports:
+      - "127.0.0.1:${DNS_PORT:-15353}:53/udp"
+      - "127.0.0.1:${DNS_PORT:-15353}:53/tcp"
+    volumes:
+      - ./resources/configs/internal-dns/dnsmasq.conf:/etc/dnsmasq.conf:ro
+    cap_add: [NET_ADMIN]
+    restart: unless-stopped
