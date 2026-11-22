@@ -29,7 +29,11 @@ watch(language, (code) => use(code));
 				</div>
 				<div v-if="languages.length > 1" class="media-right">
 					<div class="select is-small" translate="no">
-						<select v-model="language" aria-label="language">
+						<select
+							v-model="language"
+							class="i18n-texts-label"
+							aria-label="language"
+						>
 							<option
 								v-for="one in languages"
 								:key="one.code"

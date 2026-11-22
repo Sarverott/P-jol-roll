@@ -77,7 +77,11 @@ const FACETS = ["type", "status"];
 			<div v-for="name in FACETS" :key="name" class="field">
 				<div class="control">
 					<div class="select is-small is-fullwidth">
-						<select v-model="state.filter[name]" :aria-label="name">
+						<select
+							v-model="state.filter[name]"
+							class="i18n-texts-label"
+							:aria-label="name"
+						>
 							<option value="" class="i18n-texts-slot">every {{ name }}</option>
 							<option
 								v-for="one in state.facets[name] ?? []"

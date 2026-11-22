@@ -137,7 +137,7 @@ function Languages() {
 export default function App() {
 	const { version, phases, features } = state;
 	return (
-		<main>
+		<main className="i18n-texts-slot">
 			<header>
 				<Languages />
 				<p className="version" translate="no">
