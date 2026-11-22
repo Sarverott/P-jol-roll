@@ -1,8 +1,9 @@
 <script setup>
 // NOTE: this frontend should be shared with all viewer webapp interfaces: android app, desktop app, website host
 // The viewer: a header, the tabs of the screens (the acts, one act, the map of the whole law,
-// the rest of the dataset) and a footer; what the screens share is the library
-// (assets/library.js), where the viewer is is the address after "#" (assets/route.js).
+// the rest of the dataset, plots, statistics with the history) and a footer; what
+// the screens share is the library (assets/library.js), where the viewer is is the address
+// after "#" (assets/route.js).
 // Bulma: the layout and the look of every interface that shows the viewer, light and dark
 //
 // NOTE: this file is way too long and too dense - diverse it into imported components
@@ -31,9 +32,16 @@ import ContentDisplay from "./screens/contentDisplay.vue";
 import DatasetBrowser from "./screens/datasetBrowser.vue";
 import GeneralMap from "./screens/generalMap.vue";
 
-// Cytoscape.js comes with the minimap, so it is loaded when there are ties to draw
+// Cytoscape.js comes with the minimap, so it is loaded when there are ties to draw; the plots
+// and the history only when their screens are shown
 const TiesMinimap = defineAsyncComponent(
 	() => import("./components/ties/TiesMinimap.vue"),
+);
+const PlotsDiagrams = defineAsyncComponent(
+	() => import("./screens/plotsDiagrams.vue"),
+);
+const StatisticsHistory = defineAsyncComponent(
+	() => import("./screens/statisticsHistory.vue"),
 );
 
 // address of the http api (src/openapi): empty means the host that served this page
@@ -83,6 +91,8 @@ onUnmounted(() => {
 			<ContentDisplay v-if="route.screen === 'act'" />
 			<GeneralMap v-if="route.screen === 'map'" />
 			<DatasetBrowser v-if="route.screen === 'data'" />
+			<PlotsDiagrams v-if="route.screen === 'plots'" />
+			<StatisticsHistory v-if="route.screen === 'statistics'" />
 		</LayoutMain>
 		<TiesMinimap
 			v-if="['acts', 'act'].includes(route.screen)"
