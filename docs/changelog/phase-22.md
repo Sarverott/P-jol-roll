@@ -118,3 +118,35 @@ social simulations and parliamentary discussion by MiroFish or OASIS,
 offline; a second stack in Python and a third in Go for the
 decentralisation circuits (Cosmos SDK, IPFS, Traefik, WireGuard, torrents).
 Written into VISION and ROADMAP (milestone M4 and M5); long term.
+
+## UNIXUSAT=1795375185097 · commit 6e6c517
+
+What was done with the inquiries and orders above, one commit per step on
+`dev/Cleo`.
+
+**What was done:** "not (formally) legal advices" everywhere the project
+spoke of legal advice. The space follows each release by itself: its
+`Dockerfile` lives in `resources/configs/space` and takes the release as a
+build argument, `space.env` names it (the environment wins), and the
+release workflow sets the space's variable and rebuilds it when the
+repository has `HF_TOKEN` (`task resources:space:refresh` by hand). The
+map of functionalities (`docs/devlog/scrapnote-1795373814912.md`) listed
+fourteen ways the project runs and found the holes; they are patched by
+one catalog of functions in core (`src/core/catalog/`) that the launcher,
+the REPL, `task do`, `/api/catalog` and the viewer take from, with
+`docs/guides/functions.md` written from it. The launcher opens on what a
+person wants to do and asks each function's parameters one by one, with a
+page on how to use it. The api and MCP read the rest of the dataset: the
+work of Sejm, judgments, the lists of the source, the acts counted
+(`task stats`). The viewer got "Terms of use" (licence, authors, links),
+map controls (zoom, the whole map, an act found), a tab of the rest of the
+dataset, plots, statistics with a playable history, settings with every
+function (writing ones disabled, as for the space) and WebMCP. The desktop
+app prints the act or saves it as PDF from its menu, its right-click menu
+and the tray. The introduction has a living p5.js background with the
+logo. 186 new texts in every pack.
+
+**Waits for the owner:** Q19 (may a local host start writing functions);
+the secret `HF_TOKEN` for the space's refresh, and one push of the
+space's new `Dockerfile`; `task stats` and a push of the dataset for the
+demo's statistics.
