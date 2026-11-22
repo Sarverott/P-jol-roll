@@ -88,6 +88,12 @@ task resources:push -- space       # the changed Dockerfile: Hugging Face builds
 task resources:prune -- space      # once: app.py, development.md, requirements.txt of the marimo days
 ```
 
+The space mounts the bucket at `/data`, the place where the image keeps its
+cache and logs by default. Its `Dockerfile` moves both to `/tmp`
+(`RESOURCES_DIR`, `LOG_DIR`); without that line every page read is written
+into the bucket as `resources/` and `logs/` (phase 20). `task resources:space`
+adds the line when it is missing.
+
 ## Which data goes where
 
 Tables go to the dataset and raw files of acts go to the bucket.
