@@ -8,6 +8,7 @@ import {
 	localFiles,
 	rateLimitWait,
 	repoOf,
+	target,
 } from "../src/core/resources/hub.js";
 
 test("repository is named by path of its address", () => {
@@ -59,4 +60,16 @@ test("a refused commit is waited out for the time huggingface names", () => {
 	);
 	expect(rateLimitWait({ statusCode: 429 })).toBe(3_600_000);
 	expect(rateLimitWait(new Error("401 unauthorized"))).toBeUndefined();
+});
+
+test("a missing or wrong name says which names there are", () => {
+	expect(() => target("")).toThrow(
+		"name a repository after the action - one of: dataset, bucket, space",
+	);
+	expect(() => target("datset")).toThrow(
+		"datset is not in .map.json - one of: dataset, bucket, space",
+	);
+	expect(target("space").repo).toBe(
+		"spaces/Sarverott/docs-of-law-by-gov-in-poland",
+	);
 });

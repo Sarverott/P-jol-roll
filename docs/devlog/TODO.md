@@ -157,9 +157,9 @@ Asked in the chat on 2026-11-22 (changelog phase 12). Embeddings wait for Q15.
 
 The owner's answer to Q16 (changelog phase 12): the space kept files of its marimo days, a push stopped on a damaged PDF.
 
-- [ ] `hub push --prune`: files there that are not here are deleted there too, after a question (the space keeps `app.py`, `development.md`, `requirements.txt`)
+- [x] `task resources:prune`: files there that are not here are deleted there, after a question, never in the bucket (the space keeps `app.py`, `development.md`, `requirements.txt`)
 - [ ] The space's Dockerfile follows the releases: `task resources:space` writes the version of the release into it
-- [ ] `hub plan` and the rest without a name say which names there are, instead of crashing
+- [x] `hub plan` and the rest without a name say which names there are, instead of crashing
 
 ## Phase 16: translations
 

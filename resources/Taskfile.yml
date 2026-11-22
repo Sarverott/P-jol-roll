@@ -21,6 +21,12 @@ tasks:
     cmds:
       - npm run --silent hub -- push {{.CLI_ARGS}}
 
+  prune:
+    desc: Delete on huggingface the files that are not here, name after "--" (dataset or space, never the bucket), needs HF_TOKEN; "task resources:plan" shows them first as "download".
+    prompt: This DELETES files on huggingface that are not in the local directory. Run "task resources:plan" first. Delete?
+    cmds:
+      - npm run --silent hub -- prune {{.CLI_ARGS}}
+
   merge:
     desc: Every source into the one bucket and the one dataset - sejm-dataset, sejm-bucket, saos-dataset moved inside (local only).
     cmds:

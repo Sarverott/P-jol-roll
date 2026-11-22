@@ -5,6 +5,7 @@ task resources:plan -- dataset     # what differs; changes nothing
 task resources:pull -- dataset     # take files that are there and not here
 task resources:push -- dataset     # send files that are new or changed here; asks first
 task resources:push -- bucket --batch 500   # commits of 500 files
+task resources:prune -- space      # delete there what is not here; asks first; never the bucket
 ```
 
 The name after `--` is a key of `resources/.map.json`:
@@ -45,7 +46,7 @@ moved twice.
 ## What it never does
 
 - `push` never deletes a file on Hugging Face. A file removed here stays
-  there.
+  there - until `prune` is asked for by name.
 - `pull` never overwrites a local file.
 - `.git`, `node_modules`, `.venv`, `__pycache__` and `.part` files are never
   moved in any direction.
@@ -61,6 +62,19 @@ and sends the same commit again (with commits of 100, a push of 14170 files
 stopped at the 128th). If a push stops in the middle, start it again:
 the commits already made are on the other side, and the comparison skips
 their files.
+
+## Prune
+
+`task resources:prune -- space` deletes on Hugging Face every file that is
+there and not here - the files `plan` lists as `download`. Look at them
+first with `task resources:plan -- space`. It goes in commits of 1000, waits
+out the hourly limit as push does, and asks before it starts. It refuses the
+bucket: raw files may live on one machine only.
+
+It was made for the space, which kept `app.py`, `development.md` and
+`requirements.txt` of its marimo days after it became a Docker space. On the
+dataset, prune only after a `pull`, or it deletes what this machine never
+took.
 
 ## Which data goes where
 

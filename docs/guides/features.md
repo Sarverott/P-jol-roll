@@ -68,6 +68,7 @@ State of 2026-11-13.
 | A shell for agents (`agentic-shell`) | `task shell` | **built**: started, node, task, uv and git answer, the repository is writable, no Docker socket, no root (Q13) |
 | Launcher: a menu of every task, and a REPL | `task` | **built**: driven in a pseudo-terminal; termui itself stays an experiment (Q4) |
 | Website of the project: idea and state | `task docs:build` | **works**: published on GitHub Pages and Read the Docs by every release |
+| Deleting on Hugging Face what is not here (dataset, space) | `task resources:prune -- space` | **built**: not run - it deletes there, that is the owner's |
 | Icons and the card of a shared link (favicon, manifest, `og:image`) | `task resources:media` | **built**: made from the gist `resources/mediafiles` with ffmpeg; checked in the built pages, not yet in a real share |
 | Links to acts in the Hugging Face space | | **wanted** |
 
