@@ -79,8 +79,10 @@ jobs:
       - name: Snyk IaC test and report
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        # exit 3: no files of infrastructure as code here - nothing to scan is no failure
-        run: snyk iac test --report --severity-threshold=high || [ $? -eq 3 ]
+        # where the infrastructure is (the services' compose files, the configurations of
+        # services); the rest of the tree is no IaC, and its editor JSON with comments
+        # (.vscode/launch.json) stopped the scan (SNYK-CLI-0012). Exit 3: nothing to scan there
+        run: snyk iac test resources/services resources/configs --report --severity-threshold=high || [ $? -eq 3 ]
 
         # Build the docker image for testing
       - name: Build a Docker image
