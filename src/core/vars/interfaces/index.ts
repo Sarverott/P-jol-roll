@@ -19,6 +19,8 @@ import type FrontendInterface from "./Frontend.interface.js";
 import type GatherPlanInterface from "./GatherPlan.interface.js";
 import type JournalInterface from "./Journal.interface.js";
 import type JudgmentInterface from "./Judgment.interface.js";
+import type LawMapInterface from "./LawMap.interface.js";
+import type MapPresetInterface from "./MapPreset.interface.js";
 import type MenuOptionInterface from "./MenuOption.interface.js";
 import type PrintInterface from "./Print.interface.js";
 import type ProcessInterface from "./Process.interface.js";
@@ -70,6 +72,8 @@ export namespace ReadingScope {
 	export type ActPage = ActPageInterface;
 	export type ActView = ActViewInterface;
 	export type TextOrigin = TextOriginInterface;
+	export type LawMap = LawMapInterface;
+	export type MapPreset = MapPresetInterface;
 }
 
 // durable runs of src/workflows: what they are asked, what their steps return

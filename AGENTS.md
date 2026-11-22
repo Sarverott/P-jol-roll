@@ -106,6 +106,7 @@ src/core/              the gatherer itself; everything below is its tree
   methods/             what a command does
     gather.ts          index -> lists -> years, then files of acts year by year; --since for changes
     seal.ts            checksums of gathered files: records, and check against them
+    map.ts             the map of the whole law: acts of a preset (presets.ts) placed by ForceAtlas2 into dataset/map/
     compile.ts         tables of details and references from raw files
     checkup.ts         browser (Camoufox) visits websites that show acts, writes what it saw
   parsing/             raw files into text
@@ -126,7 +127,7 @@ src/openapi/           http api (/api, /openapi.json) with socket.io notices, se
 src/mcp/               MCP server over stdio for AI agents, read-only
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
-src/gui/               index.vue - the one viewer that every interface shows (Bulma); components/ the ties drawn (mermaid) and their minimap (Cytoscape.js)
+src/gui/               index.vue - the one viewer that every interface shows (Bulma); components/ the ties drawn (mermaid), their minimap (Cytoscape.js), the map of the whole law (sigma.js)
 src/web/               Astro website carrying the viewer (pages/), built into dist/web
 src/desktop/           Electron window: starts the api, shows the viewer
 src/app/               web app manifest and Capacitor config of the android app
@@ -187,6 +188,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task gather:everything` | all of it, asks before it starts |
 | `task gather:changes` | acts changed since the previous such run |
 | `task seal` / `task seal -- --check` | write checksums of files without a record / compare files with records |
+| `task map` / `task map -- statutes` | the map of the whole law, every preset or one, into `dataset/map/` (the viewer draws it with sigma.js) |
 | `task compile` / `task text` | tables from raw files / markdown from html (`-- --pdf`: from PDFs too) |
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |

@@ -24,6 +24,9 @@ compile                              -> tables of dataset from raw files: detail
 text                                 -> markdown from gathered html, with checksums of both
 text --pdf                           -> and from the text layer of PDFs of acts without html (poppler; --parallel 4)
 
+map                                  -> the map of the whole law: every preset placed by ForceAtlas2 into dataset/map/
+map statutes-in-force                -> one preset (statutes-in-force, statutes, in-force)
+
 sejm                                 -> work of Sejm: processes and prints of the current term
 sejm 9 10 --files --limit 50         -> these terms, with details of processes and files of prints
 saos 2024 2025 --limit 3             -> court judgments of these years, 3 months that are not here yet
@@ -45,6 +48,7 @@ const COMMANDS = [
 	"saos",
 	"checkup",
 	"hub",
+	"map",
 ];
 const [first = "", ...rest] = process.argv.slice(2);
 const command = COMMANDS.includes(first) ? first : "gather";
@@ -131,6 +135,11 @@ if (command === "text") {
 		`text: ${sum.parsed} parsed (${sum.fromPdf} from PDF), ${sum.unchanged} unchanged, ${sum.scans} scans without text`,
 		sum,
 	);
+}
+
+if (command === "map") {
+	const { map } = await import("./methods/map.js");
+	await map(positionals.length ? positionals : undefined);
 }
 
 if (command === "sejm") {

@@ -130,6 +130,9 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | --- | --- |
 | `src/gui/index.vue` | The one viewer: pick a journal and a year, search titles, open an act, read its markdown, follow its ties, open its PDF. Takes the address of the api as `api`. Every interface shows this. Laid out with Bulma. |
 | `src/gui/components/TiesDiagram.vue` | The ties of an act as the mermaid flowchart of the core (`/diagram`), rendered by mermaid (loaded only when needed); a click on a node opens that act. |
+| `src/gui/components/LawMap.vue` | The map of the whole law (sigma.js): a preset made by `task map`, a colour per type of act; hovering an act lights its ties, a click opens it. |
+| `src/core/methods/map.ts` | `task map`: the acts of a preset and the ties among them placed by ForceAtlas2 once, into `dataset/map/<preset>.json` (compact: nodes `[ELI, title, x, y, size, kind]`, edges `[from, to, tie]`). |
+| `src/core/methods/presets.ts` | The presets of the map: statutes in force (2.8 thousand acts), every statute (10 thousand), every act in force (20 thousand); apart from map.ts so readers know them without the layout. |
 | `src/gui/components/TiesMinimap.vue` | A minimap of the ties in the corner (Cytoscape.js): the act in the middle, a colour per kind of tie, a click opens an act; it can be hidden. |
 | `src/core/reading/diagram.ts` | The ties of an act as one mermaid flowchart - the one drawing the api, the MCP server (`act_references` with `as: mermaid`) and the viewer give. |
 | `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host; `PUBLIC_SITE` is its own address for the card of a shared link (the demo by default). |

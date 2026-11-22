@@ -41,7 +41,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.8.14",
+		version: "0.8.15",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address.",
 		license: { name: "AGPL-3.0-only" },
@@ -137,6 +137,31 @@ export const spec = {
 					200: { description: "ties: from, type, to, date, art" },
 					404: missing,
 				},
+			},
+		},
+		"/api/map": {
+			get: {
+				summary:
+					"presets of the map of the whole law, and whether task map made them",
+				responses: { 200: { description: "name, description, made" } },
+			},
+		},
+		"/api/map/{preset}": {
+			get: {
+				summary:
+					"the map of a preset: acts placed by ForceAtlas2 ([ELI, title, x, y, size, kind]) and the ties among them ([from, to, tie])",
+				parameters: [
+					{
+						name: "preset",
+						in: "path",
+						required: true,
+						schema: {
+							type: "string",
+							enum: ["statutes-in-force", "statutes", "in-force"],
+						},
+					},
+				],
+				responses: { 200: { description: "the map" }, 404: missing },
 			},
 		},
 		"/api/acts/{journal}/{year}/{pos}/diagram": {

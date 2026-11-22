@@ -19,13 +19,30 @@ if (remote)
 		const [, kind, journal, year, pos] = request.path.split("/");
 		const number = (value?: string) =>
 			value && /^\d+$/.test(value) ? Number(value) : undefined;
-		library
-			.prepare(kind === "acts" ? journal : undefined, number(year), number(pos))
-			.then(() => next(), next);
+		const ready =
+			kind === "map"
+				? library.prepareMap(journal)
+				: library.prepare(
+						kind === "acts" ? journal : undefined,
+						number(year),
+						number(pos),
+					);
+		ready.then(() => next(), next);
 	});
 
 routes.get("/openapi.json", (_request, response) => {
 	response.json(spec);
+});
+
+routes.get("/api/map", (_request, response) => {
+	response.json(library.mapPresets());
+});
+
+// already JSON on disk, sent as it is (a few MB for the bigger presets)
+routes.get("/api/map/:preset", (request, response) => {
+	const made = library.lawMap(String(request.params.preset));
+	if (made) response.type("application/json").send(made);
+	else notHere(response);
 });
 
 routes.get("/api/journals", (_request, response) => {
