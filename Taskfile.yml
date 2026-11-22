@@ -27,9 +27,11 @@ tasks:
 
   default:
     # NOTE: we want to make easy project lounching for newcommers, so cui louncher should be runned when we call "task" and current listing of commands will be "task help"
-    # ANSWER: "task help" lists them now; this stays the listing until the launcher of src/tui/ exists (phase 7)
+    # ANSWER: done - bare "task" opens the launcher of src/tui/launcher/ (a menu of every Taskfile, and a REPL); "task help" lists
+    desc: The launcher - a menu of every Taskfile and its tasks, and a REPL where tasks are commands (without a terminal, the list).
+    interactive: true
     cmds:
-      - task: help
+      - node_modules/.bin/tsx src/tui/launcher/main.ts
     silent: true
 
   help:

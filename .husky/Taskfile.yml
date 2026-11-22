@@ -6,11 +6,12 @@ version: '3'
 # one task per git hook, named like the hook
 tasks:
   pre-commit:
-    desc: The commit's own version (dev/* bumps the patch), then Biome check of staged files - nothing else gets changed.
+    desc: Biome check of staged files, then the commit's own version (dev/* bumps the patch) - nothing else gets changed.
     cmds:
       - task: merge-driver
-      - task: bump-commit
+      # the check first: a commit it stops leaves no bumped version behind
       - npx biome check --staged --no-errors-on-unmatched
+      - task: bump-commit
 
   bump-commit:
     desc: 'On a dev/* branch every commit has its own version: the patch bumped, every copy synced and staged (.github/bos.json versioning.commits)'

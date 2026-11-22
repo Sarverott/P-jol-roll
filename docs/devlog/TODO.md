@@ -82,8 +82,8 @@ The NOTEs Sett left in `compose.yaml` (changelog phase 6), each moved to its pla
 
 - [x] `task init`: checks what is installed, generates secrets, copies `.env.example`, once
 - [x] `task help` lists the tasks (bare `task` runs it until the launcher exists)
-- [ ] Bare `task` starts the launcher
-- [ ] The launcher: a terminal menu in `src/tui/` over commands declared in `src/cli/`
+- [x] Bare `task` starts the launcher
+- [x] The launcher: a terminal menu in `src/tui/` over commands declared in `src/cli/`
 
 ## Phase 8: releases and routines
 
