@@ -4,6 +4,30 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-22 · Cleo · Q15, Q16: phases 15, 16, 17
+
+- The owner's PDF run stopped on DU/1932/38 (zeros to its end, checksum as
+  recorded): a damaged PDF is now listed with its error. Whether the source
+  serves it so is in things-to-check.md.
+- The demo already ran 0.11 (the owner pinned the Dockerfile); "updates not
+  presented" was the space keeping app.py and the rest: push never deleted.
+  `task resources:prune` and `task resources:space` are built, not run -
+  they write to Hugging Face, which is the owner's.
+- Translations: the owner's idea holds (tests on linkedom and jsdom, both
+  pages and the docs in a browser). Traps met: Vite's glob skips dotfiles
+  (.index.json imported by name); linkedom reports no characterData
+  mutations (jsdom does, as browsers); argos transliterates letters in
+  Ukrainian but never numbers, so names and identifiers stand in as
+  numbers; a number in a template is filled with one digit, so SHA-256
+  needed its own pattern. The packs are machine translations - not read by
+  a person; Polish is the one the owner can review first.
+- Embeddings: bge-m3 by `ollama serve` on the RTX 3060, DU 2020 only, in a
+  scratch copy. Typesense here got those 2453 vectors (field added by PATCH)
+  - a local test index, the owner's `task search:index` after `task embed`
+  makes the real one. Ollama and Typesense were stopped afterwards.
+- hyparquet reads snappy only without an extra package, so embed.py writes
+  snappy.
+
 ## 2026-11-22 · Cleo · phases 12, 13, 14
 
 - PDF texts: pdftotext keeps the two columns apart; most old PDFs are scans
