@@ -112,3 +112,17 @@ onUnmounted(() => {
 		<ErrorDialog v-model="state.failure" />
 	</main>
 </template>
+
+<style scoped>
+/* printed (and saved as PDF by the desktop app): only what the screen shows, without the
+header, the tabs, the asides, the minimap and the footer */
+@media print {
+	.viewer > header,
+	.viewer > footer,
+	.viewer :deep(.tabs),
+	.viewer :deep(aside),
+	.viewer :deep(.notification) {
+		display: none;
+	}
+}
+</style>
