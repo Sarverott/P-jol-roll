@@ -18,7 +18,10 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    name and signs every commit with a co-authorship line carrying that name
    and its lineage (the model it runs on), the same as its line in
    `.github/AUTHORS`: Cleo signs
-   `Co-Authored-By: Cleo (Claude Opus 5.5) <noreply@anthropic.com>`. An agent
+   `Co-Authored-By: Cleo (Claude Opus 5.5) <noreply@anthropic.com>`.
+   Jarvis (GitHub Copilot) was confirmed by Sett on 2026-11-22 and signs
+   `Co-authored-by: Jarvis (GitHub Copilot) <198982749+Copilot@users.noreply.github.com>`;
+   its guide is `.github/copilot-instructions.md`. An agent
    not yet confirmed leaves its edits uncommitted in the working tree and
    says what it changed and why; a member commits them or confirms it.
 2. **Where edits go: the BOS craft loop.** A member works on its own
@@ -36,6 +39,13 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    agent understood them; then that branch is merged into `development`.
    Edits the owner makes on GitHub land on `development`; take them in with
    a fast-forward before branching.
+   **Bots' branches.** Dependabot and Jarvis work through pull requests,
+   each into its own branch (`dev/dependabot`, `dev/Jarvis`); one opened
+   against `master` or `development` is turned there by `bots.yml`, merged
+   (Jarvis's when it is no longer a draft), the branch checked once and
+   landed in `development` (`bots-land.yml`). Cleo may merge or land
+   `dev/Jarvis` by hand the same way, and writes what it saw for Jarvis
+   in `docs/.agents/jarvis.md`, as Jarvis cannot keep notes here.
    **Agents' own domain** is `docs/.agents/`: agents write there, humans
    read it and do not write, edit or delete.
 3. **Tasks arrive as `// NOTE: ` comments** (in READMEs and Taskfiles too).
@@ -177,7 +187,8 @@ docs/almanac/     what was learnt the hard way: cataclistics/ (a case per page, 
                   each), patterning/ and rulesets/ (JSON, as in BOS), faq.md; a solved problem gets its case here
 docs/changelog/   what happened per phase, the owner's words word for word, append-only
 .github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues, AUTHORS;
-                  bos.json (the loop as data), dependabot.yml, workflows/checks.yml
+                  bos.json (the loop as data), dependabot.yml, workflows/ (checks, bots, bots-land, release,
+                  copilot-setup-steps), copilot-instructions.md and prompts/ (Jarvis's guide)
 .obsidian/        the repository is an Obsidian vault; plugins/ holds separate repositories
 ```
 
