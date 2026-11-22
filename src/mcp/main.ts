@@ -11,7 +11,7 @@ a person, so an agent cannot set off a crawl of the source through here.
   claude mcp add p-jol-roll -- npx tsx src/mcp/main.ts
 */
 
-const server = new McpServer({ name: "p-jol-roll", version: "0.8.6" });
+const server = new McpServer({ name: "p-jol-roll", version: "0.8.10" });
 const readOnly = { readOnlyHint: true, openWorldHint: false };
 
 const answer = (value: unknown) => ({
@@ -92,7 +92,7 @@ server.registerTool(
 	{
 		title: "Text of an act",
 		description:
-			"Markdown text of an act, in pieces: long acts are read by moving start. Only acts published with HTML have text.",
+			"Markdown text of an act, in pieces: long acts are read by moving start. Made from the HTML of the act, or from the text layer of its PDF where it has no HTML - then the first line says so, as text recognised from old scans has mistakes.",
 		inputSchema: z.object({
 			eli,
 			start: z.number().int().min(0).default(0),
@@ -103,12 +103,17 @@ server.registerTool(
 	async ({ eli, start, length }) => {
 		const text = library.text(eli);
 		if (text === undefined) return notHere(`text of ${eli}`);
+		const origin = library.textOrigin(eli);
+		const note =
+			start === 0 && origin?.from === "pdf"
+				? `[text layer of the PDF${origin.producer ? ` (${origin.producer})` : ""}, not corrected; the source: ${origin.url}]\n\n`
+				: "";
 		const end = Math.min(text.length, start + length);
 		const more =
 			end < text.length
 				? `\n\n[characters ${start}-${end} of ${text.length}, continue with start=${end}]`
 				: "";
-		return answer(text.slice(start, end) + more);
+		return answer(note + text.slice(start, end) + more);
 	},
 );
 

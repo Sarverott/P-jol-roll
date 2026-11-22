@@ -56,6 +56,18 @@ await put(
 	"dataset/texts/DU/1918/WDU19180020002.md",
 	"# Ustawa o Radzie Stanu\n\n### Art. 1.\n",
 );
+await put(
+	"dataset/texts/DU/1918.jsonl",
+	`${JSON.stringify({
+		ELI: "DU/1918/2",
+		markdown: "texts/DU/1918/WDU19180020002.md",
+		sha256_md: "-",
+		from: "pdf",
+		sha256_pdf: "-",
+		producer: "Adobe Acrobat 9.0 Paper Capture Plug-in",
+		url: "https://api.sejm.gov.pl/eli/acts/DU/1918/2/text.pdf",
+	})}\n`,
+);
 await put(".map.json", "{}");
 
 const library = await import("../src/core/reading/library.js");
@@ -79,6 +91,11 @@ test("reads journals, pages of acts and one act from files", () => {
 	expect(library.act("DU/1918/2")).toMatchObject({
 		files: [".json", ".pdf"],
 		markdown: true,
+		text: {
+			from: "pdf",
+			producer: "Adobe Acrobat 9.0 Paper Capture Plug-in",
+			url: "https://api.sejm.gov.pl/eli/acts/DU/1918/2/text.pdf",
+		},
 	});
 	expect(library.act("DU/1918/1")).toMatchObject({
 		files: [],
@@ -101,6 +118,7 @@ test("http api answers from the same files and nothing outside them", async () =
 	expect(text.headers.get("content-type")).toContain("text/markdown");
 	expect(await text.text()).toContain("Art. 1.");
 	expect(text.headers.get("access-control-allow-origin")).toBe("*");
+	expect(text.headers.get("x-text-from")).toBe("pdf");
 	expect(await (await get("/api/acts/DU/1918/2/file/.pdf")).text()).toBe(
 		"%PDF-1.4",
 	);

@@ -83,9 +83,9 @@ tasks:
       - npm run --silent compile
 
   text:
-    desc: Markdown from gathered html texts, with checksums of both and address of source.
+    desc: Markdown from gathered html texts, with checksums of both and address of source; "task text -- --pdf" also from PDFs of acts without html (poppler).
     cmds:
-      - npm run --silent text
+      - npm run --silent text -- {{.CLI_ARGS}}
 
   sejm:
     desc: Work of Sejm - processes and prints of a term, arguments after "--" (e.g. task sejm -- 10 --files --limit 50).

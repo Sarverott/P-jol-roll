@@ -144,7 +144,9 @@ act changes, repeals or carries out which. The examples above are shortened.
 - **HTML** exists only for some acts. In the listing of 2026 none of 1321
   acts had it (checked on 2026-10-13).
 
-HTML is turned into markdown by `task text`. PDF is not parsed yet.
+HTML is turned into markdown by `task text`. `task text -- --pdf` also reads
+the text layer of the PDF of every act without HTML (phase 12, PP2): 125,759
+of 165,006 acts. See [processing](processing.md#texts-of-pdfs).
 
 ## Checkups
 

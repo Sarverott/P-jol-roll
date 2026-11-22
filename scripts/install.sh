@@ -9,7 +9,7 @@ has() { command -v "$1" >/dev/null 2>&1; }
 step() { printf '\n== %s\n' "$1"; }
 
 if ! has apt-get; then
-	echo "no apt-get here - install by hand: docker, node 24 with npm, python 3 with pip, uv" >&2
+	echo "no apt-get here - install by hand: docker, node 24 with npm, python 3 with pip, uv, poppler-utils" >&2
 	exit 1
 fi
 
@@ -42,6 +42,10 @@ else
 	# official installer of Astral, into ~/.local/bin
 	curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
+
+step "poppler (pdftotext, for task text -- --pdf)"
+if ! has pdftotext; then sudo apt-get update && sudo apt-get install -y poppler-utils; fi
+pdftotext -v 2>&1 | head -n 1
 
 step "project"
 echo "now: npm install && task verify"

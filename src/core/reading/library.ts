@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { edgesOf } from "../methods/compile.js";
-import { markdownPath } from "../parsing/text.js";
+import { markdownPath, textsTablePath } from "../parsing/text.js";
 import * as store from "../resources/store.js";
 import type { GatheringScope, ReadingScope } from "../vars/interfaces/index.js";
 import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
@@ -136,7 +136,30 @@ export function act(eli: string): ReadingScope.ActView | undefined {
 		details: store.readJson(store.actPath(found, ".json")),
 		files: endings(found),
 		markdown: existsSync(markdownFile(found)),
+		text: origin(found),
 	};
+}
+
+// the record of the act's markdown in texts/: from HTML, or from the PDF (phase 12)
+function origin(
+	found: GatheringScope.Act,
+): ReadingScope.TextOrigin | undefined {
+	const record = store
+		.readJsonl<GatheringScope.TextRecord>(
+			textsTablePath(found.publisher, found.year),
+		)
+		.find(({ ELI }) => ELI === found.ELI);
+	if (!record) return undefined;
+	return {
+		from: record.from ?? "html",
+		...(record.producer ? { producer: record.producer } : {}),
+		url: record.url,
+	};
+}
+
+export function textOrigin(eli: string) {
+	const found = find(eli);
+	return found ? origin(found) : undefined;
 }
 
 const markdownFile = (act: GatheringTypes.ActAddress) =>
@@ -177,6 +200,7 @@ export async function prepare(journal?: string, year?: number, pos?: number) {
 		remote.fromDataset(`files/${journal}/${year}.jsonl`),
 		remote.fromBucket(store.bucketPath(found, ".json")),
 		remote.fromDataset(markdownPath(found)),
+		remote.fromDataset(`texts/${journal}/${year}.jsonl`),
 	]);
 }
 

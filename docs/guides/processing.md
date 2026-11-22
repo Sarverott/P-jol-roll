@@ -5,6 +5,7 @@ task seal                 # checksums for gathered files that have no record yet
 task seal -- --check      # read every recorded file again, name the ones that differ
 task compile              # tables: details and references of acts, a year in a file
 task text                 # markdown from gathered HTML, with checksums
+task text -- --pdf        # and from the PDFs of acts without HTML (poppler-utils)
 ```
 
 None of these asks anything on the internet. They read `resources/bucket/`
@@ -115,3 +116,35 @@ The other three quarters have only a PDF and get no markdown yet.
 ```
 gather ──► seal (once, for old files) ──► compile ──► text ──► resources:push
 ```
+
+## Texts of PDFs
+
+`task text -- --pdf` gives markdown to acts that have only a PDF. The text
+layer is read by `pdftotext` of poppler (`scripts/install.sh` installs
+`poppler-utils`), which follows the two columns of a journal's page. Lines
+become paragraphs, a word cut at the end of a line is glued back, and
+`Art. 1.`, `§ 1.` and `Rozdział 1` become headings, as in markdown from HTML.
+Four PDFs are read at a time (`--parallel`); a year of 1200 acts takes a few
+seconds.
+
+Most PDFs before the 2000s are scans that Adobe's Paper Capture gave a layer
+of recognised text. That text is kept as it is, with its mistakes: nothing
+is corrected by guessing. The record names the producer of the PDF, so a
+reader can tell these texts apart:
+
+```json
+{"ELI":"DU/1953/228","markdown":"texts/DU/1953/WDU19530460228.md","sha256_md":"...","from":"pdf","sha256_pdf":"...","producer":"Adobe Acrobat 9.0 Paper Capture Plug-in","url":"https://api.sejm.gov.pl/eli/acts/DU/1953/228/text.pdf"}
+```
+
+A PDF with no text layer (fewer than 40 letters on all its pages, about one
+in a hundred) gets no markdown; it is named in
+`dataset/texts/<journal>/<year>.scans.jsonl` and waits for OCR. When an act
+gets its HTML later, the markdown is made from the HTML again.
+
+Without `--pdf`, `task text` keeps the texts made from PDFs as they are.
+
+Readers say which texts these are: an act in the api has `text.from`
+(`html` or `pdf`) with the producer and the source's address, the answer of
+`/api/acts/<journal>/<year>/<pos>/text` carries the header `X-Text-From`,
+the MCP tool `act_text` opens such a text with a line naming its PDF, and
+the viewer puts a note above it.

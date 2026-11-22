@@ -41,7 +41,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.8.6",
+		version: "0.8.10",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address.",
 		license: { name: "AGPL-3.0-only" },
@@ -121,7 +121,8 @@ export const spec = {
 				parameters: eli,
 				responses: {
 					200: {
-						description: "markdown",
+						description:
+							"markdown; the header X-Text-From says what it was made from: html, or pdf (the text layer of the PDF, recognised from a scan in old years)",
 						content: { "text/markdown": { schema: { type: "string" } } },
 					},
 					404: missing,

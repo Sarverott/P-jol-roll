@@ -11,6 +11,7 @@
 			"**",
 			"!!**/dist",
 			"!.obsidian",
+			"!resources/mediafiles",
 			"!src/tui/index.tsx",
 			"!src/tui/main.js",
 			"!src/tui/termui.config.*"

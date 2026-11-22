@@ -36,6 +36,7 @@ State of 2026-11-13.
 | -------- | ------- | ----- |
 | Tables of details and references, the graph of ties | `task compile` | **works**: real files of 1918-1933 into a scratch directory, 45,658 ties of 11,008 acts |
 | Markdown from HTML, with checksums of both | `task text` | **works** on acts of 1918-1933 (1,464 files); newer HTML and tables not seen |
+| Markdown from PDFs of acts without HTML, scans listed | `task text -- --pdf` | **works** on DU 1953 (261 acts) and MP 2021 (1206); not run over the whole bucket |
 | Markdown from PDF (three quarters of acts have only a PDF) | | **wanted** |
 | Texts by article, unified texts preferred | | **wanted** |
 | A dataset for training a model; an advisor agent | | **wanted** (the far goal) |

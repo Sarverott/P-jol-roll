@@ -52,7 +52,12 @@ routes.get("/api/acts/:journal/:year/:pos", (request, response) => {
 routes.get("/api/acts/:journal/:year/:pos/text", (request, response) => {
 	const markdown = library.text(eliOf(request));
 	if (markdown === undefined) notHere(response);
-	else response.type("text/markdown; charset=utf-8").send(markdown);
+	else {
+		// html or pdf; a text from a PDF may carry the mistakes of a recognised scan
+		const origin = library.textOrigin(eliOf(request));
+		if (origin) response.setHeader("X-Text-From", origin.from);
+		response.type("text/markdown; charset=utf-8").send(markdown);
+	}
 });
 
 routes.get("/api/acts/:journal/:year/:pos/references", (request, response) => {

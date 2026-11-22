@@ -22,6 +22,7 @@ seal                                 -> write checksums of gathered files that h
 seal --check                         -> read every recorded file again and name these that differ
 compile                              -> tables of dataset from raw files: details and references of acts
 text                                 -> markdown from gathered html, with checksums of both
+text --pdf                           -> and from the text layer of PDFs of acts without html (poppler; --parallel 4)
 
 sejm                                 -> work of Sejm: processes and prints of the current term
 sejm 9 10 --files --limit 50         -> these terms, with details of processes and files of prints
@@ -66,6 +67,7 @@ const { values, positionals } = parseArgs({
 		since: { type: "string" },
 		check: { type: "boolean", default: false },
 		files: { type: "boolean", default: false },
+		pdf: { type: "boolean", default: false },
 	},
 });
 
@@ -121,8 +123,14 @@ if (command === "compile") {
 
 if (command === "text") {
 	const { text } = await import("./parsing/text.js");
-	const sum = await text();
-	log.info(`text: ${sum.parsed} parsed, ${sum.unchanged} unchanged`, sum);
+	const sum = await text({
+		pdf: values.pdf,
+		parallel: Number(values.parallel ?? 4),
+	});
+	log.info(
+		`text: ${sum.parsed} parsed (${sum.fromPdf} from PDF), ${sum.unchanged} unchanged, ${sum.scans} scans without text`,
+		sum,
+	);
 }
 
 if (command === "sejm") {
