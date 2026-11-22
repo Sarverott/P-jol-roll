@@ -1,7 +1,7 @@
 <script setup>
 // NOTE: this frontend should be shared with all viewer webapp interfaces: android app, desktop app, website host
 // The viewer: a header, the tabs of the screens (the acts, one act, the map of the whole law,
-// the rest of the dataset, plots, statistics with the history) and a footer; what
+// the rest of the dataset, plots, statistics with the history, settings) and a footer; what
 // the screens share is the library (assets/library.js), where the viewer is is the address
 // after "#" (assets/route.js).
 // Bulma: the layout and the look of every interface that shows the viewer, light and dark
@@ -21,6 +21,7 @@ import {
 import { chosen, use } from "../i18n/browser.js";
 import { createLibrary } from "./assets/library.js";
 import { href, useRoute } from "./assets/route.js";
+import { applyTheme, settings } from "./assets/settings.js";
 import { ColorPick } from "./assets/setup.js";
 import { listen } from "./assets/socket.js";
 import LayoutFooter from "./layout/footer.vue";
@@ -31,6 +32,7 @@ import ActsListing from "./screens/actsListing.vue";
 import ContentDisplay from "./screens/contentDisplay.vue";
 import DatasetBrowser from "./screens/datasetBrowser.vue";
 import GeneralMap from "./screens/generalMap.vue";
+import SettingsPanel from "./screens/settingsPanel.vue";
 
 // Cytoscape.js comes with the minimap, so it is loaded when there are ties to draw; the plots
 // and the history only when their screens are shown
@@ -63,6 +65,7 @@ library.follow(route);
 let unlisten;
 onMounted(async () => {
 	ColorPick.paint(root.value);
+	applyTheme();
 	await use(chosen());
 	await library.loadJournals();
 	await library.probe();
@@ -93,9 +96,10 @@ onUnmounted(() => {
 			<DatasetBrowser v-if="route.screen === 'data'" />
 			<PlotsDiagrams v-if="route.screen === 'plots'" />
 			<StatisticsHistory v-if="route.screen === 'statistics'" />
+			<SettingsPanel v-if="route.screen === 'settings'" />
 		</LayoutMain>
 		<TiesMinimap
-			v-if="['acts', 'act'].includes(route.screen)"
+			v-if="settings.minimap && ['acts', 'act'].includes(route.screen)"
 			:eli="state.chosen?.act.ELI ?? ''"
 			:ties="state.ties"
 			@open="openAct"

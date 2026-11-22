@@ -13,6 +13,7 @@ const MORE = [
 	{ screen: "data", title: "Sejm, judgments, lists" },
 	{ screen: "plots", title: "plots" },
 	{ screen: "statistics", title: "statistics and history" },
+	{ screen: "settings", title: "settings" },
 ];
 </script>
 
