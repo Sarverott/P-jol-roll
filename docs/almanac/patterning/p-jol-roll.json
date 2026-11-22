@@ -310,6 +310,16 @@
 			"page": "cataclistics/biome-html-quotes.md"
 		},
 		{
+			"id": "container-bundler-imports",
+			"events": ["release:container", "astro:build", "vite:unresolved-import"],
+			"cataclysm": "vite:unresolved-import",
+			"solution": "No imports with `?raw` or `?url` and no plugin that imports yaml: the website reads files with plain `node:fs` while it is built (`src/web/data/files.ts`) and hands the viewer its credits as a prop; the manifest is an endpoint; the introduction makes `src/lists.json` from its yaml before its build. The image copies what the build reads, let in by name in `.dockerignore`; `docker build` before a release shows the gap.",
+			"seen": ["2026-11-22: release v0.19.0 (phase 22)"],
+			"title": "The release image does not build: the viewer imported a file outside src/ by ?raw",
+			"topic": "containers",
+			"page": "cataclistics/container-bundler-imports.md"
+		},
+		{
 			"id": "workflow-web-manifest",
 			"events": ["workflows:build", "workflows:web", "web:no-workflows"],
 			"cataclysm": "web:no-workflows",

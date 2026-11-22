@@ -1,8 +1,10 @@
 <script setup>
 // Terms of use: the licence, what the acts are and are not, the members of the project
-// (.github/AUTHORS) and the links where the project lives - opened from the footer
-import { onMounted, onUnmounted } from "vue";
-import { authors, links } from "../../data/credits.js";
+// (.github/AUTHORS) and the links where the project lives - opened from the footer; the
+// website reads both at build and hands them to the viewer (src/web/data/credits.ts)
+import { inject, onMounted, onUnmounted } from "vue";
+
+const { authors, links } = inject("credits", { authors: [], links: [] });
 
 const open = defineModel({ type: Boolean, default: false });
 const close = () => {

@@ -1,4 +1,6 @@
-import sources from "../data/sources.yaml";
+import lists from "../lists.json";
+
+const { sources } = lists;
 
 // what is gathered, from where, and where it is kept (data/sources.yaml)
 export default function Sources() {
