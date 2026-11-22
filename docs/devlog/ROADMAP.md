@@ -24,6 +24,6 @@ closed before the rule; their one bump makes `0.1.0`.
 | M0: gathered (October 2026, before this devlog) | - | gather every act, seal, compile, markdown, read it through api, MCP, website, window |
 | M1: standing on its own feet | 0, 1, 2, 3 | install and check from clean, say what it does, live in the BOS loop |
 | M2: seen and spread | 4, 5 | present itself on a website, gather on more than one machine |
-| M3: run as services | 6, 7, 8 | start with `task`, run every part as a container, logs in one place |
-| M4: read by a model | later | PDF texts into markdown, a dataset for training, the first advisor agent |
+| M3: run as services | 6, 7, 8, 9 | start with `task`, run every part as a container, logs in one place |
+| M4: read by a model | 10, later more | PDF texts into markdown, a dataset for training, the first advisor agent |
 | M5: no centre | later | torrents pointed to by IPFS, a WireGuard network with load balancing, mirrors per voivodeship or district, no central infrastructure (Cosmos SDK) - modular, one part at a time (Q10) |

@@ -61,7 +61,7 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
 | the owner's words | `docs/devlog/INQUIRIES.md` / `ORDERS.md` (or the chat), then `docs/changelog/phase-<n>.md`, word for word |
 | a plan | `docs/devlog/VISION.md`, `ROADMAP.md`, `TODO.md` |
 | a question for the owner | `docs/devlog/BRAINSTORM.md` as `## Q<n>. <title>` with a *Lean:*; never settled in code before the answer |
-| an idea for debate | `docs/devlog/PROPOSALS.md` as `PP<n>` |
+| an idea for debate | `docs/devlog/PROPOSALS.md` as `PP<n>`; the owner decides it in `ORDERS.md` |
 | an agent's findings and what was not verified | `docs/.agents/` (`NOTES.md`, `things-to-check.md`) |
 | work for another repository | `~/__WORKSHOP/forge/NOTES-for-repositories.md`, never the other repository itself |
 
