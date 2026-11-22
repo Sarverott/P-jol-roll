@@ -61,6 +61,8 @@ tasks:
     env:
       HOST: 127.0.0.1
       PORT: "8090"
+      # the same place workflows:web reads, wherever the task is started from
+      WORKFLOW_LOCAL_DATA_DIR: "{{.ROOT_DIR}}/.workflow-data"
     cmds:
       - node src/workflows/.output/server/index.mjs
 
@@ -80,6 +82,13 @@ tasks:
         echo
 
   workflows:web:
-    desc: Web interface of the Workflow SDK over runs kept in .workflow-data - steps, outputs, what waits.
+    desc: Web interface of the Workflow SDK - the workflows built (workflows:build first), and the runs of workflows:serve with their steps, outputs, what waits.
+    env:
+      # NOTE (src/workflows/nitro.config.ts): i tested it once but nothing was there. interface looks like workflows are missing
+      # ANSWER: it looks for the manifest of the workflows in .well-known/ of the folder it starts in;
+      # Nitro writes it into its build folder, so it is named here - and the runs, as the server keeps them
+      WORKFLOW_MANIFEST_PATH: "{{.ROOT_DIR}}/src/workflows/node_modules/.nitro/workflow/manifest.json"
+      WORKFLOW_LOCAL_DATA_DIR: "{{.ROOT_DIR}}/.workflow-data"
+      WORKFLOW_LOCAL_BASE_URL: http://127.0.0.1:8090
     cmds:
-      - npx workflow web
+      - npx workflow web {{.CLI_ARGS}}
