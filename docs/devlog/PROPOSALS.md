@@ -17,7 +17,7 @@ PP1 was approved (changelog phase 1).
 **DEFINE.** Of 165006 acts listed in `resources/dataset/acts/`, 39110 have
 HTML and get markdown from `task text`; 125759 (76%) have only a PDF, and 137
 have neither. A `task text -- --pdf` would take the text layer of each PDF
-(pdf.js, already a dependency of the browser side, or `pdftotext`) into
+(`pdftotext` of poppler, or a library such as pdf.js - not a dependency yet) into
 `dataset/texts/<journal>/<year>/<address>.md`, with the checksums of both
 files, the same as the markdown from HTML; a PDF without a text layer (old
 scans) would be named in a list, not guessed.
