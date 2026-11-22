@@ -69,11 +69,16 @@ jobs:
         run: scripts/devops/release/container.sh "${{ needs.release.outputs.tag }}"
 
   space:
-    # the demo space set to this release and built again (resources/configs/space); without the
-    # secret HF_TOKEN it says so and keeps the release it has
+    # the demo space set to this release and built again (resources/configs/space): its files
+    # from git when they differ, its variable, a fresh build, then waited for until it serves
+    # this release. The token is the space's trusted publisher (OIDC, phase 27), else the secret
+    # HF_TOKEN; with neither it says so and keeps the release it has
     needs: [release, container]
     if: needs.release.outputs.tag
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # GitHub's token, exchanged on Hugging Face for one of the space
     env:
       HF_TOKEN: ${{ secrets.HF_TOKEN }}
     steps:

@@ -272,3 +272,12 @@ The owner's message, 2026-11-22 (changelog phase 26).
 - [x] The gate of a pull request into master: the author listed in `AUTHORS` of master, then verify, CodeQL, Snyk and OSSAR, Jarvis asked when one fails, automerge of `development` → `master` and the release started; the checks and scans off every push
 - [x] Workflows from a terminal: `task github:run`, `github:gate`, `github:pending`, `github:checks`, `github:workflows`; every scan can be dispatched
 - [x] phase-close starts the gate itself by a dispatch: runs of a pull request opened by the workflow's token wait for an approval on the website
+
+## Phase 27: the space by its trusted publisher, and waited for
+
+The owner's message, 2026-11-22 (changelog phase 27).
+
+- [x] The space's refresh: the trusted publisher's token (OIDC, `HF_TOKEN` the fallback), the space's files from git when they differ, the variable, a build, and waited for until the space serves the release
+- [x] What Snyk Code found high in the gate: no request's own words reach a file (journal, year, position, preset, ending taken from our side), the name of the settings in localStorage no longer looks like a secret
+- [x] Snyk fails the gate on high findings only, as the owner chose; medium and low reach the Security tab
+- [x] Snyk IaC scans where the infrastructure is (resources/services, resources/configs), not the editor JSON of .vscode; the root image builds again (locales, the members and links of "Terms of use", the types)
