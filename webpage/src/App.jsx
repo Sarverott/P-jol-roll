@@ -28,7 +28,7 @@ export default function App() {
 			<Links />
 			<footer>
 				<p>
-					Nothing here is legal advice. A project of the Blacksmith Organization
+					Not (formally) legal advices. A project of the Blacksmith Organization
 					System workshop, by Sett Sarverott.
 				</p>
 			</footer>

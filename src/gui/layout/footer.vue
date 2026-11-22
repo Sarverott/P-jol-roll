@@ -13,8 +13,8 @@
 				translate="no"
 				>P_JOL_ROLL</a
 			>
-			- open source. Not legal advice: the journal published by the state is the
-			law.
+			- open source. Not (formally) legal advices: the journal published by the
+			state is the law.
 		</p>
 	</footer>
 </template>

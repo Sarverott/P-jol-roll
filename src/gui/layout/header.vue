@@ -24,7 +24,8 @@ watch(language, (code) => use(code));
 				<div class="media-content">
 					<h1 class="title" translate="no">P_JOL_ROLL</h1>
 					<p class="subtitle is-6 i18n-texts-slot">
-						Polish journals of laws, as gathered here. Not legal advice.
+						Polish journals of laws, as gathered here. Not (formally) legal
+						advices.
 					</p>
 				</div>
 				<div v-if="languages.length > 1" class="media-right">
