@@ -172,6 +172,13 @@ test("the rest of the dataset: statistics, lists, Sejm, judgments", async () => 
 	]);
 	expect((await fetch(`${url}/api/sejm/10/votes`)).status).toBe(404);
 	expect(await get("/api/judgments")).toEqual(["2020-03"]);
+	const catalog = await get("/api/catalog");
+	expect(
+		catalog.find((one: { name: string }) => one.name === "acts"),
+	).toMatchObject({ group: "read", reads: true, allowed: true });
+	expect(
+		catalog.find((one: { name: string }) => one.name === "gather"),
+	).toMatchObject({ writes: true, allowed: false, task: "gather" });
 	expect((await get("/api/judgments/2020/3")).total).toBe(1);
 });
 

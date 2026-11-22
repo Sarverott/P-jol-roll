@@ -131,6 +131,8 @@ src/core/              the gatherer itself; everything below is its tree
     types/             <Name>.type.ts, and index.ts with the same namespaces
   logging/             setup.ts: the one logger of every command (text or JSON lines, a file per run in logs/, syslog when asked) - import it first, then logRun(<command>)
   search/              typesense.ts: every act into Typesense (task search:index) and /api/search over every year
+  catalog/             every function of the project once (procedures.ts), for every way it runs: the launcher, the REPL,
+                       task do, /api/catalog, the viewer; run.ts words into values and task arguments, map.ts the map of functions
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
     dataset.ts         the rest of the dataset: work of Sejm, judgments, lists of the source, acts counted (task stats)
@@ -203,7 +205,9 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 
 | Command | What it does |
 | --- | --- |
-| `task` | the launcher: a menu of every Taskfile and its tasks, and a REPL (`task help` lists them) |
+| `task` | the launcher: what you want to do (read, gather, process, share, the project), each function asking what it takes; every Taskfile below; a REPL (`task help` lists the tasks) |
+| `task do` / `task do -- help acts` / `task do -- acts MP 2025 query=podatek` | every function of the catalog from a shell: their names / what one takes / a reading answered here, or a writing function's task |
+| `task functions:map` | `docs/guides/functions.md`: every function and every way the project runs, written from the catalog |
 | `task shell` | bash in the `agentic-shell` container, the repository at /workspace, no port (Q13) |
 | `task init` | first launch on a machine: tools checked, `.env` from `.env.example`, secrets generated; once |
 | `task gather` | lists and metadata of the newest year, every journal |

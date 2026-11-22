@@ -50,6 +50,16 @@ tasks:
       - task --list
     silent: true
 
+  do:
+    desc: 'Every function of the project from here (the catalog, src/core/catalog) - "task do" names them, "task do -- help acts" says what one takes, "task do -- acts MP 2025 query=podatek" reads, "task do -- gather 2026 --acts" runs its task.'
+    cmds:
+      - npm run --silent do -- {{.CLI_ARGS}}
+
+  functions:map:
+    desc: The map of functions, docs/guides/functions.md, written from the catalog - every function and every way the project runs.
+    cmds:
+      - npx tsx src/core/catalog/map.ts
+
   init:
     desc: First launch on this machine - checks what is installed, makes .env from .env.example, generates secrets; once (task init -f again).
     cmds:

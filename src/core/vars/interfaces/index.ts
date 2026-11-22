@@ -24,7 +24,9 @@ import type LawMapInterface from "./LawMap.interface.js";
 import type MapPresetInterface from "./MapPreset.interface.js";
 import type MenuOptionInterface from "./MenuOption.interface.js";
 import type PageInterface from "./Page.interface.js";
+import type ParameterInterface from "./Parameter.interface.js";
 import type PrintInterface from "./Print.interface.js";
+import type ProcedureInterface from "./Procedure.interface.js";
 import type ProcessInterface from "./Process.interface.js";
 import type PublisherInterface from "./Publisher.interface.js";
 import type RemoteFileInterface from "./RemoteFile.interface.js";
@@ -103,4 +105,10 @@ export namespace WorkflowScope {
 export namespace LaunchingScope {
 	export type TaskEntry = TaskEntryInterface;
 	export type MenuOption<Value> = MenuOptionInterface<Value>;
+}
+
+// the catalog of functions (src/core/catalog/): every function once, for every way in
+export namespace CatalogScope {
+	export type Procedure = ProcedureInterface;
+	export type Parameter = ParameterInterface;
 }

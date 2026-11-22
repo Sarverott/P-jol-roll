@@ -51,7 +51,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.18.9",
+		version: "0.18.10",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
@@ -163,6 +163,13 @@ export const spec = {
 					},
 					503: { description: "Typesense is not running or not filled" },
 				},
+			},
+		},
+		"/api/catalog": {
+			get: {
+				summary:
+					"every function of the project (src/core/catalog): name, group, title, parameters, whether it writes, its task, where each interface offers it, and whether this host may start it",
+				responses: { 200: { description: "the functions" } },
 			},
 		},
 		"/api/statistics": {

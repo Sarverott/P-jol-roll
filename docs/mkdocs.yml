@@ -72,6 +72,7 @@ nav:
   - Home: README.md
   - Guides:
       - guides/features.md
+      - guides/functions.md
       - guides/installation.md
       - guides/gathering.md
       - guides/processing.md
