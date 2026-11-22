@@ -14,6 +14,7 @@
 	},
 	"include": ["./src/**/*"],
 	"exclude": [
+		"./src/web",
 		"./src/workflows/nitro.config.ts",
 		"./src/workflows/.output",
 		"./src/tui/index.tsx",

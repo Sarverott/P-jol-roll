@@ -149,6 +149,8 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/devtools/i18n.ts` | `task i18n:collect`: the built introduction and viewer opened in a headless browser, in several states; their English collected by the page's own runtime into `resources/locales/EN-US.json`. |
 | `src/core/reading/diagram.ts` | The ties of an act as one mermaid flowchart - the one drawing the api, the MCP server (`act_references` with `as: mermaid`) and the viewer give. |
 | `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host; `PUBLIC_SITE` is its own address for the card of a shared link (the demo by default). |
+| `src/web/pages/robots.txt.ts`, `sitemap.xml.ts`, `llms.txt.ts` | Files for machines, built into `dist/web`: crawlers kept off `/api/` and `/mcp`, the one page, and the ways in for a language model (llmstxt.org). |
+| `src/web/data/` | `site.yaml` - the words of the website (title, description, the card, the ways in); `site.ts` reads it and makes whole addresses from `PUBLIC_SITE` or the demo. |
 | `src/web/public/` | Favicons, manifest icons and `og.jpg`, made by `scripts/devops/media/build.sh` from the gist `resources/mediafiles` and committed; the introduction (`webpage/`) takes them too. |
 | `astro.config.mjs` (root) | Where Astro finds `src/web` and writes `dist/web`. |
 
