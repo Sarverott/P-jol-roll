@@ -145,6 +145,7 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   configs/        configurations of services, one directory per purpose, in git
     webapp-server/  Dockerfile and start.sh of the slim server image (ghcr.io, the demo space)
     routing-proxy/, internal-dns/, llms-api-host/, log-collector/  settings of those services
+    agentic-shell/  the image of the shell for agents (Q13: why it exists, in changelog phase 6)
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
 webpage/          the React introduction at the root of the website (Vite, own package.json); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
@@ -169,6 +170,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | Command | What it does |
 | --- | --- |
 | `task` | the launcher: a menu of every Taskfile and its tasks, and a REPL (`task help` lists them) |
+| `task shell` | bash in the `agentic-shell` container, the repository at /workspace, no port (Q13) |
 | `task init` | first launch on a machine: tools checked, `.env` from `.env.example`, secrets generated; once |
 | `task gather` | lists and metadata of the newest year, every journal |
 | `task gather -- 2026 --acts --limit 5` | and all files of 5 acts that miss any |

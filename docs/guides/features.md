@@ -59,9 +59,11 @@ State of 2026-11-13.
 | Desktop window | `task desktop` | **built**: opened by the owner, the port problem fixed afterwards and not opened again |
 | Android app | `task app:sync` | **wanted**: configured, Capacitor not installed |
 | Browser extension (Firefox, Chrome) | `task extension` | **built**: citations read from seven examples; not loaded in a browser |
-| Container: website and api (`webapp-server`) | `docker compose up` | **built**: image never built |
-| Terminal interface (termui) | | **wanted**: an experiment, Q4 |
-| Website of the project: idea and state | | **wanted**: phase 4 |
+| Container: website and api (`webapp-server`) | `docker compose up` | **works**: the slim image built, published to ghcr.io by every release, served on 7860 for the demo |
+| Services: docs, demo, daemons, routing, DNS, LLMs | `docker compose --profile <name> up` | **built**: each started once and answered; the daemons were not run, they would gather |
+| A shell for agents (`agentic-shell`) | `task shell` | **built**: started, node, task, uv and git answer, the repository is writable, no Docker socket, no root (Q13) |
+| Launcher: a menu of every task, and a REPL | `task` | **built**: driven in a pseudo-terminal; termui itself stays an experiment (Q4) |
+| Website of the project: idea and state | `task docs:build` | **works**: published on GitHub Pages and Read the Docs by every release |
 | Links to acts in the Hugging Face space | | **wanted** |
 
 ## Development
