@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -146,6 +146,7 @@ test.skipIf(!poppler)(
 			sha256_pdf: store.sha256(readFileSync(pdf)),
 			producer: "Test Paper Capture",
 			url: "http://eli.test/eli/acts/DU/1950/2/text.pdf",
+			printable: true,
 		});
 		const [scan, damaged] = store.readJsonl<Record<string, string>>(
 			scansTablePath("DU", 1950),
@@ -171,5 +172,31 @@ test.skipIf(!poppler)(
 		expect(await text()).toMatchObject({ parsed: 0, unchanged: 2 });
 		expect(store.readJsonl(textsTablePath("DU", 1950))).toHaveLength(2);
 		expect(store.readJsonl(scansTablePath("DU", 1950))).toHaveLength(2);
+
+		// a text written before phase 18 with control characters is made again, once
+		const file = join(store.DATASET_DIR, records[1].markdown);
+		writeFileSync(file, `${markdown}\u0003\n`);
+		const old = store.readJsonl<Record<string, unknown>>(
+			textsTablePath("DU", 1950),
+		);
+		await store.saveJsonl(
+			textsTablePath("DU", 1950),
+			old.map(({ printable: _, ...record }) => record),
+		);
+		expect(await text({ pdf: true })).toMatchObject({
+			parsed: 1,
+			unchanged: 1,
+		});
+		expect(readFileSync(file, "utf8")).toBe(markdown);
+		expect(await text({ pdf: true })).toMatchObject({
+			parsed: 0,
+			unchanged: 2,
+		});
 	},
 );
+
+test("control characters of unmapped glyphs are dropped, a page break stays one", () => {
+	expect(
+		pdfToMarkdown("Art. 1. Tekst\u0003\n\u0003\n\u0012 dalej\fstrona\u0085"),
+	).toBe("### Art. 1.\n\nTekst dalej\n\nstrona\n");
+});

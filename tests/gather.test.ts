@@ -244,6 +244,7 @@ test("tables, markdown and checksums are made from what was gathered", async () 
 		sha256_md: store.sha256(markdown),
 		sha256_html: store.sha256(read(store.actPath(acts[1], ".html"))),
 		url: `${process.env.ELI_API}/acts/DU/2026/1/text.html`,
+		printable: true,
 	});
 
 	// the file that was here before gathering gets its record, and a spoiled file is found

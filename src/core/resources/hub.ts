@@ -14,6 +14,7 @@ import {
 	uploadFiles,
 } from "@huggingface/hub";
 import log from "../logging/setup.js";
+import { hasControl } from "../parsing/pdf.js";
 import type { HuggingfaceScope } from "../vars/interfaces/index.js";
 import type { HuggingfaceScope as HuggingfaceTypes } from "../vars/types/index.js";
 import { RESOURCES_DIR } from "./store.js";
@@ -173,12 +174,32 @@ async function committed(
 	}
 }
 
+/*
+A text holding control characters is taken by Hugging Face as a binary file, and the whole
+commit of 1000 files is refused for it (2026-11-22: texts/MP/2025/WMP20250000029.md, the
+push died at 1000 of 114433). Such texts are held back and named before anything is sent;
+task text makes them clean again (docs/almanac/cataclistics/hub-binary-text.md).
+*/
+const TEXTS = /\.(md|txt|csv|tsv)$/i;
+export function heldBack(dir: string, paths: string[]) {
+	return paths.filter(
+		(path) =>
+			TEXTS.test(path) && hasControl(readFileSync(join(dir, path), "utf8")),
+	);
+}
+
 // files that are new or changed here go there, in commits of {batch} files;
 // nothing is deleted there - that is prune()
 export async function push(name: string, batch: number, wait = sleep) {
 	if (!accessToken) throw new Error("HF_TOKEN is missing");
 	const { repo, dir, upload, changed, same } = await plan(name);
-	const paths = [...upload, ...changed];
+	const held = new Set(heldBack(dir, [...upload, ...changed]));
+	if (held.size)
+		log.warning(
+			`${held.size} texts hold control characters and stay here - task text -- --pdf makes them again`,
+			{ repo, held: held.size, first: [...held].slice(0, 10) },
+		);
+	const paths = [...upload, ...changed].filter((path) => !held.has(path));
 	log.info(`${repo}: ${paths.length} to send, ${same} already there`, {
 		repo,
 		send: paths.length,
