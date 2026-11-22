@@ -19,15 +19,20 @@ import type FrontendInterface from "./Frontend.interface.js";
 import type GatherPlanInterface from "./GatherPlan.interface.js";
 import type JournalInterface from "./Journal.interface.js";
 import type JudgmentInterface from "./Judgment.interface.js";
+import type LawMapInterface from "./LawMap.interface.js";
+import type MapPresetInterface from "./MapPreset.interface.js";
 import type MenuOptionInterface from "./MenuOption.interface.js";
 import type PrintInterface from "./Print.interface.js";
 import type ProcessInterface from "./Process.interface.js";
 import type PublisherInterface from "./Publisher.interface.js";
 import type RemoteFileInterface from "./RemoteFile.interface.js";
 import type SaosPlanInterface from "./SaosPlan.interface.js";
+import type ScanRecordInterface from "./ScanRecord.interface.js";
+import type SearchPageInterface from "./SearchPage.interface.js";
 import type SejmPlanInterface from "./SejmPlan.interface.js";
 import type TaskEntryInterface from "./TaskEntry.interface.js";
 import type TermInterface from "./Term.interface.js";
+import type TextOriginInterface from "./TextOrigin.interface.js";
 import type TextRecordInterface from "./TextRecord.interface.js";
 import type YearListingInterface from "./YearListing.interface.js";
 import type YearWorkInterface from "./YearWork.interface.js";
@@ -54,6 +59,7 @@ export namespace GatheringScope {
 	export type Process = ProcessInterface;
 	export type Publisher = PublisherInterface;
 	export type SaosPlan = SaosPlanInterface;
+	export type ScanRecord = ScanRecordInterface;
 	export type SejmPlan = SejmPlanInterface;
 	export type Term = TermInterface;
 	export type TextRecord = TextRecordInterface;
@@ -66,6 +72,10 @@ export namespace ReadingScope {
 	export type Journal = JournalInterface;
 	export type ActPage = ActPageInterface;
 	export type ActView = ActViewInterface;
+	export type TextOrigin = TextOriginInterface;
+	export type LawMap = LawMapInterface;
+	export type MapPreset = MapPresetInterface;
+	export type SearchPage = SearchPageInterface;
 }
 
 // durable runs of src/workflows: what they are asked, what their steps return

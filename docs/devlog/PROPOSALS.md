@@ -8,4 +8,5 @@ October 2026 are in [../.agents/ideas.md](../.agents/ideas.md).
 
 ---
 
-No proposals in debate. PP1 was approved (changelog phase 1).
+No proposals in debate. PP1 was approved (changelog phase 1); PP2 and PP3
+were decided in the chat (changelog phase 12).

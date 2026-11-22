@@ -82,10 +82,20 @@ tasks:
     cmds:
       - npm run --silent compile
 
-  text:
-    desc: Markdown from gathered html texts, with checksums of both and address of source.
+  map:
+    desc: The map of the whole law - acts of each preset placed by ForceAtlas2 into dataset/map/ (task map -- statutes-in-force for one).
     cmds:
-      - npm run --silent text
+      - npm run --silent map -- {{.CLI_ARGS}}
+
+  search:index:
+    desc: Every act into Typesense (start it - docker compose --profile search up -d typesense); "task search:index -- --texts" with the beginning of each text.
+    cmds:
+      - npm run --silent search -- index {{.CLI_ARGS}}
+
+  text:
+    desc: Markdown from gathered html texts, with checksums of both and address of source; "task text -- --pdf" also from PDFs of acts without html (poppler).
+    cmds:
+      - npm run --silent text -- {{.CLI_ARGS}}
 
   sejm:
     desc: Work of Sejm - processes and prints of a term, arguments after "--" (e.g. task sejm -- 10 --files --limit 50).

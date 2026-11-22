@@ -6,9 +6,17 @@ import log from "../logging/setup.js";
 import * as store from "../resources/store.js";
 import type { GatheringScope } from "../vars/interfaces/index.js";
 import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
+import {
+	isScan,
+	pdfToMarkdown,
+	pdftotextHere,
+	producerOf,
+	textLayer,
+} from "./pdf.js";
 
 /*
-Html texts of bucket -> markdown files of dataset, for people and for models.
+Html texts of bucket -> markdown files of dataset, for people and for models;
+PDFs of acts without html too, when asked (pdf.ts).
 Every markdown file has a record that ties it to what it was made from, so a
 reader can go back to the source and check that nothing was changed on the way.
 */
@@ -50,49 +58,129 @@ export const markdownPath = (act: GatheringTypes.ActAddress) =>
 export const textsTablePath = (publisher: string, year: number) =>
 	join(store.DATASET_DIR, "texts", publisher, `${year}.jsonl`);
 
-export async function text() {
-	const sum = { parsed: 0, unchanged: 0 };
+export const scansTablePath = (publisher: string, year: number) =>
+	join(store.DATASET_DIR, "texts", publisher, `${year}.scans.jsonl`);
+
+/*
+{pdf}: acts without HTML get markdown from the text layer of their PDF too (phase 12),
+{parallel} PDFs at a time; PDFs without a layer go to the list of scans. Without it the
+texts made from PDFs before are kept as they are, so "task text" never loses them.
+*/
+export async function text({ pdf = false, parallel = 4 } = {}) {
+	if (pdf) await pdftotextHere();
+	const sum = { parsed: 0, unchanged: 0, fromPdf: 0, scans: 0 };
 	for (const { publisher, year } of store.listedYears()) {
 		const known = new Map(
 			store
 				.readJsonl<GatheringScope.TextRecord>(textsTablePath(publisher, year))
 				.map((record) => [record.ELI, record]),
 		);
-		const records: GatheringScope.TextRecord[] = [];
-
-		for (const act of store.readJsonl<GatheringScope.Act>(
+		const knownScans = new Map(
+			store
+				.readJsonl<GatheringScope.ScanRecord>(scansTablePath(publisher, year))
+				.map((record) => [record.ELI, record]),
+		);
+		const acts = store.readJsonl<GatheringScope.Act>(
 			store.listingPath(publisher, year),
-		)) {
-			const source = store.actPath(act, ".html");
-			if (!existsSync(source)) continue;
-			const html = readFileSync(source);
-			const sha256_html = store.sha256(html);
+		);
+		// one place per act, filled in any order, read in the order of the listing
+		const records: (GatheringScope.TextRecord | undefined)[] = [];
+		const scans: (GatheringScope.ScanRecord | undefined)[] = [];
+		const jobs: (() => Promise<void>)[] = [];
+
+		acts.forEach((act, at) => {
 			const markdown = markdownPath(act);
 			const file = join(store.DATASET_DIR, markdown);
-
-			// the same html gives the same markdown, no need to parse it twice
 			const before = known.get(act.ELI);
-			if (before?.sha256_html === sha256_html && existsSync(file)) {
-				records.push(before);
-				sum.unchanged += 1;
-				continue;
+			const source = store.actPath(act, ".html");
+			if (existsSync(source)) {
+				const html = readFileSync(source);
+				const sha256_html = store.sha256(html);
+				// the same html gives the same markdown, no need to parse it twice
+				if (before?.sha256_html === sha256_html && existsSync(file)) {
+					records[at] = before;
+					sum.unchanged += 1;
+					return;
+				}
+				jobs.push(async () => {
+					const { sha256: sha256_md } = await store.writeWhole(
+						file,
+						toMarkdown(html.toString("utf8")),
+					);
+					const [{ url }] = filesOf({ ...act, textHTML: true }, "html");
+					records[at] = { ELI: act.ELI, markdown, sha256_md, sha256_html, url };
+					sum.parsed += 1;
+				});
+				return;
 			}
-			const { sha256: sha256_md } = await store.writeWhole(
-				file,
-				toMarkdown(html.toString("utf8")),
-			);
-			const [{ url }] = filesOf({ ...act, textHTML: true }, "html");
-			records.push({ ELI: act.ELI, markdown, sha256_md, sha256_html, url });
-			sum.parsed += 1;
-		}
-		if (records.length) {
-			await store.saveJsonl(textsTablePath(publisher, year), records);
-			log.info(`${publisher}/${year}: ${records.length} texts`, {
+			const scan = knownScans.get(act.ELI);
+			if (!pdf) {
+				if (before?.from === "pdf" && existsSync(file)) {
+					records[at] = before;
+					sum.unchanged += 1;
+				} else if (scan) scans[at] = scan;
+				return;
+			}
+			const path = store.actPath(act, ".pdf");
+			if (!existsSync(path)) return;
+			jobs.push(async () => {
+				const sha256_pdf = store.sha256(readFileSync(path));
+				if (before?.sha256_pdf === sha256_pdf && existsSync(file)) {
+					records[at] = before;
+					sum.unchanged += 1;
+					return;
+				}
+				if (scan?.sha256_pdf === sha256_pdf) {
+					scans[at] = scan;
+					sum.scans += 1;
+					return;
+				}
+				const [{ url }] = filesOf({ ...act, textPDF: true }, "pdf");
+				const producer = await producerOf(path);
+				const layer = await textLayer(path);
+				if (isScan(layer)) {
+					scans[at] = { ELI: act.ELI, sha256_pdf, producer, url };
+					sum.scans += 1;
+					return;
+				}
+				const { sha256: sha256_md } = await store.writeWhole(
+					file,
+					pdfToMarkdown(layer),
+				);
+				records[at] = {
+					ELI: act.ELI,
+					markdown,
+					sha256_md,
+					from: "pdf",
+					sha256_pdf,
+					producer,
+					url,
+				};
+				sum.parsed += 1;
+				sum.fromPdf += 1;
+			});
+		});
+
+		let next = 0;
+		await Promise.all(
+			Array.from({ length: Math.max(1, parallel) }, async () => {
+				while (next < jobs.length) await jobs[next++]();
+			}),
+		);
+
+		const texts = records.filter((record) => record !== undefined);
+		const scanned = scans.filter((record) => record !== undefined);
+		if (texts.length) {
+			await store.saveJsonl(textsTablePath(publisher, year), texts);
+			log.info(`${publisher}/${year}: ${texts.length} texts`, {
 				publisher,
 				year,
-				texts: records.length,
+				texts: texts.length,
+				scans: scanned.length,
 			});
 		}
+		if (scanned.length || knownScans.size)
+			await store.saveJsonl(scansTablePath(publisher, year), scanned);
 	}
 	return sum;
 }

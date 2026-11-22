@@ -1,10 +1,12 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { edgesOf } from "../methods/compile.js";
-import { markdownPath } from "../parsing/text.js";
+import { mapPath, PRESETS } from "../methods/presets.js";
+import { markdownPath, textsTablePath } from "../parsing/text.js";
 import * as store from "../resources/store.js";
 import type { GatheringScope, ReadingScope } from "../vars/interfaces/index.js";
 import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
+import { tiesDiagram } from "./diagram.js";
 import * as remote from "./remote.js";
 
 /*
@@ -136,7 +138,30 @@ export function act(eli: string): ReadingScope.ActView | undefined {
 		details: store.readJson(store.actPath(found, ".json")),
 		files: endings(found),
 		markdown: existsSync(markdownFile(found)),
+		text: origin(found),
 	};
+}
+
+// the record of the act's markdown in texts/: from HTML, or from the PDF (phase 12)
+function origin(
+	found: GatheringScope.Act,
+): ReadingScope.TextOrigin | undefined {
+	const record = store
+		.readJsonl<GatheringScope.TextRecord>(
+			textsTablePath(found.publisher, found.year),
+		)
+		.find(({ ELI }) => ELI === found.ELI);
+	if (!record) return undefined;
+	return {
+		from: record.from ?? "html",
+		...(record.producer ? { producer: record.producer } : {}),
+		url: record.url,
+	};
+}
+
+export function textOrigin(eli: string) {
+	const found = find(eli);
+	return found ? origin(found) : undefined;
 }
 
 const markdownFile = (act: GatheringTypes.ActAddress) =>
@@ -177,6 +202,7 @@ export async function prepare(journal?: string, year?: number, pos?: number) {
 		remote.fromDataset(`files/${journal}/${year}.jsonl`),
 		remote.fromBucket(store.bucketPath(found, ".json")),
 		remote.fromDataset(markdownPath(found)),
+		remote.fromDataset(`texts/${journal}/${year}.jsonl`),
 	]);
 }
 
@@ -188,4 +214,40 @@ export function references(eli: string) {
 		references?: GatheringTypes.References;
 	}>(store.actPath(found, ".json"));
 	return edgesOf(found.ELI, details?.references);
+}
+
+// the ties as one mermaid flowchart (diagram.ts), with the titles of the acts known here
+export function diagram(eli: string) {
+	const found = find(eli);
+	const ties = references(eli);
+	if (!found || !ties) return undefined;
+	const titles = new Map<string, string>();
+	for (const { to } of ties) {
+		const title = find(to)?.title;
+		if (title)
+			titles.set(to, title.length > 60 ? `${title.slice(0, 57)}...` : title);
+	}
+	return tiesDiagram(found.ELI, ties, { titles });
+}
+
+// the map of the whole law: presets, and one made by "task map" (or nothing when not made)
+export const mapPresets = () =>
+	Object.entries(PRESETS).map(([name, { description }]) => ({
+		name,
+		description,
+		made: existsSync(mapPath(name)),
+	}));
+
+export function lawMap(preset: string): string | undefined {
+	if (!Object.hasOwn(PRESETS, preset)) return undefined;
+	const path = mapPath(preset);
+	return existsSync(path) ? readFileSync(path, "utf8") : undefined;
+}
+
+// remote mode: a preset's map taken from the dataset before it is read
+export async function prepareMap(preset?: string) {
+	if (!remote.remote) return;
+	for (const name of preset ? [preset] : Object.keys(PRESETS))
+		if (Object.hasOwn(PRESETS, name))
+			await remote.fromDataset(`map/${name}.json`);
 }

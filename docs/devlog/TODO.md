@@ -119,3 +119,35 @@ The inquiries of 2026-11-22, the third (changelog phase 10).
 - [x] The demo reads the prepared dataset: the server in a remote mode (`DATASET_URL`, `BUCKET_URL`) takes only what a page needs from the dataset on Hugging Face - `lists/publishers.json`, the acts of a year, one act's details, records and markdown - and sends readers of raw files to the bucket; local use stays as it is (`lists/index.json` turned out to be the index of the API, not of the dataset)
 - [x] `examples/`: Jupyter notebooks of using the project from Python, turned into marimo notebooks and exported as static pages with the website
 - [x] The main page tells a newcomer the whole scope: what is gathered, where it is, the demo, the examples, how to start
+
+## Phase 11: what the first big push showed
+
+Found in the logs on 2026-11-22: the owner's push of the dataset stopped at 12800 of 14170 files.
+
+- [x] `hub push` waits out the refusal of Hugging Face (128 commits an hour) and sends the same commit again; commits of 1000 files instead of 100
+
+## Phase 12: texts of acts that have only a PDF
+
+PP2, approved in the chat on 2026-11-22 (changelog phase 12). 125759 of 165006 acts have only a PDF.
+
+- [x] `task text -- --pdf`: the text layer of every PDF-only act into `dataset/texts/<journal>/<year>/<address>.md`, with the checksums of both files, the same as markdown from HTML
+- [x] PDFs without a text layer (scans) named in a list in the dataset, not guessed; OCR left for later
+- [x] The readers (api, MCP, demo) show a PDF's text where there is no HTML, saying where it came from
+- [ ] Texts packed a year in a file, or not (Q16)
+
+## Phase 13: images, icons and what links show
+
+PP3, partly solved by the owner (the gist submodule `resources/mediafiles`); the rest asked in the chat on 2026-11-22 (changelog phase 12).
+
+- [x] Scripts with ffmpeg that make, from `resources/mediafiles`, favicons, icons of the web app manifest and an `og:image`, into the places each site takes them from
+- [x] The main page, the website of the viewer, the docs and the demo carry them: favicon, manifest, `og:image` and the rest of the meta that makes a shared link show a card
+
+## Phase 14: a friendlier webapp
+
+Asked in the chat on 2026-11-22 (changelog phase 12). Embeddings wait for Q15.
+
+- [x] Bulma for the layout of the viewer
+- [x] A minimap of an act's ties in a corner (Cytoscape.js)
+- [x] Relations of an act drawn the same way everywhere (mermaid.js)
+- [x] A map of the whole law of Poland from the dataset, with presets (sigma.js)
+- [x] Search with Typesense: a service of its own, filled from the dataset, read by the api

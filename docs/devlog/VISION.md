@@ -44,3 +44,7 @@ in the country, as open source.
 | 8 | releases and routines: a release on every merge into master, versions and phases closed by workflows, the rest of the routine by tasks |
 | 9 | logs where they are found, the demo space on the project's own server, Dependabot on its own branch |
 | 10 | one bucket of raw files and one dataset for training, every source inside; a demo that reads what the dataset prepared; examples of using it from Python |
+| 11 | what the first big push showed: pushes that finish |
+| 12 | the text of every act that has any: PDFs without HTML read too (PP2) |
+| 13 | the images of the project made into icons and cards, so every link shows it |
+| 14 | a friendlier webapp: a layout, a minimap of ties, drawn relations, a map of the whole law, search |

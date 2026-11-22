@@ -19,13 +19,52 @@ if (remote)
 		const [, kind, journal, year, pos] = request.path.split("/");
 		const number = (value?: string) =>
 			value && /^\d+$/.test(value) ? Number(value) : undefined;
-		library
-			.prepare(kind === "acts" ? journal : undefined, number(year), number(pos))
-			.then(() => next(), next);
+		const ready =
+			kind === "map"
+				? library.prepareMap(journal)
+				: library.prepare(
+						kind === "acts" ? journal : undefined,
+						number(year),
+						number(pos),
+					);
+		ready.then(() => next(), next);
 	});
 
 routes.get("/openapi.json", (_request, response) => {
 	response.json(spec);
+});
+
+// every year at once, by Typesense; without it 503 says how to start it
+routes.get("/api/search", async (request, response) => {
+	const { search, SearchMissing } = await import("../core/search/typesense.js");
+	const word = (name: string) => String(request.query[name] ?? "");
+	try {
+		response.json(
+			await search(word("q"), {
+				journal: word("journal"),
+				status: word("status"),
+				type: word("type"),
+				page: Number(word("page")) || 1,
+				limit: Number(word("limit")) || 20,
+			}),
+		);
+	} catch (error) {
+		if (!(error instanceof SearchMissing)) throw error;
+		response.status(503).json({
+			error: `search is not running here (${error.message}): docker compose --profile search up -d typesense, then task search:index`,
+		});
+	}
+});
+
+routes.get("/api/map", (_request, response) => {
+	response.json(library.mapPresets());
+});
+
+// already JSON on disk, sent as it is (a few MB for the bigger presets)
+routes.get("/api/map/:preset", (request, response) => {
+	const made = library.lawMap(String(request.params.preset));
+	if (made) response.type("application/json").send(made);
+	else notHere(response);
 });
 
 routes.get("/api/journals", (_request, response) => {
@@ -52,12 +91,23 @@ routes.get("/api/acts/:journal/:year/:pos", (request, response) => {
 routes.get("/api/acts/:journal/:year/:pos/text", (request, response) => {
 	const markdown = library.text(eliOf(request));
 	if (markdown === undefined) notHere(response);
-	else response.type("text/markdown; charset=utf-8").send(markdown);
+	else {
+		// html or pdf; a text from a PDF may carry the mistakes of a recognised scan
+		const origin = library.textOrigin(eliOf(request));
+		if (origin) response.setHeader("X-Text-From", origin.from);
+		response.type("text/markdown; charset=utf-8").send(markdown);
+	}
 });
 
 routes.get("/api/acts/:journal/:year/:pos/references", (request, response) => {
 	const ties = library.references(eliOf(request));
 	if (ties) response.json(ties);
+	else notHere(response);
+});
+
+routes.get("/api/acts/:journal/:year/:pos/diagram", (request, response) => {
+	const diagram = library.diagram(eliOf(request));
+	if (diagram) response.type("text/vnd.mermaid; charset=utf-8").send(diagram);
 	else notHere(response);
 });
 

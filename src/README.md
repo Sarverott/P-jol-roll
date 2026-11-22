@@ -99,7 +99,8 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/core/methods/seal.ts` | Checksum records for files gathered without them, and `--check` that reads every file again. |
 | `src/core/methods/compile.ts` | Tables of the dataset from raw files: details and references of acts, a year in a file. |
 | `src/core/methods/checkup.ts` | Browser (Camoufox) visits websites that show acts to people and writes what it saw. |
-| `src/core/parsing/text.ts` | Markdown from the HTML of acts, with a record that ties both by checksums. |
+| `src/core/parsing/text.ts` | Markdown from the HTML of acts, with a record that ties both by checksums; from PDFs too with `--pdf`. |
+| `src/core/parsing/pdf.ts` | The text layer of a PDF (pdftotext of poppler) into markdown; scans without a layer named, never guessed. |
 | `src/core/parsing/turndown.d.ts` | Types for turndown, which comes without them. |
 | `src/core/resources/store.ts` | Where every gathered thing is written and how: `.part` first, then the real name. |
 | `src/core/resources/hub.ts` | Comparison and sync of `resources/` with Hugging Face, file by file. |
@@ -127,8 +128,16 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 
 | File | What, why and where |
 | --- | --- |
-| `src/gui/index.vue` | The one viewer: pick a journal and a year, search titles, open an act, read its markdown, follow its ties, open its PDF. Takes the address of the api as `api`. Every interface shows this. |
-| `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host. |
+| `src/gui/index.vue` | The one viewer: pick a journal and a year, search titles, open an act, read its markdown, follow its ties, open its PDF. Takes the address of the api as `api`. Every interface shows this. Laid out with Bulma. |
+| `src/gui/components/TiesDiagram.vue` | The ties of an act as the mermaid flowchart of the core (`/diagram`), rendered by mermaid (loaded only when needed); a click on a node opens that act. |
+| `src/gui/components/LawMap.vue` | The map of the whole law (sigma.js): a preset made by `task map`, a colour per type of act; hovering an act lights its ties, a click opens it. |
+| `src/core/methods/map.ts` | `task map`: the acts of a preset and the ties among them placed by ForceAtlas2 once, into `dataset/map/<preset>.json` (compact: nodes `[ELI, title, x, y, size, kind]`, edges `[from, to, tie]`). |
+| `src/core/methods/presets.ts` | The presets of the map: statutes in force (2.8 thousand acts), every statute (10 thousand), every act in force (20 thousand); apart from map.ts so readers know them without the layout. |
+| `src/core/search/typesense.ts` | Search over every year by Typesense, plain http: `task search:index` fills the collection `acts` from the listings, keywords and (`--texts`) the first 2000 characters of each text; `search()` behind `/api/search`, which answers 503 with the way to start it when it is not there. |
+| `src/gui/components/TiesMinimap.vue` | A minimap of the ties in the corner (Cytoscape.js): the act in the middle, a colour per kind of tie, a click opens an act; it can be hidden. |
+| `src/core/reading/diagram.ts` | The ties of an act as one mermaid flowchart - the one drawing the api, the MCP server (`act_references` with `as: mermaid`) and the viewer give. |
+| `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host; `PUBLIC_SITE` is its own address for the card of a shared link (the demo by default). |
+| `src/web/public/` | Favicons, manifest icons and `og.jpg`, made by `scripts/devops/media/build.sh` from the gist `resources/mediafiles` and committed; the introduction (`webpage/`) takes them too. |
 | `astro.config.mjs` (root) | Where Astro finds `src/web` and writes `dist/web`. |
 
 ### shells

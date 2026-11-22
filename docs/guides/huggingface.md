@@ -54,8 +54,11 @@ moved twice.
 
 Needs `HF_TOKEN` in the environment or in `.env`, with write access.
 
-Files go in commits of 100, titled `P-jol-roll: 100 files (300 of 5000)`.
-`--batch` changes the number. If a push stops in the middle, start it again:
+Files go in commits of 1000, titled `P-jol-roll: 1000 files (3000 of 14170)`.
+`--batch` changes the number. A repository on Hugging Face takes at most 128
+commits an hour; when it refuses one, the push says how long it waits, waits
+and sends the same commit again (with commits of 100, a push of 14170 files
+stopped at the 128th). If a push stops in the middle, start it again:
 the commits already made are on the other side, and the comparison skips
 their files.
 
@@ -83,9 +86,9 @@ year in a file wherever it can.
 `task text` writes one markdown file per act with HTML. The listings say
 39,110 acts have HTML (all in Dziennik Ustaw, counted on 2026-10-13), in
 folders of a year each, so the dataset stays inside these recommendations.
-If parsing of PDF is added later and every act gets a markdown file, that
-becomes 164 thousand files and the texts should then be packed a year in a
-file.
+Parsing of PDF came in phase 12: with `task text -- --pdf` almost every act
+gets a markdown file, about 164 thousand files, and the texts should then be
+packed a year in a file: Q16 of the devlog asks it before they are pushed.
 
 ## What was tested
 

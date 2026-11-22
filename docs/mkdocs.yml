@@ -28,6 +28,10 @@ exclude_docs: |
 theme:
   name: material
   language: en
+  # the images of the project (scripts/devops/media/build.sh); the card of a link in overrides/
+  custom_dir: _mkdocs/overrides
+  favicon: assets/images/favicon.png
+  logo: assets/images/logo.png
   features:
     - navigation.sections
     - navigation.top
@@ -100,6 +104,7 @@ nav:
       - changelog/phase-8.md
       - changelog/phase-9.md
       - changelog/phase-10.md
+      - changelog/phase-12.md
   - For agents:
       - .agents/NOTES.md
       - .agents/things-to-check.md
