@@ -204,4 +204,4 @@ The owner's message, 2026-11-22 (changelog phase 20).
 
 - [x] `dev/Copilot`, `dev/Copilot-2`, `dev/Copilot-3` deleted, merged in `dev/Jarvis` before
 - [x] The space keeps its cache and logs off the bucket it mounts at `/data` (`task resources:space` writes it); the 25945 files it had written there (`resources/`) deleted
-- [ ] The banner of P_JOL_ROLL in the READMEs and the introduction (Sett's, `dev/Sarverott`), written into the almanac and the media of the project
+- [x] The almanac: the case of the space writing into the bucket, its chain and its line in the topic (the banner, Sett's, landed from `dev/Sarverott`; the image is already in `resources/mediafiles`)
