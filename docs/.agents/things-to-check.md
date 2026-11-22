@@ -6,14 +6,16 @@ point was added.
 
 ## Decisions for Sett
 
-- **2026-11-22. The gate (phase 26) waits for three things of Sett's.**
-  The secret `SNYK_TOKEN` (without it Snyk fails and nothing merges by
-  itself). `AUTHORS` on master names Sett's GitHub address only after the
-  pull request that brings it is merged, so that first pull request fails
-  the gate's authors and is merged by hand once. Not run on GitHub yet: OSSAR
-  runs on Windows with tools of 2023 (`github/ossar-action@v1`); whether
-  Copilot answers an `@copilot` comment written by the workflow's bot is not
-  known - GitHub may take it only from a person with write rights.
+- **2026-11-22. The gate and the space, after the first whole loop (#42).**
+  The gate passed and merged #42 by itself; the release brought the space to
+  v0.24.2 and waited for it. Three things are still open. (1) The space's
+  trusted publisher gave a token, but Hugging Face refused it for setting
+  the variable, so `HF_TOKEN` did the rest - maybe the publisher's claims
+  (workflow `release.yml`, branch `master`?) or a token that may only push;
+  until that is clear, `HF_TOKEN` must stay. (2) Copilot did not answer the
+  three `@copilot` requests the workflow's bot wrote on #42: Jarvis takes
+  them from a person, it seems. (3) Snyk fails the gate on high findings
+  only (Sett's choice); 16 medium and low ones wait in the Security tab.
 - **2026-11-22. Jobs of writing functions (Q19, phase 25)** were tested
   with `stats` on a copy of resources (tests/writing.test.ts), not with a
   gathering against the source nor a push - those are Sett's to try, from
