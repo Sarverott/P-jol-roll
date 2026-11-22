@@ -60,10 +60,11 @@ point was added.
 - **2026-10-13. SAOS is not a server of the state.** It is a collection of
   published judgments with an API. Who runs it today and whether its data
   may be republished was not checked. Decide before pushing
-  `resources/saos-dataset` anywhere.
-- **2026-10-13. New repositories on Hugging Face.** `sejm-dataset`,
-  `sejm-bucket` and `saos-dataset` are local directories only. When their
-  repositories exist, add them to `resources/.map.json` under these names.
+  `resources/saos-dataset` anywhere. (2026-11-22: it is
+  `resources/dataset/SAOS` now, inside the dataset - `resources:push --
+  dataset` sends it once something is gathered; nothing is gathered here.)
+- ~~**2026-10-13. New repositories on Hugging Face.**~~ Not needed: every
+  source lives in the one dataset and bucket since phase 10.
 - **2026-10-13. `storage/`.** The first gatherer left more than 500 thousand
   small files there. Nothing reads them now. `rm -rf storage` frees them.
 - **2026-10-13. `scripts/`.** `hf-push.py` and its Taskfile are kept, with

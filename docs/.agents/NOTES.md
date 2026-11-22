@@ -4,6 +4,31 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-22 · Cleo · orders, phase 10
+
+- Dependabot's first pull request (#18) failed in the merge job: it
+  checked out `dev/dependabot`, made before the scripts existed. The jobs
+  take scripts from `development` now, and #18 then went the whole way
+  (merged, checked once, landed in development) by itself. Security
+  updates ignore `target-branch` and open against master (#19-#22); the
+  merge script turns them, but only once the workflow is on master - the
+  four open ones were turned by hand through the API (`gh pr edit --base`
+  said yes and changed nothing). Retargeting did not start the workflow;
+  `@dependabot rebase` did.
+- A pull request opened by the phase-close workflow (#23) gets its checks
+  as "action required": runs started by GitHub Actions' own pull request
+  wait for a person to approve them. Not approved by an agent.
+- `lists/index.json` of the dataset is the index of the ELI API (addresses
+  of its endpoints), not an index of the dataset. The demo's remote mode
+  takes `lists/publishers.json` for years instead. On Hugging Face,
+  `files/` reaches only some years and `texts/` some years too: without a
+  record the demo guesses the files of an act from its listing.
+- The launcher's Ctrl+C: under `task`, a raw terminal (the REPL's
+  readline) turns Ctrl+C into a byte, and `script` copies that mode to the
+  task's terminal. Cooked before the task, raw again after.
+- `astro dev` (7.4) runs detached now: it prints `astro dev stop` and
+  returns; `astro dev logs` shows its output.
+
 ## 2026-11-22 · Cleo · phase 9, the launcher, the services
 
 - `gather:changes` broke on the API, not on us: `/changes/acts` answers

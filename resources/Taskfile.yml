@@ -20,3 +20,8 @@ tasks:
     prompt: This writes to huggingface. Send?
     cmds:
       - npm run --silent hub -- push {{.CLI_ARGS}}
+
+  merge:
+    desc: Every source into the one bucket and the one dataset - sejm-dataset, sejm-bucket, saos-dataset moved inside (local only).
+    cmds:
+      - node src/devtools/merge.ts

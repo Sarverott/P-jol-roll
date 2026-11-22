@@ -22,6 +22,11 @@ const COPIES: [string, RegExp][] = [
 		"docs/uv.lock",
 		/(\nversion = ")[^"]+("\nsource = \{ (?:virtual|editable) = "\." \})/,
 	],
+	["examples/pyproject.toml", /(^version\s*=\s*")[^"]+(")/m],
+	[
+		"examples/uv.lock",
+		/(\nversion = ")[^"]+("\nsource = \{ (?:virtual|editable) = "\." \})/,
+	],
 	["scripts/pyproject.toml", /(^version\s*=\s*")[^"]+(")/m],
 	[
 		"scripts/uv.lock",

@@ -20,7 +20,11 @@ export function listing(tasks: LaunchingScope.TaskEntry[], group?: string) {
 }
 
 // what the REPL does with one line; "menu" and "exit" are told to the caller
-export function interpret(tasks: LaunchingScope.TaskEntry[], line: string) {
+export function interpret(
+	tasks: LaunchingScope.TaskEntry[],
+	line: string,
+	run: (name: string, args: string[]) => number = runTask,
+) {
 	const [first = "", ...rest] = words(line.trim());
 	if (!first) return { leave: false };
 	if (first === "exit" || first === "quit") return { leave: true };
@@ -41,12 +45,15 @@ export function interpret(tasks: LaunchingScope.TaskEntry[], line: string) {
 		return { leave: false };
 	}
 	const args = rest[0] === "--" ? rest.slice(1) : rest;
-	const code = runTask(first, args);
+	const code = run(first, args);
 	if (code) console.log(`task ${first} ended with ${code}`);
 	return { leave: false };
 }
 
-export async function repl(tasks: LaunchingScope.TaskEntry[]) {
+export async function repl(
+	tasks: LaunchingScope.TaskEntry[],
+	run: (name: string, args: string[]) => number = runTask,
+) {
 	const names = [...BUILTIN, ...tasks.map((task) => task.name)];
 	const rl = createInterface({
 		input: process.stdin,
@@ -56,11 +63,16 @@ export async function repl(tasks: LaunchingScope.TaskEntry[]) {
 			return [hits.length ? hits : names, line] as [string[], string];
 		},
 	});
+	// Ctrl+C at the prompt goes back to the menu
+	const stop = new AbortController();
+	rl.on("SIGINT", () => stop.abort());
 	console.log('P_JOL_ROLL - every task is a command; "help", Tab, "exit"');
 	try {
 		for (;;) {
-			const line = await rl.question("p-jol-roll> ");
-			const { leave, menu } = interpret(tasks, line);
+			const line = await rl
+				.question("p-jol-roll> ", { signal: stop.signal })
+				.catch(() => "menu");
+			const { leave, menu } = interpret(tasks, line, run);
 			if (leave) return Boolean(menu);
 		}
 	} finally {

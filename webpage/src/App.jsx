@@ -7,6 +7,11 @@ const HF = "https://huggingface.co";
 const LINKS = [
 	["Documentation", "./docs/", "guides, glossary, the plan - on this website"],
 	[
+		"Examples",
+		"./examples/",
+		"using it from Python, run when this page was built",
+	],
+	[
 		"Read the Docs",
 		"https://lex-polonica.readthedocs.io/",
 		"the same documentation, by version",
@@ -32,6 +37,67 @@ const LINKS = [
 		"about the project, in 12 languages",
 	],
 	["Code", "https://github.com/Sarverott/P-jol-roll", "AGPL-3.0-only"],
+];
+
+// what is gathered, from where, and where it is kept
+const SOURCES = [
+	[
+		"Dziennik Ustaw",
+		"since 1918",
+		"ELI API of Sejm",
+		"acts: details, PDF, HTML, references",
+		"bucket/DU/, dataset/acts/DU/",
+	],
+	[
+		"Monitor Polski",
+		"since 1930",
+		"ELI API of Sejm",
+		"the same",
+		"bucket/MP/, dataset/acts/MP/",
+	],
+	[
+		"Work of Sejm",
+		"terms 6-10",
+		"API of Sejm",
+		"legislative processes, prints with justifications",
+		"bucket/sejm/, dataset/sejm/",
+	],
+	[
+		"Court judgments",
+		"by month",
+		"SAOS",
+		"judgments with their texts",
+		"dataset/SAOS/",
+	],
+];
+
+// the ways in, from the lightest
+const WAYS = [
+	[
+		"Browse",
+		`${HF}/spaces/Sarverott/docs-of-law-by-gov-in-poland`,
+		"the demo: the project's own server reading the dataset online, nothing to install",
+	],
+	[
+		"Read the data",
+		`${HF}/datasets/Sarverott/polish_national_law_docs`,
+		"tables of every source in one dataset (the training collection), raw files in one bucket",
+	],
+	[
+		"Use it from Python",
+		"./examples/",
+		"notebooks: the acts of a year, one act checked against its checksum, the api",
+	],
+	[
+		"Run it at home",
+		"./docs/guides/installation/",
+		"the api with the website, an MCP server for AI agents, a desktop window, a browser extension, containers",
+	],
+	[
+		"Gather it yourself",
+		"./docs/guides/gathering/",
+		"politely, from the open sources - the same tools that filled the dataset",
+	],
 ];
 
 function word(phase) {
@@ -65,6 +131,56 @@ export default function App() {
 					<strong>a devil's advocate to every person</strong> in the country, as
 					open source.
 				</p>
+			</section>
+
+			<section>
+				<h2>What is gathered</h2>
+				<table className="sources">
+					<thead>
+						<tr>
+							<th>What</th>
+							<th>From</th>
+							<th>Kept in</th>
+						</tr>
+					</thead>
+					<tbody>
+						{SOURCES.map(([name, since, source, what, where]) => (
+							<tr key={name}>
+								<td>
+									<strong>{name}</strong> <span>{since}</span>
+									<br />
+									<span>{what}</span>
+								</td>
+								<td>{source}</td>
+								<td>
+									<code>{where}</code>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+				<p>
+					Raw files are kept exactly as the sources gave them, each recorded
+					with its checksum when it arrived; texts become markdown; acts are
+					tied to what they change and what carries them out.
+				</p>
+			</section>
+
+			<section>
+				<h2>Ways in</h2>
+				<ul className="links ways">
+					{WAYS.map(([name, href, what]) => (
+						<li key={name}>
+							<a href={href}>{name}</a> <span>{what}</span>
+						</li>
+					))}
+				</ul>
+				<pre>
+					<code>{`git clone https://github.com/Sarverott/P-jol-roll.git
+cd P-jol-roll && npm install
+npx task init     # once: tools checked, .env, secrets
+npx task          # a menu of every way to run it`}</code>
+				</pre>
 			</section>
 
 			<section>

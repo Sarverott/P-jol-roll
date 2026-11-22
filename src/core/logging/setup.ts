@@ -32,6 +32,12 @@ const SEVERITY: Record<number, number> = {
 const USER = 1; // facility "user-level messages"
 const ANSI = new RegExp(`${String.fromCharCode(27)}\\[[0-9;]*m`, "g");
 const plain = (line: string) => line.replace(ANSI, "").trimEnd();
+// what a terminal shows, as text: every escape sequence (colours, cursor, titles) taken out;
+// a carriage return (a progress bar drawn again) starts a new line
+const TERMINAL = new RegExp(
+	`${String.fromCharCode(27)}(\\[[0-?]*[ -/]*[@-~]|\\][^${String.fromCharCode(7)}${String.fromCharCode(27)}]*(${String.fromCharCode(7)}|${String.fromCharCode(27)}\\\\)|[()][0-9A-B]|[=>])|\r`,
+	"g",
+);
 
 function syslogTo(address: string) {
 	const url = new URL(address);
@@ -91,6 +97,16 @@ export function logRun(name: string) {
 	);
 	log.debug(`log file: ${file}`);
 	return file;
+}
+
+// output of something else (a task run by the launcher) into the file of this run, as text
+export function logAppend(text: string) {
+	if (!file || !text) return;
+	const lines = text
+		.replace(TERMINAL, "")
+		.replace(/\r\n?/g, "\n")
+		.replace(/\n+$/, "");
+	if (lines) appendFileSync(file, `${lines}\n`);
 }
 
 for (const event of ["uncaughtException", "unhandledRejection"] as const)

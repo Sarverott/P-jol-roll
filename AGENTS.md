@@ -61,7 +61,7 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
 | the owner's words | `docs/devlog/INQUIRIES.md` / `ORDERS.md` (or the chat), then `docs/changelog/phase-<n>.md`, word for word |
 | a plan | `docs/devlog/VISION.md`, `ROADMAP.md`, `TODO.md` |
 | a question for the owner | `docs/devlog/BRAINSTORM.md` as `## Q<n>. <title>` with a *Lean:*; never settled in code before the answer |
-| an idea for debate | `docs/devlog/PROPOSALS.md` as `PP<n>` |
+| an idea for debate | `docs/devlog/PROPOSALS.md` as `PP<n>`; the owner decides it in `ORDERS.md` |
 | an agent's findings and what was not verified | `docs/.agents/` (`NOTES.md`, `things-to-check.md`) |
 | work for another repository | `~/__WORKSHOP/forge/NOTES-for-repositories.md`, never the other repository itself |
 
@@ -84,9 +84,10 @@ ELI API of Sejm, `https://api.sejm.gov.pl/eli` (OpenAPI under `/eli/openapi/`).
 | `/changes/acts?since=` | acts changed since a day | taken again by `gather --since` |
 
 Two more sources have their own directories (`docs/guides/sources.md`):
-work of Sejm, `https://api.sejm.gov.pl/sejm`, in `resources/sejm-dataset`
-and `resources/sejm-bucket`; court judgments of SAOS,
-`https://www.saos.org.pl/api`, in `resources/saos-dataset`.
+work of Sejm, `https://api.sejm.gov.pl/sejm`, in `resources/dataset/sejm`
+and `resources/bucket/sejm`; court judgments of SAOS,
+`https://www.saos.org.pl/api`, in `resources/dataset/SAOS`. One bucket of
+raw files and one dataset of tables hold every source (phase 10).
 
 Websites that show the same acts to people are listed in
 `resources/frontends.json`. They are visited only by `checkup`, with a
@@ -118,6 +119,7 @@ src/core/              the gatherer itself; everything below is its tree
   logging/             setup.ts: the one logger of every command (text or JSON lines, a file per run in logs/, syslog when asked) - import it first, then logRun(<command>)
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
+    remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
 src/mcp/               MCP server over stdio for AI agents, read-only
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
@@ -129,8 +131,8 @@ src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
 src/tui/               the launcher (launcher/: main.ts the menu bare `task` opens, select.ts); Sett's TermUI experiment (index.tsx, main.js, termui.config.*) out of the checks
-src/cli/               commands of the launcher: tasks.ts (every task of every Taskfile, grouped, run), repl.ts (tasks as commands)
-src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init)
+src/cli/               commands of the launcher: tasks.ts (every task of every Taskfile, grouped, run inside `script` so the output lands in the launcher's log and Ctrl+C stops the task alone), repl.ts (tasks as commands)
+src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init), merge.ts (task resources:merge)
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
@@ -139,14 +141,19 @@ logs/             a file per run: log-<Date.now()>-<log mode>-<command>.log (LOG
 tests/            vitest; gather.test.ts runs whole gathering against a local copy of API
   unittesting/    the project on other systems in containers: <system>/<setup>/Dockerfile, cases -<case>/run.sh
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
-  dataset/        tables: lists/, and per <journal>/<year> acts, files, details, references, texts, checkups
-  bucket/         raw files of acts: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf}
+  dataset/        tables of every source, the training collection: lists/, per <journal>/<year> acts, files, details,
+                  references, texts, checkups; sejm/ (terms, processes, prints), SAOS/ (judgments by month)
+  bucket/         raw files of every source: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf},
+                  sejm/term<n>/; its README.md is kept in git
   services/       one compose file per service, included by compose.yaml at the root
   configs/        configurations of services, one directory per purpose, in git
     webapp-server/  Dockerfile and start.sh of the slim server image (ghcr.io, the demo space)
     routing-proxy/, internal-dns/, llms-api-host/, log-collector/  settings of those services
+    agentic-shell/  the image of the shell for agents (Q13: why it exists, in changelog phase 6)
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
+examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported
+                  into site/examples/ by scripts/devops/examples/build.sh, with the website
 webpage/          the React introduction at the root of the website (Vite, own package.json); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
 docs/guides/      how to install, gather, check up, move data, gather on a second machine; what it can do (features.md)
 docs/mkdocs.yml   the website of the project (MkDocs Material, uv project in docs/), built into site/ - task docs:build
@@ -169,6 +176,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | Command | What it does |
 | --- | --- |
 | `task` | the launcher: a menu of every Taskfile and its tasks, and a REPL (`task help` lists them) |
+| `task shell` | bash in the `agentic-shell` container, the repository at /workspace, no port (Q13) |
 | `task init` | first launch on a machine: tools checked, `.env` from `.env.example`, secrets generated; once |
 | `task gather` | lists and metadata of the newest year, every journal |
 | `task gather -- 2026 --acts --limit 5` | and all files of 5 acts that miss any |
@@ -179,6 +187,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
+| `task resources:merge` | the directories sources had before phase 10 moved into the one dataset and bucket |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` | take what is missing here / send what is new here |
 | `task unittesting:parrot-os` / `parrot-os-drive` | Parrot OS headless server in a container: case `-gather-and-parse` / `-bare-repo-on-drive` (privileged; needs Docker) |
@@ -189,6 +198,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task serve` / `task mcp` | http api with the website on 127.0.0.1:8080 / MCP server over stdio, both read-only |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
+| `task examples:build` / `examples:edit` | the Python examples run and exported into `site/examples/` / opened in marimo |
 | `task docs:build` / `docs:serve` | the website of the project into `site/` / live preview |
 | `task devlog:state` / `devlog:scrapnote` | where the project stands (the `bos` command) / a new scrapnote |
 | `task web:build` / `task desktop` | website into `dist/web` / Electron window around it |

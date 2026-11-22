@@ -32,3 +32,19 @@ If we need to consider replacements for any packages, please identify them and p
 ````
 
 **Decision:** the open Dependabot pull requests and `npm audit` are gone through; dependencies go to their newest versions where that does not add advisories, `workflow` back to 5.x; packages worth replacing are named in PROPOSALS.md.
+
+## UNIXUSAT=1795313564386 · commit d80eb9e
+
+The owner's decision on PP1 of PROPOSALS.md, written in ORDERS.md (commit
+d80eb9e on `dev/Sarverott`). Word for word:
+
+### PP1
+
+````markdown
+sounds fair, I approve it
+````
+
+**Decision:** the overrides stay (`basic-ftp`, `zod`, `glob`, `minimatch`),
+each removed when the package that pulls the old version moves on; no
+package is replaced; `@go-task/cli` from npm stays. PP1 leaves
+PROPOSALS.md.

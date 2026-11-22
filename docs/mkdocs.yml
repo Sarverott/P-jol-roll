@@ -99,6 +99,7 @@ nav:
       - changelog/phase-6.md
       - changelog/phase-8.md
       - changelog/phase-9.md
+      - changelog/phase-10.md
   - For agents:
       - .agents/NOTES.md
       - .agents/things-to-check.md

@@ -1,11 +1,11 @@
 {
   "name": "P-jol-roll",
-  "version": "0.5.4",
+  "version": "0.8.1",
   "private": true,
   "type": "module",
   "description": "crawler to garher every PDF from https://dziennikustaw.gov.pl/DU",
   "dependencies": {
-    "@apify/log": "^2.5.54",
+    "@apify/log": "^3.0.2",
     "@crawlee/impit-client": "^3.0.0",
     "@huggingface/hub": "^2.17.11",
     "@modelcontextprotocol/server": "^2.3.1",

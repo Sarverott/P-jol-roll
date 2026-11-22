@@ -14,7 +14,8 @@ in order of their dates, so they are taken month by month: a month is a
 window that stays in place when new judgments arrive.
 */
 export const SAOS_API = process.env.SAOS_API ?? "https://www.saos.org.pl/api";
-export const SAOS_DATASET = join(store.RESOURCES_DIR, "saos-dataset");
+// inside the one dataset (phase 10); its judgments carry their texts, so it has no raw files
+export const SAOS_DATASET = join(store.DATASET_DIR, "SAOS");
 
 // the biggest page that API allows
 export const PAGE = 100;

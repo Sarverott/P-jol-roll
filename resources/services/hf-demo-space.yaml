@@ -1,6 +1,7 @@
 # hf-demo-space: the demo space of Hugging Face run here - the published webapp-server image
-# that takes the dataset from Hugging Face when it starts, on the space's port 7860.
-# What it takes stays in resources/.containerdatavol/hf-demo-space/.
+# in its remote mode: it reads only what a page needs from the dataset on Hugging Face and
+# sends readers of raw files to the bucket (src/core/reading/remote.ts), on the port 7860.
+# What it took stays in resources/.containerdatavol/hf-demo-space/ as a cache.
 #   docker compose --profile demo up -d hf-demo-space   ->   http://localhost:7860
 services:
   hf-demo-space:
@@ -8,8 +9,8 @@ services:
     image: ghcr.io/sarverott/p-jol-roll-webapp-server:latest
     environment:
       PORT: "7860"
-      PULL: dataset
-      PULL_PARALLEL: "16"
+      DATASET_URL: https://huggingface.co/datasets/Sarverott/polish_national_law_docs/resolve/main
+      BUCKET_URL: https://huggingface.co/buckets/Sarverott/raw-law-of-poland/resolve
       RESOURCES_DIR: /data/resources
     ports:
       - "127.0.0.1:7860:7860"
