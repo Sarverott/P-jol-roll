@@ -137,7 +137,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/core/methods/presets.ts` | The presets of the map: statutes in force (2.8 thousand acts), every statute (10 thousand), every act in force (20 thousand); apart from map.ts so readers know them without the layout. |
 | `src/core/reading/embeddings.ts` | The vectors of `task embed` (parquet, read by hyparquet), the model they were made by, and a question as a vector of the same model of Ollama (or nothing without it). |
 | `src/core/search/typesense.ts` | Search over every year by Typesense, plain http: `task search:index` fills the collection `acts` from the listings, keywords and (`--texts`) the first 2000 characters of each text; `search()` behind `/api/search`, which answers 503 with the way to start it when it is not there. |
-| `src/i18n/sha256.ts` | SHA-256 of a string, synchronous, the same in a browser and a terminal: the key of a text in a language pack. |
+| `src/i18n/sha256.ts` | SHA-256 of a string by `@noble/hashes`, synchronous, the same in a browser and a terminal: the key of a text in a language pack. |
 | `src/i18n/hooks.ts` | A text's hook: its English normalized, numbers as holes, hashed; `translate()` and `t()` give a pack's text with numbers and plural forms. |
 | `src/i18n/dom.ts` | A pack laid over a page that stays as written: `collect()` its English, `apply()` a pack (or the English back), `follow()` what a framework renders later; `translate="no"` keeps data untouched. |
 | `src/i18n/browser.ts` | The language of a page: the packs of `resources/locales/` (only the chosen one loaded), chosen by `?lang=`, the last choice, the browser's languages, else EN-US; laid over the page before it shows. |
