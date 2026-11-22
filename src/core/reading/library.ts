@@ -103,7 +103,7 @@ export function find(eli: string): GatheringScope.Act | undefined {
 }
 
 // endings of files that the gatherer can leave in the bucket for an act
-const ENDINGS = [
+export const ENDINGS = [
 	".json",
 	".references.json",
 	".pdf",
