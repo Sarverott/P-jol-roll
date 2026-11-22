@@ -270,4 +270,4 @@ The owner's message and the answer to Q19, 2026-11-22 (changelog phase 25).
 The owner's message, 2026-11-22 (changelog phase 26).
 
 - [x] The gate of a pull request into master: the author listed in `AUTHORS` of master, then verify, CodeQL, Snyk and OSSAR, Jarvis asked when one fails, automerge of `development` → `master` and the release started; the checks and scans off every push
-- [ ] Workflows from a terminal: `task github:run`, `github:gate`, `github:pending`, `github:checks`, `github:workflows`; every scan can be dispatched
+- [x] Workflows from a terminal: `task github:run`, `github:gate`, `github:pending`, `github:checks`, `github:workflows`; every scan can be dispatched
