@@ -146,7 +146,7 @@ PP3, partly solved by the owner (the gist submodule `resources/mediafiles`); the
 
 Asked in the chat on 2026-11-22 (changelog phase 12). Embeddings wait for Q15.
 
-- [ ] Bulma for the layout of the viewer
+- [x] Bulma for the layout of the viewer
 - [ ] A minimap of an act's ties in a corner (Cytoscape.js)
 - [ ] Relations of an act drawn the same way everywhere (mermaid.js)
 - [ ] A map of the whole law of Poland from the dataset, with presets (sigma.js)
