@@ -100,13 +100,13 @@ point was added.
 
 ## Written and not verified
 
-- **2026-11-22. CodeQL after phase 18.** The fixes are in code; the alerts
-  close only when CodeQL scans master again. `actions/cache-poisoning` may
-  stay: the checks of `dev/dependabot` run from `pull_request_target`, and
-  without the npm cache they write nothing a later run reads, yet the query
-  may still see untrusted code run in that context. If it stays, either
-  dismiss it with that reason, or let `dev/dependabot` be checked on its own
-  `push` (no privileged context) and land by `workflow_run` - Sett's call.
+- **2026-11-22. The bots' flow (phase 19) runs first when it reaches
+  master.** `bots.yml` (pull_request_target) and `bots-land.yml`
+  (workflow_run) act only from master's copy. Tried: shellcheck and
+  actionlint; not tried: a real run. The first Dependabot or Jarvis pull
+  request after the merge will show it - `task github:runs`. Copilot's own
+  login may differ from `Copilot`; the branch names `copilot/*` and
+  `dev/Copilot*` catch it anyway.
 - **2026-11-22. The rate limit in the demo** (600 a minute per address,
   `TRUST_PROXY=1`): tried here against the api, not behind the space's
   proxy. If every visitor of the space gets 429 together, the proxy is not
