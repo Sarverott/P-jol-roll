@@ -22,6 +22,9 @@ resources/.containerdatavol/*
 resources/secrets/*
 !resources/secrets/README.md
 
+# logs of runs (src/core/logging/setup.ts, LOG_DIR)
+logs
+
 .idea
 dist
 node_modules

@@ -13,6 +13,7 @@ resources/.containerdatavol
 
 # crawlee storage folder
 storage
+logs
 
 # installed and built files
 node_modules
