@@ -21,6 +21,11 @@ tasks:
     cmds:
       - npm run --silent hub -- push {{.CLI_ARGS}}
 
+  space:
+    desc: The space's Dockerfile set to the image of the newest release (or the tag after "--"), so its next push builds it again; only the local side.
+    cmds:
+      - scripts/devops/release/space.sh {{.CLI_ARGS}}
+
   prune:
     desc: Delete on huggingface the files that are not here, name after "--" (dataset or space, never the bucket), needs HF_TOKEN; "task resources:plan" shows them first as "download".
     prompt: This DELETES files on huggingface that are not in the local directory. Run "task resources:plan" first. Delete?

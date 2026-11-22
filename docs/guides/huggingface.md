@@ -76,6 +76,18 @@ It was made for the space, which kept `app.py`, `development.md` and
 dataset, prune only after a `pull`, or it deletes what this machine never
 took.
 
+## The space after a release
+
+A restart of the space builds nothing new: Hugging Face keeps the image it
+had. The space's `Dockerfile` names one release of the image, so a release
+reaches the demo with three steps:
+
+```sh
+task resources:space               # FROM ...webapp-server:<newest release>
+task resources:push -- space       # the changed Dockerfile: Hugging Face builds again
+task resources:prune -- space      # once: app.py, development.md, requirements.txt of the marimo days
+```
+
 ## Which data goes where
 
 Tables go to the dataset and raw files of acts go to the bucket.
