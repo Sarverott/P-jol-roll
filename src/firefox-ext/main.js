@@ -72,7 +72,9 @@ async function look(eli) {
 		]) {
 			if (!path) continue;
 			const link = line("a", label);
-			link.href = `${api}${path}`;
+			const safeHref = new URL(path, `${api}/`);
+			if (safeHref.protocol !== "http:" && safeHref.protocol !== "https:") continue;
+			link.href = safeHref.toString();
 			link.target = "_blank";
 			links.append(link, " ");
 		}
