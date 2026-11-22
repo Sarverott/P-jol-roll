@@ -189,3 +189,11 @@ The owner's message, 2026-11-22 (changelog phase 18).
 - [x] `docs/almanac/`: the cases met so far as issues ready for GitHub, the topics they belong to, a FAQ, and the rulesets and chains of events as in BOS
 - [x] The almanac's mechanics in code: chains recalled by their events and the next event predicted (`task almanac:recall`), issues opened from the cases by the owner (`task almanac:issues`)
 
+## Phase 19: Jarvis joins
+
+The owner's message, 2026-11-22 (changelog phase 19).
+
+- [x] Copilot's pull requests (#31-#33) merged into its own branch `dev/Jarvis`, and that branch into `development`
+- [x] One flow for the bots (`bots.yml`, `bots-land.yml`): a pull request of Dependabot or Jarvis turned to its branch, merged, the branch checked by a dispatch of its own commit and landed in `development`; checks never take a ref from outside (CodeQL cache poisoning)
+- [x] Jarvis written in: `.github/AUTHORS`, `AGENTS.md`, its guide `.github/copilot-instructions.md`, prompts in `.github/prompts/`, its machine in `copilot-setup-steps.yml`, and `docs/.agents/jarvis.md` kept for it
+

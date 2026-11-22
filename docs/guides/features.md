@@ -83,3 +83,4 @@ State of 2026-11-13.
 | Checks on GitHub | `.github/workflows/checks.yml` | **built**: simulated locally; nothing pushed yet (Q2) |
 | Hooks: Biome before a commit, conventional messages | git hooks | **works**: both refuse bad input (since 2026-11-13; before that they never blocked) |
 | Dependency updates | `.github/dependabot.yml` | **built**: active once it reaches `master` |
+| Bots' branches (Dependabot, Jarvis) | `.github/workflows/bots.yml`, `bots-land.yml` | **built**: active once they reach `master` |

@@ -1,10 +1,10 @@
 # Updates arrive on Dependabot's own contributor branch, dev/dependabot: its pull requests merge
-# there without checks, and dependabot.yml checks the branch once and lands it in development
+# there without checks, and workflows/bots.yml checks the branch once and lands it in development
 # (the owner, 2026-11-22).
 # Routine updates come grouped, one pull request per ecosystem and week; a major version comes
 # alone, because it is a migration. Dependabot reads this file from the default branch (master),
 # so it is active only after it reaches master. Security updates ignore target-branch and open
-# against master; the workflow dependabot.yml turns them to dev/dependabot.
+# against master; the workflow bots.yml turns them to dev/dependabot.
 version: 2
 updates:
   - package-ecosystem: npm
