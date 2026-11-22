@@ -66,6 +66,12 @@ routes.get("/api/acts/:journal/:year/:pos/references", (request, response) => {
 	else notHere(response);
 });
 
+routes.get("/api/acts/:journal/:year/:pos/diagram", (request, response) => {
+	const diagram = library.diagram(eliOf(request));
+	if (diagram) response.type("text/vnd.mermaid; charset=utf-8").send(diagram);
+	else notHere(response);
+});
+
 routes.get(
 	"/api/acts/:journal/:year/:pos/file/:ending",
 	(request, response) => {

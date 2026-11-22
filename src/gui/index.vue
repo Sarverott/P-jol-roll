@@ -5,6 +5,8 @@ import "bulma/css/bulma.min.css";
 import { marked } from "marked";
 import { io } from "socket.io-client";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import TiesDiagram from "./components/TiesDiagram.vue";
+import TiesMinimap from "./components/TiesMinimap.vue";
 
 // address of the http api (src/openapi): empty means the host that served this page
 const props = defineProps({ api: { type: String, default: "" } });
@@ -18,6 +20,7 @@ const page = ref({ total: 0, offset: 0, items: [] });
 const chosen = ref(null);
 const text = ref("");
 const ties = ref([]);
+const diagram = ref("");
 const notice = ref("");
 const failure = ref("");
 
@@ -54,6 +57,9 @@ async function loadActs(offset = 0) {
 async function open(act) {
 	chosen.value = (await ask(`/api/acts/${act.ELI}`)) ?? { act, files: [] };
 	ties.value = (await ask(`/api/acts/${act.ELI}/references`)) ?? [];
+	diagram.value = ties.value.length
+		? ((await ask(`/api/acts/${act.ELI}/diagram`, "text")) ?? "")
+		: "";
 	const markdown = await ask(`/api/acts/${act.ELI}/text`, "text");
 	// text comes from the source through turndown - raw html is shown as text, never run
 	text.value = markdown ? marked.parse(markdown.replace(/</g, "&lt;")) : "";
@@ -160,8 +166,12 @@ onUnmounted(() => socket?.close());
 							rel="noopener"
 						>{{ ending }}</a>
 					</div>
+					<details v-if="ties.length" class="mb-4" open>
+						<summary>{{ ties.length }} {{ ties.length === 1 ? "tie" : "ties" }} to other acts</summary>
+						<TiesDiagram :source="diagram" @open="open" />
+					</details>
 					<details v-if="ties.length" class="mb-4">
-						<summary>{{ ties.length }} ties to other acts</summary>
+						<summary>the ties as a list</summary>
 						<ul class="mt-2">
 							<li v-for="tie in ties" :key="`${tie.type}${tie.to}`">
 								{{ tie.type }}: <a href="#" @click.prevent="open({ ELI: tie.to })">{{ tie.to }}</a>
@@ -177,6 +187,7 @@ onUnmounted(() => socket?.close());
 				</article>
 				<div v-else class="column has-text-grey">Choose an act on the left.</div>
 			</div>
+			<TiesMinimap :eli="chosen?.act.ELI ?? ''" :ties="ties" @open="open" />
 		</div>
 	</main>
 </template>

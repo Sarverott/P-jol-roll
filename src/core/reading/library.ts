@@ -5,6 +5,7 @@ import { markdownPath, textsTablePath } from "../parsing/text.js";
 import * as store from "../resources/store.js";
 import type { GatheringScope, ReadingScope } from "../vars/interfaces/index.js";
 import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
+import { tiesDiagram } from "./diagram.js";
 import * as remote from "./remote.js";
 
 /*
@@ -212,4 +213,18 @@ export function references(eli: string) {
 		references?: GatheringTypes.References;
 	}>(store.actPath(found, ".json"));
 	return edgesOf(found.ELI, details?.references);
+}
+
+// the ties as one mermaid flowchart (diagram.ts), with the titles of the acts known here
+export function diagram(eli: string) {
+	const found = find(eli);
+	const ties = references(eli);
+	if (!found || !ties) return undefined;
+	const titles = new Map<string, string>();
+	for (const { to } of ties) {
+		const title = find(to)?.title;
+		if (title)
+			titles.set(to, title.length > 60 ? `${title.slice(0, 57)}...` : title);
+	}
+	return tiesDiagram(found.ELI, ties, { titles });
 }

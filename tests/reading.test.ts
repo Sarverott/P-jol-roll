@@ -119,6 +119,9 @@ test("http api answers from the same files and nothing outside them", async () =
 	expect(await text.text()).toContain("Art. 1.");
 	expect(text.headers.get("access-control-allow-origin")).toBe("*");
 	expect(text.headers.get("x-text-from")).toBe("pdf");
+	const diagram = await get("/api/acts/DU/1918/2/diagram");
+	expect(diagram.headers.get("content-type")).toContain("text/vnd.mermaid");
+	expect(await diagram.text()).toContain('subgraph g1["Akty wykonawcze"]');
 	expect(await (await get("/api/acts/DU/1918/2/file/.pdf")).text()).toBe(
 		"%PDF-1.4",
 	);
