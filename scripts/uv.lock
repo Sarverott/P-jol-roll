@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = ">=3.12"
 resolution-markers = [
     "python_full_version >= '3.14'",
@@ -514,7 +514,7 @@ wheels = [
 
 [[package]]
 name = "commitizen"
-version = "4.19.2"
+version = "4.19.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "argcomplete" },
@@ -530,9 +530,9 @@ dependencies = [
     { name = "termcolor" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c4/ad/ad4e6fafa0627f38ebd3c65ad63767f3f07e0b33b72cbff0d3cadddf6ecb/commitizen-4.19.2.tar.gz", hash = "sha256:af0fb25f2fb60956b9d64eecd6e3ec7b710c2f9b012ce8728cb32c728c2c5a8a", size = 69721, upload-time = "2026-10-07T07:31:13.903Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f4/bc/294ceb7ba99f83dca2bf62942dd325ffca86e504aa41cc42c2982350bd2b/commitizen-4.19.3.tar.gz", hash = "sha256:db77b1d521b5b9a16231a4fd5093d09ca519c5f170938806a784309b81938419", size = 73784, upload-time = "2026-10-24T07:24:08.219Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7c/95/904e5c6b231038c1f66f75dceb7600db010631eb657d5c1b75ef26d0d42c/commitizen-4.19.2-py3-none-any.whl", hash = "sha256:178505ff30a9740b33e4d8e6a01854306213d88f5068fbc88554dbcb1a39fd4b", size = 91930, upload-time = "2026-10-07T07:31:12.221Z" },
+    { url = "https://files.pythonhosted.org/packages/3b/ae/4f63a84dd2db955a3b222b2df002ebff61387fc80efdf46f611f9f4dd308/commitizen-4.19.3-py3-none-any.whl", hash = "sha256:d625e038cce66d92da20d24c2c366d410caca43966eba8ec036debf48fda2a68", size = 92037, upload-time = "2026-10-24T07:24:06.801Z" },
 ]
 
 [[package]]
@@ -1152,7 +1152,7 @@ wheels = [
 
 [[package]]
 name = "jupyterlab"
-version = "4.6.4"
+version = "4.6.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "async-lru" },
@@ -1169,9 +1169,9 @@ dependencies = [
     { name = "tornado" },
     { name = "traitlets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/33/8d/995cc142f6083346b35e7d3eadc5a6717ee89ce64ea53577010ac493bc3c/jupyterlab-4.6.4.tar.gz", hash = "sha256:404f49b081819378524886c9db66dba57a5565981eff885830df1baba3a17df5", size = 28335647, upload-time = "2026-09-21T15:25:18.779Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/51/43/490a500e421a46900c8afb0c912c1bf3c9977c85831a3815e2c2139309a9/jupyterlab-4.6.6.tar.gz", hash = "sha256:5f6fbb409158167aeefb5781d6f0b228e24b493cb6e6f1320fb5bc8897acc223", size = 28406802, upload-time = "2026-11-06T14:02:39.228Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3b/e4/072bc0d3c6d45d414062a06af7ee81c02a2c12d769c358ec9919f9995ffd/jupyterlab-4.6.4-py3-none-any.whl", hash = "sha256:15b13f991d3985129c797eb84d9949eeb8b6615e14b444868e642411f2c418b2", size = 17171596, upload-time = "2026-09-21T15:25:14.123Z" },
+    { url = "https://files.pythonhosted.org/packages/69/f0/842ff0c6ed2e9a4d027d32576813ef92c014f72743a3e745e0a9ce9df24b/jupyterlab-4.6.6-py3-none-any.whl", hash = "sha256:4261910ccf1ecad6e0b3ca0debe96d4fde9735bfc9707509c125aab850e06b81", size = 17334944, upload-time = "2026-11-06T14:02:30.924Z" },
 ]
 
 [[package]]
@@ -1319,14 +1319,14 @@ wheels = [
 
 [[package]]
 name = "marimo"
-version = "0.25.1"
+version = "0.25.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click", marker = "sys_platform != 'emscripten'" },
     { name = "docutils" },
     { name = "itsdangerous" },
     { name = "jedi" },
-    { name = "loro", marker = "sys_platform != 'android' and sys_platform != 'emscripten'" },
+    { name = "loro", marker = "python_full_version < '3.15' and sys_platform != 'android' and sys_platform != 'emscripten'" },
     { name = "markdown" },
     { name = "msgspec" },
     { name = "narwhals" },
@@ -1336,15 +1336,15 @@ dependencies = [
     { name = "pymdown-extensions" },
     { name = "python-multipart" },
     { name = "pyyaml" },
-    { name = "pyzmq", marker = "python_full_version < '3.15' and sys_platform != 'emscripten'" },
+    { name = "pyzmq", marker = "sys_platform != 'emscripten'" },
     { name = "starlette", marker = "sys_platform != 'emscripten'" },
     { name = "tomlkit" },
     { name = "uvicorn", marker = "sys_platform != 'emscripten'" },
     { name = "websockets", marker = "sys_platform != 'emscripten'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f8/7b/29895b0d747758da46a051f57c594634ab02f3993d5eab2f2e49ce4f144f/marimo-0.25.1.tar.gz", hash = "sha256:934db2ceb6c2b8c9ae3514a7a22e6b22ecf54fabea0b6138aed1980f8f1536ff", size = 50186739, upload-time = "2026-10-01T21:01:28.262Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5a/d6/f4aae3466a41d34952ac84a4b9bcd83744da592b496c98e34ccd2a0f20d9/marimo-0.25.2.tar.gz", hash = "sha256:3cfa38ac84c66625e1f7cb7dc81a41ebd592244000ffe37effb28a91765056b0", size = 38844392, upload-time = "2026-10-19T20:10:30.145Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/e6/695f462fd473981325146edde01c12390413ebaa33c1f0b49191d6b55f86/marimo-0.25.1-py3-none-any.whl", hash = "sha256:dec4a87bc5db16b85181ba4880e67bb55485912b7ef26748a0bbf052c59203fd", size = 50850300, upload-time = "2026-10-01T21:01:24.577Z" },
+    { url = "https://files.pythonhosted.org/packages/06/5c/c26a57aefe28fceab762ad104744c1af18a4b62809629897722c866bbd2f/marimo-0.25.2-py3-none-any.whl", hash = "sha256:7acb7a433755c6d965c03e07725477ab63804f6667ba9e37e4da582f358018c7", size = 39465510, upload-time = "2026-10-19T20:10:25.147Z" },
 ]
 
 [[package]]
@@ -1634,7 +1634,7 @@ wheels = [
 
 [[package]]
 name = "notebook"
-version = "7.6.3"
+version = "7.6.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "jupyter-builder" },
@@ -1644,9 +1644,9 @@ dependencies = [
     { name = "notebook-shim" },
     { name = "tornado" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/42/ac/aedb759dc683dcd129f6c75271bab5eb23020b0f7969163c726343718e1e/notebook-7.6.3.tar.gz", hash = "sha256:e2c08e469c0ae20bb0b3214f0ab77e79653317a2f8e5b34c10361c66874a5b50", size = 5501618, upload-time = "2026-09-21T18:07:24.261Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/39/88/737faf4a8700326a3ee12802f79041471764699cd40b4770a6c66497738f/notebook-7.6.5.tar.gz", hash = "sha256:5e3445616fb2c590015434045f5b297566c2e09c636d1837efc62bef85892c9f", size = 5581297, upload-time = "2026-11-06T15:15:12.121Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a1/f7/907b98438cf00bdc4e296570058f29a347214bb42338a48e3b7eae58ae2a/notebook-7.6.3-py3-none-any.whl", hash = "sha256:ad7e0eb765fba836cd4a2ab0c7a3a26cde1d91665fbf6f533b6ae7b2de6d88d2", size = 5548452, upload-time = "2026-09-21T18:07:21.563Z" },
+    { url = "https://files.pythonhosted.org/packages/db/fe/3388224bbb7d9e68ad0325af0164d05c3ae20a8cc78d5d91c218581911d9/notebook-7.6.5-py3-none-any.whl", hash = "sha256:b27b4af6e410e7456cfffc6fb5a764dcfb7a331408907d483024d6ddb5ec05f2", size = 5629845, upload-time = "2026-11-06T15:15:09.229Z" },
 ]
 
 [[package]]
@@ -1709,7 +1709,7 @@ wheels = [
 
 [[package]]
 name = "paramiko"
-version = "5.0.0"
+version = "5.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "bcrypt" },
@@ -1717,9 +1717,9 @@ dependencies = [
     { name = "invoke" },
     { name = "pynacl" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/62/93/dcc25d52f49022ae6175d15e6bd751f1acc99b98bc61fc55e5155a7be2e7/paramiko-5.0.0.tar.gz", hash = "sha256:36763b5b95c2a0dcfdf1abc48e48156ee425b21efe2f0e787c2dd5a95c0e5e79", size = 1548586, upload-time = "2026-05-09T18:28:52.256Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/76/cb/b1fde76618d84b1acf54d3d03d2b833ba5878afd12b9899346cc080f209d/paramiko-5.1.0.tar.gz", hash = "sha256:239b5f9b2a53006cd54f83cf8495ee742083708ead947882c8dd2786de79f39b", size = 1579549, upload-time = "2026-10-18T02:38:51.931Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/82/5b/eadf6d45de38d30ab603f49393b6cd2cbe7e233af8cf90197e32782b68a9/paramiko-5.0.0-py3-none-any.whl", hash = "sha256:b7044611c30140d9a75261653210e2002977b71a0497ff3ba0d98d7edbf62f7c", size = 208919, upload-time = "2026-05-09T18:28:50.295Z" },
+    { url = "https://files.pythonhosted.org/packages/13/45/fa0e8d70cb25d2dae06bc238e580a84834f6ca53a4e2408cccc19a78db7b/paramiko-5.1.0-py3-none-any.whl", hash = "sha256:d9fe6d67a9d0bbf3eb85b051d26ab850b678c02d060f32915b944e5ca6d0d9e1", size = 211623, upload-time = "2026-10-18T02:38:49.903Z" },
 ]
 
 [[package]]
@@ -1741,6 +1741,31 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/42/92/cc564bf6381ff43ce1f4d06852fc19a2f11d180f23dc32d9588bee2f149d/pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f", size = 166450, upload-time = "2023-11-25T09:07:26.339Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9e/c3/059298687310d527a58bb01f3b1965787ee3b40dce76752eda8b44e9a2c5/pexpect-4.9.0-py2.py3-none-any.whl", hash = "sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523", size = 63772, upload-time = "2023-11-25T06:56:14.81Z" },
+]
+
+[[package]]
+name = "pjolroll-scripts-and-tools"
+version = "0.5.9"
+source = { editable = "." }
+dependencies = [
+    { name = "appimage-builder" },
+    { name = "commitizen" },
+    { name = "marimo" },
+    { name = "notebook" },
+    { name = "paramiko" },
+    { name = "pure-python-adb" },
+    { name = "pydrive" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "appimage-builder", specifier = ">=1.1.0" },
+    { name = "commitizen", specifier = ">=4.19.2" },
+    { name = "marimo", specifier = ">=0.25.1" },
+    { name = "notebook", specifier = ">=7.6.3" },
+    { name = "paramiko", specifier = ">=5.0.0" },
+    { name = "pure-python-adb", specifier = ">=0.3.0.dev0" },
+    { name = "pydrive", specifier = ">=1.3.1" },
 ]
 
 [[package]]
@@ -2369,31 +2394,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/fb/2e/8da627b65577a8f130fe9dfa88ce94fcb24b1f8b59e0fc763ee61abef8b8/schema-0.7.8.tar.gz", hash = "sha256:e86cc08edd6fe6e2522648f4e47e3a31920a76e82cce8937535422e310862ab5", size = 45540, upload-time = "2025-10-11T13:15:40.281Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/c9/75/aad85817266ac5285c93391711d231ca63e9ae7d42cd3ca37549e24ebe52/schema-0.7.8-py2.py3-none-any.whl", hash = "sha256:00bd977fadc7d9521bf289850cd8a8aa5f4948f575476b8daaa5c1b57af2dce1", size = 19108, upload-time = "2025-10-11T17:13:07.323Z" },
-]
-
-[[package]]
-name = "scripts"
-version = "0.5.9"
-source = { editable = "." }
-dependencies = [
-    { name = "appimage-builder" },
-    { name = "commitizen" },
-    { name = "marimo" },
-    { name = "notebook" },
-    { name = "paramiko" },
-    { name = "pure-python-adb" },
-    { name = "pydrive" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "appimage-builder", specifier = ">=1.1.0" },
-    { name = "commitizen", specifier = ">=4.19.2" },
-    { name = "marimo", specifier = ">=0.25.1" },
-    { name = "notebook", specifier = ">=7.6.3" },
-    { name = "paramiko", specifier = ">=5.0.0" },
-    { name = "pure-python-adb", specifier = ">=0.3.0.dev0" },
-    { name = "pydrive", specifier = ">=1.3.1" },
 ]
 
 [[package]]
