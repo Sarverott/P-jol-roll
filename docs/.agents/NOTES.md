@@ -4,6 +4,25 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-22 · Cleo · after the merges, phase 11
+
+- Logs: the owner's `hub push dataset` (log-1795316429823) crashed at 12800
+  of 14170: Hugging Face takes 128 commits an hour per repository, the push
+  made one per 100 files. Fixed (waits, retries; commits of 1000). The rest,
+  1370 files, goes with the next push.
+- Run 44977583906 (Dependabot, certifi on master) failed: master already
+  has certifi 2026.11.20, there was nothing to update. Run 44977067595 (#26,
+  uv-build) failed to land on a conflict in `scripts/uv.lock`; the owner's
+  #27 landed it by hand. Nothing left to do.
+- The demo space is RUNNING in the remote mode: journals, a year, an act
+  and its text answer. It still holds `app.py` and `requirements.txt` of
+  the marimo days - push never deletes, so removing them is the owner's.
+- CodeQL (`codeql.yml`, the owner's) runs on master and pull requests to
+  it; the repository is private, so code scanning needs GitHub Code
+  Security there - not verified, its first run will tell.
+- 125759 of 165006 acts have only a PDF: PP2. The owner's images: PP3.
+  The posts for social media were not found on this machine.
+
 ## 2026-11-22 · Cleo · orders, phase 10
 
 - Dependabot's first pull request (#18) failed in the merge job: it

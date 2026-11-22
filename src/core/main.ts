@@ -61,7 +61,7 @@ const { values, positionals } = parseArgs({
 		rate: { type: "string" },
 		frontend: { type: "string", multiple: true, default: [] },
 		headless: { type: "boolean", default: false },
-		batch: { type: "string", default: "100" },
+		batch: { type: "string", default: "1000" },
 		parallel: { type: "string" },
 		since: { type: "string" },
 		check: { type: "boolean", default: false },
