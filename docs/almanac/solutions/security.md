@@ -19,9 +19,13 @@ names anything but the data, and that nobody can keep the demo busy.
   extension).
 - **Workflows**: a workflow with a write token runs no code of a pull
   request; checks of another ref run with read rights and no shared cache.
-- CodeQL (`codeql.yml`, the owner's) scans master and its pull requests. An
-  alert is read at its place in code first: some are one flow seen from
-  several lines.
+- CodeQL (`codeql.yml`, the owner's) scans every pull request into master,
+  with Snyk and OSSAR, in its gate (`gate.yml`, phase 26), and master once a
+  week. An alert is read at its place in code first: some are one flow seen
+  from several lines.
+- **Who may reach master by itself**: the gate merges only a pull request
+  whose author is listed in `.github/AUTHORS` of master by a GitHub address;
+  one opened by a workflow stands for the person who started that run.
 
 ## Cases
 

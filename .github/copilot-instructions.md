@@ -51,6 +51,15 @@ for you as for every member. What follows is what is different for you.
   look there first, and say in your pull request when your change is a new
   case.
 
+## When the gate asks you
+
+A pull request `development` → `master` passes through the gate
+(`.github/workflows/gate.yml`): verify, CodeQL, Snyk, OSSAR. When one of them
+fails, the gate writes on that pull request and asks you to help. Read the
+run it links and the Security tab, and propose the fix as always: a pull
+request into `dev/Jarvis`, never a commit on `development` or `master`. The
+gate runs again when the fix reaches `development`.
+
 ## Working with the others
 
 - **Cleo** (Claude Code) works on `dev/Cleo` and lands batches into
