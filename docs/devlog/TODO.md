@@ -119,3 +119,9 @@ The inquiries of 2026-11-22, the third (changelog phase 10).
 - [x] The demo reads the prepared dataset: the server in a remote mode (`DATASET_URL`, `BUCKET_URL`) takes only what a page needs from the dataset on Hugging Face - `lists/publishers.json`, the acts of a year, one act's details, records and markdown - and sends readers of raw files to the bucket; local use stays as it is (`lists/index.json` turned out to be the index of the API, not of the dataset)
 - [x] `examples/`: Jupyter notebooks of using the project from Python, turned into marimo notebooks and exported as static pages with the website
 - [x] The main page tells a newcomer the whole scope: what is gathered, where it is, the demo, the examples, how to start
+
+## Phase 11: what the first big push showed
+
+Found in the logs on 2026-11-22: the owner's push of the dataset stopped at 12800 of 14170 files.
+
+- [x] `hub push` waits out the refusal of Hugging Face (128 commits an hour) and sends the same commit again; commits of 1000 files instead of 100

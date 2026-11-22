@@ -6,6 +6,7 @@ import {
 	compare,
 	hashOf,
 	localFiles,
+	rateLimitWait,
 	repoOf,
 } from "../src/core/resources/hub.js";
 
@@ -43,4 +44,19 @@ test("only what differs is moved", async () => {
 		download: ["only-there.txt"],
 		same: 1,
 	});
+});
+
+test("a refused commit is waited out for the time huggingface names", () => {
+	const refused = Object.assign(
+		new Error(
+			"You have exceeded the rate limit for repository commit creation (128 per hour). You can retry this action in about 1 hour.",
+		),
+		{ statusCode: 429 },
+	);
+	expect(rateLimitWait(refused)).toBe(3_660_000);
+	expect(rateLimitWait(new Error("rate limit, retry in about 5 minutes"))).toBe(
+		360_000,
+	);
+	expect(rateLimitWait({ statusCode: 429 })).toBe(3_600_000);
+	expect(rateLimitWait(new Error("401 unauthorized"))).toBeUndefined();
 });

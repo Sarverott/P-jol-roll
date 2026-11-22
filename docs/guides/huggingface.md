@@ -54,8 +54,11 @@ moved twice.
 
 Needs `HF_TOKEN` in the environment or in `.env`, with write access.
 
-Files go in commits of 100, titled `P-jol-roll: 100 files (300 of 5000)`.
-`--batch` changes the number. If a push stops in the middle, start it again:
+Files go in commits of 1000, titled `P-jol-roll: 1000 files (3000 of 14170)`.
+`--batch` changes the number. A repository on Hugging Face takes at most 128
+commits an hour; when it refuses one, the push says how long it waits, waits
+and sends the same commit again (with commits of 100, a push of 14170 files
+stopped at the 128th). If a push stops in the middle, start it again:
 the commits already made are on the other side, and the comparison skips
 their files.
 

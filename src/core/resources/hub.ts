@@ -125,9 +125,30 @@ export async function plan(name: string) {
 	return { repo, dir, ...difference };
 }
 
+/*
+Huggingface lets a repository take 128 commits an hour; the 129th is refused with 429 and
+"You can retry this action in about 1 hour". The push of 14170 files in commits of 100 died
+there (2026-11-22). Such a refusal is waited out and the same commit is tried again; the time
+is read from the message, an hour when it names none.
+*/
+export function rateLimitWait(error: unknown): number | undefined {
+	const status = (error as { statusCode?: number })?.statusCode;
+	const message = error instanceof Error ? error.message : String(error);
+	if (status !== 429 && !/rate limit/i.test(message)) return undefined;
+	const named = message.match(/about (\d+|an?) (second|minute|hour)/i);
+	if (!named) return 3_600_000;
+	const count = /^\d+$/.test(named[1]) ? Number(named[1]) : 1;
+	const unit = { second: 1_000, minute: 60_000, hour: 3_600_000 }[
+		named[2].toLowerCase() as "second" | "minute" | "hour"
+	];
+	return count * unit + 60_000; // a minute more, so the hour has surely passed
+}
+
+const sleep = (ms: number) => new Promise((done) => setTimeout(done, ms));
+
 // files that are new or changed here go there, in commits of {batch} files;
 // nothing is ever deleted there
-export async function push(name: string, batch: number) {
+export async function push(name: string, batch: number, wait = sleep) {
 	if (!accessToken) throw new Error("HF_TOKEN is missing");
 	const { repo, dir, upload, changed, same } = await plan(name);
 	const paths = [...upload, ...changed];
@@ -139,15 +160,30 @@ export async function push(name: string, batch: number) {
 
 	for (let sent = 0; sent < paths.length; sent += batch) {
 		const files = paths.slice(sent, sent + batch);
-		await uploadFiles({
-			repo,
-			accessToken,
-			files: files.map((path) => ({
-				path,
-				content: pathToFileURL(join(dir, path)),
-			})),
-			commitTitle: `P-jol-roll: ${files.length} files (${sent + files.length} of ${paths.length})`,
-		});
+		const commit = () =>
+			uploadFiles({
+				repo,
+				accessToken,
+				files: files.map((path) => ({
+					path,
+					content: pathToFileURL(join(dir, path)),
+				})),
+				commitTitle: `P-jol-roll: ${files.length} files (${sent + files.length} of ${paths.length})`,
+			});
+		for (;;) {
+			try {
+				await commit();
+				break;
+			} catch (error) {
+				const ms = rateLimitWait(error);
+				if (ms === undefined) throw error;
+				log.warning(
+					`${repo} takes no more commits for now - waiting ${Math.round(ms / 60_000)} min, then the same ${files.length} files again`,
+					{ repo, waitMs: ms, sent },
+				);
+				await wait(ms);
+			}
+		}
 		log.info(`${sent + files.length} of ${paths.length}`, {
 			sent: sent + files.length,
 			all: paths.length,
