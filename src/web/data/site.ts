@@ -1,5 +1,5 @@
 import { parse } from "yaml";
-import text from "./site.yaml?raw";
+import { readText } from "./files.ts";
 
 /*
 The website's own data (site.yaml) and its address: the host's own (PUBLIC_SITE) or the demo.
@@ -18,7 +18,7 @@ export type Site = {
 	ways: Way[];
 };
 
-export const site: Site = parse(text);
+export const site: Site = parse(readText("src/web/data/site.yaml"));
 
 // the whole address of the host, without a slash at the end
 export const origin = (

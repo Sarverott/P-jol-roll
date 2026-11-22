@@ -1,5 +1,7 @@
-import ways from "../data/ways.yaml";
+import lists from "../lists.json";
 import LinkList from "./LinkList.jsx";
+
+const { ways } = lists;
 
 // the ways in, from the lightest (data/ways.yaml), and how to start it at home
 export default function Ways() {

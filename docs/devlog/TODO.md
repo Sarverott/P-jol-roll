@@ -242,3 +242,10 @@ The owner's inquiries and orders, 2026-11-22 (changelog phase 22).
 - [x] The desktop app prints the act from the window and the tray (Q17)
 - [x] The main webpage: a p5.js background with the logo, text kept readable
 - [x] The new words in every language pack; docs, almanac and AGENTS.md rows
+
+## Phase 23: the image builds again
+
+The owner's message, 2026-11-22 (changelog phase 23).
+
+- [x] No imports of a bundler's dialect (`?raw`, `?url`, yaml through a plugin): files read with `node:fs` at build, credits as a prop, the manifest an endpoint, the introduction's lists as JSON; the image carries what its build reads
+- [ ] The almanac: the case of the image that did not build, its chain and its line in the topic

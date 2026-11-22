@@ -128,6 +128,7 @@ nav:
       - changelog/phase-20.md
       - changelog/phase-21.md
       - changelog/phase-22.md
+      - changelog/phase-23.md
   - For agents:
       - .agents/NOTES.md
       - .agents/jarvis.md

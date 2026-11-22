@@ -146,8 +146,8 @@ src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and
 src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map,
                        the rest of the dataset, plots, statistics with the history, settings; #acts, #act/DU/2026/1, #map, #data,
                        #plots, #statistics, #settings) and components/; assets/ what they share (state, route, ColorPick, graph,
-                       socket, settings, counting, webmcp); data/credits.js (AUTHORS and links for "Terms of use")
-src/web/               Astro website carrying the viewer (pages/), built into dist/web
+                       socket, settings, counting, webmcp); "Terms of use" gets AUTHORS and links as a prop (src/web/data/credits.ts)
+src/web/               Astro website carrying the viewer (pages/), built into dist/web; data/ read by node:fs at build (no ?raw imports)
 src/desktop/           Electron app: main.js puts together core (the api), window, loadingmodal, menus, hotkeys-shortcuts,
                        apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1), printing (print, PDF);
                        task desktop:check, no screen
