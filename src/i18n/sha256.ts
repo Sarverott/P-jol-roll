@@ -70,3 +70,5 @@ export function sha256(text: string): string {
 	}
 	return [...h].map((word) => word.toString(16).padStart(8, "0")).join("");
 }
+
+// NOTE: say what?!?!?!? make it more clear please...

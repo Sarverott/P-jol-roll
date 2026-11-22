@@ -17,13 +17,21 @@ framework renders later: Vue patches a node -> it holds English again -> it is t
 
 const ATTRIBUTES = ["placeholder", "title", "aria-label", "alt"];
 const SKIPPED = new Set([
+	// NOTE: nope, instead of look across all and exclude chosen elements include only SPAN, BUTTON, P and other items that contains inside important for us elements... sounds smarter?
 	"SCRIPT",
 	"STYLE",
 	"CODE",
 	"PRE",
 	"TEXTAREA",
 	"NOSCRIPT",
-]);
+]); // NOTE: for even more immersive integration we can just siply mark stuff we want to consider as i18n translating items by special set of classes
+
+// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-slot"))
+// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-placeholder"))
+// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-title"))
+// NOTE:  Array.from(document.querySelectorAll(".i18n-texts-alt"))
+
+// NOTE:  cool, right?
 
 const english = new WeakMap<Node, string>();
 const englishAttributes = new WeakMap<Element, Record<string, string>>();
