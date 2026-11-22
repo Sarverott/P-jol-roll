@@ -6,6 +6,15 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-22. Q17 and Q18 (BRAINSTORM).** What Web Serial and Web
+  Bluetooth of the desktop app are for; which model the devil's advocate
+  screen talks to, and where it runs. Both files wait, closed.
+- **2026-11-22. The new words of the viewer** ("first", "last", "page {0}
+  of {1}", the footer, the act's tab...) were collected and translated by
+  argostranslate (phase 21); machine work, not read by a person.
+- **2026-11-22. MCP of the space.** `/mcp` comes to the demo with the next
+  image (a release), then `task resources:space` and the push of the space.
+
 - **2026-11-22. The demo space, in this order.** (1) The next release
   pushes `ghcr.io/sarverott/p-jol-roll-webapp-server`; a new package on
   ghcr.io is private, so make it public once (the package's settings,

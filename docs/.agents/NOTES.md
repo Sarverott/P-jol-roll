@@ -4,6 +4,33 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-22 · Cleo · phase 21: the owner's notes across src
+
+- The owner judged the code "not bad but could be better" and left notes
+  in it. What they ask for, kept for the next code: imports on top of a
+  Vue script (heavy parts by `defineAsyncComponent`, not `import()` in a
+  function), named handlers above the code that wires them, one home per
+  concern (colours, graph, socket, state), helpers shared not copied, data
+  in yaml, small components. Each note is answered next to itself.
+- The space was already pushed by the owner with phase 20's `Dockerfile`
+  (image 0.17.0); the bucket had 12 files of its cache written before the
+  rebuild, deleted. Nothing written there since.
+- Biome's HTML support (`html.experimentalFullSupportEnabled`) formats and
+  lints templates and styles of `.vue`, `.astro` and `.html`, but breaks
+  some attributes that hold strings when it writes (almanac
+  `biome-html-quotes`); and the Jinja of MkDocs is not HTML.
+- Two api servers over the full dataset take every inotify watch of the
+  user; `fs.watch` then fails silently and no notice is sent (almanac
+  `inotify-watches`). My `pkill -f <pattern>` killed its own shell twice -
+  nothing else; Sett's api (pid 3873288) stayed up.
+- `task workflows:web` was run once without `--noBrowser` reaching it (the
+  task dropped arguments), so it may have opened a browser tab on the
+  owner's desktop around 17:14. Arguments reach it now.
+- The viewer checked in headless Chromium (acts, an act, the map, a link
+  `#act/DU/2026/2`, Polish); the desktop app by `task desktop:check`, with
+  every window hidden; MCP over stdio, over `/mcp`, and the 2025 way by
+  curl.
+
 ## 2026-11-22 · Cleo · phase 18: after v0.15.0, the almanac
 
 - The release of v0.15.0 (run 45005803900) failed in the image build, in

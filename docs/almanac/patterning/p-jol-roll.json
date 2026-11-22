@@ -288,6 +288,36 @@
 			"title": "The demo space writes its cache into the bucket",
 			"topic": "hugging-face",
 			"page": "cataclistics/space-cache-in-bucket.md"
+		},
+		{
+			"id": "inotify-watches",
+			"events": ["api:serve", "api:serve-again", "watch:silent"],
+			"cataclysm": "watch:silent",
+			"solution": "One api over the full dataset per machine; servers for checks are stopped when done (by their pid - never `pkill -f` with a pattern, which matched the shell that ran it). A machine that needs more raises `fs.inotify.max_user_watches`.",
+			"seen": ["2026-11-22: phase 21, the MCP test beside a running api"],
+			"title": "Notices of changed files stop when two api servers run",
+			"topic": "viewer",
+			"page": "cataclistics/inotify-watches.md"
+		},
+		{
+			"id": "biome-html-quotes",
+			"events": ["biome:html-enabled", "hook:format", "biome:parse-error"],
+			"cataclysm": "biome:parse-error",
+			"solution": "Expressions with strings in them live in `<script setup>` (a computed, a constant) and the template only names them - easier to read anyway. The Jinja of MkDocs (`docs/_mkdocs/overrides`) is left out of Biome: it is not HTML.",
+			"seen": ["2026-11-22: phase 21, Biome 2.6.8"],
+			"title": "Biome's formatter of HTML breaks a Vue attribute with a string inside",
+			"topic": "dependencies",
+			"page": "cataclistics/biome-html-quotes.md"
+		},
+		{
+			"id": "workflow-web-manifest",
+			"events": ["workflows:build", "workflows:web", "web:no-workflows"],
+			"cataclysm": "web:no-workflows",
+			"solution": "`task workflows:web` names the manifest (`WORKFLOW_MANIFEST_PATH`), the data of the runs and the server; `task workflows:serve` keeps runs in the same `.workflow-data` wherever it starts. Runs appear after `task workflows:daily`.",
+			"seen": ["2026-11-22: phase 21"],
+			"title": "The web interface of the workflows lists none",
+			"topic": "terminal",
+			"page": "cataclistics/workflow-web-manifest.md"
 		}
 	]
 }

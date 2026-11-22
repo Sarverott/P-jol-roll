@@ -16,3 +16,4 @@
 - [The git hooks let every commit through](../cataclistics/hooks-never-blocked.md)
 - [`npm audit fix --force` moved packages backwards](../cataclistics/forced-audit-downgrade.md)
 - [A fresh install has no `task` binary](../cataclistics/npm-install-scripts.md)
+- [Biome's formatter of HTML breaks a Vue attribute with a string inside](../cataclistics/biome-html-quotes.md)
