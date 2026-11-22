@@ -160,6 +160,11 @@ export default function App() {
 					<strong>a devil's advocate to every person</strong> in the country, as
 					open source.
 				</p>
+				<img
+					style={{ width: "100%" }}
+					alt="P_JOL_ROLL"
+					src="https://gist.githubusercontent.com/Sarverott/025bda4b967642107b88345c0e465b1a/raw/6cf448f5ef52a55ba8efb94e6d95e65f4df4954d/p-jol-roll_edited-color.png"
+				/>
 			</section>
 
 			<section>
