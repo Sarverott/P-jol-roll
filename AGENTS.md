@@ -123,6 +123,7 @@ src/core/              the gatherer itself; everything below is its tree
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
     diagram.ts         the ties of an act as one mermaid flowchart, for every interface
+    embeddings.ts      the vectors of task embed, and a question as a vector of the same model (Ollama)
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
 src/mcp/               MCP server over stdio for AI agents, read-only

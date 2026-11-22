@@ -165,6 +165,7 @@ preset takes a part of them, with the ties among its acts from
 | `statutes-in-force` | statutes (ustawy) in force | 2,848 / 2,234 |
 | `statutes` | every statute since 1918 | 9,985 / 71,489 |
 | `in-force` | every act in force | 20,484 / 11,953 |
+| `statutes-in-force-by-meaning` | statutes in force that have a vector (`task embed`), each tied to its 5 nearest by meaning instead of the ties of the source | as many as have vectors |
 
 ForceAtlas2 places them once, here (about a minute for all three), so a
 browser only draws: the tab "map of the whole law" of the viewer shows them
@@ -208,4 +209,16 @@ did not change keeps its vector, so a run is repeated to take what is new.
 
 DU 2020 (2453 acts) took 1 minute 46 seconds on a GeForce RTX 3060 and
 10 MB. All of the law would take about two hours and 670 MB.
+
+## Search by meaning
+
+With the vectors made, `task search:index` puts them into Typesense too (an
+existing collection gets the field without being made anew). A search of
+every year with `meaning=1` turns the question into a vector by the same
+model of Ollama, and Typesense ranks acts by words and by meaning together.
+A question in English finds Polish acts: "protection of children against
+violence at school" found the acts of the Minister of Education on safety
+in schools, where the words alone found one act. Without Ollama, the search
+says `meaning: false` and works by words alone. The viewer shows the box
+"by meaning, in any language" only when the host can do it.
 

@@ -28,6 +28,9 @@ const view = ref("acts");
 // search of every year by Typesense (/api/search), offered only when the host has it
 const searchable = ref(false);
 const everywhere = ref(false);
+// ranked by meaning too, when the host has vectors and a model (task embed, Ollama)
+const meaningful = ref(false);
+const byMeaning = ref(false);
 const facets = ref({});
 const filter = ref({ type: "", status: "" });
 const notice = ref("");
@@ -78,6 +81,7 @@ async function searchEverywhere(offset = 0) {
 		limit: String(PAGE),
 		...(filter.value.type ? { type: filter.value.type } : {}),
 		...(filter.value.status ? { status: filter.value.status } : {}),
+		...(byMeaning.value ? { meaning: "1" } : {}),
 	});
 	const found = await ask(`/api/search?${words}`);
 	facets.value = found?.facets ?? {};
@@ -102,7 +106,7 @@ watch(journal, () => {
 	year.value = years.value.at(-1) ?? 0;
 });
 watch(year, () => loadActs());
-watch(everywhere, () => loadActs());
+watch([everywhere, byMeaning], () => loadActs());
 watch(filter, () => loadActs(), { deep: true });
 
 // the language of the viewer: its pack laid over the page (src/i18n), data left as it is
@@ -117,6 +121,12 @@ onMounted(async () => {
 		() => undefined,
 	);
 	searchable.value = Boolean(probe?.ok);
+	if (searchable.value) {
+		const asked = await fetch(
+			`${props.api}/api/search?q=law&limit=1&meaning=1`,
+		).catch(() => undefined);
+		meaningful.value = Boolean(asked?.ok && (await asked.json()).meaning);
+	}
 	socket = io(props.api || undefined, { reconnectionAttempts: 3 });
 	socket.on("changed", (paths) => {
 		notice.value = `${paths.length} files of the dataset changed - ${new Date().toLocaleTimeString()}`;
@@ -187,6 +197,9 @@ onUnmounted(() => socket?.close());
 				</div>
 				<div v-if="searchable" class="control is-flex is-align-items-center">
 					<label class="checkbox"><input v-model="everywhere" type="checkbox" /> every year, titles, keywords and texts</label>
+				</div>
+				<div v-if="everywhere && meaningful" class="control is-flex is-align-items-center">
+					<label class="checkbox"><input v-model="byMeaning" type="checkbox" /> by meaning, in any language</label>
 				</div>
 			</form>
 			<div v-if="view === 'acts' && everywhere" class="field is-grouped is-grouped-multiline">

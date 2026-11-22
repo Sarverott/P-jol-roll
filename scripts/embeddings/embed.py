@@ -92,7 +92,7 @@ def main(years: list[int]) -> None:
         ])
         target.parent.mkdir(parents=True, exist_ok=True)
         part_file = target.with_suffix(".parquet.part")
-        pq.write_table(pa.Table.from_pylist(rows, schema=schema), part_file, compression="zstd")
+        pq.write_table(pa.Table.from_pylist(rows, schema=schema), part_file, compression="snappy")
         part_file.replace(target)
         print(f"{journal}/{year}: {len(rows)} vectors ({len(waiting)} new)", flush=True)
     if dimensions:

@@ -33,6 +33,16 @@ const typesense = createServer((request, response) => {
 					.map(() => '{"success":true}')
 					.join("\n"),
 			);
+		} else if (url === "/api/embed") {
+			response.setHeader("content-type", "application/json");
+			response.end(JSON.stringify({ embeddings: [[0.6, 0.8, 0]] }));
+		} else if (url === "/multi_search") {
+			response.setHeader("content-type", "application/json");
+			response.end(
+				JSON.stringify({
+					results: [{ found: 0, page: 1, hits: [], facet_counts: [] }],
+				}),
+			);
 		} else if (url.startsWith("/collections/acts/documents/search")) {
 			response.setHeader("content-type", "application/json");
 			response.end(
@@ -62,6 +72,8 @@ const typesense = createServer((request, response) => {
 await new Promise<void>((done) => typesense.listen(0, "127.0.0.1", done));
 process.env.TYPESENSE_URL = `http://127.0.0.1:${(typesense.address() as AddressInfo).port}`;
 process.env.TYPESENSE_API_KEY = "test-key";
+// the same stand-in answers as Ollama
+process.env.OLLAMA_URL = process.env.TYPESENSE_URL;
 
 const work = await mkdtemp(join(tmpdir(), "p-jol-roll-search-"));
 const resources = join(work, "resources");
@@ -90,6 +102,10 @@ await put(
 );
 await put("dataset/texts/DU/1918/WDU19180020002.md", "My, RADA REGENCYJNA\n");
 await put(".map.json", "{}");
+await put(
+	"dataset/embeddings/bge-m3/model.json",
+	JSON.stringify({ model: "bge-m3", dimensions: 3 }),
+);
 
 const { index } = await import("../src/core/search/typesense.js");
 const { serve } = await import("../src/openapi/server.js");
@@ -130,6 +146,7 @@ test("the api asks with filters and gives acts, snippets and facets", async () =
 	expect(answer).toEqual({
 		total: 1,
 		page: 1,
+		meaning: false,
 		items: [
 			{
 				ELI: "DU/1918/2",
@@ -146,6 +163,25 @@ test("the api asks with filters and gives acts, snippets and facets", async () =
 	expect(query.get("q")).toBe("rada");
 	expect(query.get("page")).toBe("2");
 	expect(query.get("filter_by")).toBe("publisher:=DU && type:=`Ustawa`");
+});
+
+test("by meaning the question becomes a vector and the search is hybrid", async () => {
+	asked.length = 0;
+	const answer = await (
+		await fetch(`${url}/api/search?q=ochrona%20danych&meaning=1`)
+	).json();
+	expect(answer.meaning).toBe(true);
+	expect(JSON.parse(asked[0].body)).toMatchObject({
+		model: "bge-m3",
+		input: ["ochrona danych"],
+	});
+	const [search] = JSON.parse(asked[1].body).searches;
+	expect(search).toMatchObject({
+		collection: "acts",
+		q: "ochrona danych",
+		exclude_fields: "embedding",
+		vector_query: "embedding:([0.6,0.8,0], k:200, alpha:0.4)",
+	});
 });
 
 test("without Typesense the api says how to start it", async () => {
