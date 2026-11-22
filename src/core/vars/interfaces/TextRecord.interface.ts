@@ -8,4 +8,5 @@ export default interface TextRecord {
 	sha256_pdf?: string;
 	producer?: string; // of the PDF, as pdfinfo names it: "Paper Capture" means recognised text of a scan
 	url: string; // the file at the source it was made from
+	printable?: true; // checked to hold no control characters (phase 18); left out: written before
 }

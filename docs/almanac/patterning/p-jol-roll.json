@@ -1,0 +1,264 @@
+{
+	"about": "Situations met while forging P_JOL_ROLL, each a chain of events up to its cataclysm, with the solution that got past it. The page of each is an issue ready for GitHub (task almanac:issues:open).",
+	"chains": [
+		{
+			"id": "hub-commit-limit",
+			"events": ["hub:push", "hub:commit-per-100-files", "hub:429"],
+			"cataclysm": "hub:429",
+			"solution": "A refused commit is waited out (the time read from the message, an hour when none is named, a minute more) and sent again; commits hold 1000 files (`--batch`). 128 commits of 1000 an hour is what the owner accepted (Q16). `rateLimitWait()` and `committed()` in `src/core/resources/hub.ts`, `tests/hub.test.ts`.",
+			"seen": [
+				"2026-11-22: logs/log-1795316429823-verbose-hub-push.log",
+				"v0.11.x"
+			],
+			"title": "Hugging Face refuses the 129th commit of an hour",
+			"topic": "hugging-face",
+			"page": "cataclistics/hub-commit-limit.md"
+		},
+		{
+			"id": "hub-binary-text",
+			"events": [
+				"text:pdf",
+				"pdftotext:control-characters",
+				"hub:push",
+				"hub:binary-refused"
+			],
+			"cataclysm": "hub:binary-refused",
+			"solution": "Texts drop every C0 and C1 control character but tab, new line, carriage return and form feed; a line that held only such characters goes away whole, so it makes no gap that ends a paragraph (`printable()` in `src/core/parsing/pdf.ts`). A text written before is read once on the next `task text`: clean, its record is marked `printable`; holding any, it is made again. `push` holds such texts back and names them before anything is sent (`heldBack()` in `hub.ts`).",
+			"seen": [
+				"2026-11-22: logs/log-1795338475468-verbose-hub-push.log, request Root=1-6b02b10b-5272227d3731908f64a02d71",
+				"v0.15.2"
+			],
+			"title": "Hugging Face takes a markdown text for a binary file and refuses the commit",
+			"topic": "hugging-face",
+			"page": "cataclistics/hub-binary-text.md"
+		},
+		{
+			"id": "hub-push-never-deletes",
+			"events": ["space:rewritten", "hub:push", "space:old-files-stay"],
+			"cataclysm": "space:old-files-stay",
+			"solution": "`task resources:prune -- space` deletes there what is not here, in commits of 1000, after a question; it refuses the bucket, whose raw files may live on one machine only. `task resources:space` writes the newest release into the space's Dockerfile, so the next push rebuilds it.",
+			"seen": ["2026-11-22: Q16, changelog phase 12", "v0.14.x"],
+			"title": "The demo space keeps files of its old version",
+			"topic": "hugging-face",
+			"page": "cataclistics/hub-push-never-deletes.md"
+		},
+		{
+			"id": "container-missing-locales",
+			"events": ["merge:master", "release:image-build", "tsc:module-not-found"],
+			"cataclysm": "tsc:module-not-found",
+			"solution": "`!resources/locales/` in `.dockerignore`; the Dockerfile copies the packs into the build (the viewer bundles them) and beside `dist/` (node reads them). Checked by building the image here and serving the site from it.",
+			"seen": ["2026-11-22: run 45005803900", "v0.15.1"],
+			"title": "The release image does not build: language packs left out of the Docker context",
+			"topic": "containers",
+			"page": "cataclistics/container-missing-locales.md"
+		},
+		{
+			"id": "codeql-first-scan",
+			"events": ["codeql:first-scan", "codeql:alerts", "review:by-alert"],
+			"cataclysm": "codeql:alerts",
+			"solution": "Parts of an address are checked once for every route (`routes.param`: a journal is letters, a year and a position numbers); the remote mode takes only plain paths below its directory (`inside()` in `remote.ts`); `RATE_LIMIT` requests of an address a minute (express-rate-limit, `TRUST_PROXY=1` in the image); the extension takes only an http(s) origin; the devtool's server resolves and stays below its folder; checks with a ref given use no npm cache. `tests/remote.test.ts` sends a raw `..` and sees nothing leave.",
+			"seen": ["2026-11-22: alerts 1-15", "v0.15.3-v0.15.7"],
+			"title": "The first CodeQL scan: 15 alerts, one of them a real path injection",
+			"topic": "security",
+			"page": "cataclistics/codeql-first-scan.md"
+		},
+		{
+			"id": "damaged-pdf",
+			"events": ["text:pdf", "pdftotext:syntax-error", "text:crashed"],
+			"cataclysm": "text:crashed",
+			"solution": "A damaged PDF stops nothing: what poppler still reads is kept, otherwise the act goes to `texts/<j>/<year>.scans.jsonl` with its `error`. Whether the source serves these files so is in `docs/.agents/things-to-check.md`.",
+			"seen": ["2026-11-22: DU/1932/38, DU/2007/189", "v0.11.x"],
+			"title": "A damaged PDF stops the whole text run",
+			"topic": "pdf-texts",
+			"page": "cataclistics/damaged-pdf.md"
+		},
+		{
+			"id": "utf16-producer",
+			"events": ["text:pdf", "pdfinfo:producer", "record:garbled-producer"],
+			"cataclysm": "record:garbled-producer",
+			"solution": "`repairedName()` in `pdf.ts` reads such pairs back (\"Microsoft® Word 2019\"); the last letter of an odd length is lost.",
+			"seen": ["2026-11-22: phase 12"],
+			"title": "The producer of some PDFs reads as Chinese",
+			"topic": "pdf-texts",
+			"page": "cataclistics/utf16-producer.md"
+		},
+		{
+			"id": "hooks-never-blocked",
+			"events": [
+				"commit",
+				"hook:biome-failed",
+				"go-task:exit-0",
+				"commit:accepted"
+			],
+			"cataclysm": "commit:accepted",
+			"solution": "`@go-task/cli` `^3.54.0`, which ends with the task's code. A bad message or a badly formatted file stops the commit now (exit 201).",
+			"seen": ["2026-11-13: notes of agents"],
+			"title": "The git hooks printed errors and let every commit through",
+			"topic": "dependencies",
+			"page": "cataclistics/hooks-never-blocked.md"
+		},
+		{
+			"id": "forced-audit-downgrade",
+			"events": [
+				"npm:audit-fix-force",
+				"npm:downgrade",
+				"build:module-missing"
+			],
+			"cataclysm": "build:module-missing",
+			"solution": "The ranges put back, `npm update`, then `npm audit fix` without `--force`; advisories that remain are judged by whether data from outside reaches them.",
+			"seen": ["2026-11-13: notes of agents"],
+			"title": "`npm audit fix --force` moved packages backwards",
+			"topic": "dependencies",
+			"page": "cataclistics/forced-audit-downgrade.md"
+		},
+		{
+			"id": "npm-install-scripts",
+			"events": ["npm:install", "npm11:scripts-blocked", "task:missing"],
+			"cataclysm": "task:missing",
+			"solution": "`allowScripts` in `package.json`: `@go-task/cli`, `esbuild`, `@swc/core` allowed; the rest denied with the reason.",
+			"seen": ["2026-11-13: notes of agents"],
+			"title": "A fresh install has no `task` binary",
+			"topic": "dependencies",
+			"page": "cataclistics/npm-install-scripts.md"
+		},
+		{
+			"id": "eli-changes-400",
+			"events": [
+				"gather:changes",
+				"eli:400",
+				"crawlee:logged-only",
+				"run:exit-0"
+			],
+			"cataclysm": "eli:400",
+			"solution": "The day is sent with a time; a run whose requests failed ends with 1.",
+			"seen": ["2026-11-22: phase 9"],
+			"title": "`gather:changes` fails: the API wants a time, not a day",
+			"topic": "source-api",
+			"page": "cataclistics/eli-changes-400.md"
+		},
+		{
+			"id": "dependabot-flow",
+			"events": [
+				"dependabot:pull-request",
+				"workflow:old-scripts",
+				"merge:failed"
+			],
+			"cataclysm": "merge:failed",
+			"solution": "Jobs take scripts from `development`; the workflow turns security updates to `dev/dependabot`; the four open ones were turned through the API and started by `@dependabot rebase`.",
+			"seen": ["2026-11-22: #18-#22, phase 10"],
+			"title": "Dependabot's pull requests do not land by themselves",
+			"topic": "github-workflows",
+			"page": "cataclistics/dependabot-flow.md"
+		},
+		{
+			"id": "action-required",
+			"events": ["phase-close:pull-request", "checks:action-required"],
+			"cataclysm": "checks:action-required",
+			"solution": "Left as GitHub made it: the owner approves them. Agents do not.",
+			"seen": ["2026-11-22: #23, #28, #29"],
+			"title": "Checks of a pull request opened by a workflow wait for a person",
+			"topic": "github-workflows",
+			"page": "cataclistics/action-required.md"
+		},
+		{
+			"id": "bump-left-behind",
+			"events": [
+				"commit",
+				"hook:bump-version",
+				"commitlint:header-too-long",
+				"version:left-behind"
+			],
+			"cataclysm": "version:left-behind",
+			"solution": "Headers stay short (`flow:land` too); when it happens, `npm pkg set version=<previous>` and `task version:sync` put it back. Earlier a hook stopped after the bump for Biome, so the bump runs after Biome.",
+			"seen": ["2026-11-22: phases 15-17"],
+			"title": "A refused commit leaves its version bump in the working tree",
+			"topic": "github-workflows",
+			"page": "cataclistics/bump-left-behind.md"
+		},
+		{
+			"id": "vite-glob-dotfiles",
+			"events": ["build:web", "vite:glob", "pack-index:missing"],
+			"cataclysm": "pack-index:missing",
+			"solution": "`.index.json` is imported by name, the packs by the glob.",
+			"seen": ["2026-11-22: phase 16"],
+			"title": "The index of language packs is missing from the viewer",
+			"topic": "translations",
+			"page": "cataclistics/vite-glob-dotfiles.md"
+		},
+		{
+			"id": "i18n-test-dom",
+			"events": ["test:i18n", "linkedom:no-characterdata", "observer:silent"],
+			"cataclysm": "observer:silent",
+			"solution": "`follow()` takes the Observer as a parameter; that test runs in jsdom, as browsers do.",
+			"seen": ["2026-11-22: phase 16"],
+			"title": "Translations of what Vue renders later cannot be tested in linkedom",
+			"topic": "translations",
+			"page": "cataclistics/i18n-test-dom.md"
+		},
+		{
+			"id": "argos-mangles-names",
+			"events": ["i18n:translate", "argos:transliterates", "pack:wrong-names"],
+			"cataclysm": "pack:wrong-names",
+			"solution": "Names in `keep`, identifiers and `{named}` places stand in as numbers from 701 while the model works; a text that is one identifier gets no hook; a person fixes an entry and lists it in `reviewed`, which is never overwritten.",
+			"seen": ["2026-11-22: phase 16"],
+			"title": "Machine translation changes names and identifiers",
+			"topic": "translations",
+			"page": "cataclistics/argos-mangles-names.md"
+		},
+		{
+			"id": "sigma-edges",
+			"events": ["map:draw", "sigma:hidden-ignored", "map:wrong"],
+			"cataclysm": "map:wrong",
+			"solution": "`visibility`, 6-digit colours with alpha apart; a node's position on screen is `graphToViewport(graph.getNodeAttributes(node))`.",
+			"seen": ["2026-11-22: phase 14"],
+			"title": "The map of the law shows hidden edges in wrong colours",
+			"topic": "viewer",
+			"page": "cataclistics/sigma-edges.md"
+		},
+		{
+			"id": "hyparquet-zstd",
+			"events": ["embed:parquet-zstd", "hyparquet:unsupported"],
+			"cataclysm": "hyparquet:unsupported",
+			"solution": "`scripts/embeddings/embed.py` writes snappy.",
+			"seen": ["2026-11-22: phase 17"],
+			"title": "The viewer cannot read the vectors",
+			"topic": "viewer",
+			"page": "cataclistics/hyparquet-zstd.md"
+		},
+		{
+			"id": "launcher-ctrl-c",
+			"events": ["launcher:repl", "task:run", "terminal:raw", "ctrl-c:byte"],
+			"cataclysm": "ctrl-c:byte",
+			"solution": "The terminal is cooked before a task, raw again after.",
+			"seen": ["2026-11-22: phase 10"],
+			"title": "Ctrl+C in a task of the launcher does not stop it",
+			"topic": "terminal",
+			"page": "cataclistics/launcher-ctrl-c.md"
+		},
+		{
+			"id": "mdns-port",
+			"events": ["compose:up", "internal-dns:bind-5353", "port:taken"],
+			"cataclysm": "port:taken",
+			"solution": "internal-dns listens on 15353 (`DNS_PORT`).",
+			"seen": ["2026-11-22: phase 9"],
+			"title": "The internal DNS does not start",
+			"topic": "containers",
+			"page": "cataclistics/mdns-port.md"
+		},
+		{
+			"id": "gist-submodule",
+			"events": [
+				"submodule:add",
+				"pointer:empty-commit",
+				"biome:formats-submodule",
+				"check:failed"
+			],
+			"cataclysm": "check:failed",
+			"solution": "The commit with the images committed as a second change; the submodule left out of Biome.",
+			"seen": ["2026-11-22: phase 13"],
+			"title": "The media submodule points at an empty commit, then breaks the lint",
+			"topic": "repository",
+			"page": "cataclistics/gist-submodule.md"
+		}
+	]
+}

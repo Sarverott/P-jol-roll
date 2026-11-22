@@ -5,6 +5,7 @@ import { expect, test } from "vitest";
 import {
 	compare,
 	hashOf,
+	heldBack,
 	localFiles,
 	rateLimitWait,
 	repoOf,
@@ -72,4 +73,14 @@ test("a missing or wrong name says which names there are", () => {
 	expect(target("space").repo).toBe(
 		"spaces/Sarverott/docs-of-law-by-gov-in-poland",
 	);
+});
+
+test("texts with control characters are held back from a push, other files are not", async () => {
+	const dir = await mkdtemp(join(tmpdir(), "pjolroll-held-"));
+	await writeFile(join(dir, "clean.md"), "Art. 1. Tekst\n");
+	await writeFile(join(dir, "glyphs.md"), "Art. 1.\u0003\n\u0003\n");
+	await writeFile(join(dir, "act.pdf"), "%PDF\u0003\u0000");
+	expect(heldBack(dir, ["clean.md", "glyphs.md", "act.pdf"])).toEqual([
+		"glyphs.md",
+	]);
 });

@@ -3,12 +3,13 @@ import {
 	globSync,
 	readdirSync,
 	readFileSync,
+	statSync,
 	writeFileSync,
 } from "node:fs";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { homedir } from "node:os";
-import { extname, join, normalize } from "node:path";
+import { extname, join, sep } from "node:path";
 import { parseHTML } from "linkedom";
 import { chromium, type Page } from "playwright";
 import { readTasks } from "../cli/tasks.js";
@@ -39,15 +40,26 @@ const TYPES: Record<string, string> = {
 	".svg": "image/svg+xml",
 };
 
-// the site/ folder over http, so the introduction runs as on its website
+// the site/ folder over http, so the introduction runs as on its website; the files are listed
+// once, and an address only picks one of them - it never names a path itself (CodeQL
+// js/path-injection, docs/almanac/cataclistics/codeql-first-scan.md)
 function serveFolder(folder: string) {
+	const files = new Map(
+		globSync("**/*", { cwd: folder })
+			.map((name): [string, string] => [
+				`/${name.split(sep).join("/")}`,
+				join(folder, name),
+			])
+			.filter(([, file]) => statSync(file).isFile()),
+	);
+	const page = join(folder, "index.html");
 	const server = createServer((request, response) => {
-		const path = normalize(
-			decodeURIComponent((request.url ?? "/").split("?")[0]),
-		);
-		let file = join(folder, path.endsWith("/") ? `${path}index.html` : path);
-		if (!file.startsWith(folder) || !existsSync(file))
-			file = join(folder, "index.html");
+		let path = (request.url ?? "/").split("?")[0];
+		try {
+			path = decodeURIComponent(path);
+		} catch {}
+		const file =
+			files.get(path.endsWith("/") ? `${path}index.html` : path) ?? page;
 		response.setHeader(
 			"content-type",
 			TYPES[extname(file)] ?? "application/octet-stream",

@@ -25,3 +25,4 @@ resources/*
 !resources/frontends.json
 !resources/.map.json
 !resources/configs/
+!resources/locales/

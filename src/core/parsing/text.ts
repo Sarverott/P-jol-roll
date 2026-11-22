@@ -7,12 +7,19 @@ import * as store from "../resources/store.js";
 import type { GatheringScope } from "../vars/interfaces/index.js";
 import type { GatheringScope as GatheringTypes } from "../vars/types/index.js";
 import {
+	hasControl,
 	isScan,
 	pdfToMarkdown,
 	pdftotextHere,
+	printable,
 	producerOf,
 	textLayer,
 } from "./pdf.js";
+
+// a markdown written before control characters were dropped is read once: clean, its record
+// is marked and kept; holding any, it is made again (pdf.ts, phase 18)
+const kept = (record: GatheringScope.TextRecord, file: string) =>
+	record.printable || !hasControl(readFileSync(file, "utf8"));
 
 /*
 Html texts of bucket -> markdown files of dataset, for people and for models;
@@ -97,18 +104,29 @@ export async function text({ pdf = false, parallel = 4 } = {}) {
 				const html = readFileSync(source);
 				const sha256_html = store.sha256(html);
 				// the same html gives the same markdown, no need to parse it twice
-				if (before?.sha256_html === sha256_html && existsSync(file)) {
-					records[at] = before;
+				if (
+					before?.sha256_html === sha256_html &&
+					existsSync(file) &&
+					kept(before, file)
+				) {
+					records[at] = { ...before, printable: true };
 					sum.unchanged += 1;
 					return;
 				}
 				jobs.push(async () => {
 					const { sha256: sha256_md } = await store.writeWhole(
 						file,
-						toMarkdown(html.toString("utf8")),
+						printable(toMarkdown(html.toString("utf8"))),
 					);
 					const [{ url }] = filesOf({ ...act, textHTML: true }, "html");
-					records[at] = { ELI: act.ELI, markdown, sha256_md, sha256_html, url };
+					records[at] = {
+						ELI: act.ELI,
+						markdown,
+						sha256_md,
+						sha256_html,
+						url,
+						printable: true,
+					};
 					sum.parsed += 1;
 				});
 				return;
@@ -116,7 +134,10 @@ export async function text({ pdf = false, parallel = 4 } = {}) {
 			const scan = knownScans.get(act.ELI);
 			if (!pdf) {
 				if (before?.from === "pdf" && existsSync(file)) {
-					records[at] = before;
+					// not made again without --pdf, so marked only when it is clean
+					records[at] = kept(before, file)
+						? { ...before, printable: true }
+						: before;
 					sum.unchanged += 1;
 				} else if (scan) scans[at] = scan;
 				return;
@@ -125,8 +146,12 @@ export async function text({ pdf = false, parallel = 4 } = {}) {
 			if (!existsSync(path)) return;
 			jobs.push(async () => {
 				const sha256_pdf = store.sha256(readFileSync(path));
-				if (before?.sha256_pdf === sha256_pdf && existsSync(file)) {
-					records[at] = before;
+				if (
+					before?.sha256_pdf === sha256_pdf &&
+					existsSync(file) &&
+					kept(before, file)
+				) {
+					records[at] = { ...before, printable: true };
 					sum.unchanged += 1;
 					return;
 				}
@@ -170,6 +195,7 @@ export async function text({ pdf = false, parallel = 4 } = {}) {
 					sha256_pdf,
 					producer,
 					url,
+					printable: true,
 				};
 				sum.parsed += 1;
 				sum.fromPdf += 1;
