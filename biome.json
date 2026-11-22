@@ -14,7 +14,8 @@
 			"!resources/mediafiles",
 			"!src/tui/index.tsx",
 			"!src/tui/main.js",
-			"!src/tui/termui.config.*"
+			"!src/tui/termui.config.*",
+			"!docs/_mkdocs/overrides"
 		]
 	},
 	"formatter": {
@@ -70,6 +71,12 @@
 	"yaml": {
 		"formatter": {
 			"enabled": false
+		}
+	},
+	"html": {
+		"experimentalFullSupportEnabled": true,
+		"formatter": {
+			"enabled": true
 		}
 	}
 }

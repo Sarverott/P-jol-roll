@@ -13,7 +13,7 @@ a person, so an agent cannot set off a crawl of the source through here.
 
 // NOTE: can we add it with container to be published inside docker serving from space host? this can be handy
 
-const server = new McpServer({ name: "p-jol-roll", version: "0.17.13" });
+const server = new McpServer({ name: "p-jol-roll", version: "0.17.14" });
 const readOnly = { readOnlyHint: true, openWorldHint: false };
 
 const answer = (value: unknown) => ({

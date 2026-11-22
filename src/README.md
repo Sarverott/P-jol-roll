@@ -128,9 +128,11 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 
 | File | What, why and where |
 | --- | --- |
-| `src/gui/index.vue` | The one viewer: pick a journal and a year, search titles, open an act, read its markdown, follow its ties, open its PDF. Takes the address of the api as `api`. Every interface shows this. Laid out with Bulma. |
-| `src/gui/components/TiesDiagram.vue` | The ties of an act as the mermaid flowchart of the core (`/diagram`), rendered by mermaid (loaded only when needed); a click on a node opens that act. |
-| `src/gui/components/LawMap.vue` | The map of the whole law (sigma.js): a preset made by `task map`, a colour per type of act; hovering an act lights its ties, a click opens it. |
+| `src/gui/index.vue` | The one viewer every interface shows (Bulma), put together from the parts below: a header, the tabs of the screens, the screen, a footer, an error dialog. Takes the address of the api as `api`. |
+| `src/gui/assets/` | What the parts share: `library.js` (the state and every call to the api, handed down by provide/inject), `route.js` (the screen and the act in the address after `#`: `#acts`, `#act/DU/2026/1`, `#map`), `setup.js` (`ColorPick`, every colour, also as `--p-*` CSS variables), `graph.js` (the graph of a map), `socket.js` (notices of the api). |
+| `src/gui/layout/` | The frame: `header.vue` (brand and language), `main.vue` (tabs and the screen), `footer.vue`, `aside-left.vue` / `aside-right.vue` (columns of a screen), `modals/errordialog.vue`. |
+| `src/gui/screens/` | `actsListing.vue` (the search on the left, the acts with their pages), `contentDisplay.vue` (one act: its text, its ties beside), `generalMap.vue` (the map of the whole law, loaded only when shown); `devilsAdvocate.vue` waits for a decision (BRAINSTORM). |
+| `src/gui/components/` | `ScreenTabs.vue`; `acts/` (search, list, pages), `act/` (header, text, ties), `map/` (`LawMap.vue` on sigma.js, its presets and legend), `ties/` (`TiesDiagram.vue` by mermaid, `TiesMinimap.vue` by Cytoscape.js, on both screens of acts). Heavy libraries come with the components that are loaded lazily. |
 | `src/core/methods/map.ts` | `task map`: the acts of a preset and the ties among them placed by ForceAtlas2 once, into `dataset/map/<preset>.json` (compact: nodes `[ELI, title, x, y, size, kind]`, edges `[from, to, tie]`). |
 | `src/core/methods/presets.ts` | The presets of the map: statutes in force (2.8 thousand acts), every statute (10 thousand), every act in force (20 thousand); apart from map.ts so readers know them without the layout. |
 | `src/core/reading/embeddings.ts` | The vectors of `task embed` (parquet, read by hyparquet), the model they were made by, and a question as a vector of the same model of Ollama (or nothing without it). |
@@ -143,7 +145,6 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/i18n/terminal.ts` | `tr(text, { name })`: the words of the launcher, the REPL and the lists of tasks in the terminal's language; named places filled after the pack. |
 | `src/i18n/node.ts` | The packs outside a browser: the index, `packFor(code)`, the language of a terminal (`P_JOL_ROLL_LANG`, else `LANG`). |
 | `src/devtools/i18n.ts` | `task i18n:collect`: the built introduction and viewer opened in a headless browser, in several states; their English collected by the page's own runtime into `resources/locales/EN-US.json`. |
-| `src/gui/components/TiesMinimap.vue` | A minimap of the ties in the corner (Cytoscape.js): the act in the middle, a colour per kind of tie, a click opens an act; it can be hidden. |
 | `src/core/reading/diagram.ts` | The ties of an act as one mermaid flowchart - the one drawing the api, the MCP server (`act_references` with `as: mermaid`) and the viewer give. |
 | `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host; `PUBLIC_SITE` is its own address for the card of a shared link (the demo by default). |
 | `src/web/public/` | Favicons, manifest icons and `og.jpg`, made by `scripts/devops/media/build.sh` from the gist `resources/mediafiles` and committed; the introduction (`webpage/`) takes them too. |

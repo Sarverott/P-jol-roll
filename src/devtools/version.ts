@@ -21,7 +21,7 @@ const PYTHON = field(String.raw`^version\s*=`, "m");
 const LOCKED =
 	/(\nversion = ")[^"]+("\nsource = \{ (?:virtual|editable) = "\." \})/;
 const COPIES: [string, RegExp][] = [
-	["src/firefox-ext/manifest.json", field(String.raw`"version":`)],
+	["src/firefox-ext/manifest.json", field('"version":')],
 	["src/openapi/spec.ts", field("version:")],
 	["src/mcp/main.ts", field(String.raw`name:\s*"p-jol-roll",\s*version:`)],
 	...["docs", "examples", "scripts"].flatMap((dir): [string, RegExp][] => [

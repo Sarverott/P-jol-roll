@@ -140,7 +140,8 @@ src/openapi/           http api (/api, /openapi.json) with socket.io notices, se
 src/mcp/               MCP server over stdio for AI agents, read-only
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
-src/gui/               index.vue - the one viewer that every interface shows (Bulma); components/ the ties drawn (mermaid), their minimap (Cytoscape.js), the map of the whole law (sigma.js)
+src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map;
+                       #acts, #act/DU/2026/1, #map) and components/; assets/ what they share (state, route, ColorPick, graph, socket)
 src/web/               Astro website carrying the viewer (pages/), built into dist/web
 src/desktop/           Electron window: starts the api, shows the viewer
 src/app/               web app manifest and Capacitor config of the android app
