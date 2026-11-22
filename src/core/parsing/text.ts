@@ -68,7 +68,7 @@ texts made from PDFs before are kept as they are, so "task text" never loses the
 */
 export async function text({ pdf = false, parallel = 4 } = {}) {
 	if (pdf) await pdftotextHere();
-	const sum = { parsed: 0, unchanged: 0, fromPdf: 0, scans: 0 };
+	const sum = { parsed: 0, unchanged: 0, fromPdf: 0, scans: 0, unreadable: 0 };
 	for (const { publisher, year } of store.listedYears()) {
 		const known = new Map(
 			store
@@ -137,10 +137,25 @@ export async function text({ pdf = false, parallel = 4 } = {}) {
 				}
 				const [{ url }] = filesOf({ ...act, textPDF: true }, "pdf");
 				const producer = await producerOf(path);
-				const layer = await textLayer(path);
+				// a damaged PDF (DU/1932/38 ends in zeros) stops nothing: what poppler still
+				// read is kept, or the PDF is named in the list with the error
+				const { text: layer, error } = await textLayer(path);
 				if (isScan(layer)) {
-					scans[at] = { ELI: act.ELI, sha256_pdf, producer, url };
+					scans[at] = {
+						ELI: act.ELI,
+						sha256_pdf,
+						...(producer ? { producer } : {}),
+						url,
+						...(error ? { error } : {}),
+					};
 					sum.scans += 1;
+					if (error) {
+						sum.unreadable += 1;
+						log.warning(`${act.ELI}: the PDF cannot be read - ${error}`, {
+							eli: act.ELI,
+							error,
+						});
+					}
 					return;
 				}
 				const { sha256: sha256_md } = await store.writeWhole(

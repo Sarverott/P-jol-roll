@@ -28,11 +28,29 @@ export function pdftotextHere() {
 	return checked;
 }
 
-export async function textLayer(path: string) {
-	const { stdout } = await run("pdftotext", ["-enc", "UTF-8", path, "-"], {
-		maxBuffer: BIG,
-	});
-	return stdout;
+// the text, and the first complaint of poppler when the PDF is damaged (then text is what
+// it could still read, often nothing)
+export async function textLayer(
+	path: string,
+): Promise<{ text: string; error?: string }> {
+	try {
+		const { stdout } = await run("pdftotext", ["-enc", "UTF-8", path, "-"], {
+			maxBuffer: BIG,
+		});
+		return { text: stdout };
+	} catch (failure) {
+		const {
+			stdout = "",
+			stderr = "",
+			message = "",
+		} = failure as {
+			stdout?: string;
+			stderr?: string;
+			message?: string;
+		};
+		const first = (stderr || message).split("\n").find((line) => line.trim());
+		return { text: stdout, error: first?.trim() || "pdftotext failed" };
+	}
 }
 
 // some PDFs keep the producer as UTF-16 without its mark, so pairs of ASCII bytes come

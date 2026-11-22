@@ -172,3 +172,11 @@ point was added.
   a file to take it again needs its record deleted too.
 - `hub` still compares a bucket by path and size. Records make it possible
   to check files here, and they do not check what is on Hugging Face.
+
+## Damaged PDFs in the bucket (2026-11-22, Cleo)
+
+`DU/1932/WDU19320060038.pdf` ends in zeros from some point on; its record in
+`dataset/files/` has the same checksum, so it was written as it arrived. Is the
+source serving it like that, or did the download break? Only the owner asks the
+source. `task text -- --pdf` names every such PDF in `texts/<journal>/<year>.scans.jsonl`
+with an `error`; `grep -h '"error"' resources/dataset/texts/*/*.scans.jsonl` lists them.

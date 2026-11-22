@@ -224,12 +224,14 @@ test("tables, markdown and checksums are made from what was gathered", async () 
 		unchanged: 0,
 		fromPdf: 0,
 		scans: 0,
+		unreadable: 0,
 	});
 	expect(await text()).toEqual({
 		parsed: 0,
 		unchanged: 1,
 		fromPdf: 0,
 		scans: 0,
+		unreadable: 0,
 	});
 	const [record] = store.readJsonl<Record<string, string>>(
 		textsTablePath("DU", 2026),
