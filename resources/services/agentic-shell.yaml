@@ -1,0 +1,24 @@
+# agentic-shell: a shell for agents - the project's trained models, and the agent shells
+# (Claude Code, Codex, Cursor, opencode...) that help a person install and run the project.
+# Why it exists, in the owner's words: changelog phase 6, Q13. It is a call to its users, not
+# a backdoor; whoever is let into it can do in the repository what a person on the host can.
+#   docker compose --profile agentic up -d agentic-shell
+#   docker compose exec agentic-shell bash          (or: task shell)
+# What it reaches: the repository at /workspace and the network. What it does not: the Docker
+# socket, privileges, the rest of the host, any port. How a shell reaches outside the container
+# is left for later (Q13).
+services:
+  agentic-shell:
+    profiles: [agentic]
+    build: resources/configs/agentic-shell
+    image: p-jol-roll-agentic-shell
+    init: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    environment:
+      LOG_DIR: /workspace/logs
+    volumes:
+      - .:/workspace
+      # the home of the agents in it (their settings, history), kept between runs, never pushed
+      - ./resources/.containerdatavol/agentic-shell:/home/node
+    restart: unless-stopped

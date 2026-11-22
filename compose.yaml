@@ -4,6 +4,7 @@
 #   --profile gathering    ->   gatherer-daemon, parser-daemon - started by a person, with `run`
 #   --profile local-network ->  routing-proxy (names like webapp.p-jol-roll.localhost), internal-dns
 #   --profile llms         ->   llms-ollama and llms-api-host (LiteLLM) :4000 - run task init first
+#   --profile agentic      ->   agentic-shell, a shell for agents: no port, `task shell` (Q13)
 # Each file is included with the root as its project directory: paths in it start here.
 include:
   - path: resources/services/webapp-server.yaml
@@ -23,4 +24,6 @@ include:
   - path: resources/services/internal-dns.yaml
     project_directory: .
   - path: resources/services/llms-api-host.yaml
+    project_directory: .
+  - path: resources/services/agentic-shell.yaml
     project_directory: .
