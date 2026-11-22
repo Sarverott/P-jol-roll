@@ -107,5 +107,5 @@ The inquiry of 2026-11-22, the second (changelog phase 9). The launcher goes on 
 - [x] Every run writes `logs/log-<Date.now()>-<log mode>-<command>.log` (`LOG_DIR`, `LOG_LEVEL` in `.env` and `.env.example`); a crash lands there too
 - [x] `hub pull` takes files 8 at a time (`--parallel`), with progress every 500 - the dataset holds about 40 thousand texts
 - [x] The container of `webapp-server` built and published to `ghcr.io` by the release workflow
-- [ ] The demo space on Hugging Face: the marimo example replaced by a Docker space running that container over the dataset (prepared in `resources/space`, pushed by the owner)
+- [x] The demo space on Hugging Face: the marimo example replaced by a Docker space running that container over the dataset (prepared in `resources/space`, pushed by the owner)
 

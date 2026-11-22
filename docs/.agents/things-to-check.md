@@ -6,6 +6,14 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-22. The demo space, in this order.** (1) The next release
+  pushes `ghcr.io/sarverott/p-jol-roll-webapp-server`; a new package on
+  ghcr.io is private, so make it public once (the package's settings,
+  "Change visibility"), or Hugging Face cannot pull it. (2) In
+  `resources/space` the marimo files are removed and the new `Dockerfile`
+  and `README.md` wait, not committed: look, commit and push them to the
+  space.
+
 - **2026-11-22. Dependabot on `dev/dependabot`** acts once `dependabot.yml`
   reaches `master` (Dependabot reads it there). Until then its pull
   requests still aim at `development`. The branch `dev/dependabot` was made
