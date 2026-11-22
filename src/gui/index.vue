@@ -5,6 +5,7 @@ import "bulma/css/bulma.min.css";
 import { marked } from "marked";
 import { io } from "socket.io-client";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import { chosen as chosenLanguage, languages, use } from "../i18n/browser.js";
 import LawMap from "./components/LawMap.vue";
 import TiesDiagram from "./components/TiesDiagram.vue";
 import TiesMinimap from "./components/TiesMinimap.vue";
@@ -27,6 +28,9 @@ const view = ref("acts");
 // search of every year by Typesense (/api/search), offered only when the host has it
 const searchable = ref(false);
 const everywhere = ref(false);
+// ranked by meaning too, when the host has vectors and a model (task embed, Ollama)
+const meaningful = ref(false);
+const byMeaning = ref(false);
 const facets = ref({});
 const filter = ref({ type: "", status: "" });
 const notice = ref("");
@@ -77,6 +81,7 @@ async function searchEverywhere(offset = 0) {
 		limit: String(PAGE),
 		...(filter.value.type ? { type: filter.value.type } : {}),
 		...(filter.value.status ? { status: filter.value.status } : {}),
+		...(byMeaning.value ? { meaning: "1" } : {}),
 	});
 	const found = await ask(`/api/search?${words}`);
 	facets.value = found?.facets ?? {};
@@ -101,16 +106,27 @@ watch(journal, () => {
 	year.value = years.value.at(-1) ?? 0;
 });
 watch(year, () => loadActs());
-watch(everywhere, () => loadActs());
+watch([everywhere, byMeaning], () => loadActs());
 watch(filter, () => loadActs(), { deep: true });
+
+// the language of the viewer: its pack laid over the page (src/i18n), data left as it is
+const language = ref(chosenLanguage());
+watch(language, (code) => use(code));
 
 let socket;
 onMounted(async () => {
+	await use(language.value);
 	await loadJournals();
 	const probe = await fetch(`${props.api}/api/search?q=*&limit=1`).catch(
 		() => undefined,
 	);
 	searchable.value = Boolean(probe?.ok);
+	if (searchable.value) {
+		const asked = await fetch(
+			`${props.api}/api/search?q=law&limit=1&meaning=1`,
+		).catch(() => undefined);
+		meaningful.value = Boolean(asked?.ok && (await asked.json()).meaning);
+	}
 	socket = io(props.api || undefined, { reconnectionAttempts: 3 });
 	socket.on("changed", (paths) => {
 		notice.value = `${paths.length} files of the dataset changed - ${new Date().toLocaleTimeString()}`;
@@ -129,8 +145,15 @@ onUnmounted(() => socket?.close());
 						<img class="is-rounded" src="favicon-48.png" alt="" width="64" height="64" />
 					</figure>
 					<div class="media-content">
-						<h1 class="title">P_JOL_ROLL</h1>
+						<h1 class="title" translate="no">P_JOL_ROLL</h1>
 						<p class="subtitle is-6">Polish journals of laws, as gathered here. Not legal advice.</p>
+					</div>
+					<div v-if="languages.length > 1" class="media-right">
+						<div class="select is-small" translate="no">
+							<select v-model="language" aria-label="language">
+								<option v-for="one in languages" :key="one.code" :value="one.code">{{ one.name }}</option>
+							</select>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -152,7 +175,7 @@ onUnmounted(() => socket?.close());
 			<form v-show="view === 'acts'" class="field is-grouped is-grouped-multiline" @submit.prevent="loadActs()">
 				<div class="control">
 					<div class="select">
-						<select v-model="journal" aria-label="journal">
+						<select v-model="journal" aria-label="journal" translate="no">
 							<option v-for="one in journals" :key="one.code" :value="one.code">
 								{{ one.code }}{{ one.name ? ` - ${one.name}` : "" }}
 							</option>
@@ -161,7 +184,7 @@ onUnmounted(() => socket?.close());
 				</div>
 				<div class="control">
 					<div class="select">
-						<select v-model.number="year" aria-label="year">
+						<select v-model.number="year" aria-label="year" translate="no">
 							<option v-for="one in [...years].reverse()" :key="one" :value="one">{{ one }}</option>
 						</select>
 					</div>
@@ -174,6 +197,9 @@ onUnmounted(() => socket?.close());
 				</div>
 				<div v-if="searchable" class="control is-flex is-align-items-center">
 					<label class="checkbox"><input v-model="everywhere" type="checkbox" /> every year, titles, keywords and texts</label>
+				</div>
+				<div v-if="everywhere && meaningful" class="control is-flex is-align-items-center">
+					<label class="checkbox"><input v-model="byMeaning" type="checkbox" /> by meaning, in any language</label>
 				</div>
 			</form>
 			<div v-if="view === 'acts' && everywhere" class="field is-grouped is-grouped-multiline">
@@ -190,7 +216,8 @@ onUnmounted(() => socket?.close());
 			<div v-show="view === 'acts'" class="columns">
 				<section class="column is-two-fifths-desktop list">
 					<p class="has-text-grey mb-2">{{ page.total }} acts</p>
-					<div class="list-items">
+					<!-- data of the source: never translated (src/i18n) -->
+					<div class="list-items" translate="no">
 						<a
 							v-for="act in page.items"
 							:key="act.ELI"
@@ -215,8 +242,8 @@ onUnmounted(() => socket?.close());
 				</section>
 
 				<article v-if="chosen" class="column act">
-					<h2 class="title is-4">{{ chosen.act.title }}</h2>
-					<div class="tags">
+					<h2 class="title is-4" translate="no">{{ chosen.act.title }}</h2>
+					<div class="tags" translate="no">
 						<span class="tag is-dark">{{ chosen.act.displayAddress ?? chosen.act.ELI }}</span>
 						<span class="tag" :class="chosen.act.status === 'obowiązujący' ? 'is-success is-light' : 'is-light'">{{ chosen.act.status }}</span>
 						<a
@@ -230,11 +257,11 @@ onUnmounted(() => socket?.close());
 					</div>
 					<details v-if="ties.length" class="mb-4" open>
 						<summary>{{ ties.length }} {{ ties.length === 1 ? "tie" : "ties" }} to other acts</summary>
-						<TiesDiagram :source="diagram" @open="open" />
+						<TiesDiagram :source="diagram" translate="no" @open="open" />
 					</details>
 					<details v-if="ties.length" class="mb-4">
 						<summary>the ties as a list</summary>
-						<ul class="mt-2">
+						<ul class="mt-2" translate="no">
 							<li v-for="tie in ties" :key="`${tie.type}${tie.to}`">
 								{{ tie.type }}: <a href="#" @click.prevent="open({ ELI: tie.to })">{{ tie.to }}</a>
 							</li>
@@ -244,7 +271,7 @@ onUnmounted(() => socket?.close());
 						Text read from the PDF<template v-if="/Paper Capture/.test(chosen.text.producer ?? '')">, recognised from a scan of the printed journal</template>:
 						it is not corrected and may hold mistakes - the <a :href="chosen.text.url" target="_blank" rel="noopener">PDF at the source</a> is the text.
 					</div>
-					<div v-if="text" class="content" v-html="text"></div>
+					<div v-if="text" class="content" translate="no" v-html="text"></div>
 					<p v-else class="has-text-grey">No markdown of this act here: "task text" was not run for it, or its PDF is a scan without text.</p>
 				</article>
 				<div v-else class="column has-text-grey">Choose an act on the left.</div>

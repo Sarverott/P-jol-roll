@@ -15,6 +15,7 @@ import {
 } from "../../cli/tasks.js";
 import log, { logAppend, logRun } from "../../core/logging/setup.js";
 import type { LaunchingScope } from "../../core/vars/interfaces/index.js";
+import { tr } from "../../i18n/terminal.js";
 import { select } from "./select.js";
 
 logRun("launcher");
@@ -38,17 +39,17 @@ function run(name: string, args: string[] = []) {
 }
 // short words of each group, so a newcomer knows where to look
 const ABOUT: Record<string, string> = {
-	project: "gathering, processing, checks, versions",
-	src: "the api, MCP, website, desktop, app, extension",
-	docs: "the website of the project",
-	examples: "examples from Python: notebooks, marimo, pages",
-	devlog: "the plan: state, scrapnotes",
-	flow: "the routine: land, sync, close a phase",
-	resources: "moving data to and from Hugging Face",
-	unittesting: "the project on other systems, in containers",
-	github: "the repository on GitHub",
-	husky: "git hooks",
-	workflows: "durable runs",
+	project: tr("gathering, processing, checks, versions"),
+	src: tr("the api, MCP, website, desktop, app, extension"),
+	docs: tr("the website of the project"),
+	examples: tr("examples from Python: notebooks, marimo, pages"),
+	devlog: tr("the plan: state, scrapnotes"),
+	flow: tr("the routine: land, sync, close a phase"),
+	resources: tr("moving data to and from Hugging Face"),
+	unittesting: tr("the project on other systems, in containers"),
+	github: tr("the repository on GitHub"),
+	husky: tr("git hooks"),
+	workflows: tr("durable runs"),
 };
 
 // a question; Ctrl+C at it answers nothing
@@ -67,11 +68,11 @@ async function ask(question: string) {
 }
 
 async function runChosen(task: LaunchingScope.TaskEntry) {
-	console.log(`\n${task.name}: ${task.desc}`);
-	const line = await ask("arguments after -- (Enter for none): ");
+	console.log(`\n${task.name}: ${tr(task.desc)}`);
+	const line = await ask(tr("arguments after -- (Enter for none): "));
 	const code = run(task.name, words(line));
 	await ask(
-		`\ntask ${task.name} ended with ${code} - Enter goes back to the menu `,
+		`\n${tr("task {name} ended with {code} - Enter goes back to the menu ", { name: task.name, code })}`,
 	);
 }
 
@@ -80,7 +81,11 @@ async function group(name: string) {
 		const own = tasks.filter((task) => task.group === name);
 		const chosen = await select(
 			`${name} - ${own[0]?.taskfile ?? ""}`,
-			own.map((task) => ({ label: task.name, hint: task.desc, value: task })),
+			own.map((task) => ({
+				label: task.name,
+				hint: tr(task.desc),
+				value: task,
+			})),
 		);
 		if (!chosen) return;
 		await runChosen(chosen);
@@ -89,28 +94,28 @@ async function group(name: string) {
 
 async function menu() {
 	for (;;) {
-		const chosen = await select("P_JOL_ROLL - how to run it", [
+		const chosen = await select(tr("P_JOL_ROLL - how to run it"), [
 			{
-				label: "first launch on this machine",
+				label: tr("first launch on this machine"),
 				hint: "task init",
 				value: "init",
 			},
 			...groups(tasks).map((name) => ({
 				label: name,
-				hint: `${tasks.filter((t) => t.group === name).length} tasks · ${ABOUT[name] ?? ""}`,
+				hint: `${tr("{count} tasks", { count: tasks.filter((t) => t.group === name).length })} · ${ABOUT[name] ?? ""}`,
 				value: `group:${name}`,
 			})),
 			{
 				label: "REPL",
-				hint: "type tasks as commands, Tab completes",
+				hint: tr("type tasks as commands, Tab completes"),
 				value: "repl",
 			},
-			{ label: "quit", value: "quit" },
+			{ label: tr("quit"), value: "quit" },
 		]);
 		if (chosen === null || chosen === "quit") return;
 		if (chosen === "init") {
 			run("init");
-			await ask("\nEnter goes back to the menu ");
+			await ask(`\n${tr("Enter goes back to the menu ")}`);
 		} else if (chosen === "repl") {
 			note("REPL");
 			if (!(await repl(tasks, run))) return;

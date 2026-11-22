@@ -3,6 +3,11 @@ import { join } from "node:path";
 import log from "../logging/setup.js";
 import { detailsTablePath } from "../methods/compile.js";
 import { markdownPath } from "../parsing/text.js";
+import {
+	embeddingModel,
+	questionVector,
+	vectorsOf,
+} from "../reading/embeddings.js";
 import * as store from "../resources/store.js";
 import type { GatheringScope, ReadingScope } from "../vars/interfaces/index.js";
 
@@ -63,8 +68,27 @@ const SCHEMA = {
 	default_sorting_field: "year",
 };
 
-// one document per act; keywords from the details table, the beginning of its text if asked
-export function documentsOf(publisher: string, year: number, texts = false) {
+// the vectors of task embed, when there are any: one more field, searched by meaning
+const embeddingField = () => {
+	const model = embeddingModel();
+	return model
+		? {
+				name: "embedding",
+				type: "float[]",
+				num_dim: model.dimensions,
+				optional: true,
+			}
+		: undefined;
+};
+
+// one document per act; keywords from the details table, the beginning of its text if asked,
+// its vector when task embed made one
+export async function documentsOf(
+	publisher: string,
+	year: number,
+	texts = false,
+) {
+	const vectors = await vectorsOf(publisher, year);
 	const keywords = new Map(
 		store
 			.readJsonl<GatheringScope.Act>(detailsTablePath(publisher, year))
@@ -90,17 +114,22 @@ export function documentsOf(publisher: string, year: number, texts = false) {
 				...(texts && existsSync(file)
 					? { text: readFileSync(file, "utf8").slice(0, TEXT_LENGTH) }
 					: {}),
+				...(vectors.has(act.ELI) ? { embedding: vectors.get(act.ELI) } : {}),
 			};
 		});
 }
 
 export async function index({ texts = false } = {}) {
 	const there = await ask(`/collections/${COLLECTION}`);
+	const embedding = embeddingField();
 	if (there.status === 404) {
 		const made = await ask("/collections", {
 			method: "POST",
 			headers: { "content-type": "application/json" },
-			body: JSON.stringify(SCHEMA),
+			body: JSON.stringify({
+				...SCHEMA,
+				fields: [...SCHEMA.fields, ...(embedding ? [embedding] : [])],
+			}),
 		});
 		if (!made.ok)
 			throw new Error(`typesense: ${made.status} ${await made.text()}`);
@@ -108,10 +137,25 @@ export async function index({ texts = false } = {}) {
 		throw new Error(
 			`typesense at ${TYPESENSE_URL}: ${there.status} ${await there.text()}`,
 		);
+	else if (embedding) {
+		// a collection made before task embed: the field of vectors added, nothing indexed anew
+		const { fields = [] } = (await there.json()) as {
+			fields?: { name: string }[];
+		};
+		if (!fields.some(({ name }) => name === "embedding")) {
+			const altered = await ask(`/collections/${COLLECTION}`, {
+				method: "PATCH",
+				headers: { "content-type": "application/json" },
+				body: JSON.stringify({ fields: [embedding] }),
+			});
+			if (!altered.ok)
+				throw new Error(`typesense: ${altered.status} ${await altered.text()}`);
+		}
+	}
 
 	const sum = { acts: 0, failed: 0 };
 	for (const { publisher, year } of store.listedYears()) {
-		const documents = documentsOf(publisher, year, texts);
+		const documents = await documentsOf(publisher, year, texts);
 		if (!documents.length) continue;
 		const answer = await ask(
 			`/collections/${COLLECTION}/documents/import?action=upsert`,
@@ -140,11 +184,20 @@ export async function index({ texts = false } = {}) {
 export class SearchMissing extends Error {}
 
 // words in titles, keywords and (when indexed) texts of every year; filters by journal,
-// status, type; pages of {limit}
+// status, type; pages of {limit}. With meaning, the question is also a vector of the model of
+// task embed, and acts are ranked by words and by meaning together (hybrid search of Typesense)
 export async function search(
 	query: string,
-	{ journal = "", status = "", type = "", page = 1, limit = 20 } = {},
+	{
+		journal = "",
+		status = "",
+		type = "",
+		page = 1,
+		limit = 20,
+		meaning = false,
+	} = {},
 ): Promise<ReadingScope.SearchPage> {
+	const vector = meaning ? await questionVector(query) : undefined;
 	const filters = [
 		journal && `publisher:=${journal}`,
 		status && `status:=\`${status.replace(/`/g, "")}\``,
@@ -159,11 +212,25 @@ export async function search(
 		highlight_fields: "title,text",
 		...(filters.length ? { filter_by: filters.join(" && ") } : {}),
 	});
+	parameters.set("exclude_fields", "embedding");
 	let answer: Response;
 	try {
-		answer = await ask(
-			`/collections/${COLLECTION}/documents/search?${parameters}`,
-		);
+		// a vector is too long for an address: the same search as one of multi_search
+		answer = vector
+			? await ask("/multi_search", {
+					method: "POST",
+					headers: { "content-type": "application/json" },
+					body: JSON.stringify({
+						searches: [
+							{
+								collection: COLLECTION,
+								...Object.fromEntries(parameters),
+								vector_query: `embedding:([${vector.join(",")}], k:200, alpha:0.4)`,
+							},
+						],
+					}),
+				})
+			: await ask(`/collections/${COLLECTION}/documents/search?${parameters}`);
 	} catch {
 		throw new SearchMissing(`typesense does not answer at ${TYPESENSE_URL}`);
 	}
@@ -173,7 +240,12 @@ export async function search(
 		);
 	if (!answer.ok)
 		throw new Error(`typesense: ${answer.status} ${await answer.text()}`);
-	const found = (await answer.json()) as {
+	const body = await answer.json();
+	if (vector && body.results?.[0]?.error)
+		throw new Error(
+			`typesense: ${body.results[0].code} ${body.results[0].error}`,
+		);
+	const found = (vector ? body.results[0] : body) as {
 		found: number;
 		page: number;
 		hits: {
@@ -188,6 +260,7 @@ export async function search(
 	return {
 		total: found.found,
 		page: found.page,
+		meaning: Boolean(vector),
 		items: found.hits.map(({ document, highlights }) => ({
 			ELI: String(document.eli),
 			title: String(document.title),

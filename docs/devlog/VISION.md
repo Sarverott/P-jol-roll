@@ -48,3 +48,6 @@ in the country, as open source.
 | 12 | the text of every act that has any: PDFs without HTML read too (PP2) |
 | 13 | the images of the project made into icons and cards, so every link shows it |
 | 14 | a friendlier webapp: a layout, a minimap of ties, drawn relations, a map of the whole law, search |
+| 15 | the space and the push as the owner met them: old files pruned, the space following releases |
+| 16 | every interface in more languages: packs made by argostranslate, applied without rewriting the pages |
+| 17 | acts by meaning: vectors of the texts from a small local model, for search and the map |

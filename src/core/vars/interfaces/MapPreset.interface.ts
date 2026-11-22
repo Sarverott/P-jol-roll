@@ -4,4 +4,7 @@ import type { GatheringScope } from "./index.js";
 export default interface MapPreset {
 	description: string;
 	takes: (act: GatheringScope.Act) => boolean;
+	// "meaning": acts tied to their nearest by the vectors of task embed instead of the ties of
+	// the source, and only acts that have a vector are drawn
+	by?: "ties" | "meaning";
 }

@@ -57,6 +57,9 @@ State of 2026-11-13.
 | Http api with OpenAPI description and live notices | `task serve` | **works**: tests, and a browser over the real listings |
 | Website: the viewer of acts | `task web:build`, then `task serve` | **works**: headless browser over the real listings (list, act, PDF link) |
 | Search over every year (Typesense): titles, keywords, beginnings of texts, filters by type and status | `task search:index`, `/api/search`, the viewer's "every year" | **works**: 165,006 acts indexed in 10 s (20 s with texts, 444 MB in memory); headless browser searched, filtered, saw the marked words |
+| The viewer, the introduction and the documentation in Polish, Ukrainian and German and the launcher, the REPL and the task descriptions (packs of `resources/locales/`, 1295 texts) | `?lang=PL-PL` or the switch; `/docs/pl-pl/`; `P_JOL_ROLL_LANG=PL-PL task` | **works**: headless browser, data and code untouched, back to English without reload; the packs are machine translations, not read by a person |
+| Vectors of texts by a local multilingual model (Ollama, bge-m3) | `task embed` | **works**: DU 2020 in a copy, 2453 vectors in 1 min 46 s; a second run kept them all |
+| Search by meaning in any language (Typesense hybrid, the question by the same model) and a map by meaning | `/api/search?meaning=1`, the viewer's "by meaning"; `task map -- statutes-in-force-by-meaning` | **works** on DU 2020 in a copy: an English question found Polish acts; 63 statutes tied to their nearest |
 | The map of the whole law (sigma.js), from presets | `task map`, the viewer's tab | **works**: three presets made from the real dataset in 53 s (0.4-2.8 MB); headless browser draws them, hover and click checked |
 | Ties of an act drawn (mermaid, one drawing for api, MCP and viewer) and a minimap of them (Cytoscape.js) | `/api/acts/<eli>/diagram`, the viewer | **works**: headless browser over DU 2020, a click on a node opens that act |
 | MCP server for AI agents, read-only | `task mcp` | **built**: tools listed and called over stdio |
@@ -68,6 +71,7 @@ State of 2026-11-13.
 | A shell for agents (`agentic-shell`) | `task shell` | **built**: started, node, task, uv and git answer, the repository is writable, no Docker socket, no root (Q13) |
 | Launcher: a menu of every task, and a REPL | `task` | **built**: driven in a pseudo-terminal; termui itself stays an experiment (Q4) |
 | Website of the project: idea and state | `task docs:build` | **works**: published on GitHub Pages and Read the Docs by every release |
+| Deleting on Hugging Face what is not here (dataset, space) | `task resources:prune -- space` | **built**: not run - it deletes there, that is the owner's |
 | Icons and the card of a shared link (favicon, manifest, `og:image`) | `task resources:media` | **built**: made from the gist `resources/mediafiles` with ffmpeg; checked in the built pages, not yet in a real share |
 | Links to acts in the Hugging Face space | | **wanted** |
 

@@ -80,6 +80,7 @@ nav:
       - guides/huggingface.md
       - guides/data.md
       - guides/development.md
+      - guides/translations.md
   - Glossary: glossary/README.md
   - Devlog:
       - devlog/README.md

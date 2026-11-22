@@ -41,6 +41,7 @@ checkup 2026 --headless              -> without window
 hub plan dataset                     -> what differs between resources/dataset and huggingface
 hub pull dataset                     -> take what is missing here, 8 files at a time (--parallel 16)
 hub push dataset                     -> send what is new or changed here (HF_TOKEN)
+hub prune space                      -> delete there what is not here (not for the bucket)
 */
 const COMMANDS = [
 	"gather",
@@ -137,7 +138,7 @@ if (command === "text") {
 		parallel: Number(values.parallel ?? 4),
 	});
 	log.info(
-		`text: ${sum.parsed} parsed (${sum.fromPdf} from PDF), ${sum.unchanged} unchanged, ${sum.scans} scans without text`,
+		`text: ${sum.parsed} parsed (${sum.fromPdf} from PDF), ${sum.unchanged} unchanged, ${sum.scans} scans without text (${sum.unreadable} of them damaged)`,
 		sum,
 	);
 }
@@ -205,7 +206,8 @@ if (command === "hub") {
 				first: paths.slice(0, 10),
 			});
 	} else if (action === "push") await hub.push(name, Number(values.batch));
+	else if (action === "prune") await hub.prune(name, Number(values.batch));
 	else if (action === "pull")
 		await hub.pull(name, Number(values.parallel ?? 8));
-	else throw new Error("hub needs action: plan, pull or push");
+	else throw new Error("hub needs action: plan, pull, push or prune");
 }
