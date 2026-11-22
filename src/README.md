@@ -99,7 +99,8 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/core/methods/seal.ts` | Checksum records for files gathered without them, and `--check` that reads every file again. |
 | `src/core/methods/compile.ts` | Tables of the dataset from raw files: details and references of acts, a year in a file. |
 | `src/core/methods/checkup.ts` | Browser (Camoufox) visits websites that show acts to people and writes what it saw. |
-| `src/core/parsing/text.ts` | Markdown from the HTML of acts, with a record that ties both by checksums. |
+| `src/core/parsing/text.ts` | Markdown from the HTML of acts, with a record that ties both by checksums; from PDFs too with `--pdf`. |
+| `src/core/parsing/pdf.ts` | The text layer of a PDF (pdftotext of poppler) into markdown; scans without a layer named, never guessed. |
 | `src/core/parsing/turndown.d.ts` | Types for turndown, which comes without them. |
 | `src/core/resources/store.ts` | Where every gathered thing is written and how: `.part` first, then the real name. |
 | `src/core/resources/hub.ts` | Comparison and sync of `resources/` with Hugging Face, file by file. |

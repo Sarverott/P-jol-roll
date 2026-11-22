@@ -25,6 +25,7 @@ import type ProcessInterface from "./Process.interface.js";
 import type PublisherInterface from "./Publisher.interface.js";
 import type RemoteFileInterface from "./RemoteFile.interface.js";
 import type SaosPlanInterface from "./SaosPlan.interface.js";
+import type ScanRecordInterface from "./ScanRecord.interface.js";
 import type SejmPlanInterface from "./SejmPlan.interface.js";
 import type TaskEntryInterface from "./TaskEntry.interface.js";
 import type TermInterface from "./Term.interface.js";
@@ -54,6 +55,7 @@ export namespace GatheringScope {
 	export type Process = ProcessInterface;
 	export type Publisher = PublisherInterface;
 	export type SaosPlan = SaosPlanInterface;
+	export type ScanRecord = ScanRecordInterface;
 	export type SejmPlan = SejmPlanInterface;
 	export type Term = TermInterface;
 	export type TextRecord = TextRecordInterface;

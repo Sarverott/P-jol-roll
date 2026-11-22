@@ -109,7 +109,8 @@ src/core/              the gatherer itself; everything below is its tree
     compile.ts         tables of details and references from raw files
     checkup.ts         browser (Camoufox) visits websites that show acts, writes what it saw
   parsing/             raw files into text
-    text.ts            markdown from html, with checksums of both
+    text.ts            markdown from html, with checksums of both; from PDFs of acts without html too (--pdf)
+    pdf.ts             the text layer of a PDF through pdftotext of poppler
   resources/           the local sides and their way to huggingface
     store.ts           where gathered things are written
     hub.ts             sync of resources/ with huggingface, file by file (@huggingface/hub)
@@ -183,7 +184,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task gather:everything` | all of it, asks before it starts |
 | `task gather:changes` | acts changed since the previous such run |
 | `task seal` / `task seal -- --check` | write checksums of files without a record / compare files with records |
-| `task compile` / `task text` | tables from raw files / markdown from html |
+| `task compile` / `task text` | tables from raw files / markdown from html (`-- --pdf`: from PDFs too) |
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |

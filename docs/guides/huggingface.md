@@ -86,9 +86,9 @@ year in a file wherever it can.
 `task text` writes one markdown file per act with HTML. The listings say
 39,110 acts have HTML (all in Dziennik Ustaw, counted on 2026-10-13), in
 folders of a year each, so the dataset stays inside these recommendations.
-If parsing of PDF is added later and every act gets a markdown file, that
-becomes 164 thousand files and the texts should then be packed a year in a
-file.
+Parsing of PDF came in phase 12: with `task text -- --pdf` almost every act
+gets a markdown file, about 164 thousand files, and the texts should then be
+packed a year in a file: Q16 of the devlog asks it before they are pushed.
 
 ## What was tested
 
