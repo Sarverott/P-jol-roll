@@ -133,7 +133,8 @@ PP2, approved in the chat on 2026-11-22 (changelog phase 12). 125759 of 165006 a
 - [x] `task text -- --pdf`: the text layer of every PDF-only act into `dataset/texts/<journal>/<year>/<address>.md`, with the checksums of both files, the same as markdown from HTML
 - [x] PDFs without a text layer (scans) named in a list in the dataset, not guessed; OCR left for later
 - [x] The readers (api, MCP, demo) show a PDF's text where there is no HTML, saying where it came from
-- [ ] Texts packed a year in a file, or not (Q16)
+- [x] Texts packed a year in a file, or not (Q16): a file per act stays, pushed 1000 a commit, 128 commits an hour
+- [x] A damaged PDF stops nothing: what poppler still reads is kept, or the PDF is named in the list of scans with its error (DU/1932/38 stopped the owner's run)
 
 ## Phase 13: images, icons and what links show
 
@@ -151,3 +152,27 @@ Asked in the chat on 2026-11-22 (changelog phase 12). Embeddings wait for Q15.
 - [x] Relations of an act drawn the same way everywhere (mermaid.js)
 - [x] A map of the whole law of Poland from the dataset, with presets (sigma.js)
 - [x] Search with Typesense: a service of its own, filled from the dataset, read by the api
+
+## Phase 15: the space and the push, as the owner met them
+
+The owner's answer to Q16 (changelog phase 12): the space kept files of its marimo days, a push stopped on a damaged PDF.
+
+- [ ] `hub push --prune`: files there that are not here are deleted there too, after a question (the space keeps `app.py`, `development.md`, `requirements.txt`)
+- [ ] The space's Dockerfile follows the releases: `task resources:space` writes the version of the release into it
+- [ ] `hub plan` and the rest without a name say which names there are, instead of crashing
+
+## Phase 16: translations
+
+Q15, answered 2026-11-22 (changelog phase 12).
+
+- [ ] Check the owner's idea first: text nodes of a page found by a SHA-256 of their text, replaced from a language pack, without rewriting the page; a note of what works and what does not
+- [ ] `resources/locales/`: language packs as JSON (`EN-US.json` and the rest), listed in `.index.json` with EN-US the default
+- [ ] Python scripts with argostranslate that make the packs from the English texts
+- [ ] The packs used by the website of the project, the introduction, the viewer (GUI), the launcher (TUI) and the manuals of the CLI
+
+## Phase 17: embeddings
+
+Q15, answered 2026-11-22: after phase 12, a small local multilingual model.
+
+- [ ] Vectors of the texts by a small local multilingual model, kept in the dataset beside the texts
+- [ ] Search by meaning through them (Typesense takes vectors) and acts placed by meaning on the map

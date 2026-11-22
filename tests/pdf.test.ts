@@ -47,7 +47,7 @@ const act = (pos: number, html: boolean) => ({
 	textPDF: true,
 	textHTML: html,
 });
-const acts = [act(1, true), act(2, false), act(3, false)];
+const acts = [act(1, true), act(2, false), act(3, false), act(4, false)];
 const put = async (path: string, content: string) => {
 	await mkdir(join(resources, path, ".."), { recursive: true });
 	await writeFile(join(resources, path), content);
@@ -69,6 +69,11 @@ await put(
 	]),
 );
 await put("bucket/DU/1950/WDU19500000003.pdf", pdfOf([]));
+// damaged as DU/1932/38 is: a beginning, then zeros to the end
+await put(
+	"bucket/DU/1950/WDU19500000004.pdf",
+	`%PDF-1.6\n43 0 obj\n<< /Length 39 >>\n${"\0".repeat(400)}`,
+);
 
 const { pdfToMarkdown, repairedName } = await import(
 	"../src/core/parsing/pdf.js"
@@ -109,12 +114,14 @@ test.skipIf(!poppler)(
 			unchanged: 0,
 			fromPdf: 0,
 			scans: 0,
+			unreadable: 0,
 		});
 		expect(await text({ pdf: true })).toEqual({
 			parsed: 1,
 			unchanged: 1,
 			fromPdf: 1,
-			scans: 1,
+			scans: 2,
+			unreadable: 1,
 		});
 		const records = store.readJsonl<Record<string, string>>(
 			textsTablePath("DU", 1950),
@@ -140,9 +147,16 @@ test.skipIf(!poppler)(
 			producer: "Test Paper Capture",
 			url: "http://eli.test/eli/acts/DU/1950/2/text.pdf",
 		});
-		expect(store.readJsonl(scansTablePath("DU", 1950))).toMatchObject([
-			{ ELI: "DU/1950/3", url: "http://eli.test/eli/acts/DU/1950/3/text.pdf" },
-		]);
+		const [scan, damaged] = store.readJsonl<Record<string, string>>(
+			scansTablePath("DU", 1950),
+		);
+		expect(scan).toMatchObject({
+			ELI: "DU/1950/3",
+			url: "http://eli.test/eli/acts/DU/1950/3/text.pdf",
+		});
+		expect(scan.error).toBeUndefined();
+		expect(damaged.ELI).toBe("DU/1950/4");
+		expect(damaged.error).toMatch(/Syntax Error|pdftotext|Couldn't/);
 		expect(
 			existsSync(join(store.DATASET_DIR, "texts/DU/1950/WDU19500000003.md")),
 		).toBe(false);
@@ -151,10 +165,11 @@ test.skipIf(!poppler)(
 		expect(await text({ pdf: true })).toMatchObject({
 			parsed: 0,
 			unchanged: 2,
-			scans: 1,
+			scans: 2,
+			unreadable: 0,
 		});
 		expect(await text()).toMatchObject({ parsed: 0, unchanged: 2 });
 		expect(store.readJsonl(textsTablePath("DU", 1950))).toHaveLength(2);
-		expect(store.readJsonl(scansTablePath("DU", 1950))).toHaveLength(1);
+		expect(store.readJsonl(scansTablePath("DU", 1950))).toHaveLength(2);
 	},
 );

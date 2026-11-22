@@ -61,3 +61,43 @@ setting, so it stays the owner's move.
 **CONCLUDE.** Links to the project look the same everywhere they are shared.
 Which image, and whether it may be published under the licence of the
 repository, is the owner's word.
+
+## UNIXUSAT=1795332045694 · commit fc57a7e
+
+The owner's answers to Q15 and Q16 of BRAINSTORM.md, written in ORDERS.md
+(commit on `dev/Sarverott`, merged in fc57a7e). Word for word:
+
+````markdown
+### Q15
+
+after phase 12, a small local multilingual model. massive translations can be made with LibreTranslate engine - argostranslate. 
+
+this will require codes in python so we can make them part of scripts that will produce us autotranslations linguistic packs, that will be used with i18n integrations for ducumentation, webpage of project, GUI, TUI and CLI manuals.
+
+don't write all over again, instead of that and replacing texts with text loaders search text nodes and replace their content based on mapped SHA265 mapped listing of DOM hooks of elements - this is bare conceptual idea that i just came up with, so we have to check if my theoretical way is achievable with no mess in code.
+
+all translations should be placed in `resources/locales/` dir as json files like `EN-US.json`. organization of language packs i left to you but all of them should be present listed in `resources/locales/.index.json` with defining default as "EN-US".
+
+
+
+### Q16
+
+i tried to parse these pdfs and push that, but unfortunately failed and throws error. also space is requiring updates that does not presented while i try to restart demo. 
+
+we need all law files be markdowned and placed in dataset. idea with per-act markdown files sounds... actually good. this gives us possibility to deconstruct long docs and exclude duplicates of entries this way. if the limit is reduced count of how many commits we can push we can just push 128 pushes with 1000 files every hour, that is acceptable way. we can at least try.
+````
+
+**Decision on Q16:** texts stay a markdown file per act in the dataset; a
+push goes in commits of 1000 files, at most 128 an hour (the push waits the
+hour out by itself since phase 11). The owner's run of `task text -- --pdf`
+stopped on a damaged PDF (DU/1932/38, zeros to its end) - fixed in phase 12;
+the space keeps files of the marimo days because a push never deletes -
+phase 15.
+
+**Decision on Q15:** after phase 12, embeddings by a small local multilingual
+model (phase 17). Translations by argostranslate (the engine of
+LibreTranslate) from python scripts into language packs in
+`resources/locales/`, listed in `resources/locales/.index.json` with EN-US
+the default; applied to pages without rewriting them, through a SHA-256 map
+of text nodes - the owner's idea, checked first for being possible without a
+mess (phase 16).

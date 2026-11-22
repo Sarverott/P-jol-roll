@@ -137,7 +137,7 @@ if (command === "text") {
 		parallel: Number(values.parallel ?? 4),
 	});
 	log.info(
-		`text: ${sum.parsed} parsed (${sum.fromPdf} from PDF), ${sum.unchanged} unchanged, ${sum.scans} scans without text`,
+		`text: ${sum.parsed} parsed (${sum.fromPdf} from PDF), ${sum.unchanged} unchanged, ${sum.scans} scans without text (${sum.unreadable} of them damaged)`,
 		sum,
 	);
 }
