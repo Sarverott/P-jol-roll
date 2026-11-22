@@ -264,3 +264,10 @@ The owner's message and the answer to Q19, 2026-11-22 (changelog phase 25).
 - [x] The pre-push hook runs every check (`task check`) on what is pushed; a tree `task flow:land` checked is not checked twice
 - [x] Q19: the writing functions started by a host on this machine when it runs with `--allow-writing`; disabled everywhere else; rule 4 says so
 - [x] `task flow:land` refuses a summary too long for the merge message before it runs the checks, not after
+
+## Phase 26: one gate into master
+
+The owner's message, 2026-11-22 (changelog phase 26).
+
+- [ ] The gate of a pull request into master: the author listed in `AUTHORS` of master, then verify, CodeQL, Snyk and OSSAR, Jarvis asked when one fails, automerge of `development` → `master` and the release started; the checks and scans off every push
+- [ ] Workflows from a terminal: `task github:run`, `github:gate`, `github:pending`, `github:checks`, `github:workflows`; every scan can be dispatched
