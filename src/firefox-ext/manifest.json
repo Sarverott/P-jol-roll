@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "P_JOL_ROLL",
-	"version": "0.8.2",
+	"version": "0.8.3",
 	"description": "Looks up an act of Polish journals of laws in a P_JOL_ROLL host: status, ties, text.",
 	"action": { "default_popup": "popup.html", "default_title": "P_JOL_ROLL" },
 	"permissions": ["activeTab", "storage"],
