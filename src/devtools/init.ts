@@ -12,8 +12,10 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const at = (file: string) => `${root}${file}`;
 
-// secrets the services of resources/services/ need, by file name; none needs one yet
-const SECRETS: string[] = [];
+// secrets the services of resources/services/ need, by file name
+const SECRETS: string[] = [
+	"litellm_master_key", // llms-api-host (profile llms)
+];
 
 // [command, arguments, needed, what for]
 const TOOLS: [string, string[], boolean, string][] = [

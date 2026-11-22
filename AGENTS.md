@@ -144,6 +144,7 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   services/       one compose file per service, included by compose.yaml at the root
   configs/        configurations of services, one directory per purpose, in git
     webapp-server/  Dockerfile and start.sh of the slim server image (ghcr.io, the demo space)
+    routing-proxy/, internal-dns/, llms-api-host/, log-collector/  settings of those services
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
 webpage/          the React introduction at the root of the website (Vite, own package.json); MkDocs goes under /docs/ - scripts/devops/pages/build.sh
