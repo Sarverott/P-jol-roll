@@ -240,5 +240,5 @@ The owner's inquiries and orders, 2026-11-22 (changelog phase 22).
 - [x] The viewer: settings, and every function of the catalog - disabled where the host may not (Q19)
 - [x] The viewer: WebMCP, the reading tools for an agent in the browser
 - [x] The desktop app prints the act from the window and the tray (Q17)
-- [ ] The main webpage: a p5.js background with the logo, text kept readable
+- [x] The main webpage: a p5.js background with the logo, text kept readable
 - [ ] The new words in every language pack; docs, almanac and AGENTS.md rows
