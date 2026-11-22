@@ -19,8 +19,13 @@ export const yearUrl = (publisher: string, year: number) =>
 
 // acts that were changed since date ("2026-10-12" or "2026-10-12T09:15:19"), newest change last
 export const CHANGES_PAGE = 500;
+// the API takes "since" only as yyyy-MM-ddTHH:mm:ss (400 for a bare day, seen 2026-11-22):
+// a day given by a person means its very beginning
+export const changesSince = (since: string) =>
+	/^\d{4}-\d{2}-\d{2}$/.test(since) ? `${since}T00:00:00` : since;
+
 export const changesUrl = (since: string, offset: number) =>
-	`${ELI_API}/changes/acts?since=${encodeURIComponent(since)}&limit=${CHANGES_PAGE}&offset=${offset}`;
+	`${ELI_API}/changes/acts?since=${encodeURIComponent(changesSince(since))}&limit=${CHANGES_PAGE}&offset=${offset}`;
 
 // listing says which texts exist - asking for the missing ones answers with empty page,
 // and structure is given only to acts that have html

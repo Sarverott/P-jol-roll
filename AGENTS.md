@@ -115,7 +115,7 @@ src/core/              the gatherer itself; everything below is its tree
   vars/                every type and interface, one per file, flat inside each directory
     interfaces/        <Name>.interface.ts, and index.ts with namespaces GatheringScope, HuggingfaceScope
     types/             <Name>.type.ts, and index.ts with the same namespaces
-  logging/             setup.ts: the one logger of every command (text or JSON lines, syslog when asked) - import it first
+  logging/             setup.ts: the one logger of every command (text or JSON lines, a file per run in logs/, syslog when asked) - import it first, then logRun(<command>)
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
@@ -134,6 +134,7 @@ src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 scripts/               install.sh, install.bat, the python push - scripts/README.md
   devops/              every step of the workflows as a .sh (pages, release, docs, flow, checks), local/ routines behind task flow:*
+logs/             a file per run: log-<Date.now()>-<log mode>-<command>.log (LOG_DIR, LOG_LEVEL), ignored by git
 tests/            vitest; gather.test.ts runs whole gathering against a local copy of API
   unittesting/    the project on other systems in containers: <system>/<setup>/Dockerfile, cases -<case>/run.sh
 resources/        .map.json lists huggingface repositories, their local sides are ignored by git
@@ -141,6 +142,7 @@ resources/        .map.json lists huggingface repositories, their local sides ar
   bucket/         raw files of acts: <journal>/<year>/<address>.{json,references.json,pdf,html,struct.json,U.pdf}
   services/       one compose file per service, included by compose.yaml at the root
   configs/        configurations of services, one directory per purpose, in git
+    webapp-server/  Dockerfile and start.sh of the slim server image (ghcr.io, the demo space)
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
 webpage/          the React introduction at the root of the website (Vite, own package.json); MkDocs goes under /docs/ - scripts/devops/pages/build.sh

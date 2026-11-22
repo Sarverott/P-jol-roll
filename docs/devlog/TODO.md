@@ -98,3 +98,14 @@ The inquiry of 2026-11-22 (changelog phase 8). Workflows run scripts of `scripts
 - [x] Local routines as tasks: `task flow:land` (dev/<name> into development, both pushed), `task flow:sync` (origin, master merged in, dev/<name> brought up), `task flow:phase-close`; the owner's edits stay with an agent, who has to say how it understood them
 - [x] `webpage/`: a React page, the introduction at the root of the website, with the MkDocs site under `docs/`
 
+## Phase 9: logs, the demo space, Dependabot's branch
+
+The inquiry of 2026-11-22, the second (changelog phase 9). The launcher goes on in phase 7, the services in phase 6.
+
+- [x] Dependabot's pull requests into `dev/dependabot`, merged there without checks; `dev/dependabot` checked once and landed in `development`
+- [x] `task gather:changes` repaired: the API takes `since` only as `yyyy-MM-ddTHH:mm:ss`; a run whose requests fail ends with 1
+- [x] Every run writes `logs/log-<Date.now()>-<log mode>-<command>.log` (`LOG_DIR`, `LOG_LEVEL` in `.env` and `.env.example`); a crash lands there too
+- [x] `hub pull` takes files 8 at a time (`--parallel`), with progress every 500 - the dataset holds about 40 thousand texts
+- [x] The container of `webapp-server` built and published to `ghcr.io` by the release workflow
+- [x] The demo space on Hugging Face: the marimo example replaced by a Docker space running that container over the dataset (prepared in `resources/space`, pushed by the owner)
+

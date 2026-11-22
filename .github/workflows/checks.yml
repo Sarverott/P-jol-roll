@@ -7,10 +7,16 @@ name: "checks › verify"
 
 on:
   push:
-    branches: [development, "dev/**"]
+    # dev/dependabot is checked once, when dependabot.yml lands it in development
+    branches: [development, "dev/**", "!dev/dependabot"]
   pull_request:
     branches: [master]
   workflow_call:
+    inputs:
+      ref:
+        description: what to check out (empty - the commit of the event)
+        type: string
+        default: ""
   workflow_dispatch:
 
 permissions:
@@ -25,6 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc

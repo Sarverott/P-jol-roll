@@ -1,4 +1,5 @@
 import { Configuration, HttpCrawler, type HttpCrawlerOptions } from "crawlee";
+import log from "./logging/setup.js";
 import type { GatheringScope } from "./vars/interfaces/index.js";
 
 // sources are open APIs and not websites, so no browser and no disguise are needed -
@@ -36,5 +37,18 @@ export async function crawl(
 		},
 		new Configuration({ persistStorage: false }),
 	);
-	return crawler.run(requests);
+	const stats = await crawler.run(requests);
+	// a request that failed every retry is logged by crawlee above; the run must not end as if
+	// all went well (gather:changes did, when the API refused its "since" with 400)
+	if (stats.requestsFailed) {
+		log.error(
+			`${stats.requestsFailed} request(s) failed - see the errors above`,
+			{
+				failed: stats.requestsFailed,
+				finished: stats.requestsFinished,
+			},
+		);
+		process.exitCode = 1;
+	}
+	return stats;
 }

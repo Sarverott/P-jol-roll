@@ -4,7 +4,8 @@
 #   1. checks (checks.yml)
 #   2. a version reaching master released already gets the patch (a hotfix); then the tag
 #      v<version> and the GitHub release, skipped when that tag exists
-#   3. Read the Docs activates and builds the tag (only with READTHEDOCS_API_TOKEN)
+#   3. Read the Docs activates and builds the tag (only with READTHEDOCS_API_TOKEN); beside
+#      it the image of webapp-server goes to ghcr.io (the demo space runs it)
 #   4. the website built (the React introduction of webpage/ at the root, the MkDocs
 #      documentation under docs/) and pushed to the github-pages branch
 #   5. master merged back into development
@@ -49,6 +50,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: scripts/devops/release/release.sh
 
+  container:
+    # the image of webapp-server on ghcr.io - the demo space on Hugging Face runs :latest
+    needs: release
+    if: needs.release.outputs.tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v7
+        with: { ref: "${{ needs.release.outputs.tag }}" }
+      - name: Build and push to ghcr.io
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/devops/release/container.sh "${{ needs.release.outputs.tag }}"
+
   readthedocs:
     needs: release
     if: needs.release.outputs.tag
@@ -71,14 +88,14 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with: { ref: master }
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
       - uses: actions/setup-node@v7
         with: { node-version-file: .nvmrc }
       - run: scripts/devops/pages/build.sh
       - run: scripts/devops/pages/publish.sh "${{ needs.release.outputs.tag || needs.release.outputs.version }}"
 
   back:
-    needs: [release, readthedocs, pages]
+    needs: [release, container, readthedocs, pages]
     if: ${{ !cancelled() && needs.release.result == 'success' }}
     runs-on: ubuntu-latest
     permissions:

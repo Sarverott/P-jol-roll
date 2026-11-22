@@ -2,7 +2,7 @@
 
 import { parseArgs } from "node:util";
 import { PARTS } from "./apihandlers/eli.js";
-import log from "./logging/setup.js";
+import log, { logRun } from "./logging/setup.js";
 import type { GatheringScope as GatheringTypes } from "./vars/types/index.js";
 
 /*
@@ -32,7 +32,7 @@ checkup 2026 --frontend eli          -> only one of resources/frontends.json
 checkup 2026 --headless              -> without window
 
 hub plan dataset                     -> what differs between resources/dataset and huggingface
-hub pull dataset                     -> take what is missing here
+hub pull dataset                     -> take what is missing here, 8 files at a time (--parallel 16)
 hub push dataset                     -> send what is new or changed here (HF_TOKEN)
 */
 const COMMANDS = [
@@ -62,11 +62,21 @@ const { values, positionals } = parseArgs({
 		frontend: { type: "string", multiple: true, default: [] },
 		headless: { type: "boolean", default: false },
 		batch: { type: "string", default: "100" },
+		parallel: { type: "string" },
 		since: { type: "string" },
 		check: { type: "boolean", default: false },
 		files: { type: "boolean", default: false },
 	},
 });
+
+// the file of this run in logs/: gather, gather-changes, seal, hub-push, ...
+logRun(
+	command === "gather" && values.since
+		? "gather-changes"
+		: command === "hub"
+			? `hub-${positionals[0] ?? ""}`
+			: command,
+);
 
 if (command === "gather") {
 	const asked = values.parts
@@ -163,6 +173,7 @@ if (command === "hub") {
 				first: paths.slice(0, 10),
 			});
 	} else if (action === "push") await hub.push(name, Number(values.batch));
-	else if (action === "pull") await hub.pull(name);
+	else if (action === "pull")
+		await hub.pull(name, Number(values.parallel ?? 8));
 	else throw new Error("hub needs action: plan, pull or push");
 }
