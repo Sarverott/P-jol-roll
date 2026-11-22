@@ -9,7 +9,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
-const at = (file: string) => `${root}${file}`;
+const at = (file: string) => `${root}${file}`; // NOTE: i love that one! bring it to core for be used in future and import that `at` here. it can bbe declared in separed file
 const SEMVER = /^(\d+)\.(\d+)\.(\d+)$/;
 
 // files that carry a copy of the version, and where in them it stands
@@ -33,6 +33,8 @@ const COPIES: [string, RegExp][] = [
 		/(\nversion = ")[^"]+("\nsource = \{ (?:virtual|editable) = "\." \})/,
 	],
 ];
+
+// NOTE: patterns are repeatable and instead of multiple copies we can use reusable subpatterns of regexp - pattern `\s*")[^"]+(")/` is almost in every field of version checkers
 
 const readJson = (path: string) => JSON.parse(readFileSync(path, "utf8"));
 const writeJson = (path: string, value: unknown) =>

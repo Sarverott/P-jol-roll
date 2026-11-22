@@ -11,7 +11,9 @@ a person, so an agent cannot set off a crawl of the source through here.
   claude mcp add p-jol-roll -- npx tsx src/mcp/main.ts
 */
 
-const server = new McpServer({ name: "p-jol-roll", version: "0.17.4" });
+// NOTE: can we add it with container to be published inside docker serving from space host? this can be handy
+
+const server = new McpServer({ name: "p-jol-roll", version: "0.17.11" });
 const readOnly = { readOnlyHint: true, openWorldHint: false };
 
 const answer = (value: unknown) => ({
@@ -42,35 +44,35 @@ server.registerTool(
 	async () => answer(library.journals()),
 );
 
-server.registerTool(
-	"search_acts",
-	{
-		title: "Search acts of a year",
-		description:
-			"Acts of one year of one journal whose title has every word of the query (Polish, case does not matter). Empty query lists the year.",
-		inputSchema: z.object({
-			journal: z.string().describe('"DU" or "MP"'),
-			year: z.number().int(),
-			query: z.string().default(""),
-			offset: z.number().int().min(0).default(0),
-			limit: z.number().int().min(1).max(100).default(20),
-		}),
-		annotations: readOnly,
-	},
-	async ({ journal, year, query, offset, limit }) => {
-		const page = library.acts(journal, year, { query, offset, limit });
-		return answer({
-			...page,
-			items: page.items.map(({ ELI, title, type, status, textHTML }) => ({
-				ELI,
-				title,
-				type,
-				status,
-				textHTML,
-			})),
-		});
-	},
-);
+// server.registerTool(
+// 	"search_acts",
+// 	{
+// 		title: "Search acts of a year",
+// 		description:
+// 			"Acts of one year of one journal whose title has every word of the query (Polish, case does not matter). Empty query lists the year.",
+// 		inputSchema: z.object({
+// 			journal: z.string().describe('"DU" or "MP"'),
+// 			year: z.number().int(),
+// 			query: z.string().default(""),
+// 			offset: z.number().int().min(0).default(0),
+// 			limit: z.number().int().min(1).max(100).default(20),
+// 		}),
+// 		annotations: readOnly,
+// 	},
+// 	async ({ journal, year, query, offset, limit }) => {
+// 		const page = library.acts(journal, year, { query, offset, limit });
+// 		return answer({
+// 			...page,
+// 			items: page.items.map(({ ELI, title, type, status, textHTML }) => ({
+// 				ELI,
+// 				title,
+// 				type,
+// 				status,
+// 				textHTML,
+// 			})),
+// 		});
+// 	},
+// );
 
 server.registerTool(
 	"act",

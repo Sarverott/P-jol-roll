@@ -113,7 +113,7 @@ watch(filter, () => loadActs(), { deep: true });
 const language = ref(chosenLanguage());
 watch(language, (code) => use(code));
 
-let socket;
+let socket; // NOTE: hold on! move all socket-io functionalities to separed file in assets with functions later on imported here
 onMounted(async () => {
 	await use(language.value);
 	await loadJournals();
@@ -290,3 +290,6 @@ onUnmounted(() => socket?.close());
 .origin { font-size: 0.9rem; }
 .act { min-width: 0; overflow-wrap: anywhere; }
 </style>
+
+
+<!-- this file is way too long and too dense - diverse it into imported components -->
