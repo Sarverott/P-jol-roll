@@ -30,12 +30,24 @@ const line = (tag, text) => {
 	return node;
 };
 
+// only an http(s) host: a "javascript:" typed into the field never becomes a link
+function hostOf(value) {
+	try {
+		const url = new URL(value || DEFAULT_API);
+		if (url.protocol === "http:" || url.protocol === "https:")
+			return url.origin + url.pathname.replace(/\/+$/, "");
+	} catch {}
+	return undefined;
+}
+
 async function look(eli) {
 	const answer = $("answer");
 	answer.replaceChildren();
-	const api = ($("api").value || DEFAULT_API).replace(/\/$/, "");
+	const api = hostOf($("api").value);
+	if (!api)
+		return answer.append(line("p", "the host must be an http(s) address"));
 	try {
-		const response = await fetch(`${api}/api/acts/${eli}`);
+		const response = await fetch(`${api}/api/acts/${encodeURI(eli)}`);
 		if (response.status === 404)
 			return answer.append(line("p", `${eli} is not gathered in ${api}`));
 		const { act, files, markdown } = await response.json();
