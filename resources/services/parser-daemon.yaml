@@ -1,0 +1,18 @@
+# parser-daemon: tables and markdown made from what was gathered (compile, then text), as a
+# unit of its own, over resources/. Started only by a person:
+#   docker compose --profile gathering run --rm parser-daemon
+services:
+  parser-daemon:
+    profiles: [gathering]
+    image: p-jol-roll-gatherer
+    build: .
+    entrypoint: ["sh", "-c", "node dist/core/main.js compile && node dist/core/main.js text"]
+    environment:
+      RESOURCES_DIR: /home/myuser/resources
+      LOG_DIR: /home/myuser/resources/.containerdatavol/logs
+      SYSLOG_ADDRESS: udp://host.docker.internal:5514
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./resources:/home/myuser/resources
+    restart: "no"

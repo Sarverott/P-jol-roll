@@ -70,10 +70,10 @@ The NOTEs Sett left in `compose.yaml` (changelog phase 6), each moved to its pla
 - [x] Directories with their ignore rules: `resources/configs/<purpose>/`, `resources/.containerdatavol/<volume>/`, `resources/secrets/`
 - [x] `.env.example`; tokens left empty (after trimming) turn their optional functions off
 - [x] `log-collector`: rsyslog, taking the logs of every service (Q1)
-- [ ] `docs-server`: the documentation served locally
-- [ ] `gatherer-daemon` and `parser-daemon`: gathering and parsing as separate units, started by a person
+- [x] `docs-server`: the documentation served locally (nginx over `site/` of `pages/build.sh`, port 8000)
+- [x] `gatherer-daemon` and `parser-daemon`: gathering and parsing as separate units, started by a person (profile `gathering`, `docker compose run`)
 - [ ] `routing-proxy` (traefik) and `internal-dns` (dnsmasq), for local use with the desktop window
-- [ ] `hf-demo-space`: the static explorer of phase 4 served from `resources/space/webapp`
+- [x] `hf-demo-space`: the demo space run here - the published `webapp-server` image taking the dataset, port 7860 (profile `demo`; the space itself took this way instead of the static explorer)
 - [ ] `llms-api-host`: ollama behind a litellm proxy
 - [ ] `agentic-shell`: a shell gateway nearest to the host machine
 - [ ] `hf-gateway`: WireGuard connections towards Hugging Face (optional)

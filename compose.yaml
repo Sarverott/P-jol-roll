@@ -1,8 +1,18 @@
 # The services of P_JOL_ROLL, one file each in resources/services/ (phase 6 of the devlog).
-#   docker compose up -d   ->   http://localhost:8080 (webapp-server)
+#   docker compose up -d   ->   webapp-server :8080, log-collector :5514, docs-server :8000
+#   --profile demo         ->   hf-demo-space :7860, the space of Hugging Face run here
+#   --profile gathering    ->   gatherer-daemon, parser-daemon - started by a person, with `run`
 # Each file is included with the root as its project directory: paths in it start here.
 include:
   - path: resources/services/webapp-server.yaml
     project_directory: .
   - path: resources/services/log-collector.yaml
+    project_directory: .
+  - path: resources/services/docs-server.yaml
+    project_directory: .
+  - path: resources/services/hf-demo-space.yaml
+    project_directory: .
+  - path: resources/services/gatherer-daemon.yaml
+    project_directory: .
+  - path: resources/services/parser-daemon.yaml
     project_directory: .
