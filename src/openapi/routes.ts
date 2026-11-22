@@ -46,6 +46,7 @@ routes.get("/api/search", async (request, response) => {
 				type: word("type"),
 				page: Number(word("page")) || 1,
 				limit: Number(word("limit")) || 20,
+				meaning: word("meaning") === "1" || word("meaning") === "true",
 			}),
 		);
 	} catch (error) {

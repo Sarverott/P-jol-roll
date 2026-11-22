@@ -49,8 +49,8 @@ const { serve } = await import("../src/openapi/server.js");
 const { server, url } = await serve({ port: 0 });
 afterAll(() => server.close());
 
-test("a preset takes its acts and the ties among them, placed and sized", () => {
-	const made = lawMap("statutes-in-force", 20);
+test("a preset takes its acts and the ties among them, placed and sized", async () => {
+	const made = await lawMap("statutes-in-force", 20);
 	expect(made.nodes.map(([eli]) => eli)).toEqual([
 		"DU/2000/1",
 		"DU/2000/2",
@@ -66,8 +66,8 @@ test("a preset takes its acts and the ties among them, placed and sized", () => 
 		expect(Number.isFinite(x) && Number.isFinite(y)).toBe(true);
 		expect(size).toBeGreaterThan(2);
 	}
-	expect(lawMap("in-force", 20).nodes).toHaveLength(4);
-	expect(() => lawMap("everything")).toThrow(/no preset/);
+	expect((await lawMap("in-force", 20)).nodes).toHaveLength(4);
+	await expect(lawMap("everything")).rejects.toThrow(/no preset/);
 });
 
 test("the api names the presets and gives a made map", async () => {

@@ -123,6 +123,7 @@ src/core/              the gatherer itself; everything below is its tree
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
     diagram.ts         the ties of an act as one mermaid flowchart, for every interface
+    embeddings.ts      the vectors of task embed, and a question as a vector of the same model (Ollama)
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
 src/mcp/               MCP server over stdio for AI agents, read-only
@@ -193,6 +194,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task seal` / `task seal -- --check` | write checksums of files without a record / compare files with records |
 | `task map` / `task map -- statutes` | the map of the whole law, every preset or one, into `dataset/map/` (the viewer draws it with sigma.js) |
 | `task search:index` (`-- --texts`) | every act into Typesense, started by `docker compose --profile search up -d typesense`; the api and the viewer search every year |
+| `task embed` (`-- 2026`) | vectors of the texts by a local multilingual model of Ollama into `dataset/embeddings/` |
 | `task compile` / `task text` | tables from raw files / markdown from html (`-- --pdf`: from PDFs too) |
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |

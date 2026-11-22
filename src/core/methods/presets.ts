@@ -17,6 +17,11 @@ export const PRESETS: Record<string, ReadingScope.MapPreset> = {
 		description: "every act in force",
 		takes: (act) => act.status === "obowiązujący",
 	},
+	"statutes-in-force-by-meaning": {
+		description: "statutes (ustawy) in force, near what says the same",
+		takes: (act) => act.type === "Ustawa" && act.status === "obowiązujący",
+		by: "meaning",
+	},
 };
 
 export const mapPath = (preset: string) =>

@@ -102,6 +102,11 @@ tasks:
     cmds:
       - uv run --script scripts/i18n/translate.py {{.CLI_ARGS}}
 
+  embed:
+    desc: Vectors of the texts by a local multilingual model of Ollama (EMBED_MODEL, bge-m3) into dataset/embeddings/ - "task embed -- 2026" for some years; Ollama must run.
+    cmds:
+      - uv run --script scripts/embeddings/embed.py {{.CLI_ARGS}}
+
   text:
     desc: Markdown from gathered html texts, with checksums of both and address of source; "task text -- --pdf" also from PDFs of acts without html (poppler).
     cmds:

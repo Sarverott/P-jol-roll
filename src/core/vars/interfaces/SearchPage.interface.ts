@@ -2,6 +2,7 @@
 export default interface SearchPage {
 	total: number;
 	page: number;
+	meaning: boolean; // ranked by meaning too: the question became a vector (task embed, Ollama)
 	items: {
 		ELI: string;
 		title: string;

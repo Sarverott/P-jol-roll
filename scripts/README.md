@@ -41,4 +41,5 @@ flowchart LR
 | `Taskfile.yml` | `scripts/Taskfile.yml` | Two tasks: `default` opens a notebook, `justslap` locks Python packages and pushes the dataset by `hf-push.py`. Sett's experiment with time measurement, kept. |
 | `hf-push.py` | `scripts/hf-push.py` | First way of sending: logs in and sends the whole `resources/dataset` with `upload_folder`. Kept beside `task resources:push`, which sends only files that differ. |
 | `translate.py` | `scripts/i18n/translate.py` | The language packs of `resources/locales/` made from `EN-US.json` by argostranslate: numbers as plural forms, names of `keep` untouched, `reviewed` entries never overwritten. A uv script with its own dependencies (CPU torch): `task i18n:translate [-- PL-PL] [--again]`. |
+| `embed.py` | `scripts/embeddings/embed.py` | Vectors of the texts of acts by a local multilingual model of Ollama (`EMBED_MODEL`, bge-m3): title and the first 2000 characters of the markdown, one vector per act, into `dataset/embeddings/<model>/<journal>/<year>.parquet` with `model.json`; unchanged texts keep their vectors. `task embed [-- 2026]`. |
 | `README.md` | `scripts/README.md` | This page. |
