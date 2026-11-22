@@ -1,0 +1,1 @@
+<!-- common tabs of all screens available -->

@@ -4,6 +4,8 @@
 // only when an act has ties
 import { ref, watch } from "vue";
 
+import { COLOURS } from "../assets/setup.js";
+
 const props = defineProps({ source: { type: String, default: "" } });
 const emit = defineEmits(["open"]);
 const drawing = ref("");

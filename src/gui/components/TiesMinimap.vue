@@ -3,6 +3,8 @@
 // a colour per kind of tie (Cytoscape.js); a click on an act opens it
 import { onUnmounted, ref, watch } from "vue";
 
+import { COLOURS } from "../assets/setup.js";
+
 const props = defineProps({
 	eli: { type: String, default: "" },
 	ties: { type: Array, default: () => [] },
@@ -12,15 +14,15 @@ const box = ref(null);
 const folded = ref(false);
 let graph;
 
-const COLOURS = [
-	"#c0392b",
-	"#2e86c1",
-	"#28b463",
-	"#d68910",
-	"#8e44ad",
-	"#17a589",
-	"#7f8c8d",
-];
+// const COLOURS = [
+// 	"#c0392b",
+// 	"#2e86c1",
+// 	"#28b463",
+// 	"#d68910",
+// 	"#8e44ad",
+// 	"#17a589",
+// 	"#7f8c8d",
+// ];
 
 async function draw() {
 	graph?.destroy();
@@ -92,15 +94,38 @@ onUnmounted(() => graph?.destroy());
 <template>
 	<aside v-if="ties.length" class="minimap box p-2">
 		<p class="is-size-7 has-text-grey is-flex is-justify-content-space-between">
-			<span>{{ ties.length }} {{ ties.length === 1 ? "tie" : "ties" }}</span>
-			<a href="#" @click.prevent="folded = !folded">{{ folded ? "show" : "hide" }}</a>
+			<span>
+				{{ ties.length }} {{ ties.length === 1 ? "tie" : "ties" }}
+			</span>
+			<a href="#" @click.prevent="folded = !folded">
+				{{ folded ? "show" : "hide" }}
+			</a>
 		</p>
-		<div v-show="!folded" ref="box" class="graph"></div>
+		<div v-show="!folded" ref="box" class="graph">
+
+		</div>
 	</aside>
 </template>
 
 <style scoped>
-.minimap { position: fixed; right: 1rem; bottom: 1rem; width: 16rem; z-index: 30; margin: 0; }
-.graph { width: 100%; height: 12rem; }
-@media (max-width: 48rem) { .minimap { width: 11rem; } .graph { height: 8rem; } }
+.minimap { 
+	position: fixed; 
+	right: 1rem; 
+	bottom: 1rem; 
+	width: 16rem; 
+	z-index: 30; 
+	margin: 0; 
+}
+.graph { 
+	width: 100%; 
+	height: 12rem; 
+}
+@media (max-width: 48rem) { 
+	.minimap { 
+		width: 11rem; 
+	} 
+	.graph { 
+		height: 8rem; 
+	} 
+}
 </style>

@@ -1,0 +1,1 @@
+<!-- standard listing and indexing of entries (now named as "acts tab") with full pagination and other sorts of things. NOTICE THAT VIEWER SHOULD BE AS SEPARED SCREEN BUT MINIMAP GRAPH SHOULD BE ON BOTH VIEW OF CONTENT AND LISTER SCREEN -->
