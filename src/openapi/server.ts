@@ -2,6 +2,7 @@ import { existsSync, watch } from "node:fs";
 import { createServer } from "node:http";
 import { resolve } from "node:path";
 import express from "express";
+import { rateLimit } from "express-rate-limit";
 import { Server as SocketServer } from "socket.io";
 import * as library from "../core/reading/library.js";
 import { remote } from "../core/reading/remote.js";
@@ -17,9 +18,29 @@ extensions and the android app ask it from elsewhere.
 
 export const WEB_DIR = process.env.WEB_DIR ?? "dist/web";
 
+/*
+Requests of one address in a minute (RATE_LIMIT, 0 - no limit): the demo is public and every
+answer reads files, so one client cannot keep the disk busy for the others (CodeQL
+js/missing-rate-limiting, docs/almanac/cataclistics/codeql-first-scan.md). Behind a proxy
+(the space, the routing proxy) TRUST_PROXY=1 lets the address come from X-Forwarded-For.
+*/
+const RATE_LIMIT = Number(process.env.RATE_LIMIT ?? 600);
+const TRUST_PROXY = Number(process.env.TRUST_PROXY ?? 0);
+
 export function serve({ port = 8080, host = "127.0.0.1", web = WEB_DIR } = {}) {
 	const app = express();
 	app.disable("x-powered-by");
+	if (TRUST_PROXY) app.set("trust proxy", TRUST_PROXY);
+	if (RATE_LIMIT > 0)
+		app.use(
+			rateLimit({
+				windowMs: 60_000,
+				limit: RATE_LIMIT,
+				standardHeaders: "draft-8",
+				legacyHeaders: false,
+				message: { error: "too many requests - wait a minute" },
+			}),
+		);
 	app.use((_request, response, next) => {
 		response.set("Access-Control-Allow-Origin", "*");
 		// readers on other origins (extension, pages) may read where a text came from
