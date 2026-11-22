@@ -2,6 +2,7 @@
 #   docker compose up -d   ->   webapp-server :8080, log-collector :5514, docs-server :8000
 #   --profile demo         ->   hf-demo-space :7860, the space of Hugging Face run here
 #   --profile gathering    ->   gatherer-daemon, parser-daemon - started by a person, with `run`
+#   --profile local-network ->  routing-proxy (names like webapp.p-jol-roll.localhost), internal-dns
 # Each file is included with the root as its project directory: paths in it start here.
 include:
   - path: resources/services/webapp-server.yaml
@@ -15,4 +16,8 @@ include:
   - path: resources/services/gatherer-daemon.yaml
     project_directory: .
   - path: resources/services/parser-daemon.yaml
+    project_directory: .
+  - path: resources/services/routing-proxy.yaml
+    project_directory: .
+  - path: resources/services/internal-dns.yaml
     project_directory: .

@@ -1,0 +1,14 @@
+# routing-proxy: Traefik, its static settings. Routes are in routes.yaml beside this file.
+entryPoints:
+  web:
+    address: ":80"
+providers:
+  file:
+    filename: /etc/traefik/routes.yaml
+    watch: true
+api:
+  dashboard: true
+  insecure: true # the dashboard on :8080 inside, published only on 127.0.0.1
+log:
+  level: INFO
+accessLog: {}

@@ -1,0 +1,24 @@
+# routing-proxy: a name for each service of compose, for the browser and the desktop window.
+# <name>.p-jol-roll.localhost needs nothing (*.localhost is this machine everywhere);
+# <name>.p-jol-roll.internal is answered by internal-dns (dnsmasq).
+http:
+  routers:
+    webapp:
+      rule: Host(`webapp.p-jol-roll.localhost`) || Host(`webapp.p-jol-roll.internal`) || Host(`p-jol-roll.localhost`)
+      service: webapp
+    docs:
+      rule: Host(`docs.p-jol-roll.localhost`) || Host(`docs.p-jol-roll.internal`)
+      service: docs
+    demo:
+      rule: Host(`demo.p-jol-roll.localhost`) || Host(`demo.p-jol-roll.internal`)
+      service: demo
+  services:
+    webapp:
+      loadBalancer:
+        servers: [{ url: "http://webapp-server:8080" }]
+    docs:
+      loadBalancer:
+        servers: [{ url: "http://docs-server:80" }]
+    demo:
+      loadBalancer:
+        servers: [{ url: "http://hf-demo-space:7860" }]
