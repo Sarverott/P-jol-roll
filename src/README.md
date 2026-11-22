@@ -106,6 +106,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/core/resources/hub.ts` | Comparison and sync of `resources/` with Hugging Face, file by file. |
 | `src/core/catalog/procedures.ts` | The catalog (phase 22): every function of the project once - group, title, parameters, whether it writes, its task, the reading that answers it, where each way offers it. The launcher, the REPL, `task do`, `/api/catalog` and the viewer take their functions from it. |
 | `src/core/catalog/run.ts`, `help.ts` | Words of a line into values and values into a task's arguments; a reading shown in a terminal; the catalog as data for the api; every function or one in words. |
+| `src/core/catalog/jobs.ts` | A writing function run as a job (Q19, phase 25): its own task with `--yes`, one at a time, the newest lines of its output kept for the viewer. Only the api started with `--allow-writing` on this machine uses it. |
 | `src/core/catalog/main.ts`, `map.ts` | `task do`: every function from a shell / `task functions:map`: `docs/guides/functions.md`, the map of functions and ways, written from the catalog. |
 | `src/core/reading/library.ts` | Gathered data as readers see it: journals, pages of acts, one act, its text, its ties, its files. Only reads `resources/`. The hosts stand on this and nothing else. |
 | `src/core/reading/remote.ts` | The remote mode (the demo): with `DATASET_URL` and `BUCKET_URL`, each file a reader needs is taken once from the copies on Hugging Face into `resources/` (a cache then, fresh for `REMOTE_HOURS`); raw files are addresses on the bucket. `library.prepare()` names what each address needs. Never asks the sources of the law. |
@@ -116,9 +117,10 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 
 | File | What, why and where |
 | --- | --- |
-| `src/openapi/main.ts` | Starts the http api: `task serve`. `PORT` and `HOST` in environment; by default only this machine can reach it. |
+| `src/openapi/main.ts` | Starts the http api: `task serve`. `PORT` and `HOST` in environment; by default only this machine can reach it. `--allow-writing` (`ALLOW_WRITING=1`): the writing functions too, refused unless `HOST` is this machine and the mode is not remote. |
 | `src/openapi/server.ts` | Express app, socket.io (sends `journals` on connect and `changed` when files of the dataset change), and the built website from `dist/web`. Open to every origin, because the data is public and the extension and the app ask from elsewhere. |
 | `src/openapi/routes.ts` | The read-only routes under `/api`. |
+| `src/openapi/writing.ts` | `/api/jobs`, mounted only with `--allow-writing`: a job started from the api's own pages (Host and Origin checked, JSON only) after the person's yes, and followed. socket.io hears only that a job ended. |
 | `src/openapi/spec.ts` | OpenAPI 3.1 description, served at `/openapi.json`. Kept by hand next to the routes. |
 | `src/workflows/flows/daily.ts` | The daily run: `gather --since`, `seal`, `compile`, `text`, `hub plan` of each repository, then it waits for an answer (3 days by default). Only "yes" makes it push; no answer ends it without pushing. |
 | `src/workflows/flows/steps.ts` | Steps: each runs one command of `src/core/main.ts` in its own process and keeps its last 40 lines. Retried 3 times by the runtime; every command is safe to repeat. |

@@ -2,7 +2,7 @@ import { existsSync, watch } from "node:fs";
 import { createServer } from "node:http";
 import { resolve } from "node:path";
 import { toNodeHandler } from "@modelcontextprotocol/node";
-import express from "express";
+import express, { Router } from "express";
 import { rateLimit } from "express-rate-limit";
 import { Server as SocketServer } from "socket.io";
 import * as library from "../core/reading/library.js";
@@ -10,13 +10,16 @@ import { remote } from "../core/reading/remote.js";
 import { DATASET_DIR } from "../core/resources/store.js";
 import { mcpHandler } from "../mcp/server.js";
 import { routes } from "./routes.js";
+import { writingRoutes } from "./writing.js";
 
 /*
 Headless host of gathered data: http api (described at /openapi.json), the MCP server of
 src/mcp at /mcp (streamable http, stateless), live notices over socket.io, and the built
 website (dist/web) when it is there.
 Read-only and open to every origin, because the data is public and the
-extensions and the android app ask it from elsewhere.
+extensions and the android app ask it from elsewhere. With writing (--allow-writing of
+main.ts, this machine only - Q19) it also starts the writing functions of the catalog as jobs,
+for its own pages only (writing.ts).
 */
 
 export const WEB_DIR = process.env.WEB_DIR ?? "dist/web";
@@ -30,8 +33,15 @@ js/missing-rate-limiting, docs/almanac/cataclistics/codeql-first-scan.md). Behin
 const RATE_LIMIT = Number(process.env.RATE_LIMIT ?? 600);
 const TRUST_PROXY = Number(process.env.TRUST_PROXY ?? 0);
 
-export function serve({ port = 8080, host = "127.0.0.1", web = WEB_DIR } = {}) {
+export function serve({
+	port = 8080,
+	host = "127.0.0.1",
+	web = WEB_DIR,
+	writing = false,
+} = {}) {
 	const app = express();
+	// /api/catalog says whether this host may start a writing function
+	app.locals.writing = writing;
 	app.disable("x-powered-by");
 	if (TRUST_PROXY) app.set("trust proxy", TRUST_PROXY);
 	if (RATE_LIMIT > 0)
@@ -52,6 +62,9 @@ export function serve({ port = 8080, host = "127.0.0.1", web = WEB_DIR } = {}) {
 	});
 	// the tools of src/mcp for agents elsewhere; a fresh server per request
 	app.all("/mcp", toNodeHandler(mcpHandler()));
+	// the jobs of writing functions, filled in once socket.io is there to tell about them
+	const writable = Router();
+	if (writing) app.use(writable);
 	app.use(routes);
 	if (existsSync(web)) app.use(express.static(resolve(web)));
 	else
@@ -63,6 +76,7 @@ export function serve({ port = 8080, host = "127.0.0.1", web = WEB_DIR } = {}) {
 
 	const server = createServer(app);
 	const io = new SocketServer(server, { cors: { origin: "*" } });
+	writable.use(writingRoutes(io));
 
 	// every client gets what is here now, and a notice when a table of dataset changes
 	io.on("connection", (socket) => {

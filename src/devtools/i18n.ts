@@ -196,6 +196,11 @@ for (const one of PROCEDURES) {
 	said(one.title);
 	for (const param of one.params) said(param.title);
 }
+// what the settings show only on a host with writing allowed (Q19), which the walk above is not
+said(
+	'What the project can do, the same in every way it runs: the launcher (bare "task"), its REPL, "task do", the api, MCP. This host runs on this machine with writing allowed: a function that gathers or writes starts here after you say yes, one at a time.',
+);
+for (const word of ["Start", "running", "done", "failed"]) said(word);
 let words = 0;
 for (const path of globSync("src/**/*.ts")) {
 	const source = readFileSync(path, "utf8");
