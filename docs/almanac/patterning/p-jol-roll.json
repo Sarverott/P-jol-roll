@@ -259,6 +259,21 @@
 			"title": "The media submodule points at an empty commit, then breaks the lint",
 			"topic": "repository",
 			"page": "cataclistics/gist-submodule.md"
+		},
+		{
+			"id": "copilot-prs-to-master",
+			"events": [
+				"codeql:alerts",
+				"copilot:autofix",
+				"pull-request:into-master",
+				"merge:wrong-branch"
+			],
+			"cataclysm": "pull-request:into-master",
+			"solution": "Copilot is a member, Jarvis, on its own branch dev/Jarvis: bots.yml turns its pull requests there, merges them when ready, checks the branch on its own commit and lands it in development; its guide (.github/copilot-instructions.md) names the branch.",
+			"seen": ["2026-11-22: #31, #32, #33", "v0.16.x"],
+			"title": "Copilot's pull requests open against master",
+			"topic": "github-workflows",
+			"page": "cataclistics/copilot-prs-to-master.md"
 		}
 	]
 }

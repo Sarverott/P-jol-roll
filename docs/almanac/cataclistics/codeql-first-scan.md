@@ -20,7 +20,7 @@ One was real: in the demo's remote mode a journal from an address went into a pa
 
 ## Solution
 
-Parts of an address are checked once for every route (`routes.param`: a journal is letters, a year and a position numbers); the remote mode takes only plain paths below its directory (`inside()` in `remote.ts`); `RATE_LIMIT` requests of an address a minute (express-rate-limit, `TRUST_PROXY=1` in the image); the extension takes only an http(s) origin; the devtool's server resolves and stays below its folder; checks with a ref given use no npm cache. `tests/remote.test.ts` sends a raw `..` and sees nothing leave.
+Parts of an address are checked once for every route (`routes.param`: a journal is letters, a year and a position numbers); the remote mode takes only plain paths below its directory (`inside()` in `remote.ts`); `RATE_LIMIT` requests of an address a minute (express-rate-limit, `TRUST_PROXY=1` in the image); the extension takes only an http(s) origin; the devtool's server resolves and stays below its folder; checks with a ref given use no npm cache; that did not end the cache-poisoning alert, so `checks.yml` takes no ref at all now and the bots' branches are dispatched to it ([case](copilot-prs-to-master.md)). `tests/remote.test.ts` sends a raw `..` and sees nothing leave.
 
 ## Seen
 
