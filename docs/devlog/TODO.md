@@ -294,3 +294,4 @@ The owner's message, 2026-11-24 (changelog phase 28).
 - [x] The language packs from their gist, a submodule at `resources/locales`: the source the project reads; checkouts and images take it
 - [x] Docs, the almanac's rows and AGENTS.md
 - [x] `devlog.yml` leaves the board out: the workflow's token lists the owner's projects but may not make one
+- [x] The Dependabot alerts of master (3 high, 1 medium, the MCP server SDK 2.0.0 under `@mcp-b/global`): `@mcp-b/global` 6.2.0, which takes the server 2.4.0
