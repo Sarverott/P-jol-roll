@@ -27,6 +27,7 @@ import { listen } from "./assets/socket.js";
 import { offerTools } from "./assets/webmcp.js";
 import LayoutFooter from "./layout/footer.vue";
 import LayoutHeader from "./layout/header.vue";
+import HostBadge from "./layout/hostbadge.vue";
 import LayoutMain from "./layout/main.vue";
 import ErrorDialog from "./layout/modals/errordialog.vue";
 import ActsListing from "./screens/actsListing.vue";
@@ -63,6 +64,7 @@ function openAct({ ELI }) {
 	location.hash = href("act", ELI);
 }
 
+provide("api", props.api);
 provide("library", library);
 provide("openAct", openAct);
 provide("credits", props.credits);
@@ -93,6 +95,7 @@ onUnmounted(() => {
 
 <template>
 	<main ref="root" class="viewer">
+		<HostBadge />
 		<LayoutHeader />
 		<LayoutMain
 			:screen="route.screen"

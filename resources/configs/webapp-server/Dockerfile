@@ -18,7 +18,14 @@ COPY webpage/src/data/links.yaml ./webpage/src/data/links.yaml
 RUN npm run build && npm prune --omit=dev --ignore-scripts --audit=false --fund=false
 
 FROM node:24-trixie-slim
-ENV NODE_ENV=production \
+# what the viewer's corner tells about this image (/api/host, phase 28): the commit and the run
+# of the release that built it (scripts/devops/release/container.sh), empty when built by hand
+ARG P_JOL_ROLL_COMMIT=""
+ARG P_JOL_ROLL_RUN=""
+ENV P_JOL_ROLL_CONTAINER=webapp-server \
+	P_JOL_ROLL_COMMIT=${P_JOL_ROLL_COMMIT} \
+	P_JOL_ROLL_RUN=${P_JOL_ROLL_RUN} \
+	NODE_ENV=production \
 	HOST=0.0.0.0 \
 	PORT=8080 \
 	RESOURCES_DIR=/data/resources \

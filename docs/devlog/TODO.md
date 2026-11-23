@@ -286,8 +286,8 @@ The owner's message, 2026-11-22 (changelog phase 27).
 
 The owner's message, 2026-11-24 (changelog phase 28).
 
-- [ ] The host says what it is: `/api/host` (the release, the commit and the run that built it, where it runs, whether it writes), a corner of the viewer `v<release> · HF-demo-readonly-container` of one size always, the whole note on a hover or a touch, never wider than the screen and never under the pointer; the release gives the image its commit and run
-- [ ] The phases ahead planned from the milestones: VISION, ROADMAP (M4 to phase 33, M5 to 38)
+- [x] The host says what it is: `/api/host` (the release, the commit and the run that built it, where it runs, whether it writes), a corner of the viewer `v<release> · HF-demo-readonly-container` of one size always, the whole note on a hover or a touch, never wider than the screen and never under the pointer; the release gives the image its commit and run
+- [x] The phases ahead planned from the milestones: VISION, ROADMAP (M4 to phase 33, M5 to 38)
 - [ ] The devlog on GitHub: the milestones of ROADMAP, an issue per phase, per `Q<n>` and per `PP<n>`, a project board - brought there by `task github:devlog`, the markdown the source
 - [ ] The wiki a submodule (`docs/wiki`): a copy of the devlog and the almanac made by `task docs:wiki`, the files here staying
 - [ ] The documentation without the devlog and the almanac: links to them in the wiki in its list of contents

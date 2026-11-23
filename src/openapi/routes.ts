@@ -6,6 +6,7 @@ import { PRESETS } from "../core/methods/presets.js";
 import * as dataset from "../core/reading/dataset.js";
 import * as library from "../core/reading/library.js";
 import { remote } from "../core/reading/remote.js";
+import { host } from "./host.js";
 import { spec } from "./spec.js";
 
 // every route only reads gathered files - nothing here asks the source or writes
@@ -67,6 +68,11 @@ if (remote)
 
 routes.get("/openapi.json", (_request, response) => {
 	response.json(spec);
+});
+
+// what this host is: the release, the commit, where it runs (the viewer's corner, phase 28)
+routes.get("/api/host", (request, response) => {
+	response.json(host(Boolean(request.app.locals.writing)));
 });
 
 // every function of the project (the catalog), with whether this host may start it: a writing
