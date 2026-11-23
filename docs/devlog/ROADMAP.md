@@ -25,5 +25,11 @@ closed before the rule; their one bump makes `0.1.0`.
 | M1: standing on its own feet | 0, 1, 2, 3 | install and check from clean, say what it does, live in the BOS loop |
 | M2: seen and spread | 4, 5 | present itself on a website, gather on more than one machine |
 | M3: run as services | 6, 7, 8, 9 | start with `task`, run every part as a container, logs in one place |
-| M4: read by a model | 10-17, 22, later more | PDF texts into markdown, a dataset for training; every function in every interface; the law mastermind (Q18): deepseek-R1 in Ollama and on Hugging Face, a qwen agent in the shell, social simulations by MiroFish or OASIS, a Python stack |
-| M5: no centre | later | torrents pointed to by IPFS, a WireGuard network with load balancing, mirrors per voivodeship or district, no central infrastructure (Cosmos SDK) - modular, one part at a time (Q10); a Go stack for these circuits, ESP32 boards as off-grid mesh nodes (PP4); devices of the person in the desktop app: printers, phones, FIDO keys for signing (Q17) |
+| M4: read by a model | 10-33 (18-21, 23-28: the loop's own upkeep on the way) | PDF texts into markdown, a dataset for training; every function in every interface; the law mastermind (Q18): deepseek-R1 in Ollama and on Hugging Face, a qwen agent in the shell, social simulations by MiroFish or OASIS, a Python stack |
+| M5: no centre | 34-38 | torrents pointed to by IPFS, a WireGuard network with load balancing, mirrors per voivodeship or district, no central infrastructure (Cosmos SDK) - modular, one part at a time (Q10); a Go stack for these circuits, ESP32 boards as off-grid mesh nodes (PP4); devices of the person in the desktop app: printers, phones, FIDO keys for signing (Q17) |
+
+The milestones and the phases live on GitHub too (phase 28): a milestone of
+the repository per milestone here, an issue per phase in its milestone
+(closed when its TODO is ticked), an issue per `Q<n>` and `PP<n>`, all of
+them on the project board. The markdown is the source; `task github:devlog`
+brings it there again (`scripts/devops/github/devlog.sh`).
