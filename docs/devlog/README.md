@@ -41,6 +41,23 @@ flowchart LR
 4. Then the work, one step per commit on the agent's `dev/<name>`, each
    ticking its TODO item.
 
+## Where else it is shown (phase 28)
+
+The markdown here is the source; two places show it and are made from it:
+
+- **GitHub**: a milestone per milestone of ROADMAP, an issue per phase (its
+  items a task list, closed when all are ticked), per `Q<n>` and per `PP<n>`
+  (closed once answered or decided, with the owner's words), all on the
+  board "P_JOL_ROLL devlog". `task github:devlog` brings them there; the
+  workflow `devlog.yml` does it on each push of the devlog to `development`,
+  but the board, which is the owner's.
+- **The wiki**: a copy of this devlog and of the almanac, `task docs:wiki`
+  (the submodule `docs/wiki`). The website of the documentation links there
+  instead of publishing them.
+
+An issue or a wiki page changed by hand is overwritten by the next run:
+answer in ORDERS.md, ask in INQUIRIES.md.
+
 Numbers `Q<n>` and `PP<n>` are given once and never reused. A question never
 gets settled in code before the owner answers it. Agents' own findings go to
 `docs/.agents/`, not here. The two scrapnotes of October 2026 stay here as they

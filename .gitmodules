@@ -6,3 +6,11 @@
 	path = resources/mediafiles
 	url = https://gist.github.com/025bda4b967642107b88345c0e465b1a.git
 	branch = master
+[submodule "LANGPACKS"]
+	path = resources/locales
+	url = https://gist.github.com/0b86ecd07d55426754759bdff5550d87.git
+	branch = master
+[submodule "WIKI"]
+	path = docs/wiki
+	url = https://github.com/Sarverott/P-jol-roll.wiki.git
+	branch = master

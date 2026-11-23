@@ -7,6 +7,10 @@
 - **Checks run on what lands, not before it.** `task flow:land` runs
   `task check` itself; a report of "checks pass" is true only of the tree it
   ran on.
+- A directory that became a submodule cannot be checked out over: switching to
+  a branch that still tracks its files stops on "untracked working tree files
+  would be overwritten". `task flow:land` makes the merge without leaving the
+  branch when development has nothing new (phase 28, `resources/locales`).
 
 ## Cases
 

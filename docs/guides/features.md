@@ -70,6 +70,7 @@ State of 2026-11-13.
 | Services: docs, demo, daemons, routing, DNS, LLMs, search | `docker compose --profile <name> up` | **built**: each started once and answered; the daemons were not run, they would gather |
 | A shell for agents (`agentic-shell`) | `task shell` | **built**: started, node, task, uv and git answer, the repository is writable, no Docker socket, no root (Q13) |
 | Launcher: what you want to do, each function asking what it takes; every task; a REPL | `task` | **built**: driven in a pseudo-terminal (read the law → acts answered in it); termui itself stays an experiment (Q4) |
+| The host in its corner: the release and what runs it (`HF-demo-readonly-container`), the whole note on a hover or a touch | `/api/host`, any page of the viewer | **works**: tests; seen in a browser at 1280 and 360 pixels, the corner the same size before and after a hover |
 | Every function in every way: one catalog, `task do`, the REPL, `/api/catalog`, the map of functions | `task do`, `task functions:map` | **works**: tests; readings answered in the terminal over the real dataset |
 | The rest of the dataset in the api, MCP and the viewer: the work of Sejm, judgments, the lists of the source, the acts counted | `/api/sejm`, `/api/judgments`, `/api/lists`, `/api/statistics`; `task stats` | **works**: tests; headless browser over a copy of term 10 and two years |
 | Plots, and statistics with a playable history of the law | the viewer's tabs | **works**: headless browser, played |

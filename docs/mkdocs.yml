@@ -21,10 +21,9 @@ exclude_docs: |
   /uv.lock
   /Taskfile.yml
   /_mkdocs/
-  /devlog/AGENTS.md
-  /devlog/Taskfile.yml
-  /almanac/Taskfile.yml
-  /devlog/STATE.md
+  /wiki/
+  /devlog/
+  /almanac/
 
 theme:
   name: material
@@ -84,34 +83,9 @@ nav:
       - guides/development.md
       - guides/translations.md
   - Glossary: glossary/README.md
-  - Almanac:
-      - almanac/README.md
-      - almanac/faq.md
-      - Topics:
-          - almanac/solutions/hugging-face.md
-          - almanac/solutions/pdf-texts.md
-          - almanac/solutions/security.md
-          - almanac/solutions/containers.md
-          - almanac/solutions/dependencies.md
-          - almanac/solutions/github-workflows.md
-          - almanac/solutions/translations.md
-          - almanac/solutions/viewer.md
-          - almanac/solutions/source-api.md
-          - almanac/solutions/terminal.md
-          - almanac/solutions/repository.md
-  - Devlog:
-      - devlog/README.md
-      - devlog/VISION.md
-      - devlog/ROADMAP.md
-      - devlog/TODO.md
-      - devlog/BRAINSTORM.md
-      - devlog/PROPOSALS.md
-      - devlog/ORDERS.md
-      - devlog/INQUIRIES.md
-      - Scrapnotes:
-          - devlog/scrapnote-1791881492510.md
-          - devlog/scrapnote-1791920000154.md
-          - devlog/scrapnote-1795303854040.md
+  # the devlog and the almanac live in the wiki of GitHub, copied there by task docs:wiki (phase 28)
+  - Devlog (wiki): https://github.com/Sarverott/P-jol-roll/wiki/Devlog
+  - Almanac (wiki): https://github.com/Sarverott/P-jol-roll/wiki/Almanac
   - Changelog:
       - changelog/phase-0.md
       - changelog/phase-1.md
@@ -128,6 +102,7 @@ nav:
       - changelog/phase-20.md
       - changelog/phase-21.md
       - changelog/phase-22.md
+      - changelog/phase-28.md
       - changelog/phase-23.md
       - changelog/phase-24.md
       - changelog/phase-25.md

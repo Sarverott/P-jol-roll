@@ -39,6 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # the language packs: a submodule, their gist (phase 28)
+      - run: git submodule update --init --depth 1 resources/locales
       - name: The token of Snyk is there
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}

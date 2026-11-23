@@ -113,6 +113,16 @@ tasks:
     cmds:
       - npx tsx src/devtools/i18n.ts
 
+  i18n:pull:
+    desc: The language packs from their gist (the submodule resources/locales, the source of every translation), at its newest commit.
+    cmds:
+      - scripts/devops/local/langpacks.sh pull
+
+  i18n:publish:
+    desc: The packs changed here committed in their gist and pushed, the submodule's new commit staged - task i18n:publish -- "PL-PL reviewed".
+    cmds:
+      - scripts/devops/local/langpacks.sh publish {{.CLI_ARGS}}
+
   i18n:translate:
     desc: The other language packs of resources/locales/ made from EN-US.json by argostranslate (Python, models downloaded once); "-- PL-PL" for one.
     cmds:

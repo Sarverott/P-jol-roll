@@ -281,3 +281,16 @@ The owner's message, 2026-11-22 (changelog phase 27).
 - [x] What Snyk Code found high in the gate: no request's own words reach a file (journal, year, position, preset, ending taken from our side), the name of the settings in localStorage no longer looks like a secret
 - [x] Snyk fails the gate on high findings only, as the owner chose; medium and low reach the Security tab
 - [x] Snyk IaC scans where the infrastructure is (resources/services, resources/configs), not the editor JSON of .vscode; the root image builds again (locales, the members and links of "Terms of use", the types)
+
+## Phase 28: the host in its corner, the devlog on GitHub, the wiki and the packs
+
+The owner's message, 2026-11-24 (changelog phase 28).
+
+- [x] The host says what it is: `/api/host` (the release, the commit and the run that built it, where it runs, whether it writes), a corner of the viewer `v<release> · HF-demo-readonly-container` of one size always, the whole note on a hover or a touch, never wider than the screen and never under the pointer; the release gives the image its commit and run
+- [x] The phases ahead planned from the milestones: VISION, ROADMAP (M4 to phase 33, M5 to 38)
+- [x] The devlog on GitHub: the milestones of ROADMAP, an issue per phase, per `Q<n>` and per `PP<n>`, a project board - brought there by `task github:devlog`, the markdown the source
+- [x] The wiki a submodule (`docs/wiki`): a copy of the devlog and the almanac made by `task docs:wiki`, the files here staying
+- [x] The documentation without the devlog and the almanac: links to them in the wiki in its list of contents
+- [x] The language packs from their gist, a submodule at `resources/locales`: the source the project reads; checkouts and images take it
+- [x] Docs, the almanac's rows and AGENTS.md
+

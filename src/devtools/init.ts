@@ -49,6 +49,15 @@ for (const [command, args, needed, purpose] of TOOLS) {
 		if (needed) missing++;
 	}
 }
+// the language packs are a submodule (their gist, phase 28): the build reads them
+if (existsSync(at("resources/locales/.index.json")))
+	console.log("ok       resources/locales (the language packs)");
+else {
+	console.log(
+		"missing  resources/locales - the language packs: git submodule update --init resources/locales (task i18n:pull)",
+	);
+	missing++;
+}
 if (missing) {
 	console.error(`init: ${missing} needed tool(s) missing, nothing else done`);
 	process.exit(1);

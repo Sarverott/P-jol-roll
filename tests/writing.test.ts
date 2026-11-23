@@ -103,3 +103,13 @@ test("a job runs the function's task and is followed to its end", async () => {
 	);
 	expect(JSON.stringify(counted)).toContain("1918");
 }, 90_000);
+
+test("the host says what it is: its release and its short name (phase 28)", async () => {
+	const asWriter = await (await fetch(`${writer.url}/api/host`)).json();
+	const asReader = await (await fetch(`${reader.url}/api/host`)).json();
+	const { spec } = await import("../src/openapi/spec.js");
+	expect(asReader.version).toBe(spec.info.version);
+	expect(asReader.writing).toBe(false);
+	expect(asReader.label).toMatch(/^local-readonly/);
+	expect(asWriter.label).toMatch(/^local-writing/);
+});

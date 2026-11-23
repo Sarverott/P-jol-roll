@@ -85,7 +85,12 @@ one small library serves the browser and the terminal.
 ## Language packs
 
 `resources/locales/` holds a JSON file per language, listed in
-`resources/locales/.index.json` with EN-US the default:
+`resources/locales/.index.json` with EN-US the default. Since phase 28 it is
+a git submodule: the packs live in their own gist
+([0b86ecd07d55426754759bdff5550d87](https://gist.github.com/Sarverott/0b86ecd07d55426754759bdff5550d87)),
+the source the project reads - a fresh clone takes it by
+`git submodule update --init resources/locales` (`task i18n:pull`), and
+`task init` says when it is missing.
 
 | Pack | Made by |
 | --- | --- |
@@ -97,7 +102,13 @@ task web:build && npm run --prefix webpage build    # both pages built
 task i18n:collect                                   # their English -> EN-US.json
 task i18n:translate                                 # what the other packs miss
 task i18n:translate -- PL-PL --again                # one pack anew (not its reviewed entries)
+task i18n:publish -- "the texts of phase 28"        # committed in the gist, pushed, the submodule staged
 ```
+
+A pack changed here (collected, translated or reviewed by a person) reaches
+everyone only after `task i18n:publish`: the gist gets the commit, and this
+repository the submodule's new commit with the next step. The workflows that
+build take the packs by `git submodule update --init resources/locales`.
 
 - A text with a number is translated once per plural form of the language,
   with the number that form takes (`plural` in the index: Polish one 1,
