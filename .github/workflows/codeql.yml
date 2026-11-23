@@ -9,13 +9,13 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
+# Phase 26: run by the gate of a pull request into master (gate.yml), not on every push; the
+# weekly run on master keeps the baseline that the alerts of a pull request are compared with.
 name: "CodeQL Advanced"
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  workflow_call:
+  workflow_dispatch:
   schedule:
     - cron: '38 12 * * 5'
 

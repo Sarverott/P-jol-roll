@@ -2,9 +2,11 @@ import { resolve } from "node:path";
 import { type Request, type Response, Router } from "express";
 import { PROCEDURES } from "../core/catalog/procedures.js";
 import { described } from "../core/catalog/run.js";
+import { PRESETS } from "../core/methods/presets.js";
 import * as dataset from "../core/reading/dataset.js";
 import * as library from "../core/reading/library.js";
 import { remote } from "../core/reading/remote.js";
+import { host } from "./host.js";
 import { spec } from "./spec.js";
 
 // every route only reads gathered files - nothing here asks the source or writes
@@ -23,8 +25,20 @@ for (const [name, pattern] of Object.entries(PARTS))
 		else response.status(404).json({ error: `not a ${name}` });
 	});
 
-const eliOf = (request: Request) =>
-	`${request.params.journal}/${request.params.year}/${request.params.pos}`;
+/*
+What reaches a file is never the request's own words (Snyk Code javascript/PT, phase 27): a
+journal is the code of one the dataset has, a year and a position are numbers, a preset and an
+ending are names of fixed lists - each taken from our side, after the words matched it.
+*/
+const journalOf = (request: Request) =>
+	library.journals().find((one) => one.code === request.params.journal)?.code;
+
+const eliOf = (request: Request) => {
+	const journal = journalOf(request);
+	return journal
+		? `${journal}/${Number(request.params.year)}/${Number(request.params.pos)}`
+		: "";
+};
 
 const notHere = (response: Response) =>
 	response.status(404).json({ error: "not gathered here" });
@@ -56,10 +70,18 @@ routes.get("/openapi.json", (_request, response) => {
 	response.json(spec);
 });
 
-// every function of the project (the catalog), with whether this host may start it: a host
-// starts none that writes until Q19 is answered, and the viewer shows them disabled
-routes.get("/api/catalog", (_request, response) => {
-	response.json(described(PROCEDURES, { writing: false }));
+// what this host is: the release, the commit, where it runs (the viewer's corner, phase 28)
+routes.get("/api/host", (request, response) => {
+	response.json(host(Boolean(request.app.locals.writing)));
+});
+
+// every function of the project (the catalog), with whether this host may start it: a writing
+// one only when the api runs with --allow-writing on this machine (Q19, writing.ts); elsewhere
+// the viewer shows them disabled
+routes.get("/api/catalog", (request, response) => {
+	response.json(
+		described(PROCEDURES, { writing: Boolean(request.app.locals.writing) }),
+	);
 });
 
 // every year at once, by Typesense; without it 503 says how to start it
@@ -91,7 +113,10 @@ routes.get("/api/map", (_request, response) => {
 
 // already JSON on disk, sent as it is (a few MB for the bigger presets)
 routes.get("/api/map/:preset", (request, response) => {
-	const made = library.lawMap(String(request.params.preset));
+	const preset = Object.keys(PRESETS).find(
+		(name) => name === request.params.preset,
+	);
+	const made = preset ? library.lawMap(preset) : undefined;
 	if (made) response.type("application/json").send(made);
 	else notHere(response);
 });
@@ -170,7 +195,7 @@ routes.get("/api/journals", (_request, response) => {
 routes.get("/api/acts/:journal/:year", (request, response) => {
 	const { q, offset, limit } = request.query;
 	response.json(
-		library.acts(String(request.params.journal), Number(request.params.year), {
+		library.acts(journalOf(request) ?? "", Number(request.params.year), {
 			query: typeof q === "string" ? q : "",
 			offset: Number(offset) || 0,
 			limit: Number(limit) || 50,
@@ -210,7 +235,8 @@ routes.get("/api/acts/:journal/:year/:pos/diagram", (request, response) => {
 routes.get(
 	"/api/acts/:journal/:year/:pos/file/:ending",
 	(request, response) => {
-		const path = library.file(eliOf(request), String(request.params.ending));
+		const ending = library.ENDINGS.find((one) => one === request.params.ending);
+		const path = ending ? library.file(eliOf(request), ending) : undefined;
 		if (!path) notHere(response);
 		else if (/^https?:/.test(path)) response.redirect(302, path);
 		else response.sendFile(resolve(path));

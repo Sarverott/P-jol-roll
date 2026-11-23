@@ -27,6 +27,7 @@ import { listen } from "./assets/socket.js";
 import { offerTools } from "./assets/webmcp.js";
 import LayoutFooter from "./layout/footer.vue";
 import LayoutHeader from "./layout/header.vue";
+import HostBadge from "./layout/hostbadge.vue";
 import LayoutMain from "./layout/main.vue";
 import ErrorDialog from "./layout/modals/errordialog.vue";
 import ActsListing from "./screens/actsListing.vue";
@@ -48,7 +49,11 @@ const StatisticsHistory = defineAsyncComponent(
 );
 
 // address of the http api (src/openapi): empty means the host that served this page
-const props = defineProps({ api: { type: String, default: "" } });
+// the members and the links of "Terms of use", read by the website at build (src/web/data)
+const props = defineProps({
+	api: { type: String, default: "" },
+	credits: { type: Object, default: () => ({ authors: [], links: [] }) },
+});
 
 const library = createLibrary(props.api);
 const { state } = library;
@@ -59,8 +64,10 @@ function openAct({ ELI }) {
 	location.hash = href("act", ELI);
 }
 
+provide("api", props.api);
 provide("library", library);
 provide("openAct", openAct);
+provide("credits", props.credits);
 library.follow(route);
 
 let unlisten;
@@ -88,6 +95,7 @@ onUnmounted(() => {
 
 <template>
 	<main ref="root" class="viewer">
+		<HostBadge />
 		<LayoutHeader />
 		<LayoutMain
 			:screen="route.screen"

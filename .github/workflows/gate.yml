@@ -1,0 +1,130 @@
+# The one place where every check and every scan runs (phase 26, the owner's order): a pull
+# request into master. In order:
+#   1. authors - whoever stands behind it is listed in .github/AUTHORS of master
+#      (scripts/devops/flow/authors.sh); a contributor never listed there stops it here
+#   2. every check and scan at once: verify (checks.yml), CodeQL (codeql.yml), Snyk
+#      (snyk-security.yml, needs the secret SNYK_TOKEN), OSSAR (ossar.yml)
+#   3. a failure: Jarvis (GitHub Copilot) is asked on the pull request to help, naming what failed
+#   4. all of them passed, and it is development → master of this repository: the pull request
+#      merges itself, and the release (release.yml) is started on master - a merge by the
+#      workflow's token starts no workflow by itself
+# Run again from a terminal: task github:gate -- <pull request number>.
+name: "gate › into master: authors, every check and scan, then automerge"
+
+on:
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: number of the pull request into master
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gate-${{ github.event.pull_request.number || inputs.pr }}
+  cancel-in-progress: true
+
+jobs:
+  authors:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      actions: read
+    outputs:
+      head: ${{ steps.pr.outputs.head }}
+      same: ${{ steps.pr.outputs.same }}
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0 }
+      - name: The pull request
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number || inputs.pr }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR" --jq '"head=" + .head.ref, "same=" + (.head.repo.full_name == .base.repo.full_name | tostring), "base=" + .base.ref' >> "$GITHUB_OUTPUT"
+          grep -q '^base=master$' "$GITHUB_OUTPUT" || { echo "#$PR does not go into master" >&2; exit 1; }
+      - name: Listed in AUTHORS of master
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/devops/flow/authors.sh "${{ github.event.pull_request.number || inputs.pr }}"
+
+  verify:
+    needs: authors
+    uses: ./.github/workflows/checks.yml
+
+  codeql:
+    needs: authors
+    uses: ./.github/workflows/codeql.yml
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+  snyk:
+    needs: authors
+    uses: ./.github/workflows/snyk-security.yml
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    secrets:
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  ossar:
+    needs: authors
+    uses: ./.github/workflows/ossar.yml
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+  jarvis:
+    # only for a member's pull request: a stranger's never gets this far
+    needs: [authors, verify, codeql, snyk, ossar]
+    if: failure() && needs.authors.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Ask Jarvis to help with what failed
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number || inputs.pr }}
+          RESULTS: >-
+            verify ${{ needs.verify.result }},
+            CodeQL ${{ needs.codeql.result }},
+            Snyk ${{ needs.snyk.result }},
+            OSSAR ${{ needs.ossar.result }}
+        run: |
+          gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "@copilot the gate into master did not pass ($RESULTS): $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID. Please look at what failed and propose a fix in a pull request into dev/Jarvis, as .github/copilot-instructions.md says. Scanners' findings are in the Security tab."
+
+  automerge:
+    needs: [authors, verify, codeql, snyk, ossar]
+    if: >-
+      needs.authors.outputs.head == 'development'
+      && needs.authors.outputs.same == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - name: Merge development into master, then start the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number || inputs.pr }}
+          # what was checked: the head of the pull request, or the commit a dispatch ran on
+          CHECKED: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          # a commit pushed after the checks began is not merged unchecked
+          gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --merge --match-head-commit "$CHECKED"
+          gh workflow run release.yml --repo "$GITHUB_REPOSITORY" --ref master
+          echo "#$PR merged into master; the release is started"

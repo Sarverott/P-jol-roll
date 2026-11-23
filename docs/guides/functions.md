@@ -4,8 +4,9 @@ Every function of the project and every way it runs - written by
 `task functions:map` from the catalog (`src/core/catalog/procedures.ts`),
 so do not edit it by hand. The launcher (bare `task`), its REPL and
 `task do` offer every function; the other ways where a cell names how. A
-writing function (✎) is offered on a host only after Q19; the viewer shows
-it disabled until then. `–` is a hole.
+writing function (✎) is started by the viewer and the api only on this
+machine, when the api runs with `--allow-writing` (the desktop app does),
+each after a person's yes; a public host shows it disabled (Q19). `–` is a hole.
 
 | Function | | launcher, REPL, `task do` | viewer | api | MCP | CLI | extension | workflows |
 | -------- | - | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
@@ -22,31 +23,31 @@ it disabled until then. `–` is a hole.
 | `sejm-work` legislative processes and prints of a term of Sejm |  | ✓ | `#data` | `GET /api/sejm/{term}/{kind}` | `sejm_work` | – | – | – |
 | `judgments` court judgments of SAOS, a month at a time |  | ✓ | `#data` | `GET /api/judgments/{year}/{month}` | – | – | – | – |
 | **gather from the sources** | | |  |  |  |  |  |  |
-| `gather` lists and acts of the years, and the files of acts that miss any | ✎ | ✓ `task gather` | disabled (Q19) | disabled (Q19) | – | `npm start -- gather` | – | `daily` |
-| `gather:changes` acts changed since the previous such run, or since a day | ✎ | ✓ `task gather:changes` | disabled (Q19) | disabled (Q19) | – | `npm start -- gather --since last` | – | `daily` |
-| `gather:everything` every journal, every year, every file - days of work | ✎ | ✓ `task gather:everything` | disabled (Q19) | disabled (Q19) | – | `npm start -- gather --all --acts --limit 0` | – | – |
-| `sejm` work of Sejm: processes and prints of terms | ✎ | ✓ `task sejm` | disabled (Q19) | disabled (Q19) | – | `npm start -- sejm` | – | – |
-| `saos` court judgments of SAOS, months of years | ✎ | ✓ `task saos` | disabled (Q19) | disabled (Q19) | – | `npm start -- saos` | – | – |
-| `checkup` a browser visits the websites that show acts of a year | ✎ | ✓ `task checkup` | disabled (Q19) | disabled (Q19) | – | `npm start -- checkup` | – | – |
+| `gather` lists and acts of the years, and the files of acts that miss any | ✎ | ✓ `task gather` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- gather` | – | `daily` |
+| `gather:changes` acts changed since the previous such run, or since a day | ✎ | ✓ `task gather:changes` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- gather --since last` | – | `daily` |
+| `gather:everything` every journal, every year, every file - days of work | ✎ | ✓ `task gather:everything` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- gather --all --acts --limit 0` | – | – |
+| `sejm` work of Sejm: processes and prints of terms | ✎ | ✓ `task sejm` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- sejm` | – | – |
+| `saos` court judgments of SAOS, months of years | ✎ | ✓ `task saos` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- saos` | – | – |
+| `checkup` a browser visits the websites that show acts of a year | ✎ | ✓ `task checkup` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- checkup` | – | – |
 | **process what is gathered** | | |  |  |  |  |  |  |
-| `seal` checksums of gathered files: write the missing, or check them all | ✎ | ✓ `task seal` | disabled (Q19) | disabled (Q19) | – | `npm start -- seal` | – | `daily` |
-| `compile` tables of details and references from the raw files | ✎ | ✓ `task compile` | disabled (Q19) | disabled (Q19) | – | `npm start -- compile` | – | `daily` |
-| `text` markdown of the acts from html (and from PDFs) | ✎ | ✓ `task text` | disabled (Q19) | disabled (Q19) | – | `npm start -- text` | – | `daily` |
-| `map` the map of the whole law, every preset or one | ✎ | ✓ `task map` | disabled (Q19) | disabled (Q19) | – | `npm start -- map` | – | – |
-| `stats` the acts counted into the dataset, for the demo | ✎ | ✓ `task stats` | disabled (Q19) | disabled (Q19) | – | `npm start -- stats` | – | – |
-| `search:index` every act into Typesense, for the search of every year | ✎ | ✓ `task search:index` | disabled (Q19) | disabled (Q19) | – | `npm start -- search index` | – | – |
-| `embed` vectors of the texts by a local model of Ollama | ✎ | ✓ `task embed` | disabled (Q19) | disabled (Q19) | – | – | – | – |
-| `i18n:collect` the English words of the built pages into the language pack | ✎ | ✓ `task i18n:collect` | disabled (Q19) | disabled (Q19) | – | – | – | – |
-| `i18n:translate` the other language packs, by argostranslate | ✎ | ✓ `task i18n:translate` | disabled (Q19) | disabled (Q19) | – | – | – | – |
+| `seal` checksums of gathered files: write the missing, or check them all | ✎ | ✓ `task seal` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- seal` | – | `daily` |
+| `compile` tables of details and references from the raw files | ✎ | ✓ `task compile` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- compile` | – | `daily` |
+| `text` markdown of the acts from html (and from PDFs) | ✎ | ✓ `task text` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- text` | – | `daily` |
+| `map` the map of the whole law, every preset or one | ✎ | ✓ `task map` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- map` | – | – |
+| `stats` the acts counted into the dataset, for the demo | ✎ | ✓ `task stats` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- stats` | – | – |
+| `search:index` every act into Typesense, for the search of every year | ✎ | ✓ `task search:index` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- search index` | – | – |
+| `embed` vectors of the texts by a local model of Ollama | ✎ | ✓ `task embed` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
+| `i18n:collect` the English words of the built pages into the language pack | ✎ | ✓ `task i18n:collect` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
+| `i18n:translate` the other language packs, by argostranslate | ✎ | ✓ `task i18n:translate` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
 | **Hugging Face and the demo** | | |  |  |  |  |  |  |
 | `resources:plan` what differs between here and Hugging Face |  | ✓ `task resources:plan` | – | – | – | `npm start -- hub plan` | – | – |
-| `resources:pull` take what is on Hugging Face and not here | ✎ | ✓ `task resources:pull` | disabled (Q19) | disabled (Q19) | – | `npm start -- hub pull` | – | – |
-| `resources:push` send what is new here to Hugging Face (HF_TOKEN) | ✎ | ✓ `task resources:push` | disabled (Q19) | disabled (Q19) | – | `npm start -- hub push` | – | `daily, after a yes` |
-| `resources:space:refresh` the demo space set to the newest release and built again | ✎ | ✓ `task resources:space:refresh` | disabled (Q19) | disabled (Q19) | – | – | – | `release` |
+| `resources:pull` take what is on Hugging Face and not here | ✎ | ✓ `task resources:pull` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- hub pull` | – | – |
+| `resources:push` send what is new here to Hugging Face (HF_TOKEN) | ✎ | ✓ `task resources:push` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- hub push` | – | `daily, after a yes` |
+| `resources:space:refresh` the demo space set to the newest release and built again | ✎ | ✓ `task resources:space:refresh` | local, after a yes | `POST /api/jobs` (local) | – | – | – | `release` |
 | **the project itself** | | |  |  |  |  |  |  |
-| `init` first launch on this machine: tools, .env, secrets | ✎ | ✓ `task init` | disabled (Q19) | disabled (Q19) | – | – | – | – |
+| `init` first launch on this machine: tools, .env, secrets | ✎ | ✓ `task init` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
 | `check` every check: Biome, the build, the tests |  | ✓ `task check` | – | – | – | – | – | `checks` |
 | `serve` the api with the website and MCP on 127.0.0.1:8080 |  | ✓ `task serve` | – | – | – | – | – | – |
 | `desktop` the desktop window around the viewer |  | ✓ `task desktop` | – | – | – | – | – | – |
-| `devlog:state` where the project stands, into STATE.md | ✎ | ✓ `task devlog:state` | disabled (Q19) | disabled (Q19) | – | – | – | – |
+| `devlog:state` where the project stands, into STATE.md | ✎ | ✓ `task devlog:state` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
 | `almanac:recall` cases of the almanac that began with these events, and their solutions |  | ✓ `task almanac:recall` | – | – | – | – | – | – |

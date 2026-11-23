@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Closing a phase of docs/devlog/TODO.md: Y of vX.Y.Z bumped on development, committed,
-# pushed, and the pull request development → master opened (pull-request.sh). Refuses when
+# pushed, the pull request development → master opened (pull-request.sh) and its gate
+# started (gate.yml). Refuses when
 # the phase still has an open step. Outputs version=<the new version>.
 # Usage: phase-close.sh <phase number>   (needs GH_TOKEN)
 # shellcheck source=../_common.sh
@@ -29,4 +30,12 @@ bot_identity
 git commit -qam "chore(release): v$from → v$(version) (phase $phase closed)"
 git push -q origin development
 output version "$(version)"
-"$(dirname "$0")/pull-request.sh" development master "phase $phase closed"
+opened=$("$(dirname "$0")/pull-request.sh" development master "phase $phase closed")
+echo "$opened"
+# the gate (gate.yml) started by a dispatch: a pull request opened by the workflow's token
+# starts its own runs only after a person approves them on the website (action_required)
+pr=$(sed -nE 's#^url=.*/pull/([0-9]+)$#\1#p' <<<"$opened")
+if [ -n "$pr" ]; then
+  gh workflow run gate.yml --ref development -f pr="$pr"
+  echo "the gate of #$pr is started"
+fi

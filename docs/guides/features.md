@@ -70,6 +70,7 @@ State of 2026-11-13.
 | Services: docs, demo, daemons, routing, DNS, LLMs, search | `docker compose --profile <name> up` | **built**: each started once and answered; the daemons were not run, they would gather |
 | A shell for agents (`agentic-shell`) | `task shell` | **built**: started, node, task, uv and git answer, the repository is writable, no Docker socket, no root (Q13) |
 | Launcher: what you want to do, each function asking what it takes; every task; a REPL | `task` | **built**: driven in a pseudo-terminal (read the law → acts answered in it); termui itself stays an experiment (Q4) |
+| The host in its corner: the release and what runs it (`HF-demo-readonly-container`), the whole note on a hover or a touch | `/api/host`, any page of the viewer | **works**: tests; seen in a browser at 1280 and 360 pixels, the corner the same size before and after a hover |
 | Every function in every way: one catalog, `task do`, the REPL, `/api/catalog`, the map of functions | `task do`, `task functions:map` | **works**: tests; readings answered in the terminal over the real dataset |
 | The rest of the dataset in the api, MCP and the viewer: the work of Sejm, judgments, the lists of the source, the acts counted | `/api/sejm`, `/api/judgments`, `/api/lists`, `/api/statistics`; `task stats` | **works**: tests; headless browser over a copy of term 10 and two years |
 | Plots, and statistics with a playable history of the law | the viewer's tabs | **works**: headless browser, played |
@@ -89,7 +90,9 @@ State of 2026-11-13.
 | Function | Command | State |
 | -------- | ------- | ----- |
 | All checks | `task verify` | **works**, except the termui experiment (Q4) |
-| Checks on GitHub | `.github/workflows/checks.yml` | **built**: simulated locally; nothing pushed yet (Q2) |
+| Checks on GitHub | `.github/workflows/checks.yml` | **works**: on the gate of a pull request into master, the release, the bots |
+| Gate into master | `.github/workflows/gate.yml` | **built**: authors, verify, CodeQL, Snyk, OSSAR, then automerge; not run on GitHub yet (phase 26) |
+| Workflows from a terminal | `task github:run`, `github:gate`, `github:pending` | **built**: `gh` of the owner's account |
 | Hooks: Biome before a commit, conventional messages | git hooks | **works**: both refuse bad input (since 2026-11-13; before that they never blocked) |
 | Dependency updates | `.github/dependabot.yml` | **built**: active once it reaches `master` |
 | Bots' branches (Dependabot, Jarvis) | `.github/workflows/bots.yml`, `bots-land.yml` | **built**: active once they reach `master` |

@@ -1,8 +1,8 @@
 ---
 // NOTE: ow... alright then, cool that you consider coolify ^^
 // NOTE: this will be selfhosted best case for coolify, docker apps etc. - api mode also here
-import manifest from "../../app/manifest.json?url";
 import Viewer from "../../gui/index.vue";
+import { credits } from "../data/credits.ts";
 import { at, site } from "../data/site.ts";
 
 // built as static files into dist/web; the api (src/openapi) serves them next to /api,
@@ -20,7 +20,7 @@ const api = import.meta.env.PUBLIC_API ?? "";
 		<title>{site.name}</title>
 		<meta name="description" content={site.description}>
 		<meta name="theme-color" content={site.theme}>
-		<link rel="manifest" href={manifest}>
+		<link rel="manifest" href="/manifest.webmanifest">
 		<!-- the images of the project: scripts/devops/media/build.sh, in src/web/public -->
 		<link rel="icon" href="/favicon.ico" sizes="48x48">
 		<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -38,6 +38,6 @@ const api = import.meta.env.PUBLIC_API ?? "";
 		<meta name="twitter:card" content="summary_large_image">
 	</head>
 	<body>
-		<Viewer client:only="vue" api={api} />
+		<Viewer client:only="vue" api={api} credits={credits} />
 	</body>
 </html>

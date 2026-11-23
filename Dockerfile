@@ -7,10 +7,17 @@ COPY --chown=myuser package*.json ./
 
 # typescript is built here and libraries of hub are development dependencies, so all are installed;
 # scripts are skipped - browser is already in the image and git hooks have no use in it
-RUN npm ci --ignore-scripts --audit=false
+# --include=dev: the base image sets NODE_ENV=production, which would leave out the types
+RUN npm ci --include=dev --ignore-scripts --audit=false
 
 COPY --chown=myuser tsconfig.json astro.config.mjs ./
 COPY --chown=myuser src ./src
+# the language packs: the viewer bundles them (src/i18n/browser.ts), node reads them beside dist/
+COPY --chown=myuser resources/locales ./resources/locales
+# what the website reads at build (src/web/data/credits.ts): the authors and the links of
+# "Terms of use" - as in resources/configs/webapp-server/Dockerfile (phase 23)
+COPY --chown=myuser .github/AUTHORS ./.github/AUTHORS
+COPY --chown=myuser webpage/src/data/links.yaml ./webpage/src/data/links.yaml
 # typescript into dist/, website of src/web into dist/web
 RUN npm run build
 

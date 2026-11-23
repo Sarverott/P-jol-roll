@@ -5,7 +5,8 @@
 // the translations (src/i18n/dom.ts), code and data under translate="no" left as they are.
 //
 // NOTE: load it from links.yaml / sources.yaml / ways.yaml (LINKS, SOURCES, WAYS)
-// ANSWER: done - data/links.yaml, data/sources.yaml, data/ways.yaml, read at build (vite.config.mjs)
+// ANSWER: done - data/links.yaml, data/sources.yaml, data/ways.yaml, made into src/lists.json
+// before the build (scripts/state.mjs) and imported as plain JSON
 // NOTE: split that code into components!
 // ANSWER: done - components/: Intro, Languages, Idea, Sources, Ways, Progress, Links, LinkList;
 // Background draws the living background of p5.js behind them (phase 22)

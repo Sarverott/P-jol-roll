@@ -33,7 +33,12 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    `--no-verify`. When a batch is done, `dev/<name>` is merged into
    `development` with `--no-ff` (`task flow:land` does it and pushes). A confirmed member pushes `development`
    and its own `dev/<name>` freely (Q2, answered 2026-11-15); `master`, tags,
-   releases and repository settings are always asked for first.
+   releases and repository settings are always asked for first. The one way
+   into `master` without a person is the gate (`gate.yml`, phase 26): a pull
+   request `development` → `master` whose author is listed in `AUTHORS` of
+   `master` and which passes every check and scan (verify, CodeQL, Snyk,
+   OSSAR) merges itself and starts the release. The checks and scans run
+   there, not on every push; on this machine the pre-push hook checks.
    **The owner's edits** found in the working tree go first, as they are,
    one commit per change on `dev/Sarverott`, with a message saying how the
    agent understood them; then that branch is merged into `development`.
@@ -57,7 +62,12 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    runs the gathering and the checkup; an agent verifies with tests and a
    local copy of the API, and does not run them against the real source
    unless asked. Hosts and interfaces (api, MCP, website, extension) only
-   read `resources/`; none of them may start gathering.
+   read `resources/`; none of them may start gathering - except a host on
+   this machine started with `--allow-writing` (the desktop app, `task
+   serve -- --allow-writing`), which starts the writing functions of the
+   catalog as jobs, each after a person's yes (Q19, changelog phase 25).
+   A public host (the space, the container, the website) never does. An
+   agent does not start a job against the real source unless asked.
 5. **Nothing is sent to huggingface by an agent.** `resources/dataset`,
    `resources/space` and `resources/bucket` are filled locally; pushing and
    syncing them is Sett's move.
@@ -132,22 +142,23 @@ src/core/              the gatherer itself; everything below is its tree
   logging/             setup.ts: the one logger of every command (text or JSON lines, a file per run in logs/, syslog when asked) - import it first, then logRun(<command>)
   search/              typesense.ts: every act into Typesense (task search:index) and /api/search over every year
   catalog/             every function of the project once (procedures.ts), for every way it runs: the launcher, the REPL,
-                       task do, /api/catalog, the viewer; run.ts words into values and task arguments, map.ts the map of functions
+                       task do, /api/catalog, the viewer; run.ts words into values and task arguments, map.ts the map of functions,
+                       jobs.ts the writing ones run as jobs by a host on this machine (--allow-writing, Q19)
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
     dataset.ts         the rest of the dataset: work of Sejm, judgments, lists of the source, acts counted (task stats)
     diagram.ts         the ties of an act as one mermaid flowchart, for every interface
     embeddings.ts      the vectors of task embed, and a question as a vector of the same model (Ollama)
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
-src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too
+src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too; writing.ts /api/jobs, only with --allow-writing on this machine
 src/mcp/               MCP server for AI agents, read-only: server.ts and tools/ (a folder per tool); main.ts over stdio, /mcp of the api over http; client.ts
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
 src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map,
                        the rest of the dataset, plots, statistics with the history, settings; #acts, #act/DU/2026/1, #map, #data,
                        #plots, #statistics, #settings) and components/; assets/ what they share (state, route, ColorPick, graph,
-                       socket, settings, counting, webmcp); data/credits.js (AUTHORS and links for "Terms of use")
-src/web/               Astro website carrying the viewer (pages/), built into dist/web
+                       socket, settings, counting, webmcp); "Terms of use" gets AUTHORS and links as a prop (src/web/data/credits.ts)
+src/web/               Astro website carrying the viewer (pages/), built into dist/web; data/ read by node:fs at build (no ?raw imports)
 src/desktop/           Electron app: main.js puts together core (the api), window, loadingmodal, menus, hotkeys-shortcuts,
                        apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1), printing (print, PDF);
                        task desktop:check, no screen
@@ -177,7 +188,8 @@ resources/        .map.json lists huggingface repositories, their local sides ar
     space/          the demo space's Dockerfile and space.env: the release is a build argument, set by each release
     routing-proxy/, internal-dns/, llms-api-host/, log-collector/  settings of those services
     agentic-shell/  the image of the shell for agents (Q13: why it exists, in changelog phase 6)
-  locales/        language packs: EN-US.json (task i18n:collect) and the others (task i18n:translate), .index.json lists them, EN-US the default
+  locales/        language packs, a submodule - their gist is the source (phase 28): EN-US.json (task i18n:collect) and the others
+                  (task i18n:translate), .index.json lists them, EN-US the default; task i18n:pull / i18n:publish
   mediafiles/     the images of the project: the gist MEDIAFILES as a submodule; task resources:media makes
                   icons and og.jpg out of them into src/web/public (the webpage takes them too), docs/assets/images, src/firefox-ext/icons
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
@@ -193,12 +205,16 @@ docs/glossary/    words of the source and of the project, each with one meaning
 docs/.agents/     the agents' own domain (humans read only): NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
                   or was not verified - keep it current); point-of-view.md is personal
 docs/devlog/      the BOS devlog: VISION, ROADMAP, TODO, BRAINSTORM, ORDERS, INQUIRIES, PROPOSALS, scrapnotes
+                  (copied into the wiki, on GitHub as milestones, issues and a board - phase 28)
+docs/wiki/        the wiki of GitHub, a submodule: a copy of the devlog and the almanac made by task docs:wiki, never written by hand
 docs/almanac/     what was learnt the hard way: cataclistics/ (a case per page, an issue ready for GitHub), solutions/ (a topic
                   each), patterning/ and rulesets/ (JSON, as in BOS), faq.md; a solved problem gets its case here
 docs/changelog/   what happened per phase, the owner's words word for word, append-only
 .github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues, AUTHORS;
-                  bos.json (the loop as data), dependabot.yml, workflows/ (checks, bots, bots-land, release,
-                  copilot-setup-steps), copilot-instructions.md and prompts/ (Jarvis's guide)
+                  bos.json (the loop as data), dependabot.yml, workflows/ (gate - every check and scan of a
+                  pull request into master, then automerge; checks, codeql, snyk-security, ossar called by it;
+                  bots, bots-land, automerge, phase-close, release, devlog, copilot-setup-steps), copilot-instructions.md
+                  and prompts/ (Jarvis's guide); task github:* runs and follows them from a terminal
 .obsidian/        the repository is an Obsidian vault; plugins/ holds separate repositories
 ```
 
@@ -228,26 +244,29 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:media` | favicons, manifest icons, `og.jpg` and the extension icons made from `resources/mediafiles` (ffmpeg); committed |
-| `task resources:space` / `resources:space:refresh` | the space's Dockerfile from `resources/configs/space` into its local side / the space's variable `P_JOL_ROLL_VERSION` set to the newest release and the space built again (`HF_TOKEN`; the release workflow does it) |
+| `task resources:space` / `resources:space:refresh` | the space's files from `resources/configs/space` into its local side / its files from git when they differ, its variable `P_JOL_ROLL_VERSION` set to the newest release, built again and waited for (`HF_TOKEN`; the release workflow does it with the space's trusted publisher) |
 | `task almanac:recall -- hub:push` / `almanac:judge -- push dataset --actor agent` | cases that began with these events, with solutions / the verdict of the rulesets |
 | `task almanac:issues` / `almanac:issues:open -- <id>` | the cases with their issues / one opened on GitHub, closed when solved (the owner's) |
 | `task i18n:collect` / `task i18n:translate` | the English of the built pages into `resources/locales/EN-US.json` / the other packs by argostranslate |
+| `task i18n:pull` / `task i18n:publish -- "..."` | the packs from their gist (the submodule `resources/locales`) / the packs changed here committed and pushed there, the submodule staged |
 | `task resources:merge` | the directories sources had before phase 10 moved into the one dataset and bucket |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` / `prune` | take what is missing here / send what is new here / delete there what is not here (asks; never the bucket) |
 | `task unittesting:parrot-os` / `parrot-os-drive` | Parrot OS headless server in a container: case `-gather-and-parse` / `-bare-repo-on-drive` (privileged; needs Docker) |
-| `task flow:land -- "..."` / `flow:sync` | your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
-| `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow |
+| `task flow:land -- "..."` / `flow:sync` | every check (`task check`), then your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
+| `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow; its gate merges it when everything passes |
+| `task github:run -- <workflow>` / `github:gate -- <pr>` / `github:pending` / `github:checks -- <pr>` | a workflow started from here (on development; `--ref`, `-f key=value`) / the gate of a pull request into master again / runs waiting for approval (`-- --approve`) / the checks of a pull request - no website needed |
+| `task github:devlog` (`-- --dry`) / `task docs:wiki` | the devlog on GitHub: milestones of ROADMAP, an issue per phase, `Q<n>` and `PP<n>`, the board (the workflow `devlog.yml` does it but the board on each push of the devlog) / the devlog and the almanac copied into the wiki (submodule `docs/wiki`), pushed, the submodule staged |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
-| `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it) |
+| `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it); `task serve -- --allow-writing`: the viewer starts writing functions too, each after a yes (this machine only) |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
 | `task examples:build` / `examples:edit` | the Python examples run and exported into `site/examples/` / opened in marimo |
 | `task docs:build` / `docs:serve` | the website of the project into `site/` / live preview |
 | `task devlog:state` / `devlog:scrapnote` | where the project stands (the `bos` command) / a new scrapnote |
 | `task web:build` / `task desktop` | website into `dist/web` / Electron window around it |
-| `task check` (or `task verify`) | Biome, build (TypeScript and website), tests — the same in CI; run before a commit is reported done |
+| `task check` (or `task verify`) | Biome, build (TypeScript and website), tests — the same in CI; run before a commit is reported done, and by the pre-push hook |
 
 ## Conventions
 

@@ -1,0 +1,33 @@
+# The devlog brought into GitHub's own places (phase 28): when the plan or the changelog changes
+# on development, the milestones and the issues of phases, Q<n> and PP<n> follow it
+# (scripts/devops/github/devlog.py). The markdown stays the source. The board is a project of
+# the owner, which the workflow's token cannot reach: task github:devlog brings it from a
+# terminal.
+name: "devlog › milestones and issues from docs/devlog"
+
+on:
+  push:
+    branches: [development]
+    paths: [docs/devlog/**, docs/changelog/**]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: devlog
+  cancel-in-progress: false
+
+jobs:
+  issues:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0 } # the questions as they stood come from the history
+      - name: Milestones and issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/devops/github/devlog.py --no-board

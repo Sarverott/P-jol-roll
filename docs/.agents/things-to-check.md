@@ -6,9 +6,41 @@ point was added.
 
 ## Decisions for Sett
 
-- **2026-11-22. Q19 (BRAINSTORM).** May the desktop app or an api on
-  127.0.0.1 start writing functions (gather, text, map, push)? Rule 4 says
-  no host may; until it is answered they show disabled everywhere.
+- **2026-11-24. The devlog's board (phase 28) needs the gh scope
+  `project`.** The milestones and the 62 issues (#43-#104) are made, and
+  `devlog.yml` keeps them following the markdown. The board "P_JOL_ROLL
+  devlog" is a project of Sett's account, which the workflow's token cannot
+  reach and Cleo's gh may not either: `gh auth refresh -s project`, then
+  `task github:devlog` makes the board and fills it (Done, In Progress,
+  Todo). An issue edited by hand is overwritten by the next run.
+- **2026-11-24. The phases ahead (29-38, VISION)** are planned from Sett's
+  own words (Q17, Q18, PP4, the milestones), not ordered: each starts when
+  Sett says so. Phase 29 (deepseek-R1 and the embedder in Ollama, answering
+  with the acts it read) is the next by the plan.
+- **2026-11-24. The language packs are a submodule** (their gist). A clone
+  without `git submodule update --init resources/locales` (`task
+  i18n:pull`) does not build. A pack changed here reaches everyone only
+  after `task i18n:publish`.
+- **2026-11-24. The wiki is overwritten by `task docs:wiki`** (the pages
+  `Devlog*`, `Almanac*`, `_Sidebar`, and Home between its two markers).
+  Sett's own pages and `_Footer` are kept; a page written by hand under one
+  of those names is lost with the next copy.
+- **2026-11-22. The gate and the space, after the first whole loop (#42).**
+  The gate passed and merged #42 by itself; the release brought the space to
+  v0.24.2 and waited for it. Three things are still open. (1) The space's
+  trusted publisher gave a token, but Hugging Face refused it for setting
+  the variable, so `HF_TOKEN` did the rest - maybe the publisher's claims
+  (workflow `release.yml`, branch `master`?) or a token that may only push;
+  until that is clear, `HF_TOKEN` must stay. (2) Copilot did not answer the
+  three `@copilot` requests the workflow's bot wrote on #42: Jarvis takes
+  them from a person, it seems. (3) Snyk fails the gate on high findings
+  only (Sett's choice); 16 medium and low ones wait in the Security tab.
+- **2026-11-22. Jobs of writing functions (Q19, phase 25)** were tested
+  with `stats` on a copy of resources (tests/writing.test.ts), not with a
+  gathering against the source nor a push - those are Sett's to try, from
+  the desktop app or `task serve -- --allow-writing`. A job runs its task
+  with `--yes`: the viewer's dialog is the only yes the task's own prompt
+  gets.
 - **2026-11-22. The space's refresh needs the secret `HF_TOKEN`** in the
   repository (a token that may write to the space; settings are Sett's).
   Without it the release job says so and the space keeps what it has. The

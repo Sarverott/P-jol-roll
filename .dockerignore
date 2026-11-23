@@ -20,6 +20,10 @@ node_modules
 webpage
 dist
 
+# what the website reads at build (src/web/data/credits.ts), out of the directories above
+!.github/AUTHORS
+!webpage/src/data/links.yaml
+
 # gathered things come as a volume - only these two small files of resources go into image
 resources/*
 !resources/frontends.json

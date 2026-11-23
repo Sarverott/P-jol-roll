@@ -18,6 +18,8 @@ import type EdgeInterface from "./Edge.interface.js";
 import type FileRecordInterface from "./FileRecord.interface.js";
 import type FrontendInterface from "./Frontend.interface.js";
 import type GatherPlanInterface from "./GatherPlan.interface.js";
+import type HostInterface from "./Host.interface.js";
+import type JobInterface from "./Job.interface.js";
 import type JournalInterface from "./Journal.interface.js";
 import type JudgmentInterface from "./Judgment.interface.js";
 import type LawMapInterface from "./LawMap.interface.js";
@@ -111,4 +113,6 @@ export namespace LaunchingScope {
 export namespace CatalogScope {
 	export type Procedure = ProcedureInterface;
 	export type Parameter = ParameterInterface;
+	export type Job = JobInterface;
+	export type Host = HostInterface;
 }

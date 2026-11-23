@@ -242,3 +242,57 @@ The owner's inquiries and orders, 2026-11-22 (changelog phase 22).
 - [x] The desktop app prints the act from the window and the tray (Q17)
 - [x] The main webpage: a p5.js background with the logo, text kept readable
 - [x] The new words in every language pack; docs, almanac and AGENTS.md rows
+
+## Phase 23: the image builds again
+
+The owner's message, 2026-11-22 (changelog phase 23).
+
+- [x] No imports of a bundler's dialect (`?raw`, `?url`, yaml through a plugin): files read with `node:fs` at build, credits as a prop, the manifest an endpoint, the introduction's lists as JSON; the image carries what its build reads
+- [x] The almanac: the case of the image that did not build, its chain and its line in the topic
+
+## Phase 24: checks on what lands
+
+The owner's message, 2026-11-22 (changelog phase 24).
+
+- [x] The almanac case of phase 23 named the same on its page and in its chain, so the checks of #39 pass
+- [x] `task flow:land` runs every check on the commit that lands; the almanac case of checks run before the last change
+
+## Phase 25: checks before a push, writing functions behind a switch
+
+The owner's message and the answer to Q19, 2026-11-22 (changelog phase 25).
+
+- [x] The pre-push hook runs every check (`task check`) on what is pushed; a tree `task flow:land` checked is not checked twice
+- [x] Q19: the writing functions started by a host on this machine when it runs with `--allow-writing`; disabled everywhere else; rule 4 says so
+- [x] `task flow:land` refuses a summary too long for the merge message before it runs the checks, not after
+
+## Phase 26: one gate into master
+
+The owner's message, 2026-11-22 (changelog phase 26).
+
+- [x] The gate of a pull request into master: the author listed in `AUTHORS` of master, then verify, CodeQL, Snyk and OSSAR, Jarvis asked when one fails, automerge of `development` → `master` and the release started; the checks and scans off every push
+- [x] Workflows from a terminal: `task github:run`, `github:gate`, `github:pending`, `github:checks`, `github:workflows`; every scan can be dispatched
+- [x] phase-close starts the gate itself by a dispatch: runs of a pull request opened by the workflow's token wait for an approval on the website
+
+## Phase 27: the space by its trusted publisher, and waited for
+
+The owner's message, 2026-11-22 (changelog phase 27).
+
+- [x] The space's refresh: the trusted publisher's token (OIDC, `HF_TOKEN` the fallback), the space's files from git when they differ, the variable, a build, and waited for until the space serves the release
+- [x] What Snyk Code found high in the gate: no request's own words reach a file (journal, year, position, preset, ending taken from our side), the name of the settings in localStorage no longer looks like a secret
+- [x] Snyk fails the gate on high findings only, as the owner chose; medium and low reach the Security tab
+- [x] Snyk IaC scans where the infrastructure is (resources/services, resources/configs), not the editor JSON of .vscode; the root image builds again (locales, the members and links of "Terms of use", the types)
+
+## Phase 28: the host in its corner, the devlog on GitHub, the wiki and the packs
+
+The owner's message, 2026-11-24 (changelog phase 28).
+
+- [x] The host says what it is: `/api/host` (the release, the commit and the run that built it, where it runs, whether it writes), a corner of the viewer `v<release> · HF-demo-readonly-container` of one size always, the whole note on a hover or a touch, never wider than the screen and never under the pointer; the release gives the image its commit and run
+- [x] The phases ahead planned from the milestones: VISION, ROADMAP (M4 to phase 33, M5 to 38)
+- [x] The devlog on GitHub: the milestones of ROADMAP, an issue per phase, per `Q<n>` and per `PP<n>`, a project board - brought there by `task github:devlog`, the markdown the source
+- [x] The wiki a submodule (`docs/wiki`): a copy of the devlog and the almanac made by `task docs:wiki`, the files here staying
+- [x] The documentation without the devlog and the almanac: links to them in the wiki in its list of contents
+- [x] The language packs from their gist, a submodule at `resources/locales`: the source the project reads; checkouts and images take it
+- [x] Docs, the almanac's rows and AGENTS.md
+- [x] `devlog.yml` leaves the board out: the workflow's token lists the owner's projects but may not make one
+- [x] The Dependabot alerts of master (3 high, 1 medium, the MCP server SDK 2.0.0 under `@mcp-b/global`): `@mcp-b/global` 6.2.0, which takes the server 2.4.0
+- [x] What the gate of #105 found: `langpacks.sh` did not parse (an apostrophe inside `${...:?...}`); shellcheck run here too before landing

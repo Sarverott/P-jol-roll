@@ -30,3 +30,33 @@ tasks:
     desc: List open pull requests.
     cmds:
       - gh pr list
+
+  workflows:
+    desc: Every workflow of the repository, with its state (gh workflow list).
+    cmds:
+      - gh workflow list --all
+
+  run:
+    desc: 'Start a workflow from here: task github:run -- checks.yml (on development), task github:run -- release.yml --ref master, task github:run -- phase-close.yml -f phase=26'
+    cmds:
+      - scripts/devops/github/run.sh {{.CLI_ARGS}}
+
+  gate:
+    desc: 'The gate of a pull request into master again - authors, every check and scan, then automerge: task github:gate -- <number> (on its head branch)'
+    cmds:
+      - scripts/devops/github/gate.sh {{.CLI_ARGS}}
+
+  pending:
+    desc: 'Runs waiting for approval (action_required), and approved with -- --approve; the website is not needed'
+    cmds:
+      - scripts/devops/github/pending.sh {{.CLI_ARGS}}
+
+  checks:
+    desc: 'The checks of a pull request as GitHub shows them: task github:checks -- <number>'
+    cmds:
+      - gh pr checks {{.CLI_ARGS}}
+
+  devlog:
+    desc: 'The devlog on GitHub: milestones of ROADMAP, an issue per phase, Q<n> and PP<n>, the board (gh scope "project") - the markdown the source; "-- --dry" says what it would change'
+    cmds:
+      - python3 scripts/devops/github/devlog.py {{.CLI_ARGS}}

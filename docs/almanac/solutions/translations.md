@@ -8,6 +8,10 @@ here is what went wrong on the way.
   in jsdom.
 - Machine translation changes names: names, identifiers and named places
   stand in as numbers while the model works; a person reviews the rest.
+- The packs are a submodule since phase 28, their gist the source: a checkout
+  or an image without `git submodule update --init resources/locales` has no
+  packs - the break of [the image without packs](../cataclistics/container-missing-locales.md)
+  again - so every workflow that builds takes it, and `task init` names it.
 
 ## Cases
 

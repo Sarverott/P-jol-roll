@@ -86,14 +86,20 @@ passes the variables of a space to its build as build arguments, so a
 release sets that variable and asks for a fresh build:
 
 ```sh
-task resources:space               # once: the Dockerfile of resources/configs/space into resources/space
-task resources:push -- space       # once: that Dockerfile on the space
-task resources:space:refresh       # the variable set to the newest release, the space built again (HF_TOKEN)
+task resources:space               # the space's files of resources/configs/space into resources/space
+task resources:space:refresh       # its files from git when they differ, the variable, a fresh build, waited for (HF_TOKEN)
 ```
 
-The release workflow runs the last step by itself after the image is on
-ghcr.io, when the repository has the secret `HF_TOKEN`; without it the job
-says so and the space keeps what it has. `resources/configs/space/space.env`
+The release workflow runs the refresh by itself after the image is on
+ghcr.io. Since phase 27 it also brings the space's own files from git
+(`Dockerfile`, and `hub/README.md` as its `README.md`) when they differ,
+and waits until the space runs and its `/openapi.json` names the release -
+a build that fails, or takes more than 25 minutes, fails the release with
+Hugging Face's own message. Its token is the space's **trusted publisher**:
+the job has `id-token: write`, and GitHub's OIDC token is exchanged on
+`https://huggingface.co/oauth/token` for a token of this one space, valid an
+hour; no secret is kept for it. The secret `HF_TOKEN` stays the fallback.
+With neither the job says so and the space keeps what it has. `resources/configs/space/space.env`
 names the space and may pin a release; an environment variable wins over
 it (`P_JOL_ROLL_VERSION=0.18.0 task resources:space:refresh`).
 

@@ -5,7 +5,8 @@ The viewer's settings (screens/settingsPanel.vue): kept in this browser only (lo
 so each person keeps their own; a browser that refuses storage gets the defaults every time.
 */
 
-const KEY = "p-jol-roll:settings";
+// the name the settings are stored under in localStorage
+const STORED_AS = "p-jol-roll:settings";
 
 export const DEFAULTS = {
 	theme: "auto", // auto (as the system), light, dark - Bulma's data-theme
@@ -17,7 +18,7 @@ export const DEFAULTS = {
 
 function stored() {
 	try {
-		return JSON.parse(localStorage.getItem(KEY) ?? "{}");
+		return JSON.parse(localStorage.getItem(STORED_AS) ?? "{}");
 	} catch {
 		return {};
 	}
@@ -29,7 +30,7 @@ watch(
 	settings,
 	(now) => {
 		try {
-			localStorage.setItem(KEY, JSON.stringify(now));
+			localStorage.setItem(STORED_AS, JSON.stringify(now));
 		} catch {
 			// private windows and refused storage: the settings last as long as the page
 		}

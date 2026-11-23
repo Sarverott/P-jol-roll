@@ -1,7 +1,9 @@
 // The state of the project for the page, counted from the same files as the MkDocs hook
 // (docs/_mkdocs/project.py): phases of docs/devlog/TODO.md and marks of docs/guides/features.md,
-// with the version of package.json. Written to src/state.json, which the page imports.
+// with the version of package.json. Written to src/state.json, which the page imports; and the
+// lists of the page (src/data/*.yaml: links, sources, ways) into src/lists.json beside it.
 import { readFileSync, writeFileSync } from "node:fs";
+import { parse } from "yaml";
 
 const root = new URL("../../", import.meta.url);
 const read = (file) => readFileSync(new URL(file, root), "utf8");
@@ -38,4 +40,16 @@ writeFileSync(
 );
 console.log(
 	`state: v${version}, ${phases.length} phases, ${features.works} functions working`,
+);
+
+// the lists of the page, kept as yaml, handed to it as plain JSON
+const lists = Object.fromEntries(
+	["links", "sources", "ways"].map((name) => [
+		name,
+		parse(read(`webpage/src/data/${name}.yaml`)),
+	]),
+);
+writeFileSync(
+	new URL("../src/lists.json", import.meta.url),
+	`${JSON.stringify(lists, null, "\t")}\n`,
 );
