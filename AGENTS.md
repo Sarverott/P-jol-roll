@@ -205,13 +205,15 @@ docs/glossary/    words of the source and of the project, each with one meaning
 docs/.agents/     the agents' own domain (humans read only): NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
                   or was not verified - keep it current); point-of-view.md is personal
 docs/devlog/      the BOS devlog: VISION, ROADMAP, TODO, BRAINSTORM, ORDERS, INQUIRIES, PROPOSALS, scrapnotes
+                  (copied into the wiki, on GitHub as milestones, issues and a board - phase 28)
+docs/wiki/        the wiki of GitHub, a submodule: a copy of the devlog and the almanac made by task docs:wiki, never written by hand
 docs/almanac/     what was learnt the hard way: cataclistics/ (a case per page, an issue ready for GitHub), solutions/ (a topic
                   each), patterning/ and rulesets/ (JSON, as in BOS), faq.md; a solved problem gets its case here
 docs/changelog/   what happened per phase, the owner's words word for word, append-only
 .github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues, AUTHORS;
                   bos.json (the loop as data), dependabot.yml, workflows/ (gate - every check and scan of a
                   pull request into master, then automerge; checks, codeql, snyk-security, ossar called by it;
-                  bots, bots-land, automerge, phase-close, release, copilot-setup-steps), copilot-instructions.md
+                  bots, bots-land, automerge, phase-close, release, devlog, copilot-setup-steps), copilot-instructions.md
                   and prompts/ (Jarvis's guide); task github:* runs and follows them from a terminal
 .obsidian/        the repository is an Obsidian vault; plugins/ holds separate repositories
 ```
@@ -254,6 +256,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task flow:land -- "..."` / `flow:sync` | every check (`task check`), then your `dev/<name>` into `development`, both pushed / `origin`, `master` and your branch brought together |
 | `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow; its gate merges it when everything passes |
 | `task github:run -- <workflow>` / `github:gate -- <pr>` / `github:pending` / `github:checks -- <pr>` | a workflow started from here (on development; `--ref`, `-f key=value`) / the gate of a pull request into master again / runs waiting for approval (`-- --approve`) / the checks of a pull request - no website needed |
+| `task github:devlog` (`-- --dry`) / `task docs:wiki` | the devlog on GitHub: milestones of ROADMAP, an issue per phase, `Q<n>` and `PP<n>`, the board (the workflow `devlog.yml` does it but the board on each push of the devlog) / the devlog and the almanac copied into the wiki (submodule `docs/wiki`), pushed, the submodule staged |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it); `task serve -- --allow-writing`: the viewer starts writing functions too, each after a yes (this machine only) |
