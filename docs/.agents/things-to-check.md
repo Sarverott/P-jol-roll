@@ -6,6 +6,25 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. The devlog's board (phase 28) needs the gh scope
+  `project`.** The milestones and the 62 issues (#43-#104) are made, and
+  `devlog.yml` keeps them following the markdown. The board "P_JOL_ROLL
+  devlog" is a project of Sett's account, which the workflow's token cannot
+  reach and Cleo's gh may not either: `gh auth refresh -s project`, then
+  `task github:devlog` makes the board and fills it (Done, In Progress,
+  Todo). An issue edited by hand is overwritten by the next run.
+- **2026-11-24. The phases ahead (29-38, VISION)** are planned from Sett's
+  own words (Q17, Q18, PP4, the milestones), not ordered: each starts when
+  Sett says so. Phase 29 (deepseek-R1 and the embedder in Ollama, answering
+  with the acts it read) is the next by the plan.
+- **2026-11-24. The language packs are a submodule** (their gist). A clone
+  without `git submodule update --init resources/locales` (`task
+  i18n:pull`) does not build. A pack changed here reaches everyone only
+  after `task i18n:publish`.
+- **2026-11-24. The wiki is overwritten by `task docs:wiki`** (the pages
+  `Devlog*`, `Almanac*`, `_Sidebar`, and Home between its two markers).
+  Sett's own pages and `_Footer` are kept; a page written by hand under one
+  of those names is lost with the next copy.
 - **2026-11-22. The gate and the space, after the first whole loop (#42).**
   The gate passed and merged #42 by itself; the release brought the space to
   v0.24.2 and waited for it. Three things are still open. (1) The space's
