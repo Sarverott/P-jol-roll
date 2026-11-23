@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 # The website of the project: MkDocs over the markdown in this folder (config: mkdocs.yml, here).
-# From the repository root: task docs:serve, task docs:build, task docs:lock
+# From the repository root: task docs:serve, task docs:build, task docs:lock, task docs:wiki
 
 version: '3'
 
@@ -22,3 +22,8 @@ tasks:
     desc: After editing docs/pyproject.toml, refresh uv.lock
     dir: '{{.TASKFILE_DIR}}'
     cmds: [uv lock]
+
+  wiki:
+    desc: The devlog and the almanac copied into the wiki of GitHub (the submodule docs/wiki), pushed there, the submodule's commit staged - they are written here, the wiki only shows them
+    dir: '{{.TASKFILE_DIR}}/..'
+    cmds: [scripts/devops/docs/wiki.sh]
