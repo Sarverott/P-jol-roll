@@ -30,4 +30,4 @@ jobs:
       - name: Milestones and issues
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/devops/github/devlog.py
+        run: python3 scripts/devops/github/devlog.py --no-board

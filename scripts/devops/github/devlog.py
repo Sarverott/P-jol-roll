@@ -11,7 +11,9 @@ docs/devlog stays the source, and this writes it there again whenever it changed
                Progress when a phase has ticked items, Todo else. Projects need the gh scope
                "project" (gh auth refresh -s project); without it the board is skipped and said so.
 
-Usage: python3 devlog.py [--dry]      (task github:devlog; needs gh logged in)
+Usage: python3 devlog.py [--dry] [--no-board]   (task github:devlog; needs gh logged in)
+  --no-board   the issues and milestones only: the workflow's token cannot reach a project of
+               a user (devlog.yml), and may still list them
 """
 
 import json
@@ -28,6 +30,7 @@ BLOB = "https://github.com/Sarverott/P-jol-roll/blob/development/"
 WIKI = "https://github.com/Sarverott/P-jol-roll/wiki/"
 BOARD = "P_JOL_ROLL devlog"
 DRY = "--dry" in sys.argv
+NO_BOARD = "--no-board" in sys.argv
 LABELS = {
     "devlog": ("5319e7", "brought from docs/devlog by task github:devlog"),
     "phase": ("0e8a16", "a phase of TODO.md"),
@@ -313,7 +316,10 @@ def main():
             )
             cards.append((issue, "Todo" if is_open else "Done"))
 
-    sync_board(cards)
+    if NO_BOARD:
+        print("the board left out (--no-board): task github:devlog brings it from a terminal")
+    else:
+        sync_board(cards)
 
 
 if __name__ == "__main__":
