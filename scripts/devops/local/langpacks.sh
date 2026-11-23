@@ -15,7 +15,8 @@ case "${1:-pull}" in
     echo "$packs at $(git -C "$packs" log --oneline -1)"
     ;;
   publish)
-    shift; what="${*:?what changed in the packs, for the gist's commit}"
+    shift
+    what="${*:?what changed in the packs, for the commit in the gist}"
     if [ -z "$(git -C "$packs" status --porcelain)" ]; then
       echo "$packs: nothing changed"
     else
