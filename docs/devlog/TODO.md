@@ -291,6 +291,6 @@ The owner's message, 2026-11-24 (changelog phase 28).
 - [ ] The devlog on GitHub: the milestones of ROADMAP, an issue per phase, per `Q<n>` and per `PP<n>`, a project board - brought there by `task github:devlog`, the markdown the source
 - [ ] The wiki a submodule (`docs/wiki`): a copy of the devlog and the almanac made by `task docs:wiki`, the files here staying
 - [ ] The documentation without the devlog and the almanac: links to them in the wiki in its list of contents
-- [ ] The language packs from their gist, a submodule at `resources/locales`: the source the project reads; checkouts and images take it
+- [x] The language packs from their gist, a submodule at `resources/locales`: the source the project reads; checkouts and images take it
 - [ ] Docs, the almanac's rows and AGENTS.md
 

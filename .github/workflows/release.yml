@@ -63,6 +63,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with: { ref: "${{ needs.release.outputs.tag }}" }
+      # the language packs: a submodule, their gist (phase 28)
+      - run: git submodule update --init --depth 1 resources/locales
       - name: Build and push to ghcr.io
         env:
           GH_TOKEN: ${{ github.token }}
@@ -108,6 +110,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with: { ref: master }
+      # the language packs: a submodule, their gist (phase 28)
+      - run: git submodule update --init --depth 1 resources/locales
       - uses: astral-sh/setup-uv@v7
       - uses: actions/setup-node@v7
         with: { node-version-file: .nvmrc }

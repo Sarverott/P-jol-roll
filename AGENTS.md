@@ -188,7 +188,8 @@ resources/        .map.json lists huggingface repositories, their local sides ar
     space/          the demo space's Dockerfile and space.env: the release is a build argument, set by each release
     routing-proxy/, internal-dns/, llms-api-host/, log-collector/  settings of those services
     agentic-shell/  the image of the shell for agents (Q13: why it exists, in changelog phase 6)
-  locales/        language packs: EN-US.json (task i18n:collect) and the others (task i18n:translate), .index.json lists them, EN-US the default
+  locales/        language packs, a submodule - their gist is the source (phase 28): EN-US.json (task i18n:collect) and the others
+                  (task i18n:translate), .index.json lists them, EN-US the default; task i18n:pull / i18n:publish
   mediafiles/     the images of the project: the gist MEDIAFILES as a submodule; task resources:media makes
                   icons and og.jpg out of them into src/web/public (the webpage takes them too), docs/assets/images, src/firefox-ext/icons
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
@@ -245,6 +246,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task almanac:recall -- hub:push` / `almanac:judge -- push dataset --actor agent` | cases that began with these events, with solutions / the verdict of the rulesets |
 | `task almanac:issues` / `almanac:issues:open -- <id>` | the cases with their issues / one opened on GitHub, closed when solved (the owner's) |
 | `task i18n:collect` / `task i18n:translate` | the English of the built pages into `resources/locales/EN-US.json` / the other packs by argostranslate |
+| `task i18n:pull` / `task i18n:publish -- "..."` | the packs from their gist (the submodule `resources/locales`) / the packs changed here committed and pushed there, the submodule staged |
 | `task resources:merge` | the directories sources had before phase 10 moved into the one dataset and bucket |
 | `task resources:plan -- dataset` | what differs between local side and huggingface |
 | `task resources:pull -- dataset` / `push` / `prune` | take what is missing here / send what is new here / delete there what is not here (asks; never the bucket) |
