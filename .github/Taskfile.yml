@@ -55,3 +55,8 @@ tasks:
     desc: 'The checks of a pull request as GitHub shows them: task github:checks -- <number>'
     cmds:
       - gh pr checks {{.CLI_ARGS}}
+
+  devlog:
+    desc: 'The devlog on GitHub: milestones of ROADMAP, an issue per phase, Q<n> and PP<n>, the board (gh scope "project") - the markdown the source; "-- --dry" says what it would change'
+    cmds:
+      - python3 scripts/devops/github/devlog.py {{.CLI_ARGS}}

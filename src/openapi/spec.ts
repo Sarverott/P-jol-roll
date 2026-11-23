@@ -51,12 +51,41 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.24.2",
+		version: "0.25.0",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
 	},
 	paths: {
+		"/api/host": {
+			get: {
+				summary:
+					"what this host is: the release, the commit and the run that built it, where it runs, whether it writes",
+				responses: {
+					200: {
+						description: "the host",
+						content: {
+							"application/json": {
+								schema: {
+									type: "object",
+									properties: {
+										version: { type: "string" },
+										commit: { type: "string" },
+										run: { type: "string" },
+										container: { type: "boolean" },
+										production: { type: "boolean" },
+										huggingface: { type: "string" },
+										remote: { type: "boolean" },
+										writing: { type: "boolean" },
+										label: { type: "string" },
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
 		"/api/journals": {
 			get: {
 				summary: "journals with years gathered here",

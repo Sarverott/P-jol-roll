@@ -5,6 +5,9 @@
    so the website never says more than those two files.
 2. A relative link that leaves docs/ (../src/README.md, ../../.github/...) points
    at the file on GitHub, because the website holds only docs/.
+3. The devlog and the almanac are not published here (phase 28): a link to a page of
+   theirs points at its copy in the wiki (scripts/devops/docs/wiki.py names the pages the
+   same way), and a link to another file of theirs at the file on GitHub.
 """
 
 import posixpath
@@ -12,6 +15,9 @@ import re
 from pathlib import Path
 
 REPO = "https://github.com/Sarverott/P-jol-roll/blob/development/"
+WIKI = "https://github.com/Sarverott/P-jol-roll/wiki/"
+IN_WIKI = ("docs/devlog/", "docs/almanac/")
+NOT_IN_WIKI = ("docs/devlog/AGENTS.md", "docs/devlog/STATE.md")
 MARK = "<!-- state -->"
 
 PHASE = re.compile(r"^## Phase (\d+): (.+)$")
@@ -72,6 +78,14 @@ def state(docs: Path) -> str:
     )
 
 
+def wiki_page(path: str) -> str:
+    """docs/devlog/VISION.md -> Devlog-VISION, docs/almanac/README.md -> Almanac (as wiki.py)"""
+    parts = path.removeprefix("docs/").removesuffix(".md").split("/")
+    if parts[-1] == "README":
+        parts = parts[:-1]
+    return "-".join([parts[0].capitalize(), *parts[1:]])
+
+
 def on_page_markdown(markdown, page, config, files):
     docs = Path(config["docs_dir"])
     if MARK in markdown:
@@ -83,6 +97,10 @@ def on_page_markdown(markdown, page, config, files):
         target = match[1]
         path, _, anchor = target.partition("#")
         resolved = posixpath.normpath(posixpath.join("docs", here, path))
+        if resolved.startswith(IN_WIKI):
+            if resolved.endswith(".md") and resolved not in NOT_IN_WIKI:
+                return f"]({WIKI}{wiki_page(resolved)}{'#' + anchor if anchor else ''})"
+            return f"]({REPO}{resolved}{'#' + anchor if anchor else ''})"
         if resolved.startswith("docs/"):
             return match[0]
         return f"]({REPO}{resolved}{'#' + anchor if anchor else ''})"

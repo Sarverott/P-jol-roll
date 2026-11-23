@@ -30,10 +30,22 @@ scripts/devops/local/verify-push.sh --now || { echo "task check failed - nothing
 
 merge_driver
 git fetch -q origin
-git checkout -q development
-git merge -q --ff-only origin/development
-git merge --no-ff -m "$header" "$branch"
+if ! git merge-base --is-ancestor development origin/development; then
+  echo "development has commits origin does not - push or drop them first" >&2
+  exit 1
+fi
+git branch -f development origin/development
+if git merge-base --is-ancestor development "$branch"; then
+  # nothing new on development: the merge is the branch's own tree with both parents, made
+  # without leaving the branch - a checkout of development could collide with what changed
+  # its kind since (a directory become a submodule, phase 28)
+  merged=$(git commit-tree "$branch^{tree}" -p development -p "$branch" -m "$header")
+  git update-ref refs/heads/development "$merged"
+else
+  git checkout -q development
+  git merge --no-ff -m "$header" "$branch"
+  git checkout -q "$branch"
+fi
 git push -q origin development "$branch"
-git checkout -q "$branch"
 git merge -q --ff-only development
 echo "$branch landed in development, both pushed; $branch is at development again"

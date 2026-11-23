@@ -13,6 +13,10 @@
   approving them is the owner's.
 - The version is bumped in pre-commit, before the message is checked: a
   header over 100 characters leaves the bump behind.
+- The workflow's token reaches the issues and milestones of its repository,
+  never a project of a user: the devlog's board is brought from a terminal
+  (`task github:devlog`, gh with the scope `project`), the issues by
+  `devlog.yml` as well (phase 28).
 
 ## Cases
 
