@@ -26,6 +26,7 @@ text --pdf                           -> and from the text layer of PDFs of acts 
 
 map                                  -> the map of the whole law: every preset placed by ForceAtlas2 into dataset/map/
 map statutes-in-force                -> one preset (statutes-in-force, statutes, in-force)
+international                        -> the international agreements the journals published, into dataset/international/ (phase 42)
 analyse                              -> the code of law analysed: every act in force against its ties, into dataset/analysis/ (phase 36)
 stats                                -> the acts counted year by year, by type and status, into dataset/statistics/
 
@@ -36,6 +37,8 @@ sejm                                 -> work of Sejm: processes and prints of th
 sejm 9 10 --files --limit 50         -> these terms, with details of processes and files of prints
 sittings                             -> sittings of Sejm of the current term: who spoke on each day (phase 35)
 sittings 10 --files --limit 40       -> and the texts of the statements, 40 days and then 40 texts at most
+eu 2016 2024                         -> the law of the EU of these years: every act, its Polish title (phase 42)
+eu 2016 --texts --limit 50           -> and the Polish texts of acts in force, 50 at most
 saos --quality                       -> judgments SAOS dates after today or before 1918, counted (phase 41)
 saos 2024 2025 --limit 3             -> court judgments of these years, 3 months that are not here yet
 
@@ -56,12 +59,14 @@ const COMMANDS = [
 	"sejm",
 	"sittings",
 	"saos",
+	"eu",
 	"checkup",
 	"hub",
 	"map",
 	"search",
 	"stats",
 	"analyse",
+	"international",
 ];
 const [first = "", ...rest] = process.argv.slice(2);
 const command = COMMANDS.includes(first) ? first : "gather";
@@ -157,6 +162,17 @@ if (command === "map") {
 	await map(positionals.length ? positionals : undefined);
 }
 
+if (command === "international") {
+	const { international, agreementsPath } = await import(
+		"./methods/international.js"
+	);
+	const sum = await international();
+	log.info(
+		`international: ${sum.agreements} agreements and statements of the journals, into ${agreementsPath()}`,
+		sum.kinds,
+	);
+}
+
 if (command === "analyse") {
 	const { analyseAll, analysisPath } = await import("./methods/analyse.js");
 	const summary = await analyseAll();
@@ -221,6 +237,17 @@ if (command === "saos" && values.quality) {
 		years: positionals.map(Number),
 		limit: Number(values.limit ?? 3),
 		// not a server of the state - asked more slowly
+		rate: Number(values.rate ?? 30),
+	});
+}
+
+if (command === "eu") {
+	if (!positionals.length) throw new Error("eu needs years: eu 2016");
+	const { eu } = await import("./apihandlers/eu.js");
+	await eu({
+		years: positionals.map(Number),
+		texts: Boolean(values.texts),
+		limit: Number(values.limit ?? 20),
 		rate: Number(values.rate ?? 30),
 	});
 }

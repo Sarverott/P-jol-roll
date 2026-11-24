@@ -18,6 +18,8 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `act-text` the text of an act, as markdown |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/text` | `act_text` | – | – | – |
 | `act-ties` ties of an act to other acts, as a list or a mermaid flowchart |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/references` | `act_references` | – | – | – |
 | `analysis` the code of law analysed: findings over every act in force, or of one act |  | ✓ | `#act/DU/2026/1` | `GET /api/analysis, /api/acts/{journal}/{year}/{pos}/findings` | `analysis` | – | – | – |
+| `eu-law` the law of the EU: an act by its CELEX, or the acts of a year (phase 42) |  | ✓ | – | `GET /api/eu, /api/eu/{year}, /api/eu/act/{celex}` | `eu_law` | – | – | – |
+| `agreements` international agreements binding Poland, published in the journals (phase 42) |  | ✓ | – | `GET /api/agreements` | `agreements` | – | – | – |
 | `act-debates` an act in Sejm: the days its bill was read on, who said what |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/debates` | `act_debates` | – | – | – |
 | `search` words in titles and texts of every year (Typesense must run) |  | ✓ | `#acts` | `GET /api/search` | – | – | – | – |
 | `maps` maps of the whole law: the presets, and which are made |  | ✓ | `#map` | `GET /api/map` | – | – | – | – |
@@ -30,10 +32,12 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `gather:changes` acts changed since the previous such run, or since a day | ✎ | ✓ `task gather:changes` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- gather --since last` | – | `daily` |
 | `gather:everything` every journal, every year, every file - days of work | ✎ | ✓ `task gather:everything` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- gather --all --acts --limit 0` | – | – |
 | `sejm` work of Sejm: processes and prints of terms | ✎ | ✓ `task sejm` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- sejm` | – | – |
+| `eu` the law of the EU: every act of years, the Polish texts of those in force (phase 42) | ✎ | ✓ `task eu` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- eu` | – | – |
 | `sittings` sittings of Sejm: who spoke on each day, and what (phase 35) | ✎ | ✓ `task sittings` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- sittings` | – | – |
 | `saos` court judgments of SAOS, months of years | ✎ | ✓ `task saos` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- saos` | – | – |
 | `checkup` a browser visits the websites that show acts of a year | ✎ | ✓ `task checkup` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- checkup` | – | – |
 | **process what is gathered** | | |  |  |  |  |  |  |
+| `international` the international agreements the journals published, indexed (phase 42) | ✎ | ✓ `task international` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- international` | – | – |
 | `analyse` the code of law analysed: every act in force against its ties (phase 36) | ✎ | ✓ `task analyse` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- analyse` | – | – |
 | `seal` checksums of gathered files: write the missing, or check them all | ✎ | ✓ `task seal` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- seal` | – | `daily` |
 | `compile` tables of details and references from the raw files | ✎ | ✓ `task compile` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- compile` | – | `daily` |

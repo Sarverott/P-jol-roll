@@ -18,6 +18,8 @@ import type DailyPlanInterface from "./DailyPlan.interface.js";
 import type DebateInterface from "./Debate.interface.js";
 import type DifferenceInterface from "./Difference.interface.js";
 import type EdgeInterface from "./Edge.interface.js";
+import type EuActInterface from "./EuAct.interface.js";
+import type EuPlanInterface from "./EuPlan.interface.js";
 import type FileRecordInterface from "./FileRecord.interface.js";
 import type FindingInterface from "./Finding.interface.js";
 import type FrontendInterface from "./Frontend.interface.js";
@@ -84,6 +86,8 @@ export namespace GatheringScope {
 	export type Publisher = PublisherInterface;
 	export type SaosPlan = SaosPlanInterface;
 	export type ScanRecord = ScanRecordInterface;
+	export type EuAct = EuActInterface;
+	export type EuPlan = EuPlanInterface;
 	export type SejmPlan = SejmPlanInterface;
 	export type Sitting = SittingInterface;
 	export type SittingDay = SittingDayInterface;

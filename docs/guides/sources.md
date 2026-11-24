@@ -141,3 +141,27 @@ See [ideas](../.agents/ideas.md), "Other government sources in Poland": the
 open data portal, the court register, statistics and the national bank
 answer, and are data about the country and not law. They have no command
 yet.
+
+## The law of the European Union: `eu`
+
+The law of the EU binds Poland since 2004 (phase 42). Its acts come from the
+Publications Office of the EU: the lists from its SPARQL endpoint (CELLAR),
+the texts in Polish by content negotiation.
+
+```sh
+task eu -- 2016 2024                # every act of these years, their Polish titles
+task eu -- 2016 --texts --limit 50  # and the Polish texts of acts in force, 50 at most
+task international                  # the agreements the journals of the state published
+```
+
+| File | What it holds |
+| --- | --- |
+| `dataset/EU/acts/2024.jsonl` | an act per line: CELEX, date, kind (REG, DIR, DEC, REG_IMPL, CORRIGENDUM, ...), in force, Polish title, ELI |
+| `bucket/EU/2024/<CELEX>.xhtml` | its text in Polish, as the Office gives it (only acts in force, never a corrigendum) |
+| `dataset/international/agreements.jsonl` | the agreements, conventions, protocols, treaties, documents ending them and government statements of Dziennik Ustaw and Monitor Polski, from the listings here |
+
+The treaties (CELEX `1...`) and the secondary law (`3...`). 2024 holds 3,765
+acts, 2,310 of them in force (2026-11-24). Read them with MCP `eu_law` and
+`agreements`, `/api/eu/<year>`, `/api/eu/act/<CELEX>`, `/api/agreements`.
+How far international law goes - the CJEU, the ECtHR, the UN's treaties - is
+Q22.

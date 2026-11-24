@@ -47,6 +47,12 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **SPARQL of the EU's Publications Office** (phase 42): CELEX numbers
+  are typed literals (`xsd:string`), so `FILTER(?celex = "...")` finds
+  nothing - compare `STR(?celex)`; its answer is
+  `application/sparql-results+json`, which crawlee does not parse into
+  `json` - parse the body. A work has many expressions: `SAMPLE` and
+  `GROUP BY ?celex` keep one line per act.
 - **An API that answers 406 to the crawler** (phase 41): crawlee asks for
   HTML by default (`Accept: text/html,...`); SAOS refuses that with 406
   "unsupported media type", and the handler got `json` as null - `task

@@ -26,10 +26,16 @@ export async function crawl(
 	// seconds one answer may take: 30 by default; the Sejm's transcripts of a day take longer (phase 41)
 	// tolerate: a request that failed every retry is a warning, not the run's failure - when
 	// something else takes its place (the Sejm's day as a PDF)
+	// headers: what a walk asks for beyond the default (the EU's texts: XHTML in Polish, phase 42)
 	{
 		timeout = 30,
 		tolerate = false,
-	}: { timeout?: number; tolerate?: boolean } = {},
+		headers = {},
+	}: {
+		timeout?: number;
+		tolerate?: boolean;
+		headers?: Record<string, string>;
+	} = {},
 ) {
 	// a queue of its own: walks one after another in one process (the Sejm's days, then their
 	// PDFs; SAOS's months, then its misdated judgments) do not share what the first one left
@@ -50,6 +56,7 @@ export async function crawl(
 					gotOptions.headers = {
 						"user-agent": USER_AGENT,
 						accept: "application/json, */*;q=0.8",
+						...headers,
 					};
 				},
 			],

@@ -54,7 +54,15 @@ if (remote)
 		// a journal is letters only (DU, MP); anything else is not taken from Hugging Face
 		const named =
 			journal && /^[A-Za-z]{1,16}$/.test(journal) ? journal : undefined;
-		const OTHER = ["statistics", "lists", "sejm", "judgments", "analysis"];
+		const OTHER = [
+			"statistics",
+			"lists",
+			"sejm",
+			"judgments",
+			"analysis",
+			"eu",
+			"agreements",
+		];
 		const ready =
 			kind === "map"
 				? library.prepareMap(named)
@@ -241,6 +249,41 @@ routes.get(
 		response.json(dataset.findings(eliOf(request)));
 	},
 );
+
+// international law (phase 42): the EU's acts by year, one of them, the agreements of the journals
+routes.get("/api/eu", (_request, response) => {
+	response.json(dataset.euYears());
+});
+routes.get("/api/eu/act/:celex", async (request, response) => {
+	const act = await dataset.euAct(String(request.params.celex));
+	if (act) response.json(act);
+	else notHere(response);
+});
+routes.get("/api/eu/:year", async (request, response) => {
+	const year = Number(request.params.year);
+	const { q, offset, limit, inForce } = request.query;
+	await dataset.prepareDataset("eu", String(year));
+	response.json(
+		dataset.euActs(year, {
+			query: typeof q === "string" ? q : "",
+			offset: Number(offset) || 0,
+			limit: Number(limit) || 50,
+			inForce: inForce === "1",
+		}),
+	);
+});
+routes.get("/api/agreements", async (request, response) => {
+	const { q, type, offset, limit } = request.query;
+	await dataset.prepareDataset("agreements");
+	response.json(
+		dataset.agreements({
+			query: typeof q === "string" ? q : "",
+			type: typeof type === "string" ? type : "",
+			offset: Number(offset) || 0,
+			limit: Number(limit) || 50,
+		}),
+	);
+});
 
 // the analysis as a whole: how many findings of each kind, and a page of one kind
 routes.get("/api/analysis", (request, response) => {
