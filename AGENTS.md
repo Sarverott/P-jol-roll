@@ -189,7 +189,8 @@ stacks/                the other stacks, each in a place of its own (Q18): pytho
                        simulation bubble, proposals.py the improvements proposed (phase 36); go/ (phase 37) the decentralisation
                        circuits: cmd/pjolseed the torrents of the dataset and the bucket pointed to by IPFS (internal/torrent,
                        bencode, ipfs); cmd/pjolmesh the mirrors on WireGuard, balanced by Traefik (internal/mesh,
-                       phase 38) - stacks/go/README.md
+                       phase 38); lawchain/ the chain of the law (Cosmos SDK by Ignite, module x/law) and cmd/pjolchain
+                       the roots of task seal it records (internal/seal, phase 39) - stacks/go/README.md
 scripts/               install.sh, install.bat, the python push - scripts/README.md
   devops/              every step of the workflows as a .sh (pages, release, docs, flow, checks, media), local/ routines behind task flow:*
 logs/             a file per run: log-<Date.now()>-<log mode>-<command>.log (LOG_DIR, LOG_LEVEL), ignored by git
@@ -290,6 +291,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task mastermind:ask -- --escalate "..."` / `-- --hard "..."` | the advanced strategy (phase 34): a weak answer of the host's model goes on to `deepseek-ai/DeepSeek-R1-0528` through Inference Providers, on `HF_TOKEN` / straight there; `/api/ask?escalate=1` / `hard=1` |
 | `task torrents` (`-- -only dataset`, `-dry`) / `torrents:publish` | the dataset and the bucket as torrents with web seeds on Hugging Face, their IPFS directory (CIDs offline, `torrents.car`) in `resources/torrents/` (phase 37) / the owner's: put on IPFS by the node of compose (profile `ipfs`); `task go:check` the Go stack |
 | `task mirror:list` / `mirror:keys -- <mirror>` / `mirror:up -- <mirror>` / `mirror:down` | the mirrors of the law (phase 38, `resources/configs/mirrors/mirrors.yaml`) / this machine's WireGuard keys, the public one into the registry / its WireGuard and Traefik made, the profile `mirror` of compose up (site on :8095) / stopped; `task unittesting:mirrors` two mirrors with a real tunnel, in containers |
+| `task chain:build` / `chain:seal -- <key>` / `go:roots` | the chain of the law (phase 39): lawchaind built / the roots of the years sealed here recorded by this mirror (asks first) / the roots shown; `task unittesting:chain` a chain of one mirror for real; profile `chain` of compose a mirror's node |
 | `task analyse` | the code of law analysed (phase 36): every act in force against its ties - a basis repealed, a reference to a repealed act, a consolidated text due, a Tribunal's judgment not followed - into `dataset/analysis/`; local tables only |
 | `task python:simulate -- DU/1997/939` / `python:propose -- DU/1997/939` | the simulation bubble: invented people talk about an act in rounds, models of the host's Ollama (`resources/simulations/`) / improvements proposed by a model from the act, its findings, debates and simulations (`resources/proposals/`) - docs/guides/analysis.md |
 | `task python:check` / `python:law -- act DU/1918/2` | the Python stack (`stacks/python/`): ruff and pytest / the law through it (`tools`, `act`, `text`, `nearest`, `ask`) |

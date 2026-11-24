@@ -53,8 +53,22 @@ task mirror:up -- mazowieckie
 task unittesting:mirrors          # two mirrors, a real tunnel, Traefik - in containers
 ```
 
+## lawchain and pjolchain: the mirrors agree on the law
+
+Phase 39 - `lawchain/` is a Cosmos SDK chain (a module of its own, by
+Ignite) whose validators are the mirrors; each records the root of every
+year it sealed, and the chain answers the root two thirds agree on.
+`pjolchain roots` computes the roots here (`internal/seal`). The guide:
+`docs/guides/chain.md`; the chain: [lawchain/README.md](lawchain/README.md).
+
 ```bash
-task go:check     # gofmt, go vet, go test
+task go:roots -- -journal DU
+task chain:build
+task unittesting:chain
+```
+
+```bash
+task go:check     # gofmt, go vet, go test - lawchain's too
 ```
 
 | Package | What it does |
@@ -65,3 +79,6 @@ task go:check     # gofmt, go vet, go test
 | `internal/ipfs` | a UnixFS directory built in memory, its CIDs, its CAR |
 | `cmd/pjolmesh` | the command: keys, wireguard, traefik, mirror, list |
 | `internal/mesh` | the registry, WireGuard keys (X25519, as `wg genkey`), the configurations |
+| `cmd/pjolchain` | the roots of the years sealed here |
+| `internal/seal` | a year's root of the records of `task seal` |
+| `lawchain/` | the chain of the law, a Go module of its own: `x/law` its module |

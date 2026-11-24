@@ -76,6 +76,7 @@ in the country, as open source.
 | 36 | the code of law analysed (every act in force against its ties), the simulation bubble, improvements proposed - M4 closed |
 | 37 | the Go stack begins: the dataset and the bucket as torrents with web seeds on Hugging Face, pointed to by IPFS (CIDs offline, a CAR) |
 | 38 | mirrors of the law on a WireGuard network, balanced by Traefik: a registry of the sixteen voivodeships, `pjolmesh`, the profile `mirror` |
+| 39 | the chain of the law: a Cosmos SDK chain whose validators are the mirrors, agreeing on the roots of `task seal` |
 
 ### Phases ahead (planned in phase 28)
 
@@ -86,7 +87,6 @@ phases 29, 31 and 32).
 
 | Phase | Milestone | Idea |
 | ----- | --------- | ---- |
-| 39 | M5 | no centre: the mirrors agree on the law by Cosmos SDK, the checksums of `task seal` the shared truth |
 | 40 | M5 | the person's devices in the desktop app: printers, phones, FIDO keys for signing (Q17) |
 | 41 | M5 | off the grid: ESP32 boards as mesh nodes of the law (PP4, when decided) |
 
