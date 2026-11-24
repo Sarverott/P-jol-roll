@@ -10,6 +10,8 @@ resources/dataset
 
 # https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland
 resources/space
+# the conversations of the mastermind (phase 31): collected here, never pushed by themselves
+resources/conversations
 
 # the directories of other sources before phase 10 (task resources:merge moves them into
 # dataset/ and bucket/)

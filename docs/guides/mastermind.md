@@ -51,6 +51,42 @@ By hand: `docker compose --profile mastermind up -d`, and
 `-f compose.yaml -f resources/services/gpu.yaml` before `--profile` for the
 NVIDIA cards (the NVIDIA Container Toolkit is needed for them).
 
+## Ollama on its own drive
+
+The models are large and many, so the Ollama of this machine keeps them on
+a drive of their own: `OLLAMA_MODELS` in `.env` (the variable Ollama
+itself reads) names the directory.
+
+```bash
+task ollama:where        # where they are read from, and how many are there
+task ollama:serve        # the first start copies ~/.ollama/models there, then serves from there
+task ollama:copy         # the copy again: only what is missing, then checked
+```
+
+The old directory is never deleted by them. Stop the Ollama that runs
+first (`ss -ltnp | grep 11434` shows it). A drive whose root belongs to
+root needs its directory made once: `task ollama:serve` says the `sudo`
+line.
+
+## The conversations kept
+
+Every question is kept with everything said, so models and families can be
+compared:
+
+```text
+resources/conversations/<family>/<instance>/<UNIXUSAT>-<the question's first words>.json
+resources/conversations/deepseek/deepseek-r1-8b/1795498362594-czym-byla-rada-stanu-w-1918-roku.json
+```
+
+The family comes from `resources/configs/mastermind/families.yaml` (the
+models of one family act as one team: `gemma4`, `translategemma`,
+`embeddinggemma`, `shieldgemma`... are all `gemma`); the instance is the
+model with its size. A file holds the question, the answer, the reasoning,
+the acts cited, the tools called, how long it took and the whole exchange -
+the texts given and what the tools answered. The directory is ignored by
+git and pushed nowhere; `MASTERMIND_KEEP=0` keeps nothing. In compose it is
+the one directory the mastermind writes.
+
 ## Settings
 
 | Variable | Default | What it is |
@@ -74,4 +110,4 @@ A public host - the demo space - never asks a model, even with
 most of it thinking. It is the smallest voice of the plan: it now and then
 answers in English, slips a word of another script into Polish, or cites an
 act it did not open - which the check marks. The larger deepseek of phase
-32 is for the hard questions.
+33 is for the hard questions; the families of phase 31 are tried first.

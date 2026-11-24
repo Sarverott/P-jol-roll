@@ -68,25 +68,26 @@ in the country, as open source.
 | 28 | the host says what it is in a corner; the devlog on GitHub (milestones, issues, a board), copied into the wiki; the language packs from their gist |
 | 29 | what happened said by the workflows in the discussion of announcements (#107): steps, phases, milestones, the staging, releases |
 | 30 | the mastermind's first voice: deepseek-R1 answers a question with the acts it read through the MCP tools, each cited by its ELI; the host's Ollama for development, compose with Ollama and its models for other machines |
+| 31 | families of models as teams (gemma4 and its kin first, then ministral, llama, qwen, Bielik), Ollama's storage on its own drive, every conversation kept in `resources/conversations/` |
 
 ### Phases ahead (planned in phase 28)
 
 Planned from the owner's own words - the milestones, the law mastermind of
 Q18, the devices of Q17, PP4 - and not started: each begins when the owner
 says so, and its TODO items are written then. Numbers may move (one on in
-phase 29).
+phases 29 and 31).
 
 | Phase | Milestone | Idea |
 | ----- | --------- | ---- |
-| 31 | M4 | the executive agent: a small qwen in the agents' shell (an opencode host), reading the law through MCP, doing what a person gives it |
-| 32 | M4 | the advanced strategy: a deepseek hosted by Hugging Face for the hard questions; the Python stack of the models and simulations in a place of its own |
-| 33 | M4 | the work of Sejm as discussion: the records of sittings gathered from the Sejm API, who said what about which act |
-| 34 | M4 | social simulations offline (MiroFish or OASIS) of how a change of law meets people; the code of law analysed deeply, improvements proposed - M4 closes |
-| 35 | M5 | the dataset and the bucket as torrents pointed to by IPFS; the Go stack begins |
-| 36 | M5 | mirrors per voivodeship or district on a WireGuard network, balanced by Traefik |
-| 37 | M5 | no centre: the mirrors agree on the law by Cosmos SDK, the checksums of `task seal` the shared truth |
-| 38 | M5 | the person's devices in the desktop app: printers, phones, FIDO keys for signing (Q17) |
-| 39 | M5 | off the grid: ESP32 boards as mesh nodes of the law (PP4, when decided) |
+| 32 | M4 | the executive agent: a small qwen in the agents' shell (an opencode host), reading the law through MCP, doing what a person gives it |
+| 33 | M4 | the advanced strategy: a deepseek hosted by Hugging Face for the hard questions; the Python stack of the models and simulations in a place of its own |
+| 34 | M4 | the work of Sejm as discussion: the records of sittings gathered from the Sejm API, who said what about which act |
+| 35 | M4 | social simulations offline (MiroFish or OASIS) of how a change of law meets people; the code of law analysed deeply, improvements proposed - M4 closes |
+| 36 | M5 | the dataset and the bucket as torrents pointed to by IPFS; the Go stack begins |
+| 37 | M5 | mirrors per voivodeship or district on a WireGuard network, balanced by Traefik |
+| 38 | M5 | no centre: the mirrors agree on the law by Cosmos SDK, the checksums of `task seal` the shared truth |
+| 39 | M5 | the person's devices in the desktop app: printers, phones, FIDO keys for signing (Q17) |
+| 40 | M5 | off the grid: ESP32 boards as mesh nodes of the law (PP4, when decided) |
 
 ## The law mastermind (Q18, phase 22)
 

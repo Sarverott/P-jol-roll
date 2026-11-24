@@ -319,3 +319,13 @@ development, a compose setup for other machines.
 - [x] Compose for another machine: the profile `mastermind` - Ollama, its models pulled by a container, the api asking it; the GPU by `resources/services/gpu.yaml` where there is one
 - [x] Tests: the search by meaning, the rounds of the mastermind against a stand-in model
 - [x] Docs, the almanac's lines and AGENTS.md
+
+## Phase 31: families of models, Ollama on its own drive, conversations kept
+
+The owner's message, 2026-11-24 (changelog phase 31).
+
+- [x] The owner's words in the changelog; the phases planned ahead moved one number on
+- [x] Ollama's storage on its own drive: `OLLAMA_MODELS` in `.env`, the models of `~/.ollama/models` copied there, served from there (`task ollama:serve`)
+- [x] Every conversation of the mastermind kept: `resources/conversations/<family>/<instance>/<session>.json`, the whole exchange with the tools
+- [x] Docs, the almanac's lines and AGENTS.md
+- [ ] After the owner starts Ollama from the drive: the families as teams - gemma4 and its kin first (one answers, `functiongemma` calls the tools, `embeddinggemma` makes the vectors, `translategemma` translates, `shieldgemma` guards), then ministral, llama, qwen and Bielik; the same questions to each, their conversations compared

@@ -1,0 +1,21 @@
+# The families of models (phase 31, the owner's order: "all models from one familly acts as one
+# team"). A model belongs to the first family one of whose names begins its own name - the name
+# without who published it and without its tag: "SpeakLeash/bielik-11b-v2.2-instruct:Q4_K_M" is
+# "bielik-11b-v2.2-instruct", of the family bielik. A model of no family here is a family of its
+# own, named by its letters ("phi4" -> phi).
+# The conversations of the mastermind are kept by family: resources/conversations/<family>/.
+families:
+  gemma:
+    - gemma # gemma4, gemma3, gemma3n
+    - translategemma
+    - medgemma
+    - functiongemma
+    - embeddinggemma
+    - shieldgemma
+    - codegemma
+  deepseek: [deepseek]
+  qwen: [qwen, qwq]
+  llama: [llama, codellama]
+  mistral: [mistral, ministral, magistral, devstral, codestral, mixtral]
+  bielik: [bielik]
+  bge: [bge]

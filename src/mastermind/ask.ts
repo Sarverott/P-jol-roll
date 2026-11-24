@@ -1,6 +1,7 @@
 import type { Client } from "@modelcontextprotocol/client";
 import { OLLAMA_URL } from "../core/reading/embeddings.js";
 import type { MastermindScope } from "../core/vars/interfaces/index.js";
+import { keep } from "./record.js";
 
 /*
 The law mastermind's first voice (phase 30, Q18): a question in words answered by a model that
@@ -293,6 +294,7 @@ export async function ask(
 		config = settings(),
 	} = {},
 ): Promise<MastermindScope.Advice> {
+	const started = Date.now();
 	const { tools } = await client.listTools();
 	const steps: MastermindScope.Advice["steps"] = [];
 	const read = new Set<string>();
@@ -400,7 +402,7 @@ export async function ask(
 		last = await chat(config, messages, [], onToken);
 	}
 	const { answer, thinking } = split(last.content, last.thinking);
-	return {
+	const advice = {
 		question,
 		answer,
 		thinking,
@@ -411,5 +413,17 @@ export async function ask(
 		steps,
 		model: config.model,
 		rounds,
+		record: "",
 	};
+	// kept with everything it was given and said (record.ts); the key never
+	const { key: _key, ...settings } = config;
+	advice.record = keep(
+		advice,
+		[
+			...messages,
+			{ role: "assistant", content: last.content, thinking: last.thinking },
+		],
+		{ url: config.url, started, settings },
+	);
+	return advice;
 }
