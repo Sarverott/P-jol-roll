@@ -5,6 +5,11 @@ colorFrom: indigo
 colorTo: purple
 sdk: docker
 app_port: 7860
+# the demo's AI on the visitor's own token (phase 32): signing in with Hugging Face
+hf_oauth: true
+hf_oauth_expiration_minutes: 480
+hf_oauth_scopes:
+  - inference-api
 pinned: true
 license: cc-by-sa-4.0
 short_description: crawling across the entries, download them and read all laws

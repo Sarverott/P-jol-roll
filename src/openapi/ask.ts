@@ -1,17 +1,25 @@
 import { type Request, type Response, Router } from "express";
+import { teamOf } from "../mastermind/team.js";
+import { sessionOf, signingIn } from "./oauth.js";
 
 /*
-GET /api/ask?question=... - the law mastermind (phase 30, src/mastermind) answering through
-this api's own MCP tools. Only an api started with a mastermind (MASTERMIND_URL: the service
-"mastermind" of compose, or task serve with it set) answers; elsewhere 503 says so. A public
-host never asks one (SPACE_ID of Hugging Face): a model's time is not given away. One question
-at a time: another while one runs gets 429.
+GET /api/ask?question=... - the law mastermind (src/mastermind) answering through this api's
+own MCP tools.
+  an api started with a mastermind (MASTERMIND_URL: compose's "mastermind", or task serve with
+  it set) asks that model, one question at a time
+  the demo space (phase 32) asks on the visitor's own Hugging Face token, once signed in
+  (oauth.ts): the model through Inference Providers - DEMO_MODEL, google/gemma-4-26B-A4B-it by
+  default - so the space gives no model's time away; one question at a time per visitor, four
+  at once in all; a visitor's conversation is not kept
+Anywhere else 503 says how to have one; a visitor not signed in gets 401 and where to sign in.
 */
 
+const onSpace = () => Boolean(process.env.SPACE_ID);
 export const askEnabled = () =>
-	Boolean(process.env.MASTERMIND_URL) && !process.env.SPACE_ID;
+	onSpace() ? signingIn() : Boolean(process.env.MASTERMIND_URL);
 
-let busy = false;
+const busy = new Set<string>();
+const AT_ONCE = () => (onSpace() ? 4 : 1);
 
 export const askRoutes = Router();
 
@@ -19,8 +27,17 @@ askRoutes.get("/api/ask", async (request: Request, response: Response) => {
 	const question = String(request.query.question ?? "").trim();
 	if (!askEnabled()) {
 		response.status(503).json({
-			error:
-				"no mastermind on this host: an api started with MASTERMIND_URL (docker compose --profile mastermind up -d, or task mastermind:ask from a terminal)",
+			error: onSpace()
+				? "this space has no signing in with Hugging Face (hf_oauth in its card)"
+				: "no mastermind on this host: an api started with MASTERMIND_URL (docker compose --profile mastermind up -d, or task mastermind:ask from a terminal)",
+		});
+		return;
+	}
+	const session = onSpace() ? sessionOf(request) : undefined;
+	if (onSpace() && !session) {
+		response.status(401).json({
+			error: "sign in with Hugging Face: the answer runs on your own account",
+			login: "/login?back=/%23ask",
 		});
 		return;
 	}
@@ -30,24 +47,61 @@ askRoutes.get("/api/ask", async (request: Request, response: Response) => {
 			.json({ error: "a question of 1 to 2000 characters: ?question=..." });
 		return;
 	}
-	if (busy) {
-		response
-			.status(429)
-			.json({ error: "the mastermind is answering another question" });
+	const who = session?.id ?? "here";
+	if (busy.has(who) || busy.size >= AT_ONCE()) {
+		response.status(429).json({
+			error: busy.has(who)
+				? "your previous question is still being answered"
+				: "the mastermind is answering others - try again in a minute",
+		});
 		return;
 	}
-	busy = true;
+	busy.add(who);
 	const { connect } = await import("../mcp/client.js");
-	const { ask } = await import("../mastermind/ask.js");
+	const { ask, settings } = await import("../mastermind/ask.js");
+	const self = `http://127.0.0.1:${request.socket.localPort}/mcp`;
 	const client = await connect(
-		`http://127.0.0.1:${request.socket.localPort}/mcp`,
+		self,
+		session ? { authorization: `Bearer ${session.token}` } : undefined,
 	);
 	try {
-		response.json(await ask(question, client));
+		const base = settings();
+		response.json(
+			await ask(question, client, {
+				keep: !session,
+				config: session
+					? {
+							...base,
+							team: undefined,
+							url: process.env.DEMO_URL || "https://router.huggingface.co/v1",
+							model: process.env.DEMO_MODEL || "google/gemma-4-26B-A4B-it",
+							key: session.token,
+						}
+					: base,
+			}),
+		);
 	} catch (error) {
-		response.status(502).json({ error: (error as Error).message });
+		// never the token: only what the model's api said
+		response.status(502).json({
+			error: (error as Error).message.replaceAll(session?.token ?? "\0", "***"),
+		});
 	} finally {
-		busy = false;
+		busy.delete(who);
 		await client.close();
 	}
+});
+
+// whether this host answers questions, and how (the viewer's chat asks it first)
+askRoutes.get("/api/ask/about", (_request: Request, response: Response) => {
+	response.json({
+		answers: askEnabled(),
+		signIn: onSpace() && signingIn(),
+		model: onSpace()
+			? process.env.DEMO_MODEL || "google/gemma-4-26B-A4B-it"
+			: process.env.MASTERMIND_URL
+				? process.env.MASTERMIND_MODEL ||
+					teamOf(process.env.MASTERMIND_TEAM)?.answer ||
+					"deepseek-r1:8b"
+				: "",
+	});
 });
