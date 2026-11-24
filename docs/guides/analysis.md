@@ -3,7 +3,7 @@
 Phase 36 (the owner's plan in
 [Q18](https://github.com/Sarverott/P-jol-roll/wiki/Devlog-VISION)): the
 code of law analysed deeply, how a change of law meets people simulated
-offline, and improvements proposed. **Not legal advice**: what the data
+offline, and improvements proposed. **Not (formally) legal advices**: what the data
 says, and what models make of it.
 
 ## The analysis: every act in force against its ties

@@ -48,6 +48,13 @@ jobs:
       - uses: astral-sh/setup-uv@v7
       - name: The Python stack (stacks/python/)
         run: task python:check
+      # the Go stack of the decentralisation circuits (phase 37): gofmt, vet, tests
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: stacks/go/go.mod
+          cache-dependency-path: stacks/go/go.sum
+      - name: The Go stack (stacks/go/)
+        run: task go:check
       - name: The introduction page (webpage/)
         run: npm ci --prefix webpage --no-audit --no-fund && npm run --prefix webpage build
 

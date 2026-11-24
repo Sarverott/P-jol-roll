@@ -1,0 +1,22 @@
+# ipfs: an IPFS node (kubo) for the torrents of the dataset and the bucket (phase 37). Started by
+# the owner when they are to be put on IPFS - that is publishing, as pushing to Hugging Face is:
+#   task torrents                 the torrents and torrents.car made here, offline (stacks/go)
+#   task torrents:publish         this node started, torrents.car imported and pinned
+#   docker compose --profile ipfs up -d ipfs
+# Its repository (keys, blocks) stays in resources/.containerdatavol/ipfs/. The api and the
+# gateway listen on this machine only; the swarm port is what lets other nodes reach it.
+services:
+  ipfs:
+    profiles: [ipfs]
+    image: ipfs/kubo:v0.39.0
+    environment:
+      IPFS_PROFILE: server
+    volumes:
+      - ./resources/.containerdatavol/ipfs:/data/ipfs
+      - ./resources/torrents:/torrents:ro
+    ports:
+      - "4001:4001"
+      - "4001:4001/udp"
+      - "127.0.0.1:5001:5001"
+      - "127.0.0.1:8088:8080"
+    restart: unless-stopped

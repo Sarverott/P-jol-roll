@@ -99,7 +99,7 @@ const lines = computed(() =>
 			<span translate="no">{{ advice.model }}</span>,
 			{{ advice.steps?.length ?? 0 }} tool calls<template v-if="advice.guard"
 				>, guard: {{ advice.guard.verdict }}</template
-			>. Not legal advice.
+			>. Not (formally) legal advices.
 		</p>
 	</div>
 </template>

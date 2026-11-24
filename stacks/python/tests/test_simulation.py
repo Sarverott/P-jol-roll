@@ -26,7 +26,7 @@ class StandIn(BaseHTTPRequestHandler):
         asked.append(body)
         system, user = body["messages"][0]["content"], body["messages"][1]["content"]
         if "legislatorem" in system:
-            content = "## Art. 1\nProblem i propozycja. To nie jest porada prawna."
+            content = "## Art. 1\nProblem i propozycja. Nie jest to (formalnie) porada prawna."
         elif "Halina" in system:
             # she changes her mind in the second round, thinking first and fencing the JSON
             stance = "przeciw" if "Dyskusja dotąd" in user else "za"
@@ -95,7 +95,7 @@ def test_improvements_proposed_from_the_act_and_its_simulation(model):
     assert "Ustawa o Radzie Stanu" in given
     assert "Głosy z symulacji" in given and "Halina (przeciw)" in given
     kept = Path(done["record"]).read_text(encoding="utf-8")
-    assert "Not legal advice." in kept and "1 simulation(s)" in kept
+    assert "Not (formally) legal advices." in kept and "1 simulation(s)" in kept
 
 
 def test_not_an_eli_is_refused(model):

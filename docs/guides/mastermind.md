@@ -4,7 +4,7 @@ The first voice of the law mastermind (phase 30; the owner's plan in
 [Q18](https://github.com/Sarverott/P-jol-roll/wiki/Devlog-VISION)): a
 question in words, answered by a model that reads the acts through the
 project's own MCP tools and cites every act it leans on by its ELI.
-**Not legal advice**: a devil's advocate everyone can afford.
+**Not (formally) legal advices**: a devil's advocate everyone can afford.
 
 ## How it answers
 

@@ -60,7 +60,7 @@ export const spec = {
 		"/api/ask": {
 			get: {
 				summary:
-					"a question answered by the law mastermind from the acts it read through the MCP tools, each cited by its ELI - an api started with MASTERMIND_URL, or the demo space on the signed-in visitor's own Hugging Face token (401 until then); not legal advice",
+					"a question answered by the law mastermind from the acts it read through the MCP tools, each cited by its ELI - an api started with MASTERMIND_URL, or the demo space on the signed-in visitor's own Hugging Face token (401 until then); not (formally) legal advices",
 				parameters: [
 					{
 						name: "question",

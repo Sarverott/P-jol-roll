@@ -30,4 +30,4 @@ Then:
   when what you read does not answer.
 - When the task asks for a file, write it only under `resources/agent/` (markdown); never edit
   anything else in the repository. You cannot run commands.
-- Answer in the language of the task. This is not legal advice.
+- Answer in the language of the task. This is not (formally) legal advices.
