@@ -1,0 +1,21 @@
+# https://taskfile.dev
+
+version: '3'
+
+# The Go stack of the decentralisation circuits (phase 37): stacks/go, a module of its own -
+# README.md there. pjolseed makes the torrents of the dataset and the bucket and their IPFS
+# directory, offline.
+tasks:
+  check:
+    desc: 'The Go stack checked: gofmt, go vet, go test (the CIDs against what kubo gives)'
+    dir: '{{.ROOT_DIR}}/stacks/go'
+    cmds:
+      - 'test -z "$(gofmt -l .)" || (gofmt -l . && echo "not formatted by gofmt, the files above" && exit 1)'
+      - go vet ./...
+      - go test ./...
+
+  torrents:
+    desc: 'The dataset and the bucket as torrents with web seeds on Hugging Face, and their IPFS directory (CIDs, torrents.car), into resources/torrents/ - task go:torrents -- -only dataset / -dry / -limit 5; offline, nothing published'
+    dir: '{{.ROOT_DIR}}/stacks/go'
+    cmds:
+      - go run ./cmd/pjolseed torrents -resources {{.ROOT_DIR}}/resources {{.CLI_ARGS}}
