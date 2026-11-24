@@ -1,4 +1,5 @@
 import * as dataset from "../reading/dataset.js";
+import { nearest } from "../reading/embeddings.js";
 import * as library from "../reading/library.js";
 import type { CatalogScope } from "../vars/interfaces/index.js";
 import type { CatalogScope as CatalogTypes } from "../vars/types/index.js";
@@ -96,6 +97,31 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 			api: "GET /api/acts/{journal}/{year}",
 			mcp: "search_acts",
 		},
+	},
+	{
+		name: "meaning",
+		group: "read",
+		title:
+			"acts of every year nearest in meaning to a question (the vectors of task embed, Ollama)",
+		params: [
+			{
+				name: "question",
+				title: "the question, in any language",
+				kind: "text",
+				required: true,
+			},
+			{ ...journal, choices: ["", "DU", "MP"], default: "" },
+			limit(50, 10),
+		],
+		writes: false,
+		read: async (values) =>
+			(
+				await nearest(text(values, "question"), {
+					journal: text(values, "journal"),
+					limit: number(values, "limit"),
+				})
+			)?.map((one) => ({ ...one, title: library.find(one.ELI)?.title })),
+		ways: { mcp: "search_meaning" },
 	},
 	{
 		name: "act",

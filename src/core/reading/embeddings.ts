@@ -78,3 +78,82 @@ export async function questionVector(
 		return undefined;
 	}
 }
+
+// the years that have vectors: "DU/1918", ...
+export function embeddedYears(): string[] {
+	const model = embeddingModel();
+	if (!model) return [];
+	return readdirSync(model.folder, { withFileTypes: true })
+		.filter((entry) => entry.isDirectory())
+		.flatMap((journal) =>
+			readdirSync(join(model.folder, journal.name))
+				.filter((name) => /^\d{4}\.parquet$/.test(name))
+				.map((name) => `${journal.name}/${name.slice(0, 4)}`),
+		)
+		.sort();
+}
+
+/*
+The vectors of a year read once per process, kept small: one matrix of int8 per year (each
+normalized vector times 127), a quarter of float32 and enough to rank by - every year at once
+as numbers of JavaScript would not fit the heap of the api (phase 30).
+*/
+type Year = { elis: string[]; matrix: Int8Array; size: number };
+const read = new Map<string, Promise<Year>>();
+const cached = (journal: string, year: number) => {
+	const key = `${journal}/${year}`;
+	if (!read.has(key))
+		read.set(
+			key,
+			vectorsOf(journal, year).then((vectors) => {
+				const elis = [...vectors.keys()];
+				const size = vectors.values().next().value?.length ?? 0;
+				const matrix = new Int8Array(elis.length * size);
+				elis.forEach((eli, row) => {
+					const vector = vectors.get(eli) as number[];
+					for (let i = 0; i < size; i++)
+						matrix[row * size + i] = Math.round(
+							Math.max(-1, Math.min(1, vector[i])) * 127,
+						);
+				});
+				return { elis, matrix, size };
+			}),
+		);
+	return read.get(key) as Promise<Year>;
+};
+
+/*
+The acts nearest to a question by meaning (phase 30, the mastermind finds what to read by it):
+the question a vector of the same model, compared with the vector of every act of every year
+that has them (a dot product: the vectors are normalized). Undefined without vectors here or
+without Ollama to make the question one.
+*/
+export async function nearest(
+	question: string,
+	{ journal = "", limit = 10 } = {},
+): Promise<{ ELI: string; score: number }[] | undefined> {
+	const years = embeddedYears().filter(
+		(one) => !journal || one.startsWith(`${journal}/`),
+	);
+	if (!years.length) return undefined;
+	const wanted = await questionVector(question);
+	if (!wanted) return undefined;
+	const best: { ELI: string; score: number }[] = [];
+	for (const one of years) {
+		const [name, year] = one.split("/");
+		const { elis, matrix, size } = await cached(name, Number(year));
+		for (let row = 0; row < elis.length; row++) {
+			const ELI = elis[row];
+			let score = 0;
+			for (let i = 0; i < size; i++)
+				score += wanted[i] * matrix[row * size + i];
+			score /= 127;
+			if (best.length < limit || score > best[best.length - 1].score) {
+				best.push({ ELI, score: Math.round(score * 1000) / 1000 });
+				best.sort((a, b) => b.score - a.score);
+				best.length = Math.min(best.length, limit);
+			}
+		}
+	}
+	return best;
+}

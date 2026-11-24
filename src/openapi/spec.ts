@@ -51,12 +51,36 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.26.0",
+		version: "0.27.0",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
 	},
 	paths: {
+		"/api/ask": {
+			get: {
+				summary:
+					"a question answered by the law mastermind from the acts it read through the MCP tools, each cited by its ELI - only an api started with MASTERMIND_URL; not legal advice",
+				parameters: [
+					{
+						name: "question",
+						in: "query",
+						required: true,
+						schema: { type: "string", maxLength: 2000 },
+					},
+				],
+				responses: {
+					200: {
+						description:
+							"the answer, the reasoning, the acts cited (read: whether a tool gave it) and the tools called",
+					},
+					400: { description: "no question, or a too long one" },
+					429: { description: "another question is being answered" },
+					502: { description: "the model did not answer" },
+					503: { description: "no mastermind on this host" },
+				},
+			},
+		},
 		"/api/host": {
 			get: {
 				summary:
