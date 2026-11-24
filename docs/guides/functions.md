@@ -50,6 +50,7 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `resources:push` send what is new here to Hugging Face (HF_TOKEN) | ✎ | ✓ `task resources:push` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- hub push` | – | `daily, after a yes` |
 | `resources:space:refresh` the demo space set to the newest release and built again | ✎ | ✓ `task resources:space:refresh` | local, after a yes | `POST /api/jobs` (local) | – | – | – | `release` |
 | `torrents` the dataset and the bucket as torrents, with their IPFS directory, made here (phase 37) | ✎ | ✓ `task torrents` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
+| `mirror:up` this machine as a mirror of the law: WireGuard, the api, Traefik (phase 38) | ✎ | ✓ `task mirror:up` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
 | `torrents:publish` the torrents put on IPFS: the node of compose started, imported, pinned | ✎ | ✓ `task torrents:publish` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
 | **the project itself** | | |  |  |  |  |  |  |
 | `init` first launch on this machine: tools, .env, secrets | ✎ | ✓ `task init` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |

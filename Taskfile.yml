@@ -166,6 +166,30 @@ tasks:
     cmds:
       - task: go:torrents
 
+  mirror:list:
+    desc: 'The mirrors of the law (phase 38): their addresses on the network, which are on it (resources/configs/mirrors/mirrors.yaml)'
+    cmds:
+      - task: go:mesh
+        vars: { CLI_ARGS: list }
+
+  mirror:keys:
+    desc: 'This machine''s WireGuard keys as a mirror - task mirror:keys -- mazowieckie; the private key stays in resources/secrets/wireguard/, the public one is written into the registry: commit it'
+    cmds:
+      - task: go:mesh
+        vars: { CLI_ARGS: 'keys {{.CLI_ARGS}}' }
+
+  mirror:up:
+    desc: 'This machine as a mirror of the law - task mirror:up -- mazowieckie: its keys (once), its WireGuard and Traefik made from the registry, then the profile mirror of compose up; the site on 127.0.0.1:8095'
+    cmds:
+      - task: go:mesh
+        vars: { CLI_ARGS: 'mirror {{.CLI_ARGS}}' }
+      - docker compose --profile mirror up -d --build
+
+  mirror:down:
+    desc: 'The mirror of this machine stopped'
+    cmds:
+      - docker compose --profile mirror down
+
   torrents:publish:
     desc: 'The torrents put on IPFS - the owner''s move, it publishes: the IPFS node of compose (profile ipfs) started, torrents.car imported and pinned (asks first)'
     interactive: true
