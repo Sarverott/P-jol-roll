@@ -191,7 +191,8 @@ src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 stacks/                the other stacks, each in a place of its own (Q18): python/ (phase 34) the models and simulations, a uv
                        project reading the law through the MCP tools (Law) and asking /api/ask (Mastermind); simulation.py the
-                       simulation bubble, proposals.py the improvements proposed (phase 36); go/ (phase 37) the decentralisation
+                       simulation bubble, proposals.py the improvements proposed (phase 36), transparency.py the declaration of
+                       transparency - offices, their places, the state's networks (phase 44); go/ (phase 37) the decentralisation
                        circuits: cmd/pjolseed the torrents of the dataset and the bucket pointed to by IPFS (internal/torrent,
                        bencode, ipfs); cmd/pjolmesh the mirrors on WireGuard, balanced by Traefik (internal/mesh,
                        phase 38); lawchain/ the chain of the law (Cosmos SDK by Ignite, module x/law) and cmd/pjolchain
@@ -302,6 +303,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task sign:verify -- act.pdf` | a file signed with a FIDO key by the desktop app (phase 40) checked against its `.sig.json`, offline (`src/core/signing/`) |
 | `task analyse` | the code of law analysed (phase 36): every act in force against its ties - a basis repealed, a reference to a repealed act, a consolidated text due, a Tribunal's judgment not followed - into `dataset/analysis/`; local tables only |
 | `task python:simulate -- DU/1997/939` / `python:propose -- DU/1997/939` | the simulation bubble: invented people talk about an act in rounds, models of the host's Ollama (`resources/simulations/`) / improvements proposed by a model from the act, its findings, debates and simulations (`resources/proposals/`) - docs/guides/analysis.md |
+| `task python:offices` / `python:geocode -- --limit 3000` / `python:networks` | the declaration of transparency (phase 44): the public offices' official contacts from dane.gov.pl / their places from Nominatim, cached / the state's networks in RIPE - docs/guides/transparency.md |
 | `task python:check` / `python:law -- act DU/1918/2` | the Python stack (`stacks/python/`): ruff and pytest / the law through it (`tools`, `act`, `text`, `nearest`, `ask`) |
 | `task ollama:serve` / `ollama:copy` / `ollama:where` | the Ollama of this machine from its own drive (`OLLAMA_MODELS` of `.env`): the models of `~/.ollama/models` copied there first, then served / copied again, checked / where they are |
 | `task mastermind:ask -- "..."` / `mastermind:up` / `mastermind:down` | a question to the law mastermind: the host's Ollama reads the acts through MCP and cites them by ELI (`-- --json` all of it) / the same as containers for another machine (compose profile `mastermind`: Ollama, its models, the api with `/api/ask` on :8081; the GPU when there is one) / stopped |

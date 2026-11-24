@@ -47,6 +47,13 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **Spreadsheets of the state have columns of their own** (phase 44):
+  tell a column by its words, after the Polish marks are taken off (`NR
+  TELEFONU wraz z nr kierunkowym` is phones, `SZEROKOŚĆ GEOGRAFICZNA` the
+  latitude); two columns may say the same (the town and its post office),
+  and a "postal code" column may hold a TERYT code - keep only `\d{2}-\d{3}`.
+  Nominatim finds a Polish address by street, town and postal code given
+  apart, rarely by `ul. ...` in one line.
 - **An API that ignores its page number** (phase 43, e-Zamówienia): ask
   narrower windows instead - a day, and a window that comes back full
   split in two until each half is whole. And a state's firewall refuses a

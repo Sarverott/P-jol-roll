@@ -446,4 +446,4 @@ The order of phase 41 goes on (changelog phase 44). Along the *Lean* of Q24 (#14
 
 - [x] The changelog
 - [x] The offices (`pjolroll offices`): the official contact bases of dane.gov.pl read into one table; their places (`pjolroll geocode`, Nominatim, cached); the address space of the state in RIPE (`pjolroll networks`: 89 organisations, 108 networks, 82 autonomous systems here); MCP `transparency`, `/api/transparency`, the catalog, `task python:offices` / `geocode` / `networks`
-- [ ] Tests, docs, the almanac's lines and AGENTS.md
+- [x] Tests, docs, the almanac's lines and AGENTS.md
