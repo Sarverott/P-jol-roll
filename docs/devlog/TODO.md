@@ -318,4 +318,4 @@ development, a compose setup for other machines.
 - [x] The vectors of every year in the api's memory as int8 (about 190 MB): as numbers of JavaScript they did not fit its heap, which ran out on the first `/api/ask`
 - [x] Compose for another machine: the profile `mastermind` - Ollama, its models pulled by a container, the api asking it; the GPU by `resources/services/gpu.yaml` where there is one
 - [x] Tests: the search by meaning, the rounds of the mastermind against a stand-in model
-- [ ] Docs, the almanac's lines and AGENTS.md
+- [x] Docs, the almanac's lines and AGENTS.md
