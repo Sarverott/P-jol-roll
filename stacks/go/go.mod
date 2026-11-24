@@ -8,6 +8,7 @@ require (
 	github.com/ipfs/go-ipld-format v0.6.4
 	github.com/ipld/go-car/v2 v2.17.0
 	github.com/multiformats/go-multihash v0.3.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (

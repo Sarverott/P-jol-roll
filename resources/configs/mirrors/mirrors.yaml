@@ -1,0 +1,30 @@
+# The mirrors of the law of Poland (phase 38): one per voivodeship, more per district when the
+# owner adds them - each a whole copy (the api over its own resources/), joined to the others by
+# WireGuard, the site balanced over all of them by Traefik. The shared registry, in git:
+#   name       the mirror, also its host under the domain (mazowieckie.<domain>)
+#   code       its TERYT code; a voivodeship's address on the network is 10.42.<code>.1
+#   address    set for a district (its own 10.42.x.y), or to move a mirror
+#   endpoint   host:port where its WireGuard is reached from the internet; empty: it only calls out
+#   publicKey  its WireGuard public key, written by `task mirror:keys -- <name>` on its machine
+# A mirror without a public key is not on the network yet: no one peers with it or sends it
+# traffic. The private keys never come here (resources/secrets/wireguard/).
+network: 10.42.0.0/16
+port: 51820
+domain: "" # e.g. prawo.example.org: every mirror at <name>.<domain>, the site at the domain itself
+mirrors:
+  - {name: dolnoslaskie, title: dolnośląskie, code: 2}
+  - {name: kujawsko-pomorskie, title: kujawsko-pomorskie, code: 4}
+  - {name: lubelskie, title: lubelskie, code: 6}
+  - {name: lubuskie, title: lubuskie, code: 8}
+  - {name: lodzkie, title: łódzkie, code: 10}
+  - {name: malopolskie, title: małopolskie, code: 12}
+  - {name: mazowieckie, title: mazowieckie, code: 14}
+  - {name: opolskie, title: opolskie, code: 16}
+  - {name: podkarpackie, title: podkarpackie, code: 18}
+  - {name: podlaskie, title: podlaskie, code: 20}
+  - {name: pomorskie, title: pomorskie, code: 22}
+  - {name: slaskie, title: śląskie, code: 24}
+  - {name: swietokrzyskie, title: świętokrzyskie, code: 26}
+  - {name: warminsko-mazurskie, title: warmińsko-mazurskie, code: 28}
+  - {name: wielkopolskie, title: wielkopolskie, code: 30}
+  - {name: zachodniopomorskie, title: zachodniopomorskie, code: 32}

@@ -7,6 +7,9 @@
 #   --profile mastermind   ->   llms-ollama with its models (llms-models) and mastermind :8081, the api
 #                               answering /api/ask (phase 30); -f resources/services/gpu.yaml for the GPU
 #   --profile agentic      ->   agentic-shell, a shell for agents: no port, `task shell` (Q13)
+#   --profile mirror       ->   mirror-wireguard, mirror-server, mirror-traefik: this machine as a mirror of the law
+#                               (phase 38), the site on :8095 - task mirror:up -- <mirror>
+#   --profile chain        ->   chain: this mirror's node of the chain of the law (phase 39, lawchaind)
 #   --profile ipfs         ->   ipfs (kubo): the torrents put on IPFS by the owner (phase 37), task torrents:publish
 # Each file is included with the root as its project directory: paths in it start here.
 include:
@@ -35,4 +38,8 @@ include:
   - path: resources/services/agentic-shell.yaml
     project_directory: .
   - path: resources/services/ipfs.yaml
+    project_directory: .
+  - path: resources/services/mirror.yaml
+    project_directory: .
+  - path: resources/services/chain.yaml
     project_directory: .

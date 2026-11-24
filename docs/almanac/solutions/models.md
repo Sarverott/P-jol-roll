@@ -47,6 +47,18 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **`$!` of a shell function run in the background is the subshell's**
+  (phase 39): `law start &` with `law` a function left the node running
+  when the test killed `$!`; start the binary itself in the background,
+  and wait for it to end (then `kill -9`) before removing its home.
+- **Ignite in its container with a newer Go** (phase 39): mount the
+  host's Go root and, on Debian, `/usr/share/go-<version>` too (its `src`
+  is a link there), set `GOROOT`, `GOTOOLCHAIN=local` and `PATH`.
+- **Services in one network namespace** (phase 38): `network_mode:
+  service:mirror-wireguard` puts the api and Traefik inside WireGuard's
+  namespace, so they reach the other mirrors at their tunnel addresses
+  with no routes on the host; the ports are published on the WireGuard
+  service, the only one with a network of its own.
 - **Check CIDs against kubo without a network** (phase 37): `docker run
   --rm --network none --entrypoint sh ipfs/kubo -c "ipfs init -e; ipfs add
   -r --only-hash --cid-version=1 -Q /in/dir"` - and mount the files

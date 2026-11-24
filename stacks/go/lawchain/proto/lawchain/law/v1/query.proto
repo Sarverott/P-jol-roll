@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package lawchain.law.v1;
+
+import "amino/amino.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "lawchain/law/v1/params.proto";
+
+option go_package = "lawchain/x/law/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/lawchain/law/v1/params";
+  }
+
+  // Agreement Queries a list of Agreement items.
+  rpc Agreement(QueryAgreementRequest) returns (QueryAgreementResponse) {
+    option (google.api.http).get = "/lawchain/law/v1/agreement/{journal}/{year}";
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+// QueryAgreementRequest defines the QueryAgreementRequest message.
+message QueryAgreementRequest {
+  string journal = 1;
+  uint64 year = 2;
+}
+
+// QueryAgreementResponse defines the QueryAgreementResponse message.
+message QueryAgreementResponse {
+  string root = 1;
+  uint64 attested = 2;
+  uint64 mirrors = 3;
+  bool agreed = 4;
+}

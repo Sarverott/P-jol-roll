@@ -52,7 +52,9 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: stacks/go/go.mod
-          cache-dependency-path: stacks/go/go.sum
+          cache-dependency-path: |
+            stacks/go/go.sum
+            stacks/go/lawchain/go.sum
       - name: The Go stack (stacks/go/)
         run: task go:check
       - name: The introduction page (webpage/)

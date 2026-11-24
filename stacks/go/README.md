@@ -39,8 +39,36 @@ owner runs `task torrents:publish`.
 | `BUCKET_URL` | `https://huggingface.co/buckets/Sarverott/raw-law-of-poland/resolve` | the bucket's |
 | `TORRENT_TRACKERS` | | trackers, comma separated; without them peers meet by DHT |
 
+## pjolmesh: the mirrors on WireGuard, balanced by Traefik
+
+Phase 38 - the registry `resources/configs/mirrors/mirrors.yaml`, a
+mirror's keys, its wg-quick configuration (every other mirror on the network
+as a peer) and Traefik's (the site over every mirror, checked by
+`/api/host`). The guide: `docs/guides/mirrors.md`.
+
 ```bash
-task go:check     # gofmt, go vet, go test
+task mirror:list
+task mirror:keys -- mazowieckie
+task mirror:up -- mazowieckie
+task unittesting:mirrors          # two mirrors, a real tunnel, Traefik - in containers
+```
+
+## lawchain and pjolchain: the mirrors agree on the law
+
+Phase 39 - `lawchain/` is a Cosmos SDK chain (a module of its own, by
+Ignite) whose validators are the mirrors; each records the root of every
+year it sealed, and the chain answers the root two thirds agree on.
+`pjolchain roots` computes the roots here (`internal/seal`). The guide:
+`docs/guides/chain.md`; the chain: [lawchain/README.md](lawchain/README.md).
+
+```bash
+task go:roots -- -journal DU
+task chain:build
+task unittesting:chain
+```
+
+```bash
+task go:check     # gofmt, go vet, go test - lawchain's too
 ```
 
 | Package | What it does |
@@ -49,3 +77,8 @@ task go:check     # gofmt, go vet, go test
 | `internal/torrent` | a multi-file torrent of a directory, pieces hashed, web seeds, a magnet link |
 | `internal/bencode` | the encoding of BitTorrent |
 | `internal/ipfs` | a UnixFS directory built in memory, its CIDs, its CAR |
+| `cmd/pjolmesh` | the command: keys, wireguard, traefik, mirror, list |
+| `internal/mesh` | the registry, WireGuard keys (X25519, as `wg genkey`), the configurations |
+| `cmd/pjolchain` | the roots of the years sealed here |
+| `internal/seal` | a year's root of the records of `task seal` |
+| `lawchain/` | the chain of the law, a Go module of its own: `x/law` its module |

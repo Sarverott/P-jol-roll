@@ -13,6 +13,26 @@ tasks:
       - 'test -z "$(gofmt -l .)" || (gofmt -l . && echo "not formatted by gofmt, the files above" && exit 1)'
       - go vet ./...
       - go test ./...
+      # the chain of the law, a module of its own (phase 39)
+      - cd lawchain && go vet ./... && go test ./...
+
+  mesh:
+    desc: 'pjolmesh, the mirrors of the law (phase 38) - task go:mesh -- list / keys <mirror> / mirror <mirror>'
+    dir: '{{.ROOT_DIR}}/stacks/go'
+    cmds:
+      - go run ./cmd/pjolmesh {{.CLI_ARGS}}
+
+  chain:build:
+    desc: 'lawchaind, the chain of the law (phase 39), built and installed into $GOPATH/bin'
+    dir: '{{.ROOT_DIR}}/stacks/go/lawchain'
+    cmds:
+      - go install ./cmd/lawchaind
+
+  roots:
+    desc: 'The roots of the years sealed here (task seal), as the chain of the law takes them - task go:roots -- -journal DU'
+    dir: '{{.ROOT_DIR}}/stacks/go'
+    cmds:
+      - go run ./cmd/pjolchain roots {{.CLI_ARGS}}
 
   torrents:
     desc: 'The dataset and the bucket as torrents with web seeds on Hugging Face, and their IPFS directory (CIDs, torrents.car), into resources/torrents/ - task go:torrents -- -only dataset / -dry / -limit 5; offline, nothing published'

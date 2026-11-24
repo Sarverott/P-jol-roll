@@ -1,0 +1,38 @@
+package types_test
+
+import (
+	"testing"
+
+	"lawchain/x/law/types"
+
+	"github.com/stretchr/testify/require"
+)
+
+func TestGenesisState_Validate(t *testing.T) {
+	tests := []struct {
+		desc     string
+		genState *types.GenesisState
+		valid    bool
+	}{
+		{
+			desc:     "default is valid",
+			genState: types.DefaultGenesis(),
+			valid:    true,
+		},
+		{
+			desc:     "a share of 0 is not valid",
+			genState: &types.GenesisState{},
+			valid:    false,
+		},
+	}
+	for _, tc := range tests {
+		t.Run(tc.desc, func(t *testing.T) {
+			err := tc.genState.Validate()
+			if tc.valid {
+				require.NoError(t, err)
+			} else {
+				require.Error(t, err)
+			}
+		})
+	}
+}

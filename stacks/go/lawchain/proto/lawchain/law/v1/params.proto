@@ -1,0 +1,15 @@
+syntax = "proto3";
+package lawchain.law.v1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "lawchain/x/law/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "lawchain/x/law/Params";
+  option (gogoproto.equal) = true;
+
+  uint64 share = 1;
+}

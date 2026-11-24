@@ -386,3 +386,20 @@ The order of phase 35 goes on (changelog phase 37). M5 begins.
 - [x] The changelog: what this phase is understood to be
 - [x] The Go stack (`stacks/go/`, in the checks, its version kept with the others) and in it `pjolseed`: torrents of the dataset (one per part) and the bucket (one per journal and year) with web seeds on Hugging Face, an index with their magnet links, their IPFS directory with CIDs computed offline - checked equal to kubo's - and a CAR file, in `resources/torrents/` (`task torrents`); the IPFS service in compose and `task torrents:publish` for the owner; one item, as they are one command and its tests
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 38: mirrors on a WireGuard network, balanced by Traefik
+
+The order of phase 35 goes on (changelog phase 38).
+
+- [x] The changelog: what this phase is understood to be
+- [x] The mirrors as data (`resources/configs/mirrors/mirrors.yaml`: the sixteen voivodeships, their addresses on the network) and `pjolmesh` (Go stack): a mirror's keys, its WireGuard configuration, Traefik's balancing over every mirror
+- [x] The profile `mirror` of compose (WireGuard, the api, Traefik in one network namespace), `task mirror:*`; two mirrors joined by a real tunnel and balanced, checked in containers here (`tests/unittesting/mirrors/`)
+- [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 39: no centre - the mirrors agree on the law by Cosmos SDK
+
+The order of phase 35 goes on (changelog phase 39).
+
+- [x] The changelog: what this phase is understood to be
+- [x] The chain of the law (`stacks/go/lawchain`, Cosmos SDK by Ignite): the module `law` - a mirror (a bonded validator) records the root of a year it sealed, the chain answers the root two thirds of the mirrors agree on; `pjolchain roots`, `task chain:build`, `task chain:seal`, the profile `chain`; a chain of one mirror checked for real (`task unittesting:chain`)
+- [x] Tests, docs, the almanac's lines and AGENTS.md
