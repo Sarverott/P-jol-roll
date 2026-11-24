@@ -704,6 +704,23 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		ways: {},
 	},
 	{
+		name: "sign:verify",
+		group: "share",
+		title:
+			"a file signed with a FIDO key by the desktop app, checked (phase 40)",
+		params: [
+			{
+				name: "file",
+				title: "the signed file (its .sig.json beside it)",
+				kind: "text",
+				positional: true,
+			},
+		],
+		writes: false,
+		task: "sign:verify",
+		ways: {},
+	},
+	{
 		name: "torrents:publish",
 		group: "share",
 		title:

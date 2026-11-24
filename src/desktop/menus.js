@@ -1,4 +1,5 @@
 import { app, Menu, shell } from "electron";
+import { printLabel, registerKey, showForPhone, signPdf } from "./devices.js";
 import { about } from "./dialogs.js";
 import { KEYS } from "./hotkeys-shortcuts.js";
 import { print, saveAsPdf } from "./printing.js";
@@ -12,7 +13,7 @@ carries its key (hotkeys-shortcuts.js).
 const DOCS = "https://sarverott.github.io/P-jol-roll/docs/";
 const CODE = "https://github.com/Sarverott/P-jol-roll";
 
-export function setMenu(getWindow) {
+export function setMenu(getWindow, address = "") {
 	const web = () => getWindow()?.webContents;
 	const template = [
 		{
@@ -29,6 +30,28 @@ export function setMenu(getWindow) {
 					label: "Save as PDF...",
 					accelerator: KEYS.pdf,
 					click: () => saveAsPdf(getWindow()),
+				},
+				{
+					label: "Save as PDF and sign...",
+					click: () => signPdf(getWindow()),
+				},
+				{ type: "separator" },
+				{
+					label: "Devices",
+					submenu: [
+						{
+							label: "Register a security key...",
+							click: () => registerKey(getWindow()),
+						},
+						{
+							label: "Print a label of the act...",
+							click: () => printLabel(getWindow(), address),
+						},
+						{
+							label: "Show the act for a phone",
+							click: () => showForPhone(getWindow()),
+						},
+					],
 				},
 				{ type: "separator" },
 				{ label: "Quit", accelerator: KEYS.quit, click: () => app.quit() },

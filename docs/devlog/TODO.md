@@ -403,3 +403,11 @@ The order of phase 35 goes on (changelog phase 39).
 - [x] The changelog: what this phase is understood to be
 - [x] The chain of the law (`stacks/go/lawchain`, Cosmos SDK by Ignite): the module `law` - a mirror (a bonded validator) records the root of a year it sealed, the chain answers the root two thirds of the mirrors agree on; `pjolchain roots`, `task chain:build`, `task chain:seal`, the profile `chain`; a chain of one mirror checked for real (`task unittesting:chain`)
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 40: the person's devices in the desktop app
+
+The order of phase 35 goes on (changelog phase 40). Q17.
+
+- [x] The changelog: what this phase is understood to be
+- [x] The person's devices in the desktop app (`src/desktop/devices.js`, `src/gui/assets/devices.js`): signing with a FIDO key - registered once, "Save as PDF and sign" signs the PDF's sha256 by WebAuthn, the signature beside it (`.sig.json`), `task sign:verify` checks it offline, checked with a security key simulated in Chromium; an act's label in ESC/POS for a Bluetooth sticker printer; the act for a phone as a QR code; in the window's menu, the tray and the app's menu; one item, as they share their module and menus
+- [x] Tests, docs, the almanac's lines and AGENTS.md
