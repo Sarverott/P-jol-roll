@@ -6,6 +6,14 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. The sittings of Sejm (phase 35) were not gathered from the
+  source.** The shapes of `/proceedings` and `/transcripts` come from the
+  API's documentation as Cleo knows it and from the stages of the processes
+  gathered here (`sittingNum`, `date`); the tests use a copy. Start with
+  `task sittings -- 10 --limit 5` and look at one day's file before taking
+  the texts (`--files`: hundreds of statements a day). A statement is marked
+  *about* the act only when it names a print of the bill: one that speaks
+  of it without the number is missed.
 - **2026-11-24. The hosted deepseek (phase 34) is not seen answering.**
   `--escalate` and `--hard` pass against stand-ins of the host's model and
   of Inference Providers; asking `deepseek-ai/DeepSeek-R1-0528` for real

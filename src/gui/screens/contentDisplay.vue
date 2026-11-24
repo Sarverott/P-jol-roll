@@ -2,6 +2,7 @@
 <script setup>
 import { inject } from "vue";
 import { href } from "../assets/route.js";
+import ActDebates from "../components/act/ActDebates.vue";
 import ActHeader from "../components/act/ActHeader.vue";
 import ActText from "../components/act/ActText.vue";
 import ActTies from "../components/act/ActTies.vue";
@@ -18,6 +19,7 @@ const { state } = inject("library");
 		</article>
 		<AsideRight>
 			<ActTies />
+			<ActDebates />
 		</AsideRight>
 	</div>
 	<p v-else class="has-text-grey i18n-texts-slot">

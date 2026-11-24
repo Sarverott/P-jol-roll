@@ -46,8 +46,33 @@ draft is for.
 counts files, 20 by default. What is here is not asked for again. Tables
 are written again on every run.
 
-Not gathered yet: votings, proceedings and their transcripts,
-interpellations, committees, members.
+Not gathered yet: votings, interpellations, committees, members.
+
+## The sittings of Sejm: `sittings`
+
+The work of Sejm as discussion (phase 35): the sittings of a term, and what
+was said on each of their days.
+
+```sh
+task sittings                           # the days of the current term that are not here, 20 at most
+task sittings -- 10 --files --limit 40  # and the texts of the statements, 40 days then 40 texts
+```
+
+| File | What it holds |
+| --- | --- |
+| `dataset/sejm/term10/sittings.json` | the sittings, each with its days (`/proceedings`) |
+| `dataset/sejm/term10/transcripts/<sitting>/<date>.json` | the statements of a day: who spoke, as whom, from which club, when |
+| `bucket/sejm/term10/transcripts/<sitting>/<date>/<num>.html` | the text of one statement |
+
+A day after today is not asked for, nor a sitting numbered 0 (planned). A
+day is known from its file, so a run takes only what is missing.
+
+The acts tie to them through their processes: a stage of a process read on
+a sitting (`sittingNum`, `date`) names the day; the statements of that day
+are about everything on its agenda, and one whose text names a print of
+the bill (`druk nr 1111`) is marked as about it. Every interface shows it:
+the act's page (*in Sejm*), `/api/acts/DU/2025/637/debates`, the MCP tool
+`act_debates`, `task do -- act-debates DU/2025/637`.
 
 ## Court judgments: `saos`
 

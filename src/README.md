@@ -94,6 +94,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/core/crawl.ts` | One polite walk over addresses of an API: own User-Agent, two requests at a time, a pace per minute, queue in memory. Every gatherer uses it, so manners live in one place. |
 | `src/core/apihandlers/eli.ts` | Addresses of the ELI API of Sejm and the files of an act (`filesOf`). Where to ask, never what to do. |
 | `src/core/apihandlers/sejm.ts` | Second source: legislative processes and prints of Sejm, into `resources/dataset/sejm` and `bucket/sejm`. |
+| `src/core/apihandlers/sittings.ts` | The sittings of Sejm (phase 35): the days of a term (`/proceedings`), the statements of each day into `dataset/sejm/term<n>/transcripts/`, their texts into the bucket; days after today and sitting 0 never asked for. |
 | `src/core/apihandlers/saos.ts` | Third source: court judgments of SAOS by months, into `resources/dataset/SAOS`. |
 | `src/core/methods/gather.ts` | The gatherer: index, lists, listings of years, then files of acts year by year; `--since` takes changed acts again. Writes a checksum record for every file the moment it lands. |
 | `src/core/methods/seal.ts` | Checksum records for files gathered without them, and `--check` that reads every file again. |
@@ -165,6 +166,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/i18n/terminal.ts` | `tr(text, { name })`: the words of the launcher, the REPL and the lists of tasks in the terminal's language; named places filled after the pack. |
 | `src/i18n/node.ts` | The packs outside a browser: the index, `packFor(code)`, the language of a terminal (`P_JOL_ROLL_LANG`, else `LANG`). |
 | `src/devtools/i18n.ts` | `task i18n:collect`: the built introduction and viewer opened in a headless browser, in several states; their English collected by the page's own runtime into `resources/locales/EN-US.json`. |
+| `src/core/reading/debates.ts` | An act in Sejm (phase 35): its process, the stages read on sittings, the statements of those days, those naming the bill's print marked `about` with their words; tables and stages taken from Hugging Face on the demo. |
 | `src/core/reading/dataset.ts` | The rest of the dataset as readers see it (phase 22): terms, processes and prints of Sejm, months of court judgments, the lists of the source, the acts counted year by year (`task stats` writes them for the demo). Only reads `resources/`. |
 | `src/core/reading/diagram.ts` | The ties of an act as one mermaid flowchart - the one drawing the api, the MCP server (`act_references` with `as: mermaid`) and the viewer give. |
 | `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host; `PUBLIC_SITE` is its own address for the card of a shared link (the demo by default). |

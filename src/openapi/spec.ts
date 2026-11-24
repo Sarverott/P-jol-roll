@@ -51,7 +51,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.31.0",
+		version: "0.32.2",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
@@ -235,6 +235,19 @@ export const spec = {
 				responses: {
 					200: { description: "ties: from, type, to, date, art" },
 					404: missing,
+				},
+			},
+		},
+		"/api/acts/{journal}/{year}/{pos}/debates": {
+			get: {
+				summary:
+					"the act in Sejm (phase 35): the days of the sittings its bill was read on, and who spoke on each - with the words of a statement that names the bill's print, where the texts are gathered",
+				parameters: eli,
+				responses: {
+					200: {
+						description:
+							"{ ELI, processes, days: [{ term, sitting, date, stage, gathered, statements }] }",
+					},
 				},
 			},
 		},
