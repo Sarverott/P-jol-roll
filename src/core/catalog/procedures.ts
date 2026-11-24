@@ -936,6 +936,27 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		ways: {},
 	},
 	{
+		name: "report:draft",
+		group: "share",
+		title:
+			"reports to the authorities drafted from the problems found (phase 45)",
+		params: [],
+		writes: true,
+		task: "report:draft",
+		ways: {},
+	},
+	{
+		name: "report:send",
+		group: "share",
+		title: "one report sent, after a person's yes (phase 45)",
+		params: [
+			{ name: "draft", title: "the draft", kind: "text", positional: true },
+		],
+		writes: true,
+		task: "report:send",
+		ways: {},
+	},
+	{
 		name: "sign:verify",
 		group: "share",
 		title:

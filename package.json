@@ -1,6 +1,6 @@
 {
   "name": "P-jol-roll",
-  "version": "0.41.0",
+  "version": "0.42.0",
   "private": true,
   "type": "module",
   "description": "crawler to garher every PDF from https://dziennikustaw.gov.pl/DU",
@@ -13,6 +13,7 @@
     "@modelcontextprotocol/node": "^2.1.2",
     "@modelcontextprotocol/server": "^2.3.1",
     "@noble/hashes": "^2.4.0",
+    "@types/nodemailer": "^8.0.2",
     "@xterm/xterm": "^6.0.0",
     "astro": "^7.3.8",
     "bulma": "^1.0.4",
@@ -27,6 +28,7 @@
     "marked": "^18.1.1",
     "mermaid": "^12.3.0",
     "nitro": "^3.0.260903-beta",
+    "nodemailer": "^10.6.1",
     "playwright": "1.62.1",
     "pyodide": "^314.0.7",
     "qrcode": "^1.5.4",

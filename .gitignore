@@ -20,6 +20,8 @@ resources/simulations
 resources/proposals
 # the torrents and their IPFS directory (phase 37, task torrents): made here, published by the owner
 resources/torrents
+# the reports to the authorities (phase 45): drafts and what was sent, kept here only
+resources/reports
 !resources/conversations/README.md
 
 # the directories of other sources before phase 10 (task resources:merge moves them into
