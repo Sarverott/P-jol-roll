@@ -269,6 +269,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it); `task serve -- --allow-writing`: the viewer starts writing functions too, each after a yes (this machine only) |
+| `task mastermind:compare` (`-- gemma bielik`) | every team of `resources/configs/mastermind/families.yaml` asked the same questions (`questions.yaml`), each conversation kept; `MASTERMIND_TEAM=gemma task mastermind:ask -- "..."` one team |
 | `task ollama:serve` / `ollama:copy` / `ollama:where` | the Ollama of this machine from its own drive (`OLLAMA_MODELS` of `.env`): the models of `~/.ollama/models` copied there first, then served / copied again, checked / where they are |
 | `task mastermind:ask -- "..."` / `mastermind:up` / `mastermind:down` | a question to the law mastermind: the host's Ollama reads the acts through MCP and cites them by ELI (`-- --json` all of it) / the same as containers for another machine (compose profile `mastermind`: Ollama, its models, the api with `/api/ask` on :8081; the GPU when there is one) / stopped |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |

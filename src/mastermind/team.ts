@@ -40,9 +40,10 @@ export const teams = (): Team[] =>
 export const teamOf = (name?: string) =>
 	name ? teams().find((one) => one.name === name) : undefined;
 
-// Polish or not, roughly: its letters, or enough of its commonest words
+// Polish or not, roughly: its letters, or enough of its commonest words - none of them an
+// English word too ("do", "to", "i", "on"... made "The acts you read do not answer" Polish)
 const WORDS = new Set(
-	"i w z na się nie jest do że od o oraz to jak czy przez dla który która które był była było są lub".split(
+	"się nie jest że oraz jak czy przez dla który która które był była było są lub także ten tej".split(
 		" ",
 	),
 );

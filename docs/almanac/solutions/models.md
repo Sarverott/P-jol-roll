@@ -25,6 +25,17 @@ the MCP tools of `src/mcp`.
   (761 MB of parquet, the api ran out of memory on its first question):
   they are kept as int8 per year, enough to rank normalized vectors.
 
+- **A model of Ollama without thinking or tools is refused them**:
+  `/api/show` says its capabilities, asked once per model (translategemma,
+  shieldgemma and Bielik take no thinking; the last two no tools in some
+  builds).
+- **functiongemma (270M) calls no tool unaided** in the rounds of the
+  mastermind: it is made to be tuned for its functions first.
+- **A team of four models on one card of 12 GB is swapped in and out**:
+  an answer of gemma's team takes twice as long as one model.
+- **A check of language by common words must leave out the words two
+  languages share** ("do", "to", "i"): "The acts you read do not answer the
+  question" passed for Polish (phase 31).
 - **Ollama's models live where `OLLAMA_MODELS` says** - the variable is
   read by `ollama serve` itself, not by the client; a server started
   without it reads `~/.ollama/models`. Blobs never change once written, so
