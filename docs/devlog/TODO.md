@@ -375,7 +375,7 @@ The owner's message, 2026-11-24 (changelog phase 35): every phase planned ahead,
 The order of phase 35 goes on (changelog phase 36).
 
 - [x] The changelog: what this phase is understood to be
-- [ ] The code of law analysed (`task analyse`): every act in force against its ties - a basis repealed, a reference to a repealed act and its successor, amendments since the last consolidated text, a Tribunal's judgment with no amendment after it - into `dataset/analysis/`; an act's findings in every interface (`act_findings`, `/api/acts/.../findings`, its page)
+- [x] The code of law analysed (`task analyse`): every act in force against its ties - a basis repealed, a reference to a repealed act and its successor, amendments since the last consolidated text, a Tribunal's judgment with no amendment after it - into `dataset/analysis/`; in every interface (MCP `analysis`, `/api/analysis`, `/api/acts/.../findings`, the act's page); on this machine 23,238 acts in force checked, 4,944 findings
 - [ ] The simulation bubble (`stacks/python`, `task python:simulate -- <ELI>`): personas read an act through MCP and talk about it in rounds, each a model of the host's Ollama; every run kept in `resources/simulations/`
 - [ ] Improvements proposed (`task python:propose -- <ELI>`): a model reads the act, its findings, debates and simulations through MCP and writes its proposals into `resources/proposals/`
 - [ ] Tests, docs, the almanac's lines and AGENTS.md; M4 closed in the ROADMAP

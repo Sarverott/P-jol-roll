@@ -6,6 +6,7 @@ import type ActPageInterface from "./ActPage.interface.js";
 import type ActTextInterface from "./ActText.interface.js";
 import type ActViewInterface from "./ActView.interface.js";
 import type AdviceInterface from "./Advice.interface.js";
+import type AnalysisInterface from "./Analysis.interface.js";
 import type ApprovalInterface from "./Approval.interface.js";
 import type AskedInterface from "./Asked.interface.js";
 import type ChainInterface from "./Chain.interface.js";
@@ -18,6 +19,7 @@ import type DebateInterface from "./Debate.interface.js";
 import type DifferenceInterface from "./Difference.interface.js";
 import type EdgeInterface from "./Edge.interface.js";
 import type FileRecordInterface from "./FileRecord.interface.js";
+import type FindingInterface from "./Finding.interface.js";
 import type FrontendInterface from "./Frontend.interface.js";
 import type GatherPlanInterface from "./GatherPlan.interface.js";
 import type HostInterface from "./Host.interface.js";
@@ -94,7 +96,9 @@ export namespace GatheringScope {
 
 // what readers of gathered data get: server, MCP, interfaces
 export namespace ReadingScope {
+	export type Analysis = AnalysisInterface;
 	export type Debate = DebateInterface;
+	export type Finding = FindingInterface;
 	export type Journal = JournalInterface;
 	export type ActPage = ActPageInterface;
 	export type ActView = ActViewInterface;

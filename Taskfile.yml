@@ -160,6 +160,11 @@ tasks:
     cmds:
       - npm run sejm -- {{.CLI_ARGS}}
 
+  analyse:
+    desc: 'The code of law analysed (phase 36): every act in force against its ties - a basis repealed, a reference to a repealed act, amendments since the last consolidated text, a Tribunal judgment not followed - into dataset/analysis/; reads only what is here (task compile first)'
+    cmds:
+      - npm run analyse
+
   sittings:
     desc: 'The sittings of Sejm (phase 35) - the days of a term and who spoke on each, -- --files the texts of the statements (e.g. task sittings -- 10 --files --limit 40); the owner starts it'
     cmds:

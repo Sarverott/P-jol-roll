@@ -176,6 +176,51 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		},
 	},
 	{
+		name: "analysis",
+		group: "read",
+		title:
+			"the code of law analysed: findings over every act in force, or of one act",
+		params: [
+			{ name: "eli", title: "one act (empty: all)", kind: "text", default: "" },
+			{
+				name: "kind",
+				title: "kind of finding",
+				kind: "choice",
+				choices: [
+					"",
+					"basis-repealed",
+					"reference-repealed",
+					"consolidation-due",
+					"tribunal",
+				],
+				default: "",
+			},
+			query,
+			offset,
+			limit(50),
+		],
+		writes: false,
+		read: async (values) => {
+			await dataset.prepareDataset("analysis");
+			const eli = text(values, "eli");
+			return eli
+				? dataset.findings(eli)
+				: {
+						summary: dataset.analysis(),
+						page: dataset.findingsOf(text(values, "kind"), {
+							query: text(values, "query"),
+							offset: number(values, "offset"),
+							limit: number(values, "limit"),
+						}),
+					};
+		},
+		ways: {
+			viewer: "#act/DU/2026/1",
+			api: "GET /api/analysis, /api/acts/{journal}/{year}/{pos}/findings",
+			mcp: "analysis",
+		},
+	},
+	{
 		name: "act-debates",
 		group: "read",
 		title: "an act in Sejm: the days its bill was read on, who said what",
@@ -400,6 +445,16 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		writes: true,
 		task: "sejm",
 		ways: { cli: "npm start -- sejm" },
+	},
+	{
+		name: "analyse",
+		group: "process",
+		title:
+			"the code of law analysed: every act in force against its ties (phase 36)",
+		params: [],
+		writes: true,
+		task: "analyse",
+		ways: { cli: "npm start -- analyse" },
 	},
 	{
 		name: "sittings",
