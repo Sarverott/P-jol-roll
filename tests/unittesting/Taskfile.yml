@@ -5,6 +5,12 @@
 version: '3'
 
 tasks:
+  chain:
+    desc: 'The chain of the law with one mirror (phase 39): lawchaind built, a validator started on ports of its own, a year sealed and agreed, a stranger refused (needs Go)'
+    dir: '{{.TASKFILE_DIR}}/../..'
+    cmds:
+      - tests/unittesting/chain/-one-mirror/run.sh
+
   mirrors:
     desc: 'Two mirrors of the law joined by WireGuard and balanced by Traefik, in containers (phase 38; needs Docker, Go, the wireguard module) - case -two-mirrors'
     dir: '{{.TASKFILE_DIR}}/../..'

@@ -6,6 +6,13 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. The chain of the law has no network yet** (phase 39): its
+  genesis - which mirrors are validators, their stake, the chain's id - is
+  Sett's (docs/guides/chain.md). Checked here: the module's tests and a
+  chain of one mirror. The chain is a Cosmos SDK chain with its usual
+  modules (bank, staking, governance) from Ignite's scaffold; only `law` is
+  the project's. Ignite needed Go 1.26.7+ for its `buf`, more than its
+  image has: the host's Go was mounted into it.
 - **2026-11-24. No mirror runs on a real machine yet** (phase 38). The
   tunnel and the balancing were checked in containers here with a stand-in
   api; the profile `mirror` with the real api image was not started. A

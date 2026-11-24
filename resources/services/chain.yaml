@@ -1,0 +1,20 @@
+# chain: this mirror's node of the chain of the law (phase 39) - a Cosmos SDK chain (lawchaind,
+# stacks/go/lawchain) where the mirrors, its validators, record the roots of the years each has
+# sealed, and agree on them (two thirds). Its home (keys, genesis, blocks) stays in
+# resources/.containerdatavol/lawchain/ - made once by the genesis of the network of mirrors,
+# the owner's (docs/guides/chain.md).
+#   docker compose --profile chain up -d
+#   task chain:seal -- <key>          the roots of this machine's years recorded (asks first)
+services:
+  chain:
+    profiles: [chain]
+    build:
+      context: .
+      dockerfile: resources/configs/lawchain/Dockerfile
+    image: p-jol-roll-lawchain
+    volumes:
+      - ./resources/.containerdatavol/lawchain:/data
+    ports:
+      - "26656:26656"
+      - "127.0.0.1:26657:26657"
+    restart: unless-stopped
