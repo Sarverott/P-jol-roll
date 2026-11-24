@@ -195,6 +195,25 @@ export async function prepareDataset(
 				await remote.fromDataset(`sejm/term${first}/${name}.jsonl`);
 	} else if (kind === "eu" && first && /^\d{4}$/.test(first)) {
 		await remote.fromDataset(`EU/acts/${first}.jsonl`);
+	} else if (kind === "regional") {
+		await remote.fromDataset("regional/journals.json");
+		if (
+			first &&
+			/^[A-Z][A-Z0-9_]{1,30}$/.test(first) &&
+			second &&
+			/^\d{4}$/.test(second)
+		)
+			await remote.fromDataset(`regional/${first}/${second}.jsonl`);
+	} else if (
+		kind === "tenders" &&
+		first &&
+		/^(BZP|TED)$/.test(first) &&
+		second &&
+		/^\d{4}-\d{2}-\d{2}$/.test(second)
+	) {
+		await remote.fromDataset(
+			`tenders/${first}/${second.slice(0, 4)}/${second}.jsonl`,
+		);
 	} else if (kind === "agreements") {
 		await remote.fromDataset("international/agreements.jsonl");
 	} else if (kind === "analysis") {
@@ -322,4 +341,64 @@ export function agreements(
 		join(store.DATASET_DIR, "international", "agreements.jsonl"),
 	).filter((one) => !paging.type || one.type === paging.type);
 	return paged(lines, paging);
+}
+
+/*
+Local and regional law and public tenders (phase 43): the voivodeships' journals (task regional)
+- which answer, their years, a year's acts - and the notices of e-Zamówienia and TED by day
+(task tenders).
+*/
+export function regionalJournals() {
+	return (
+		store.readJson<Record<string, unknown>[]>(
+			join(store.DATASET_DIR, "regional", "journals.json"),
+		) ?? []
+	);
+}
+
+export function regionalActs(
+	code: string,
+	year: number,
+	paging: { query?: string; offset?: number; limit?: number } = {},
+) {
+	if (!/^[A-Z][A-Z0-9_]{1,30}$/.test(code)) return paged([], paging);
+	return paged(
+		table<Record<string, unknown>>(
+			join(store.DATASET_DIR, "regional", code, `${year}.jsonl`),
+		),
+		paging,
+	);
+}
+
+export function tenderDays(source: "BZP" | "TED") {
+	const root = join(store.DATASET_DIR, "tenders", source);
+	if (!existsSync(root)) return [];
+	return readdirSync(root)
+		.filter((year) => /^\d{4}$/.test(year))
+		.flatMap((year) =>
+			readdirSync(join(root, year))
+				.map((name) => /^(\d{4}-\d{2}-\d{2})\.jsonl$/.exec(name)?.[1])
+				.filter((day): day is string => Boolean(day)),
+		)
+		.sort();
+}
+
+export function tenders(
+	source: "BZP" | "TED",
+	day: string,
+	paging: { query?: string; offset?: number; limit?: number } = {},
+) {
+	if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return paged([], paging);
+	return paged(
+		table<Record<string, unknown>>(
+			join(
+				store.DATASET_DIR,
+				"tenders",
+				source,
+				day.slice(0, 4),
+				`${day}.jsonl`,
+			),
+		),
+		paging,
+	);
 }

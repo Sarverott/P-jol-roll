@@ -165,3 +165,47 @@ acts, 2,310 of them in force (2026-11-24). Read them with MCP `eu_law` and
 `agreements`, `/api/eu/<year>`, `/api/eu/act/<CELEX>`, `/api/agreements`.
 How far international law goes - the CJEU, the ECtHR, the UN's treaties - is
 Q22.
+
+## Local and regional law: `regional`
+
+The official journals of the sixteen voivodeships (phase 43): resolutions
+of communes, districts and regions, orders of voivodes - local law. The list
+is `resources/configs/regional/journals.yaml`, from dziennikiurzedowe.gov.pl.
+
+```sh
+task regional                                           # every journal asked what it is, the newest year of each
+task regional -- POL_WOJ_LB --year 2025 --files --limit 50   # one journal, a year, the PDFs of its acts
+```
+
+Ten of them run one platform whose API answers as the Sejm's ELI API does
+(`/api/eli/acts/<code>/<year>`): over a million acts since 2010. The state of
+every journal is kept in `dataset/regional/journals.json`. On 2026-11-24:
+
+| Journal | State |
+| --- | --- |
+| dolnośląskie, lubelskie, opolskie, podkarpackie, pomorskie, śląskie, świętokrzyskie, warmińsko-mazurskie, wielkopolskie, zachodniopomorskie | answer: `POL_WOJ_DS`, `_LB`, `_OP`, `_PK`, `_PM`, `_SL`, `_SK`, `_WM`, `_WP`, `_ZP` |
+| lubuskie, łódzkie, małopolskie | an incomplete chain of certificates (`UNABLE_TO_VERIFY_LEAF_SIGNATURE`) |
+| mazowieckie | does not answer in 30 s (an HTTP/2 error to curl) |
+| kujawsko-pomorskie, podlaskie | another platform, not the ELI API |
+
+## Public tenders: `tenders`
+
+What the state buys (phase 43): every notice of e-Zamówienia (the Biuletyn
+Zamówień Publicznych) and the EU's TED notices with a buyer in Poland.
+
+```sh
+task tenders -- 2026-11-20          # one day: both sources
+task tenders -- 2026-11 --limit 0   # every day of a month that ended
+```
+
+| File | What it holds |
+| --- | --- |
+| `dataset/tenders/BZP/2026/2026-11-20.jsonl` | the notices of the day, every kind (contract, result, plan, update, ...) |
+| `bucket/tenders/BZP/2026/2026-11-20/<objectId>.html` | a notice's own text |
+| `dataset/tenders/TED/2026/2026-11-20.jsonl` | TED's notices with a buyer in Poland |
+
+e-Zamówienia ignores the page number of its API, so a window of time that
+comes back full (100 notices) is asked again in halves until each half is
+whole. Its firewall refused a burst of requests with 403 once: requests go
+three seconds apart, a refusal is waited out a minute, and a day that still
+fails is said and left for the next run.

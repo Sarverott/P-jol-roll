@@ -62,6 +62,8 @@ if (remote)
 			"analysis",
 			"eu",
 			"agreements",
+			"regional",
+			"tenders",
 		];
 		const ready =
 			kind === "map"
@@ -272,6 +274,40 @@ routes.get("/api/eu/:year", async (request, response) => {
 		}),
 	);
 });
+// local and regional law, public tenders (phase 43)
+routes.get("/api/regional", (_request, response) => {
+	response.json(dataset.regionalJournals());
+});
+routes.get("/api/regional/:code/:year", (request, response) => {
+	const { q, offset, limit } = request.query;
+	response.json(
+		dataset.regionalActs(
+			String(request.params.code),
+			Number(request.params.year),
+			{
+				query: typeof q === "string" ? q : "",
+				offset: Number(offset) || 0,
+				limit: Number(limit) || 50,
+			},
+		),
+	);
+});
+routes.get("/api/tenders/:source", (request, response) => {
+	const source = request.params.source === "TED" ? "TED" : "BZP";
+	response.json(dataset.tenderDays(source));
+});
+routes.get("/api/tenders/:source/:day", (request, response) => {
+	const source = request.params.source === "TED" ? "TED" : "BZP";
+	const { q, offset, limit } = request.query;
+	response.json(
+		dataset.tenders(source, String(request.params.day), {
+			query: typeof q === "string" ? q : "",
+			offset: Number(offset) || 0,
+			limit: Number(limit) || 50,
+		}),
+	);
+});
+
 routes.get("/api/agreements", async (request, response) => {
 	const { q, type, offset, limit } = request.query;
 	await dataset.prepareDataset("agreements");

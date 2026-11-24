@@ -47,6 +47,14 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **An API that ignores its page number** (phase 43, e-Zamówienia): ask
+  narrower windows instead - a day, and a window that comes back full
+  split in two until each half is whole. And a state's firewall refuses a
+  burst (403): seconds between requests, a minute's pause when refused.
+- **Journals of the voivodeships** (phase 43): ten share one platform with
+  an ELI API like the Sejm's; three serve an incomplete chain of
+  certificates (Node: `UNABLE_TO_VERIFY_LEAF_SIGNATURE`), which a browser
+  hides by fetching the missing one itself.
 - **SPARQL of the EU's Publications Office** (phase 42): CELEX numbers
   are typed literals (`xsd:string`), so `FILTER(?celex = "...")` finds
   nothing - compare `STR(?celex)`; its answer is

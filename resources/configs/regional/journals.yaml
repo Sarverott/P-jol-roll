@@ -1,0 +1,23 @@
+# The official journals of the sixteen voivodeships (phase 43, Q23): every act of local and
+# regional law - resolutions of communes, districts and regions, orders of the voivodes - as
+# listed on dziennikiurzedowe.gov.pl (dzienniki-wojewodztw.html) on 2026-11-24. Most run one
+# platform whose API answers as the ELI API of the Sejm does: /api/eli/acts/<code>/<year>.
+#   host   where the journal is
+#   code   its publisher's code in that API, filled in by `task regional` when the journal answers
+journals:
+  - {voivodeship: dolnośląskie, host: edzienniki.duw.pl, code: POL_WOJ_DS}
+  - {voivodeship: kujawsko-pomorskie, host: edzienniki.bydgoszcz.uw.gov.pl}
+  - {voivodeship: lubelskie, host: edziennik.lublin.uw.gov.pl, code: POL_WOJ_LB}
+  - {voivodeship: lubuskie, host: dzienniki.luw.pl}
+  - {voivodeship: łódzkie, host: dziennik.lodzkie.eu}
+  - {voivodeship: małopolskie, host: edziennik.malopolska.uw.gov.pl}
+  - {voivodeship: mazowieckie, host: edziennik.mazowieckie.pl}
+  - {voivodeship: opolskie, host: duwo.opole.uw.gov.pl, code: POL_WOJ_OP}
+  - {voivodeship: podkarpackie, host: edziennik.rzeszow.uw.gov.pl, code: POL_WOJ_PK}
+  - {voivodeship: podlaskie, host: edziennik.bialystok.uw.gov.pl}
+  - {voivodeship: pomorskie, host: edziennik.gdansk.uw.gov.pl, code: POL_WOJ_PM}
+  - {voivodeship: śląskie, host: dzienniki.slask.eu, code: POL_WOJ_SL}
+  - {voivodeship: świętokrzyskie, host: edziennik.kielce.uw.gov.pl, code: POL_WOJ_SK}
+  - {voivodeship: warmińsko-mazurskie, host: edzienniki.olsztyn.uw.gov.pl, code: POL_WOJ_WM}
+  - {voivodeship: wielkopolskie, host: edziennik.poznan.uw.gov.pl, code: POL_WOJ_WP}
+  - {voivodeship: zachodniopomorskie, host: e-dziennik.szczecin.uw.gov.pl, code: POL_WOJ_ZP}
