@@ -25,6 +25,14 @@ the MCP tools of `src/mcp`.
   (761 MB of parquet, the api ran out of memory on its first question):
   they are kept as int8 per year, enough to rank normalized vectors.
 
+- **Ollama's models live where `OLLAMA_MODELS` says** - the variable is
+  read by `ollama serve` itself, not by the client; a server started
+  without it reads `~/.ollama/models`. Blobs never change once written, so
+  they are copied while it runs, and the manifests last (phase 31).
+- **A drive mounted by the desktop may have a root that belongs to
+  root**: its directory is made once by its owner with `sudo`; the script
+  says the line instead of failing on it.
+
 ## Cases
 
 None yet with a page of their own: the lines above are from phase 30.

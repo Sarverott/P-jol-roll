@@ -6,6 +6,13 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. Ollama on the drive (phase 31) waits for Sett.** The
+  directory `/run/media/sarverott/setternet-A60/.HoA/ollama` is made with
+  `sudo` (the drive's root belongs to root), the running `ollama serve`
+  (pid 515479) stopped, then `task ollama:serve` copies `~/.ollama/models`
+  (6.0 GB) and serves from there. `/usr/share/ollama/.ollama/models`
+  (4.4 GB, an old system service, inactive) is not copied - Sett's to keep
+  or delete. No family is pulled before that.
 - **2026-11-24. The mastermind's compose run (phase 30) was not started
   here.** The image was run against the host's Ollama and answered
   `/api/ask`; `docker compose --profile mastermind config` is valid with and
