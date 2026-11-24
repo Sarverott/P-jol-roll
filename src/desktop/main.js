@@ -8,6 +8,7 @@ import { app } from "electron";
 import { setTray } from "./apptray.js";
 import { startApi } from "./core.js";
 import { handleLinks, hashOf, linkIn } from "./deeplinks.js";
+import { chooseBluetooth } from "./devices.js";
 import { failure } from "./dialogs.js";
 import { showLoading } from "./loadingmodal.js";
 import { setMenu } from "./menus.js";
@@ -57,15 +58,20 @@ async function open() {
 	}
 	// a link the app was started with: the place to open
 	const start = hashOf(linkIn(process.argv)) ?? "";
-	window = createWindow(`${address}/${start}`, { show: false });
-	setMenu(() => window);
-	setContextMenu(window);
+	// localhost, not 127.0.0.1: WebAuthn (signing with a FIDO key, phase 40) takes no IP address
+	window = createWindow(
+		`${address.replace("//127.0.0.1:", "//localhost:")}/${start}`,
+		{ show: false },
+	);
+	setMenu(() => window, address);
+	setContextMenu(window, address);
+	chooseBluetooth(window);
 	window.once("ready-to-show", () => {
 		closeLoading();
 		if (!CHECK) window.show();
 	});
 	if (CHECK) return check();
-	setTray(showWindow, () => window);
+	setTray(showWindow, () => window, address);
 	const stopNotices = notifyChanges(address, showWindow);
 	app.on("will-quit", stopNotices);
 }

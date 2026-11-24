@@ -409,6 +409,5 @@ The order of phase 35 goes on (changelog phase 39).
 The order of phase 35 goes on (changelog phase 40). Q17.
 
 - [x] The changelog: what this phase is understood to be
-- [ ] Signing with a FIDO key: registered once, "Save as PDF and sign" signs the PDF's sha256 by WebAuthn, the signature beside it (`.sig.json`); `task sign:verify -- <file>` checks it with no network; checked with a security key simulated in Chromium
-- [ ] Sticker printers over Bluetooth (an act's label in ESC/POS, Web Bluetooth) and phones (a QR code of the act's address): in the window's menu, the tray and the app's menu
+- [x] The person's devices in the desktop app (`src/desktop/devices.js`, `src/gui/assets/devices.js`): signing with a FIDO key - registered once, "Save as PDF and sign" signs the PDF's sha256 by WebAuthn, the signature beside it (`.sig.json`), `task sign:verify` checks it offline, checked with a security key simulated in Chromium; an act's label in ESC/POS for a Bluetooth sticker printer; the act for a phone as a QR code; in the window's menu, the tray and the app's menu; one item, as they share their module and menus
 - [ ] Tests, docs, the almanac's lines and AGENTS.md
