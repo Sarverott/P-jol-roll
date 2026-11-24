@@ -378,3 +378,13 @@ The order of phase 35 goes on (changelog phase 36).
 - [x] The code of law analysed (`task analyse`): every act in force against its ties - a basis repealed, a reference to a repealed act and its successor, amendments since the last consolidated text, a Tribunal's judgment with no amendment after it - into `dataset/analysis/`; in every interface (MCP `analysis`, `/api/analysis`, `/api/acts/.../findings`, the act's page); on this machine 23,238 acts in force checked, 4,944 findings
 - [x] The simulation bubble and the improvements proposed (`stacks/python`): personas read an act through MCP and talk about it in rounds, each a model of the host's Ollama (`task python:simulate -- <ELI>`, kept in `resources/simulations/`); a model reads the act - its newest consolidated text - its findings, debates and simulations through MCP and writes its proposals (`task python:propose -- <ELI>`, `resources/proposals/`); one item, as they share their module and tests
 - [x] Tests, docs, the almanac's lines and AGENTS.md; M4 closed in the ROADMAP
+
+## Phase 37: the dataset and the bucket as torrents pointed to by IPFS; the Go stack
+
+The order of phase 35 goes on (changelog phase 37). M5 begins.
+
+- [x] The changelog: what this phase is understood to be
+- [ ] The Go stack in a place of its own (`stacks/go/`): a module with its tests and tasks, in the checks, its version kept with the others
+- [ ] Torrents (`task torrents`): one per part of the dataset and one per journal and year of the bucket, web seeds on Hugging Face, an index of them with their magnet links in `resources/torrents/`
+- [ ] Pointed to by IPFS: the torrents and the index as one UnixFS directory, CIDs computed offline, a CAR file; the IPFS service in compose and `task torrents:publish` for the owner
+- [ ] Tests, docs, the almanac's lines and AGENTS.md
