@@ -166,6 +166,74 @@ for (const part of ["court judgments", "lists of the source"]) {
 	await settle(page);
 	take(await english(page));
 }
+// the chat of the law mastermind (#ask, phase 32) in each of its states, its api answered by
+// stand-ins here: no host that answers, a host without a model, signing in, signed in, an
+// answer with all its parts, a refusal that asks to sign in
+const ADVICE = {
+	question: "Rada Stanu?",
+	answer: "### Rada Stanu\n**Rada Stanu** [DU/1918/2]",
+	thinking: "reasoned",
+	original: "The Council of State [DU/1918/2]",
+	cited: [
+		{ ELI: "DU/1918/2", read: true },
+		{ ELI: "DU/1999/9", read: false },
+	],
+	steps: [{ tool: "act_text", arguments: {}, ok: true }],
+	model: "stand-in",
+	guard: { by: "stand-in", verdict: "no", said: "No" },
+};
+const chat = async (
+	about: unknown,
+	me: unknown,
+	asked?: { status: number; body: unknown },
+) => {
+	await page.unrouteAll();
+	const json = (value: unknown, status = 200) => ({
+		status,
+		contentType: "application/json",
+		body: JSON.stringify(value),
+	});
+	await page.route("**/api/ask/about", (route) =>
+		about ? route.fulfill(json(about)) : route.fulfill(json({}, 404)),
+	);
+	await page.route("**/api/me", (route) => route.fulfill(json(me)));
+	if (asked)
+		await page.route("**/api/ask?*", (route) =>
+			route.fulfill(json(asked.body, asked.status)),
+		);
+	await page.evaluate(() => {
+		location.hash = "#acts";
+	});
+	await page.evaluate(() => {
+		location.hash = "#ask";
+	});
+	await settle(page);
+	if (asked) {
+		await page.locator('input[maxlength="2000"]').fill("Rada Stanu?");
+		await page.locator("button.is-primary").click();
+		await settle(page);
+	}
+	take(await english(page));
+};
+const answering = { answers: true, signIn: true, model: "stand-in" };
+await chat(null, { signingIn: false, user: null });
+await chat(
+	{ answers: false, signIn: false, model: "" },
+	{ signingIn: false, user: null },
+);
+await chat(answering, { signingIn: true, user: null });
+await chat(
+	answering,
+	{ signingIn: true, user: { name: "visitor" } },
+	{ status: 200, body: ADVICE },
+);
+await chat(
+	answering,
+	{ signingIn: true, user: { name: "visitor" } },
+	{ status: 401, body: { error: "sign in", login: "/login" } },
+);
+await page.unrouteAll();
+
 await page.getByRole("button", { name: "Terms of use" }).click();
 await settle(page);
 take(await english(page));
@@ -190,6 +258,8 @@ console.log(`the documentation: ${pages} pages read`);
 const said = (text: string) => {
 	if (translatable(text)) texts[hookOf(text)] = templateOf(text).template;
 };
+// the chat's words while an answer is awaited, which the stand-ins never leave long enough to read
+said("reading the acts and thinking… 0 s");
 // the catalog of functions: what the launcher asks and says of each (src/core/catalog)
 for (const title of Object.values(GROUPS)) said(title);
 for (const one of PROCEDURES) {
