@@ -351,3 +351,12 @@ The owner's message, 2026-11-24 (changelog phase 33).
 - [x] The chat's words in every pack: `task i18n:collect` walks every state of `#ask` (its api answered by stand-ins), the chat's interface marked for collecting, the packs translated, its Polish corrected by hand and marked reviewed, published to the gist; released at once
 - [x] The executive agent: a small qwen in the agents' shell (an opencode host), reading the law through MCP, doing what a person gives it - `task agent` / `agent:container`, writing only into `resources/agent/` (`write_note`); its own rounds the default engine, opencode 2 the other (`AGENT_ENGINE=opencode`, its Code Mode not yet reliable)
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 34: the advanced strategy, and the Python stack
+
+The owner's message, 2026-11-24 (changelog phase 34).
+
+- [x] The owner's words in the changelog
+- [x] The advanced strategy (`src/mastermind/strategy.ts`): a small model of the host first, a hard question on to a deepseek hosted by Hugging Face (`deepseek-ai/DeepSeek-R1-0528` through Inference Providers), given what the small one read and said; `task mastermind:ask -- --escalate` / `--hard`, `/api/ask?escalate=1` / `hard=1`, a switch in the chat when the host offers it
+- [x] The Python stack in a place of its own (`stacks/python/`): a uv project reading the law through the MCP tools, with its tests and tasks, its version kept with the others
+- [x] Tests, docs, the almanac's lines and AGENTS.md

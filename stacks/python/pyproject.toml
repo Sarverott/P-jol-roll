@@ -1,0 +1,33 @@
+[project]
+name = "pjolroll-stack"
+version = "0.30.4"
+description = "P-JOL-ROLL :: the Python stack of the models and simulations - the law read through the project's own MCP tools"
+readme = "README.md"
+authors = [
+    { name = "Sett Sarverott", email = "sett@sarverott.com" }
+]
+license = "AGPL-3.0-only"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx2>=2.16",
+    "mcp>=2.3",
+]
+
+[project.scripts]
+pjolroll = "pjolroll.__main__:main"
+
+[dependency-groups]
+dev = ["pytest>=8.4", "ruff>=0.14"]
+
+[build-system]
+requires = ["uv_build>=0.12.20,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.uv.build-backend]
+module-name = "pjolroll"

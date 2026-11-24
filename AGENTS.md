@@ -159,7 +159,8 @@ src/mastermind/        the law mastermind (phase 30): ask.ts a question answered
                        /api/ask of an api started with MASTERMIND_URL, or of the space on the visitor's own Hugging Face
                        (src/openapi/ask.ts, oauth.ts: hf_oauth, phase 32) - the viewer's tab #ask; record.ts every conversation into
                        resources/conversations/<family>/<instance>/; agent.ts the executive agent (task agent), note.ts its only
-                       writing (resources/agent/) - docs/guides/mastermind.md
+                       writing (resources/agent/); strategy.ts the advanced strategy (phase 34): a weak answer goes on to a
+                       deepseek hosted by Hugging Face (--escalate, --hard) - docs/guides/mastermind.md
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
 src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map,
@@ -180,6 +181,8 @@ src/almanac/           the almanac's mechanics, as in BOS: patterning.ts (chains
 src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init), merge.ts (task resources:merge)
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
+stacks/                the other stacks, each in a place of its own (Q18): python/ (phase 34) the models and simulations, a uv
+                       project reading the law through the MCP tools (Law) and asking /api/ask (Mastermind); go/ to come (phase 37)
 scripts/               install.sh, install.bat, the python push - scripts/README.md
   devops/              every step of the workflows as a .sh (pages, release, docs, flow, checks, media), local/ routines behind task flow:*
 logs/             a file per run: log-<Date.now()>-<log mode>-<command>.log (LOG_DIR, LOG_LEVEL), ignored by git
@@ -275,6 +278,8 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it); `task serve -- --allow-writing`: the viewer starts writing functions too, each after a yes (this machine only) |
 | `task agent -- "..."` / `agent:container -- "..."` | the executive agent (phase 33): qwen does a task through the MCP tools and writes only into `resources/agent/`; here with the host's Ollama / in the agents' shell (`AGENT_ENGINE=opencode` for opencode 2) |
 | `task mastermind:compare` (`-- gemma bielik`) | every team of `resources/configs/mastermind/families.yaml` asked the same questions (`questions.yaml`), each conversation kept; `MASTERMIND_TEAM=gemma task mastermind:ask -- "..."` one team |
+| `task mastermind:ask -- --escalate "..."` / `-- --hard "..."` | the advanced strategy (phase 34): a weak answer of the host's model goes on to `deepseek-ai/DeepSeek-R1-0528` through Inference Providers, on `HF_TOKEN` / straight there; `/api/ask?escalate=1` / `hard=1` |
+| `task python:check` / `python:law -- act DU/1918/2` | the Python stack (`stacks/python/`): ruff and pytest / the law through it (`tools`, `act`, `text`, `nearest`, `ask`) |
 | `task ollama:serve` / `ollama:copy` / `ollama:where` | the Ollama of this machine from its own drive (`OLLAMA_MODELS` of `.env`): the models of `~/.ollama/models` copied there first, then served / copied again, checked / where they are |
 | `task mastermind:ask -- "..."` / `mastermind:up` / `mastermind:down` | a question to the law mastermind: the host's Ollama reads the acts through MCP and cites them by ELI (`-- --json` all of it) / the same as containers for another machine (compose profile `mastermind`: Ollama, its models, the api with `/api/ask` on :8081; the GPU when there is one) / stopped |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |

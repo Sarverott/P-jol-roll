@@ -17,6 +17,7 @@ includes:
   docs: ./docs/Taskfile.yml
   almanac: ./docs/almanac/Taskfile.yml
   examples: ./examples/Taskfile.yml
+  python: ./stacks/python/Taskfile.yml
   devlog:
     taskfile: ./docs/devlog/Taskfile.yml
     dir: ./docs/devlog

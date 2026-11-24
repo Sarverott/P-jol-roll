@@ -43,6 +43,11 @@ jobs:
         run: npx nitro build
       - name: Scripts of the workflows
         run: scripts/devops/checks/shellcheck.sh
+      # the Python stack of the models and simulations (phase 34): ruff and pytest, its tests
+      # starting the MCP server of src/mcp over stdio
+      - uses: astral-sh/setup-uv@v7
+      - name: The Python stack (stacks/python/)
+        run: task python:check
       - name: The introduction page (webpage/)
         run: npm ci --prefix webpage --no-audit --no-fund && npm run --prefix webpage build
 

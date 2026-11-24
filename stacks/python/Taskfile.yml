@@ -1,0 +1,26 @@
+# https://taskfile.dev
+
+version: '3'
+
+# The Python stack of the models and simulations (phase 34): stacks/python, a uv project of its
+# own reading the law through the project's MCP tools - README.md there.
+tasks:
+  sync:
+    desc: The Python stack's environment (uv sync in stacks/python).
+    dir: '{{.ROOT_DIR}}/stacks/python'
+    cmds:
+      - uv sync
+
+  check:
+    desc: 'The Python stack checked: ruff, then pytest (its tests start the MCP server of this repository over stdio, on a dataset of their own)'
+    dir: '{{.ROOT_DIR}}/stacks/python'
+    cmds:
+      - uv run ruff check .
+      - uv run ruff format --check .
+      - uv run pytest -q
+
+  law:
+    desc: 'The law from the Python stack - task python:law -- tools / act DU/1918/2 / text DU/1918/2 / nearest "..." / ask "..." [--escalate|--hard] (API_URL)'
+    dir: '{{.ROOT_DIR}}/stacks/python'
+    cmds:
+      - uv run pjolroll {{.CLI_ARGS}}

@@ -51,7 +51,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.30.0",
+		version: "0.30.4",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
@@ -68,11 +68,25 @@ export const spec = {
 						required: true,
 						schema: { type: "string", maxLength: 2000 },
 					},
+					{
+						name: "hard",
+						in: "query",
+						description:
+							"1: straight to the deepseek hosted by Hugging Face (the advanced strategy, phase 34)",
+						schema: { type: "string", enum: ["1"] },
+					},
+					{
+						name: "escalate",
+						in: "query",
+						description:
+							"1: the usual model first, the hosted deepseek when its answer is weak (nothing cited read)",
+						schema: { type: "string", enum: ["1"] },
+					},
 				],
 				responses: {
 					200: {
 						description:
-							"the answer, the reasoning, the acts cited (read: whether a tool gave it) and the tools called",
+							"the answer, the reasoning, the acts cited (read: whether a tool gave it), the tools called, and escalated: the smaller model's answer when it went on",
 					},
 					400: { description: "no question, or a too long one" },
 					401: {
@@ -88,8 +102,10 @@ export const spec = {
 		"/api/ask/about": {
 			get: {
 				summary:
-					"whether this host answers questions (/api/ask), whether it asks the visitor to sign in with Hugging Face first, and the model",
-				responses: { 200: { description: "{ answers, signIn, model }" } },
+					"whether this host answers questions (/api/ask), whether it asks the visitor to sign in with Hugging Face first, the model, and the deepseek of hard questions when it can pay for one",
+				responses: {
+					200: { description: "{ answers, signIn, model, hard }" },
+				},
 			},
 		},
 		"/api/me": {

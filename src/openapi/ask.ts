@@ -11,6 +11,9 @@ own MCP tools.
   (oauth.ts): the model through Inference Providers - DEMO_MODEL, google/gemma-4-26B-A4B-it by
   default - so the space gives no model's time away; one question at a time per visitor, four
   at once in all; a visitor's conversation is not kept
+The advanced strategy (phase 34, src/mastermind/strategy.ts): &hard=1 straight to the deepseek
+hosted by Hugging Face (HARD_MODEL), &escalate=1 the usual model first and the deepseek when its
+answer is weak - on the visitor's token on the space, on HF_TOKEN of the host here.
 Anywhere else 503 says how to have one; a visitor not signed in gets 401 and where to sign in.
 */
 
@@ -59,6 +62,13 @@ askRoutes.get("/api/ask", async (request: Request, response: Response) => {
 	busy.add(who);
 	const { connect } = await import("../mcp/client.js");
 	const { ask, settings } = await import("../mastermind/ask.js");
+	const { hardSettings, strategy } = await import("../mastermind/strategy.js");
+	const mode =
+		request.query.hard === "1"
+			? "hard"
+			: request.query.escalate === "1"
+				? "escalate"
+				: undefined;
 	const self = `http://127.0.0.1:${request.socket.localPort}/mcp`;
 	const client = await connect(
 		self,
@@ -66,19 +76,31 @@ askRoutes.get("/api/ask", async (request: Request, response: Response) => {
 	);
 	try {
 		const base = settings();
+		const config = session
+			? {
+					...base,
+					team: undefined,
+					url: process.env.DEMO_URL || "https://router.huggingface.co/v1",
+					model: process.env.DEMO_MODEL || "google/gemma-4-26B-A4B-it",
+					key: session.token,
+				}
+			: base;
+		const hard = hardSettings();
 		response.json(
-			await ask(question, client, {
-				keep: !session,
-				config: session
-					? {
-							...base,
-							team: undefined,
-							url: process.env.DEMO_URL || "https://router.huggingface.co/v1",
-							model: process.env.DEMO_MODEL || "google/gemma-4-26B-A4B-it",
-							key: session.token,
-						}
-					: base,
-			}),
+			mode
+				? await strategy(question, client, {
+						keep: !session,
+						config,
+						mode,
+						hard: session
+							? {
+									...hard,
+									url: process.env.DEMO_URL || hard.url,
+									key: session.token,
+								}
+							: hard,
+					})
+				: await ask(question, client, { keep: !session, config }),
 		);
 	} catch (error) {
 		// never the token: only what the model's api said
@@ -92,16 +114,25 @@ askRoutes.get("/api/ask", async (request: Request, response: Response) => {
 });
 
 // whether this host answers questions, and how (the viewer's chat asks it first)
-askRoutes.get("/api/ask/about", (_request: Request, response: Response) => {
-	response.json({
-		answers: askEnabled(),
-		signIn: onSpace() && signingIn(),
-		model: onSpace()
-			? process.env.DEMO_MODEL || "google/gemma-4-26B-A4B-it"
-			: process.env.MASTERMIND_URL
-				? process.env.MASTERMIND_MODEL ||
-					teamOf(process.env.MASTERMIND_TEAM)?.answer ||
-					"deepseek-r1:8b"
-				: "",
-	});
-});
+askRoutes.get(
+	"/api/ask/about",
+	async (_request: Request, response: Response) => {
+		const { hardSettings } = await import("../mastermind/strategy.js");
+		response.json({
+			answers: askEnabled(),
+			signIn: onSpace() && signingIn(),
+			// the deepseek of hard questions, when this host can pay for it (phase 34)
+			hard:
+				askEnabled() && (onSpace() || Boolean(hardSettings().key))
+					? hardSettings().model
+					: "",
+			model: onSpace()
+				? process.env.DEMO_MODEL || "google/gemma-4-26B-A4B-it"
+				: process.env.MASTERMIND_URL
+					? process.env.MASTERMIND_MODEL ||
+						teamOf(process.env.MASTERMIND_TEAM)?.answer ||
+						"deepseek-r1:8b"
+					: "",
+		});
+	},
+);

@@ -47,6 +47,11 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **MCP's Python SDK 2 is not the 1.x of the examples**: the http client
+  is `streamable_http_client(url, http_client=httpx2.AsyncClient(...))`
+  (headers on the client), a result says `is_error`, and an error raised
+  inside a session comes out wrapped in an `ExceptionGroup` by its tasks -
+  `Law.open()` gives a single one as it is (phase 34).
 - **Ollama's OpenAI-like api gives a model the context it was made
   with**: opencode's prompt and tools were cut and the model never saw its
   tools; a model of its own with `num_ctx` (`/api/create`, only a manifest)
