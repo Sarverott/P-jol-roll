@@ -49,7 +49,7 @@ jobs:
       - name: The Python stack (stacks/python/)
         run: task python:check
       # the Go stack of the decentralisation circuits (phase 37): gofmt, vet, tests
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7
         with:
           go-version-file: stacks/go/go.mod
           cache-dependency-path: |
