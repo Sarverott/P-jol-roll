@@ -204,8 +204,10 @@ task tenders -- 2026-11 --limit 0   # every day of a month that ended
 | `bucket/tenders/BZP/2026/2026-11-20/<objectId>.html` | a notice's own text |
 | `dataset/tenders/TED/2026/2026-11-20.jsonl` | TED's notices with a buyer in Poland |
 
-e-Zamówienia ignores the page number of its API, so a window of time that
-comes back full (100 notices) is asked again in halves until each half is
-whole. Its firewall refused a burst of requests with 403 once: requests go
+e-Zamówienia's API ignores its page number and the time of its end date: it
+gives the first 100 notices from the moment asked, oldest first. So a day is
+read as a cursor - asked again from the last notice's moment until fewer
+than 100 come back (phase 44 found it: splitting the window, as phase 43
+did, never shrinks it). Its firewall refused a burst of requests with 403 once: requests go
 three seconds apart, a refusal is waited out a minute, and a day that still
 fails is said and left for the next run.

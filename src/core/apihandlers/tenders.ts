@@ -6,8 +6,8 @@ import * as store from "../resources/store.js";
 /*
 Public tenders (phase 43, Q23): what the state buys, day by day.
   e-Zamówienia, the Biuletyn Zamówień Publicznych (ezamowienia.gov.pl/mo-board/api/v1/notice):
-    every notice of a day, by its type; the API ignores its page number, so a window of time
-    that comes back full (PAGE notices) is split in two, until each half is whole
+    every notice of a day, by its type; the API ignores its page number and the time of its end
+    date, so a day is read as a cursor: from the last notice's moment, page after page
   TED, the EU's Tenders Electronic Daily (api.ted.europa.eu/v3/notices/search): every notice of
     a day whose buyer is in Poland, page by page
 Kept by day, the notice's own HTML (BZP) in the bucket:
@@ -72,34 +72,47 @@ type Notice = Record<string, unknown> & {
 	htmlBody?: string;
 };
 
-// one type of a window of time; split in two while it comes back full
-async function window(
+/*
+The Biuletyn's API takes PublicationDateFrom to the second but the time of PublicationDateTo not
+at all: it gives the first PAGE notices from that moment on, oldest first (found in phase 43).
+So it is read as a cursor: asked again from the last notice's moment, until fewer than PAGE come
+back or the day is over; a notice seen twice (two at one moment) is kept once.
+*/
+async function typeOfDay(
 	type: string,
-	from: Date,
-	to: Date,
+	day: string,
 	wait: number,
 ): Promise<Notice[]> {
-	const iso = (date: Date) => date.toISOString().slice(0, 19);
-	const found = (await ask(
-		`${BZP_API}/notice?NoticeType=${type}&PublicationDateFrom=${iso(from)}&PublicationDateTo=${iso(to)}&PageSize=${PAGE}`,
-		{},
-		wait,
-	)) as Notice[];
-	if (found.length < PAGE || to.getTime() - from.getTime() < 60_000)
-		return found;
-	const middle = new Date((from.getTime() + to.getTime()) / 2);
-	return [
-		...(await window(type, from, middle, wait)),
-		...(await window(type, new Date(middle.getTime() + 1000), to, wait)),
-	];
+	const found = new Map<string, Notice>();
+	let from = `${day}T00:00:00`;
+	for (let asked = 0; asked < 1000; asked++) {
+		const page = (await ask(
+			`${BZP_API}/notice?NoticeType=${type}&PublicationDateFrom=${from}&PublicationDateTo=${day}T23:59:59&PageSize=${PAGE}`,
+			{},
+			wait,
+		)) as Notice[];
+		const before = found.size;
+		for (const notice of page)
+			if (String(notice.publicationDate ?? "").startsWith(day))
+				found.set(String(notice.objectId ?? notice.bzpNumber), notice);
+		const last = String(page.at(-1)?.publicationDate ?? "");
+		if (page.length < PAGE || !last.startsWith(day)) break;
+		// the next page from the last moment; when it gave nothing new, a second later
+		const moment = last.slice(0, 19);
+		from =
+			found.size === before
+				? new Date(new Date(`${moment}Z`).getTime() + 1000)
+						.toISOString()
+						.slice(0, 19)
+				: moment;
+	}
+	return [...found.values()];
 }
 
 export async function bzpDay(day: string, wait = 1000) {
-	const from = new Date(`${day}T00:00:00Z`);
-	const to = new Date(`${day}T23:59:59Z`);
 	const all = new Map<string, Notice>();
 	for (const type of BZP_TYPES) {
-		const found = await window(type, from, to, wait).catch((error: Error) => {
+		const found = await typeOfDay(type, day, wait).catch((error: Error) => {
 			// a type the Biuletyn does not know any more: said, and the others taken
 			if (/status 400/.test(error.message)) return [];
 			throw error;

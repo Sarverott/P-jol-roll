@@ -54,9 +54,11 @@ the MCP tools of `src/mcp`.
   and a "postal code" column may hold a TERYT code - keep only `\d{2}-\d{3}`.
   Nominatim finds a Polish address by street, town and postal code given
   apart, rarely by `ul. ...` in one line.
-- **An API that ignores its page number** (phase 43, e-Zamówienia): ask
-  narrower windows instead - a day, and a window that comes back full
-  split in two until each half is whole. And a state's firewall refuses a
+- **An API that ignores its page number** (phase 43, e-Zamówienia): test
+  what its dates really filter before splitting windows. The Biuletyn keeps
+  the start to the second but ignores the end's time, so halves stay full
+  and splitting runs down to one-minute windows (a run of hours, phase 43);
+  read it as a cursor instead - from the last item's moment (phase 44). And a state's firewall refuses a
   burst (403): seconds between requests, a minute's pause when refused.
 - **Journals of the voivodeships** (phase 43): ten share one platform with
   an ELI API like the Sejm's; three serve an incomplete chain of
