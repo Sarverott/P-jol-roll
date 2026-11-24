@@ -1,0 +1,50 @@
+# mirror: this machine as one mirror of the law (phase 38) - WireGuard joining it to the other
+# mirrors, the api over its own resources/, and Traefik balancing the site over every mirror on
+# the network, all three in one network namespace (WireGuard's), so the api and Traefik reach
+# the others at their addresses on the network (10.42.<code>.1).
+#   task mirror:keys -- mazowieckie     its keys; commit the public one written into the registry
+#   task mirror:up -- mazowieckie       its configurations made again (pjolmesh), then this up
+#   docker compose --profile mirror up -d
+# The registry: resources/configs/mirrors/mirrors.yaml. Needs the wireguard module of the kernel.
+# MIRROR_PORT (8095) is where the site is served here, MIRROR_WG_PORT (51820) the tunnel's port -
+# open it to the internet on a mirror with an endpoint.
+services:
+  mirror-wireguard:
+    profiles: [mirror]
+    image: procustodibus/wireguard:v1.0.20260223
+    cap_add: [NET_ADMIN]
+    sysctls:
+      net.ipv4.conf.all.src_valid_mark: 1
+    volumes:
+      - ./resources/.containerdatavol/mirror/wireguard:/etc/wireguard:ro
+    ports:
+      - "${MIRROR_WG_PORT:-51820}:51820/udp"
+      - "${MIRROR_PORT:-8095}:80"
+    restart: unless-stopped
+
+  mirror-server:
+    profiles: [mirror]
+    build:
+      context: .
+      dockerfile: resources/configs/webapp-server/Dockerfile
+    image: p-jol-roll-webapp-server
+    network_mode: service:mirror-wireguard
+    environment:
+      LOG_DIR: /tmp/logs
+    volumes:
+      - ./resources:/data/resources:ro
+    depends_on: [mirror-wireguard]
+    restart: unless-stopped
+
+  mirror-traefik:
+    profiles: [mirror]
+    image: traefik:v3.6
+    network_mode: service:mirror-wireguard
+    command:
+      - --entrypoints.web.address=:80
+      - --providers.file.filename=/etc/traefik/dynamic.yaml
+      - --providers.file.watch=true
+    volumes:
+      - ./resources/.containerdatavol/mirror/traefik:/etc/traefik:ro
+    depends_on: [mirror-server]
+    restart: unless-stopped

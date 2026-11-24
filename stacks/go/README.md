@@ -39,6 +39,20 @@ owner runs `task torrents:publish`.
 | `BUCKET_URL` | `https://huggingface.co/buckets/Sarverott/raw-law-of-poland/resolve` | the bucket's |
 | `TORRENT_TRACKERS` | | trackers, comma separated; without them peers meet by DHT |
 
+## pjolmesh: the mirrors on WireGuard, balanced by Traefik
+
+Phase 38 - the registry `resources/configs/mirrors/mirrors.yaml`, a
+mirror's keys, its wg-quick configuration (every other mirror on the network
+as a peer) and Traefik's (the site over every mirror, checked by
+`/api/host`). The guide: `docs/guides/mirrors.md`.
+
+```bash
+task mirror:list
+task mirror:keys -- mazowieckie
+task mirror:up -- mazowieckie
+task unittesting:mirrors          # two mirrors, a real tunnel, Traefik - in containers
+```
+
 ```bash
 task go:check     # gofmt, go vet, go test
 ```
@@ -49,3 +63,5 @@ task go:check     # gofmt, go vet, go test
 | `internal/torrent` | a multi-file torrent of a directory, pieces hashed, web seeds, a magnet link |
 | `internal/bencode` | the encoding of BitTorrent |
 | `internal/ipfs` | a UnixFS directory built in memory, its CIDs, its CAR |
+| `cmd/pjolmesh` | the command: keys, wireguard, traefik, mirror, list |
+| `internal/mesh` | the registry, WireGuard keys (X25519, as `wg genkey`), the configurations |

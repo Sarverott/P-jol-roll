@@ -687,6 +687,23 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		ways: {},
 	},
 	{
+		name: "mirror:up",
+		group: "share",
+		title:
+			"this machine as a mirror of the law: WireGuard, the api, Traefik (phase 38)",
+		params: [
+			{
+				name: "mirror",
+				title: "which mirror (mazowieckie)",
+				kind: "text",
+				positional: true,
+			},
+		],
+		writes: true,
+		task: "mirror:up",
+		ways: {},
+	},
+	{
 		name: "torrents:publish",
 		group: "share",
 		title:
