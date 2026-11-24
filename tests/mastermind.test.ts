@@ -386,3 +386,10 @@ test("a team: one calls the tools, one answers, one translates, one guards", asy
 		record: "",
 	});
 });
+
+test("an answer in English is not taken for Polish", async () => {
+	const { polish } = await import("../src/mastermind/team.js");
+	expect(polish("The acts you read do not answer the question.")).toBe(false);
+	expect(polish("To jest ustawa, która nie obowiązuje")).toBe(true);
+	expect(polish("Rada Stanu składała się ze 110 członków")).toBe(true);
+});

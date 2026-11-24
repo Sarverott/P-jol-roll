@@ -330,4 +330,5 @@ The owner's message, 2026-11-24 (changelog phase 31).
 - [x] Docs, the almanac's lines and AGENTS.md
 - [x] The conversations' own dataset on Hugging Face (`Apokryf/Consiliariis-Polonicum-Lex`): a line of `.map.json`, its card kept in git, the first conversation pushed there (the owner's order)
 - [x] The families as teams (`teams` of `resources/configs/mastermind/families.yaml`, `src/mastermind/team.ts`): one answers, one calls the tools (`functiongemma`), one translates an answer in another language (`translategemma`), one guards (`shieldgemma`); a model given thinking and tools only when it can take them; `MASTERMIND_TEAM`; `task mastermind:compare` asks every team the questions of `questions.yaml`
+- [x] An answer in English not taken for Polish: the words of the check that are English too (`do`, `to`, `i`) left out, so the translator takes such an answer
 - [ ] The models pulled into the Ollama on the drive (gemma4:12b and its kin, ministral-3:8b, qwen3:8b, llama3.1:8b, Bielik 11B v3.0) and every team asked the same questions; what they did, compared
