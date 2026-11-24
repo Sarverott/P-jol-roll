@@ -19,6 +19,18 @@ tasks:
       - uv run ruff format --check .
       - uv run pytest -q
 
+  simulate:
+    desc: 'The simulation bubble (phase 36) - people of resources/configs/simulations/personas.yaml talk about an act in rounds, each a model of the host''s Ollama (SIMULATION_MODEL, ministral-3:8b): task python:simulate -- DU/1997/939 --rounds 3 --personas 6; kept in resources/simulations/'
+    dir: '{{.ROOT_DIR}}/stacks/python'
+    cmds:
+      - uv run pjolroll simulate {{.CLI_ARGS}}
+
+  propose:
+    desc: 'Improvements proposed (phase 36) - a model (PROPOSE_MODEL, qwen3:8b) reads an act, its findings (task analyse), debates and simulations through MCP and writes proposals: task python:propose -- DU/1997/939; kept in resources/proposals/. Not legal advice'
+    dir: '{{.ROOT_DIR}}/stacks/python'
+    cmds:
+      - uv run pjolroll propose {{.CLI_ARGS}}
+
   law:
     desc: 'The law from the Python stack - task python:law -- tools / act DU/1918/2 / text DU/1918/2 / nearest "..." / ask "..." [--escalate|--hard] (API_URL)'
     dir: '{{.ROOT_DIR}}/stacks/python'

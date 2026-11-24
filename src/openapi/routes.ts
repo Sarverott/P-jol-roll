@@ -54,7 +54,7 @@ if (remote)
 		// a journal is letters only (DU, MP); anything else is not taken from Hugging Face
 		const named =
 			journal && /^[A-Za-z]{1,16}$/.test(journal) ? journal : undefined;
-		const OTHER = ["statistics", "lists", "sejm", "judgments"];
+		const OTHER = ["statistics", "lists", "sejm", "judgments", "analysis"];
 		const ready =
 			kind === "map"
 				? library.prepareMap(named)
@@ -231,6 +231,34 @@ routes.get("/api/acts/:journal/:year/:pos/references", (request, response) => {
 	const ties = library.references(eliOf(request));
 	if (ties) response.json(ties);
 	else notHere(response);
+});
+
+// what the analysis of the code of law found about it (phase 36, task analyse)
+routes.get(
+	"/api/acts/:journal/:year/:pos/findings",
+	async (request, response) => {
+		await dataset.prepareDataset("analysis");
+		response.json(dataset.findings(eliOf(request)));
+	},
+);
+
+// the analysis as a whole: how many findings of each kind, and a page of one kind
+routes.get("/api/analysis", (request, response) => {
+	const { kind, q, offset, limit } = request.query;
+	const summary = dataset.analysis();
+	if (!summary) {
+		response.status(404).json({ error: "not analysed here: task analyse" });
+		return;
+	}
+	const chosen = dataset.FINDING_KINDS.find((one) => one === kind) ?? "";
+	response.json({
+		summary,
+		page: dataset.findingsOf(chosen, {
+			query: typeof q === "string" ? q : "",
+			offset: Number(offset) || 0,
+			limit: Number(limit) || 50,
+		}),
+	});
 });
 
 // who said what about it in Sejm (phase 35): the days its bill was read on, their statements

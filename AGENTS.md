@@ -130,6 +130,7 @@ src/core/              the gatherer itself; everything below is its tree
   methods/             what a command does
     gather.ts          index -> lists -> years, then files of acts year by year; --since for changes
     seal.ts            checksums of gathered files: records, and check against them
+    analyse.ts         the code of law analysed: every act in force against its ties, into dataset/analysis/ (phase 36)
     map.ts             the map of the whole law: acts of a preset (presets.ts) placed by ForceAtlas2 into dataset/map/
     compile.ts         tables of details and references from raw files
     checkup.ts         browser (Camoufox) visits websites that show acts, writes what it saw
@@ -184,7 +185,8 @@ src/devtools/          tools of the repository itself: version.ts (one version: 
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
 stacks/                the other stacks, each in a place of its own (Q18): python/ (phase 34) the models and simulations, a uv
-                       project reading the law through the MCP tools (Law) and asking /api/ask (Mastermind); go/ to come (phase 37)
+                       project reading the law through the MCP tools (Law) and asking /api/ask (Mastermind); simulation.py the
+                       simulation bubble, proposals.py the improvements proposed (phase 36); go/ to come (phase 37)
 scripts/               install.sh, install.bat, the python push - scripts/README.md
   devops/              every step of the workflows as a .sh (pages, release, docs, flow, checks, media), local/ routines behind task flow:*
 logs/             a file per run: log-<Date.now()>-<log mode>-<command>.log (LOG_DIR, LOG_LEVEL), ignored by git
@@ -282,6 +284,8 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task agent -- "..."` / `agent:container -- "..."` | the executive agent (phase 33): qwen does a task through the MCP tools and writes only into `resources/agent/`; here with the host's Ollama / in the agents' shell (`AGENT_ENGINE=opencode` for opencode 2) |
 | `task mastermind:compare` (`-- gemma bielik`) | every team of `resources/configs/mastermind/families.yaml` asked the same questions (`questions.yaml`), each conversation kept; `MASTERMIND_TEAM=gemma task mastermind:ask -- "..."` one team |
 | `task mastermind:ask -- --escalate "..."` / `-- --hard "..."` | the advanced strategy (phase 34): a weak answer of the host's model goes on to `deepseek-ai/DeepSeek-R1-0528` through Inference Providers, on `HF_TOKEN` / straight there; `/api/ask?escalate=1` / `hard=1` |
+| `task analyse` | the code of law analysed (phase 36): every act in force against its ties - a basis repealed, a reference to a repealed act, a consolidated text due, a Tribunal's judgment not followed - into `dataset/analysis/`; local tables only |
+| `task python:simulate -- DU/1997/939` / `python:propose -- DU/1997/939` | the simulation bubble: invented people talk about an act in rounds, models of the host's Ollama (`resources/simulations/`) / improvements proposed by a model from the act, its findings, debates and simulations (`resources/proposals/`) - docs/guides/analysis.md |
 | `task python:check` / `python:law -- act DU/1918/2` | the Python stack (`stacks/python/`): ruff and pytest / the law through it (`tools`, `act`, `text`, `nearest`, `ask`) |
 | `task ollama:serve` / `ollama:copy` / `ollama:where` | the Ollama of this machine from its own drive (`OLLAMA_MODELS` of `.env`): the models of `~/.ollama/models` copied there first, then served / copied again, checked / where they are |
 | `task mastermind:ask -- "..."` / `mastermind:up` / `mastermind:down` | a question to the law mastermind: the host's Ollama reads the acts through MCP and cites them by ELI (`-- --json` all of it) / the same as containers for another machine (compose profile `mastermind`: Ollama, its models, the api with `/api/ask` on :8081; the GPU when there is one) / stopped |
