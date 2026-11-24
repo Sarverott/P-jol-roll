@@ -394,4 +394,4 @@ The order of phase 35 goes on (changelog phase 38).
 - [x] The changelog: what this phase is understood to be
 - [x] The mirrors as data (`resources/configs/mirrors/mirrors.yaml`: the sixteen voivodeships, their addresses on the network) and `pjolmesh` (Go stack): a mirror's keys, its WireGuard configuration, Traefik's balancing over every mirror
 - [x] The profile `mirror` of compose (WireGuard, the api, Traefik in one network namespace), `task mirror:*`; two mirrors joined by a real tunnel and balanced, checked in containers here (`tests/unittesting/mirrors/`)
-- [ ] Tests, docs, the almanac's lines and AGENTS.md
+- [x] Tests, docs, the almanac's lines and AGENTS.md

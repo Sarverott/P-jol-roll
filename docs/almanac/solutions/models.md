@@ -47,6 +47,11 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **Services in one network namespace** (phase 38): `network_mode:
+  service:mirror-wireguard` puts the api and Traefik inside WireGuard's
+  namespace, so they reach the other mirrors at their tunnel addresses
+  with no routes on the host; the ports are published on the WireGuard
+  service, the only one with a network of its own.
 - **Check CIDs against kubo without a network** (phase 37): `docker run
   --rm --network none --entrypoint sh ipfs/kubo -c "ipfs init -e; ipfs add
   -r --only-hash --cid-version=1 -Q /in/dir"` - and mount the files

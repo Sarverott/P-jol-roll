@@ -6,6 +6,15 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. No mirror runs on a real machine yet** (phase 38). The
+  tunnel and the balancing were checked in containers here with a stand-in
+  api; the profile `mirror` with the real api image was not started. A
+  first mirror needs a machine, its UDP port 51820 open when it has an
+  `endpoint`, and its public key committed to the registry.
+- **2026-11-24. The chat's disclaimer is in English only again**: its
+  words became "Not (formally) legal advices." (phase 37, Q18), so the
+  packs need `task i18n:collect`, `i18n:translate` and Sett's
+  `i18n:publish` before the other languages say it.
 - **2026-11-24. The torrents are not published, the bucket's not made**
   (phase 37). `task torrents -- -only dataset` made 12 torrents here; the
   bucket's 189 GB take one long run (`task torrents -- -only bucket`, kept
