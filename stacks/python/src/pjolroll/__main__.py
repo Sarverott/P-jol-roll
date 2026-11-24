@@ -7,6 +7,9 @@ pjolroll nearest "Rada Stanu"        the acts nearest by meaning
 pjolroll ask "..." [--escalate|--hard]   the mastermind of a running api (API_URL)
 pjolroll simulate DU/1997/939 [--rounds 3] [--personas 6]   the simulation bubble (phase 36)
 pjolroll propose DU/1997/939         improvements proposed by a model (phase 36)
+pjolroll offices                     the public offices' official contacts, from dane.gov.pl (phase 44)
+pjolroll geocode [--limit 100]       those with no coordinates placed by OpenStreetMap's Nominatim
+pjolroll networks                    the address space of the state in the RIPE database
 """
 
 from __future__ import annotations
@@ -23,6 +26,7 @@ from pjolroll.mastermind import Mastermind, MastermindError
 from pjolroll.model import Model
 from pjolroll.proposals import propose
 from pjolroll.simulation import personas, simulate
+from pjolroll.transparency import geocode, networks, offices
 
 
 async def read(command: str, value: str) -> str:
@@ -60,16 +64,29 @@ async def proposals(eli: str) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(prog="pjolroll", description=__doc__.splitlines()[0])
     parser.add_argument(
-        "command", choices=["tools", "act", "text", "nearest", "ask", "simulate", "propose"]
+        "command",
+        choices=[
+            "tools",
+            "act",
+            "text",
+            "nearest",
+            "ask",
+            "simulate",
+            "propose",
+            "offices",
+            "geocode",
+            "networks",
+        ],
     )
     parser.add_argument("value", nargs="*")
     parser.add_argument("--escalate", action="store_true")
     parser.add_argument("--hard", action="store_true")
     parser.add_argument("--rounds", type=int, default=3)
     parser.add_argument("--personas", type=int, default=0, help="the first N of personas.yaml")
+    parser.add_argument("--limit", type=int, default=100, help="geocode: addresses asked at most")
     arguments = parser.parse_args()
     value = " ".join(arguments.value)
-    if arguments.command != "tools" and not value:
+    if arguments.command not in ("tools", "offices", "geocode", "networks") and not value:
         parser.error(f"{arguments.command} needs a value")
     try:
         if arguments.command == "ask":
@@ -78,6 +95,12 @@ def main() -> int:
             for one in advice.get("cited", []):
                 print(f"  [{one['ELI']}] {'read' if one['read'] else 'NOT READ'}")
             print(f"{advice.get('model')}. Not (formally) legal advices.")
+        elif arguments.command == "offices":
+            print(json.dumps(offices(), ensure_ascii=False, indent=1))
+        elif arguments.command == "networks":
+            print(json.dumps(networks(), ensure_ascii=False))
+        elif arguments.command == "geocode":
+            print(json.dumps(geocode(arguments.limit), ensure_ascii=False))
         elif arguments.command == "simulate":
             print(asyncio.run(bubble(value, arguments.rounds, arguments.personas)))
         elif arguments.command == "propose":

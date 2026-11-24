@@ -344,6 +344,37 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		ways: { api: "GET /api/tenders/{source}/{day}", mcp: "tenders" },
 	},
 	{
+		name: "transparency",
+		group: "read",
+		title:
+			"the declaration of transparency: public offices' contacts and places, the state's networks (phase 44)",
+		params: [
+			{
+				name: "of",
+				title: "offices or networks",
+				kind: "choice",
+				choices: ["offices", "networks"],
+				default: "offices",
+			},
+			query,
+			offset,
+			limit(50),
+		],
+		writes: false,
+		read: async (values) => {
+			await dataset.prepareDataset("transparency");
+			const paging = {
+				query: text(values, "query"),
+				offset: number(values, "offset"),
+				limit: number(values, "limit"),
+			};
+			return values.of === "networks"
+				? dataset.networks(paging)
+				: dataset.offices(paging);
+		},
+		ways: { api: "GET /api/transparency/{of}", mcp: "transparency" },
+	},
+	{
 		name: "act-debates",
 		group: "read",
 		title: "an act in Sejm: the days its bill was read on, who said what",
