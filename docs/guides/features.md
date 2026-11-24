@@ -26,7 +26,9 @@ State of 2026-11-13.
 | Work of Sejm: processes, prints | `task sejm -- 10 --files --limit 50` | **built**: tests; one real request per address |
 | Court judgments of SAOS | `task saos -- 2025 --limit 3` | **built**: tests; one real request; republishing terms not checked |
 | Websites that show acts, visited by a browser | `task checkup -- 2026 --limit 6` | **built**: run against a local page only |
-| Votings, transcripts, interpellations of Sejm | | **wanted** |
+| The sittings of Sejm: who spoke on each day, and what | `task sittings -- 10 --files` | **built**: tests against a copy of the API; not run against the source here (the owner starts gathering) |
+| An act's debates: the days its bill was read on, the statements naming its print | the act's page, `/api/acts/.../debates`, MCP `act_debates` | **built**: tests; shows the processes and stages already gathered on this machine, the statements once `task sittings` has run |
+| Votings, interpellations of Sejm | | **wanted** |
 | Open data portal, court register, statistics, national bank | | **wanted** (looked at, see [ideas](../.agents/ideas.md)) |
 | European law | | **wanted**, put off by the owner |
 

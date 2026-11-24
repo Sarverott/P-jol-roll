@@ -87,7 +87,8 @@ Sett asked for it, so here it is. Marked guesses are guesses.
   Where: `src/core/apihandlers/saos.ts`.
   How: like `gather --since`, rewriting the months that were touched.
 
-- **Votings and transcripts of Sejm.**
+- **Votings and transcripts of Sejm.** Transcripts done (phase 35, `task
+  sittings`); votings still wanted.
   What: who voted how, and what was said.
   Where: `src/core/apihandlers/sejm.ts`.
   How: the same API, per sitting.

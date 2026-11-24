@@ -125,6 +125,7 @@ src/core/              the gatherer itself; everything below is its tree
   apihandlers/         one file per source: addresses, shapes, and the walk when the source has its own
     eli.ts             addresses and shapes of ELI API
     sejm.ts            other source: processes and prints of Sejm
+    sittings.ts        the sittings of Sejm: the days of a term, who spoke on each, their texts (phase 35)
     saos.ts            other source: court judgments
   methods/             what a command does
     gather.ts          index -> lists -> years, then files of acts year by year; --since for changes
@@ -149,6 +150,7 @@ src/core/              the gatherer itself; everything below is its tree
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
     dataset.ts         the rest of the dataset: work of Sejm, judgments, lists of the source, acts counted (task stats)
+    debates.ts         an act in Sejm: the days its bill was read on, the statements naming its print (phase 35)
     diagram.ts         the ties of an act as one mermaid flowchart, for every interface
     embeddings.ts      the vectors of task embed, and a question as a vector of the same model (Ollama)
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
@@ -256,6 +258,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task embed` (`-- 2026`) | vectors of the texts by a local multilingual model of Ollama into `dataset/embeddings/` |
 | `task compile` / `task text` | tables from raw files / markdown from html (`-- --pdf`: from PDFs too) |
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
+| `task sittings -- 10 --files --limit 40` | the sittings of Sejm: who spoke on each day, then the texts of the statements (phase 35) |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:media` | favicons, manifest icons, `og.jpg` and the extension icons made from `resources/mediafiles` (ffmpeg); committed |
