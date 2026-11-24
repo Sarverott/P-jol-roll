@@ -369,3 +369,13 @@ The owner's message, 2026-11-24 (changelog phase 35): every phase planned ahead,
 - [x] The sittings gathered (`task sittings`): the sitting days of a term, the statements of each day (who, function, club, time) in `dataset/sejm/term<n>/transcripts/`, their texts with `--files` in `bucket/sejm/term<n>/transcripts/`
 - [x] An act's debates: the days its bill was read on (the stages of its process) and who spoke then - `debates()` of the reading, the MCP tool `act_debates`, `/api/acts/.../debates`, a section in the act's page
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 36: simulations of a change of law, the code of law analysed - M4 closes
+
+The order of phase 35 goes on (changelog phase 36).
+
+- [x] The changelog: what this phase is understood to be
+- [ ] The code of law analysed (`task analyse`): every act in force against its ties - a basis repealed, a reference to a repealed act and its successor, amendments since the last consolidated text, a Tribunal's judgment with no amendment after it - into `dataset/analysis/`; an act's findings in every interface (`act_findings`, `/api/acts/.../findings`, its page)
+- [ ] The simulation bubble (`stacks/python`, `task python:simulate -- <ELI>`): personas read an act through MCP and talk about it in rounds, each a model of the host's Ollama; every run kept in `resources/simulations/`
+- [ ] Improvements proposed (`task python:propose -- <ELI>`): a model reads the act, its findings, debates and simulations through MCP and writes its proposals into `resources/proposals/`
+- [ ] Tests, docs, the almanac's lines and AGENTS.md; M4 closed in the ROADMAP
