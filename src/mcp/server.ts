@@ -9,6 +9,8 @@ import journals from "./tools/journals/function.js";
 import journalsMeta from "./tools/journals/metadata.js";
 import searchActs from "./tools/search_acts/function.js";
 import searchActsMeta from "./tools/search_acts/metadata.js";
+import searchMeaning from "./tools/search_meaning/function.js";
+import searchMeaningMeta from "./tools/search_meaning/metadata.js";
 import sejmWork from "./tools/sejm_work/function.js";
 import sejmWorkMeta from "./tools/sejm_work/metadata.js";
 import sourceList from "./tools/source_list/function.js";
@@ -25,9 +27,10 @@ Gathering is started by a person, so an agent cannot set off a crawl of the sour
 */
 
 export function createServer() {
-	const server = new McpServer({ name: "p-jol-roll", version: "0.26.1" });
+	const server = new McpServer({ name: "p-jol-roll", version: "0.26.2" });
 	server.registerTool("journals", journalsMeta, journals);
 	server.registerTool("search_acts", searchActsMeta, searchActs);
+	server.registerTool("search_meaning", searchMeaningMeta, searchMeaning);
 	server.registerTool("act", actMeta, act);
 	server.registerTool("act_text", actTextMeta, actText);
 	server.registerTool("act_references", actReferencesMeta, actReferences);

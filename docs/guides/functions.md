@@ -13,6 +13,7 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | **read the law** | | |  |  |  |  |  |  |
 | `journals` journals gathered here, with their years |  | ✓ | `#acts` | `GET /api/journals` | `journals` | – | – | – |
 | `acts` acts of a year, by words of their titles |  | ✓ | `#acts` | `GET /api/acts/{journal}/{year}` | `search_acts` | – | – | – |
+| `meaning` acts of every year nearest in meaning to a question (the vectors of task embed, Ollama) |  | ✓ | – | – | `search_meaning` | – | – | – |
 | `act` one act: its line of the listing, details and the files gathered |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}` | `act` | – | `the popup` | – |
 | `act-text` the text of an act, as markdown |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/text` | `act_text` | – | – | – |
 | `act-ties` ties of an act to other acts, as a list or a mermaid flowchart |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/references` | `act_references` | – | – | – |

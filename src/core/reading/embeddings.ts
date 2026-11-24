@@ -78,3 +78,58 @@ export async function questionVector(
 		return undefined;
 	}
 }
+
+// the years that have vectors: "DU/1918", ...
+export function embeddedYears(): string[] {
+	const model = embeddingModel();
+	if (!model) return [];
+	return readdirSync(model.folder, { withFileTypes: true })
+		.filter((entry) => entry.isDirectory())
+		.flatMap((journal) =>
+			readdirSync(join(model.folder, journal.name))
+				.filter((name) => /^\d{4}\.parquet$/.test(name))
+				.map((name) => `${journal.name}/${name.slice(0, 4)}`),
+		)
+		.sort();
+}
+
+// the vectors read once per process: a year is not read again for each question
+const read = new Map<string, Promise<Map<string, number[]>>>();
+const cached = (journal: string, year: number) => {
+	const key = `${journal}/${year}`;
+	if (!read.has(key)) read.set(key, vectorsOf(journal, year));
+	return read.get(key) as Promise<Map<string, number[]>>;
+};
+
+/*
+The acts nearest to a question by meaning (phase 30, the mastermind finds what to read by it):
+the question a vector of the same model, compared with the vector of every act of every year
+that has them (a dot product: the vectors are normalized). Undefined without vectors here or
+without Ollama to make the question one.
+*/
+export async function nearest(
+	question: string,
+	{ journal = "", limit = 10 } = {},
+): Promise<{ ELI: string; score: number }[] | undefined> {
+	const years = embeddedYears().filter(
+		(one) => !journal || one.startsWith(`${journal}/`),
+	);
+	if (!years.length) return undefined;
+	const wanted = await questionVector(question);
+	if (!wanted) return undefined;
+	const best: { ELI: string; score: number }[] = [];
+	for (const one of years) {
+		const [name, year] = one.split("/");
+		for (const [ELI, vector] of await cached(name, Number(year))) {
+			let score = 0;
+			for (let i = 0; i < wanted.length; i++)
+				score += wanted[i] * (vector[i] ?? 0);
+			if (best.length < limit || score > best[best.length - 1].score) {
+				best.push({ ELI, score: Math.round(score * 1000) / 1000 });
+				best.sort((a, b) => b.score - a.score);
+				best.length = Math.min(best.length, limit);
+			}
+		}
+	}
+	return best;
+}

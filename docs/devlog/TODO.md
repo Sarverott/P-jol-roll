@@ -312,7 +312,7 @@ The owner's message, 2026-11-24 (changelog phase 30): the host's Ollama for
 development, a compose setup for other machines.
 
 - [x] The owner's words in the changelog; deepseek-r1:8b in the host's Ollama
-- [ ] The MCP tool `search_meaning`: acts nearest to a question by meaning, over the vectors of `task embed` of every year, the question made a vector by the same model of Ollama
+- [x] The MCP tool `search_meaning`: acts nearest to a question by meaning, over the vectors of `task embed` of every year, the question made a vector by the same model of Ollama
 - [ ] The mastermind (`src/mastermind/`): a question answered by a model of an OpenAI-like api (Ollama, LiteLLM), which reads the law through the MCP tools in rounds and cites the acts by their ELI; the citations checked against what it read; `task mastermind:ask`
 - [ ] `/api/ask` of an api started with a mastermind (`MASTERMIND_URL`); never on a public host
 - [ ] Compose for another machine: the profile `mastermind` - Ollama, its models pulled by a container, the api asking it; the GPU by `resources/services/gpu.yaml` where there is one
