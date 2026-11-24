@@ -176,6 +176,22 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		},
 	},
 	{
+		name: "act-debates",
+		group: "read",
+		title: "an act in Sejm: the days its bill was read on, who said what",
+		params: [eli],
+		writes: false,
+		read: async (values) => {
+			const { debates } = await import("../reading/debates.js");
+			return debates(text(values, "eli"));
+		},
+		ways: {
+			viewer: "#act/DU/2026/1",
+			api: "GET /api/acts/{journal}/{year}/{pos}/debates",
+			mcp: "act_debates",
+		},
+	},
+	{
 		name: "search",
 		group: "read",
 		title: "words in titles and texts of every year (Typesense must run)",

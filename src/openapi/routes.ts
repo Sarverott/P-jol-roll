@@ -233,6 +233,15 @@ routes.get("/api/acts/:journal/:year/:pos/references", (request, response) => {
 	else notHere(response);
 });
 
+// who said what about it in Sejm (phase 35): the days its bill was read on, their statements
+routes.get(
+	"/api/acts/:journal/:year/:pos/debates",
+	async (request, response) => {
+		const { debates } = await import("../core/reading/debates.js");
+		response.json(await debates(eliOf(request)));
+	},
+);
+
 routes.get("/api/acts/:journal/:year/:pos/diagram", (request, response) => {
 	const diagram = library.diagram(eliOf(request));
 	if (diagram) response.type("text/vnd.mermaid; charset=utf-8").send(diagram);
