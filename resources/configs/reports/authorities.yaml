@@ -1,0 +1,49 @@
+# The authorities the project may report to (phase 45, Q20): official contacts only, each read
+# from the authority's own page on the day given; a named person's address never. `for` says
+# which kinds of drafts go there (task report:draft); an authority with none is listed only,
+# until the owner names what belongs to it (Q20).
+#   kinds: certificate - a public server whose chain of certificates does not verify
+authorities:
+  - id: cert-polska
+    name: CERT Polska (NASK)
+    email: "" # its page lists none to read: the incident form instead - confirm the address (Q20)
+    form: https://incydent.cert.pl/
+    page: https://cert.pl/kontakt/
+    verified: 2026-11-24
+    for: [certificate]
+  - id: nask
+    name: NASK - Państwowy Instytut Badawczy
+    email: nask@nask.pl
+    page: https://www.nask.pl/kontakt
+    verified: 2026-11-24
+    for: []
+  - id: policja-cbzc
+    name: Policja - Centralne Biuro Zwalczania Cyberprzestępczości
+    email: kontakt.cbzc@cbzc.policja.gov.pl
+    page: https://www.policja.pl/pol/kontakt/606,Kontakt.html
+    verified: 2026-11-24
+    for: []
+  - id: abw
+    name: Agencja Bezpieczeństwa Wewnętrznego
+    email: poczta@abw.gov.pl
+    page: https://www.abw.gov.pl/
+    verified: 2026-11-24
+    for: []
+  - id: cba
+    name: Centralne Biuro Antykorupcyjne
+    email: bip@cba.gov.pl
+    page: https://www.cba.gov.pl/pl/kontakt/centrala-cba-w-warszawi/97,Centrala-CBA-w-Warszawie.html
+    verified: 2026-11-24
+    for: []
+  - id: aw
+    name: Agencja Wywiadu
+    email: poczta@aw.gov.pl
+    page: https://aw.gov.pl/pl/kontakt/173,Kontakt.html
+    verified: 2026-11-24
+    for: []
+  - id: zandarmeria
+    name: Żandarmeria Wojskowa
+    email: "" # its page did not answer on 2026-11-24 - to be read again
+    page: https://www.zw.wp.mil.pl/
+    verified: ""
+    for: []

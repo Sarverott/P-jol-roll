@@ -47,6 +47,12 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **Read a certificate that does not verify** (phase 45): `tls.connect`
+  with `rejectUnauthorized: false` still says `authorized` and
+  `authorizationError` - the failure becomes the evidence; a server that
+  sends its certificate without the intermediate one fails as
+  `UNABLE_TO_VERIFY_LEAF_SIGNATURE` in Node, while browsers fetch the
+  missing one and hide it.
 - **Spreadsheets of the state have columns of their own** (phase 44):
   tell a column by its words, after the Polish marks are taken off (`NR
   TELEFONU wraz z nr kierunkowym` is phones, `SZEROKOŚĆ GEOGRAFICZNA` the
