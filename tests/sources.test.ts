@@ -66,6 +66,9 @@ const server = createServer((request, response) => {
 	} else if (path.startsWith("/saos/")) {
 		response.setHeader("content-type", "application/json;charset=UTF-8");
 		response.end(JSON.stringify({ items: [] }));
+	} else if (path.endsWith("/2025-03-20/transcripts/pdf")) {
+		response.setHeader("content-type", "application/pdf");
+		response.end("%PDF the day");
 	} else if (path.endsWith("/2025-03-20/transcripts")) {
 		response.writeHead(404).end();
 	} else if (/\/transcripts\/\d+$/.test(path)) {
@@ -117,8 +120,14 @@ test("work of Sejm: tables of the current term, then files that miss", async () 
 }, 60_000);
 
 test("the sittings of Sejm: days that ended, who spoke, then their texts", async () => {
-	const { sittings, sittingsPath, dayPath, statementPath, missingDays } =
-		await import("../src/core/apihandlers/sittings.js");
+	const {
+		sittings,
+		sittingsPath,
+		dayPath,
+		dayPdfPath,
+		statementPath,
+		missingDays,
+	} = await import("../src/core/apihandlers/sittings.js");
 	asked.length = 0;
 	const today = new Date("2025-04-01");
 	await sittings({ terms: [], files: true, limit: 0, rate: 6000, today });
@@ -128,8 +137,10 @@ test("the sittings of Sejm: days that ended, who spoke, then their texts", async
 		"/sejm/term10/proceedings/31/2025-03-19/transcripts",
 		"/sejm/term10/proceedings/31/2025-03-19/transcripts/0",
 		"/sejm/term10/proceedings/31/2025-03-19/transcripts/1",
-		// not 0 (no sitting), not 60 (after today); 03-20 the source does not have
+		// not 0 (no sitting), not 60 (after today); 03-20 the source does not have as JSON:
+		// its transcript as one PDF instead (phase 41)
 		"/sejm/term10/proceedings/31/2025-03-20/transcripts",
+		"/sejm/term10/proceedings/31/2025-03-20/transcripts/pdf",
 	]);
 	expect(store.readJson<unknown[]>(sittingsPath(10))).toHaveLength(3);
 	expect(
@@ -138,6 +149,9 @@ test("the sittings of Sejm: days that ended, who spoke, then their texts", async
 	).toHaveLength(2);
 	expect(readFileSync(statementPath(10, 31, "2025-03-19", 1), "utf8")).toBe(
 		"<p>Statement 1 on druk nr 1058.</p>",
+	);
+	expect(readFileSync(dayPdfPath(10, 31, "2025-03-20"), "utf8")).toBe(
+		"%PDF the day",
 	);
 	expect(missingDays(10, today)).toEqual([{ sitting: 31, date: "2025-03-20" }]);
 

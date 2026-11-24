@@ -17,6 +17,13 @@ export async function crawl(
 	requests: GatheringScope.Asked[],
 	requestHandler: HttpCrawlerOptions["requestHandler"],
 	rate: number,
+	// seconds one answer may take: 30 by default; the Sejm's transcripts of a day take longer (phase 41)
+	// tolerate: a request that failed every retry is a warning, not the run's failure - when
+	// something else takes its place (the Sejm's day as a PDF)
+	{
+		timeout = 30,
+		tolerate = false,
+	}: { timeout?: number; tolerate?: boolean } = {},
 ) {
 	const crawler = new HttpCrawler(
 		{
@@ -31,6 +38,8 @@ export async function crawl(
 			],
 			useSessionPool: false,
 			maxConcurrency: 2,
+			navigationTimeoutSecs: timeout,
+			requestHandlerTimeoutSecs: timeout + 30,
 			maxRequestsPerMinute: rate,
 			// nothing is cut silently - run with everything means every request
 			maxRequestsPerCrawl: undefined,
@@ -40,7 +49,11 @@ export async function crawl(
 	const stats = await crawler.run(requests);
 	// a request that failed every retry is logged by crawlee above; the run must not end as if
 	// all went well (gather:changes did, when the API refused its "since" with 400)
-	if (stats.requestsFailed) {
+	if (stats.requestsFailed && tolerate)
+		log.warning(
+			`${stats.requestsFailed} request(s) failed - tried another way`,
+		);
+	else if (stats.requestsFailed) {
 		log.error(
 			`${stats.requestsFailed} request(s) failed - see the errors above`,
 			{

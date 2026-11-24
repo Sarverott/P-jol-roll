@@ -3,6 +3,7 @@ import { relative } from "node:path";
 import { processPath, SEJM_DATASET, tablePath } from "../apihandlers/sejm.js";
 import {
 	dayPath,
+	dayPdfPath,
 	sittingsPath,
 	statementPath,
 } from "../apihandlers/sittings.js";
@@ -142,6 +143,9 @@ export async function debates(eli: string): Promise<ReadingScope.Debate> {
 					stage: stage.stageName ?? "",
 					...(stage.decision ? { decision: stage.decision } : {}),
 					gathered,
+					...(!gathered && existsSync(dayPdfPath(term, sitting, date))
+						? { pdf: true }
+						: {}),
 					statements,
 				});
 			}

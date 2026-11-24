@@ -417,7 +417,7 @@ The order of phase 35 goes on (changelog phase 40). Q17.
 The owner's message, 2026-11-24 (changelog phase 41): the branches, the sources, and the phases 41-47 before ESP32.
 
 - [x] The owner's words in the changelog; `dev/dependabot` reviewed and taken in; the phases 41-47 in VISION and ROADMAP (M6), ESP32 moved to 48; Q20-Q24 asked (issues on GitHub)
-- [ ] The Sejm's transcripts given time: a day's statements asked with a longer wait, and the day's PDF taken into the bucket when the JSON does not come
+- [x] The Sejm's transcripts given time: a day's statements asked with a longer wait, and the day's PDF taken into the bucket when the JSON does not come
 - [ ] SAOS checked: judgments dated before 1918 or after today counted and listed in a report of the source's quality, not shown as dated
 - [ ] The common courts' Portal Orzeczeń (orzeczenia.ms.gov.pl) as a source of its own: its judgments by publication, politely, into `dataset/courts/` and `bucket/courts/`
 - [ ] Tests, docs, the almanac's lines and AGENTS.md

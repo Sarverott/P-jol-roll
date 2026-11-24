@@ -11,6 +11,7 @@ export default interface Debate {
 		stage: string; // "II czytanie na posiedzeniu Sejmu"
 		decision?: string;
 		gathered: boolean; // whether the statements of that day are here
+		pdf?: boolean; // its transcript is here as one PDF only (phase 41), in the bucket
 		// text: its words around where it names the bill's print (or its beginning), when gathered;
 		// about: whether it names one of the bill's prints
 		statements: (Statement & { text?: string; about?: boolean })[];

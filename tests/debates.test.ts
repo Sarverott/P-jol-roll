@@ -72,6 +72,7 @@ await put("dataset/sejm/term10/transcripts/31/2025-03-19.json", {
 		{ num: 8, name: "Jan Kowalski", function: "Poseł", club: "PiS" },
 	],
 });
+await put("bucket/sejm/term10/transcripts/31/2025-03-21.pdf", "%PDF the day");
 await put(
 	"bucket/sejm/term10/transcripts/31/2025-03-19/0.html",
 	"<p>Otwieram posiedzenie.</p>",
@@ -101,6 +102,7 @@ test("an act's debates: the days its bill was read on, the statements naming its
 		["2025-03-19", 31, true],
 		["2025-03-21", 31, false], // its transcript not gathered yet
 	]);
+	expect(debate.days[1].pdf).toBe(true); // that day as one PDF only (phase 41)
 	const [day] = debate.days;
 	expect(day.decision).toBe("skierowano ponownie do komisji");
 	expect(day.statements.map((one) => [one.num, one.about])).toEqual([
