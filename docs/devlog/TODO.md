@@ -419,5 +419,5 @@ The owner's message, 2026-11-24 (changelog phase 41): the branches, the sources,
 - [x] The owner's words in the changelog; `dev/dependabot` reviewed and taken in; the phases 41-47 in VISION and ROADMAP (M6), ESP32 moved to 48; Q20-Q24 asked (issues on GitHub)
 - [x] The Sejm's transcripts given time: a day's statements asked with a longer wait, and the day's PDF taken into the bucket when the JSON does not come
 - [x] SAOS checked: it answered the crawler 406 (crawlee asked for HTML; every walk now asks for JSON first) - judgments dated before 1918 or after today counted and listed in a report of the source's quality, not shown as dated
-- [ ] The common courts' Portal Orzeczeń (orzeczenia.ms.gov.pl) as a source of its own: its judgments by publication, politely, into `dataset/courts/` and `bucket/courts/`
-- [ ] Tests, docs, the almanac's lines and AGENTS.md
+- ~~[ ] The common courts' Portal Orzeczeń (orzeczenia.ms.gov.pl) as a source of its own: its judgments by publication, politely, into `dataset/courts/` and `bucket/courts/`~~ - not built: the portal has no public API (its `ncourt-api` answers pages, its search is a stateful form of Tapestry over some 300 portals of single courts), SAOS is fed from it and works again since the 406 was found (the item above); whether to imitate a person's search there anyway is Q25
+- [x] Tests, docs, the almanac's lines and AGENTS.md

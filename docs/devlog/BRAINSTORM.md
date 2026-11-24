@@ -6,7 +6,7 @@ answered questions move word for word into `docs/changelog/phase-<n>.md`
 with their **Decision:**.
 
 Q15 and Q16 were answered (changelog phase 12), Q17 and Q18 (changelog phase 22), Q19
-(changelog phase 25). Open: Q20-Q24 (asked in phase 41).
+(changelog phase 25). Open: Q20-Q25 (asked in phase 41).
 
 ## Q20. Reports to the authorities: what is reported, by whom, from where
 
@@ -87,3 +87,20 @@ and the domains under gov.pl. No named person's private data beyond what
 an office publishes as its own contact. Published as a dataset and a map.
 "Other like that": the owner's to name.
 
+
+## Q25. The courts' own portals: read their pages?
+
+The order of phase 41: SAOS and the Sejm API "can be provided by other related
+sources of government servers". For judgments the other source is the
+common courts' Portal Orzeczeń (orzeczenia.ms.gov.pl) and its some 300
+portals of single courts - but it has no public API: its `ncourt-api`
+answers pages, its search is a stateful form (Apache Tapestry, a token per
+session). SAOS is fed from these portals, and works again since phase 41
+found why it refused us (406: the crawler asked for HTML).
+
+*Lean:* no scraper of the portals' forms for now - fragile, and heavier on
+the courts' servers than an API is; SAOS with its quality report (judgments
+dated after today or before 1918 kept apart) is the source, the portals
+named as where a judgment is published. If the owner wants the portals read
+anyway: one court at a time, a search a minute, judgments by their
+publication date.

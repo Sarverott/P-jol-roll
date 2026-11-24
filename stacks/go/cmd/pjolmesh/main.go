@@ -23,7 +23,7 @@ import (
 )
 
 // Version is the project's one version, kept by src/devtools/version.ts.
-const Version = "0.37.9"
+const Version = "0.37.10"
 
 func fail(err error) {
 	fmt.Fprintln(os.Stderr, err)
