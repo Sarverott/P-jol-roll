@@ -2,7 +2,8 @@
 # on development, the milestones and the issues of phases, Q<n> and PP<n> follow it
 # (scripts/devops/github/devlog.py). The markdown stays the source. The board is a project of
 # the owner, which the workflow's token cannot reach: task github:devlog brings it from a
-# terminal.
+# terminal. The steps ticked by the push, the phases and milestones they finished, are said in
+# the discussion of announcements (#107, phase 29: scripts/devops/github/announce.py).
 name: "devlog › milestones and issues from docs/devlog"
 
 on:
@@ -24,6 +25,7 @@ jobs:
     permissions:
       contents: read
       issues: write
+      discussions: write
     steps:
       - uses: actions/checkout@v7
         with: { fetch-depth: 0 } # the questions as they stood come from the history
@@ -31,3 +33,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/devops/github/devlog.py --no-board
+      - name: Steps done, said in the discussion of announcements
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/devops/github/announce.py steps "${{ github.event.before }}" "${{ github.sha }}"
