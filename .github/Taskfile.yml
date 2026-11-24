@@ -60,3 +60,8 @@ tasks:
     desc: 'The devlog on GitHub: milestones of ROADMAP, an issue per phase, Q<n> and PP<n>, the board (gh scope "project") - the markdown the source; "-- --dry" says what it would change'
     cmds:
       - python3 scripts/devops/github/devlog.py {{.CLI_ARGS}}
+
+  announce:
+    desc: 'Said in the discussion of announcements (#107): steps <before> <after> / staging <phase> <pr> / release <tag>; "-- --dry ..." prints it'
+    cmds:
+      - python3 scripts/devops/github/announce.py {{.CLI_ARGS}}

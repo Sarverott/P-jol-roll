@@ -15,6 +15,7 @@ permissions:
   contents: write
   pull-requests: write
   actions: write # the gate of the pull request started by a dispatch
+  discussions: write # the closed phase said in the discussion of announcements (#107)
 
 concurrency:
   group: phase-close

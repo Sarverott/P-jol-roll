@@ -10,6 +10,7 @@
 #   4. the website built (the React introduction of webpage/ at the root, the MkDocs
 #      documentation under docs/) and pushed to the github-pages branch
 #   5. master merged back into development
+#   6. all of it said in the discussion of announcements (#107, phase 29)
 # Every step is a script of scripts/devops/, runnable by hand.
 name: "release › master: tag, docs, website, back into development"
 
@@ -131,3 +132,23 @@ jobs:
         with: { node-version-file: .nvmrc }
       - name: master back into development
         run: scripts/devops/flow/merge-into.sh origin/master development
+
+  announce:
+    # the release and how each job of it ended, in the discussion of announcements (phase 29)
+    needs: [release, container, space, readthedocs, pages, back]
+    if: ${{ !cancelled() && needs.release.outputs.tag }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      discussions: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Said in the discussion of announcements
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULT_CONTAINER: ${{ needs.container.result }}
+          RESULT_SPACE: ${{ needs.space.result }}
+          RESULT_READTHEDOCS: ${{ needs.readthedocs.result }}
+          RESULT_PAGES: ${{ needs.pages.result }}
+          RESULT_BACK: ${{ needs.back.result }}
+        run: python3 scripts/devops/github/announce.py release "${{ needs.release.outputs.tag }}"
