@@ -22,6 +22,7 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `agreements` international agreements binding Poland, published in the journals (phase 42) |  | ✓ | – | `GET /api/agreements` | `agreements` | – | – | – |
 | `regional-law` local and regional law: a voivodeship journal's acts of a year (phase 43) |  | ✓ | – | `GET /api/regional, /api/regional/{code}/{year}` | `regional_law` | – | – | – |
 | `public-tenders` public tenders of a day: e-Zamówienia (BZP) or TED (phase 43) |  | ✓ | – | `GET /api/tenders/{source}/{day}` | `tenders` | – | – | – |
+| `transparency` the declaration of transparency: public offices' contacts and places, the state's networks (phase 44) |  | ✓ | – | `GET /api/transparency/{of}` | `transparency` | – | – | – |
 | `act-debates` an act in Sejm: the days its bill was read on, who said what |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/debates` | `act_debates` | – | – | – |
 | `search` words in titles and texts of every year (Typesense must run) |  | ✓ | `#acts` | `GET /api/search` | – | – | – | – |
 | `maps` maps of the whole law: the presets, and which are made |  | ✓ | `#map` | `GET /api/map` | – | – | – | – |

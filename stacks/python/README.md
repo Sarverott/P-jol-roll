@@ -32,6 +32,7 @@ print(Mastermind().ask("Czym była Rada Stanu?", escalate=True)["answer"])
 | `pjolroll.mastermind` | `Mastermind`: `/api/ask` of a running api - `ask(question, escalate=, hard=)`, `about()` |
 | `pjolroll.simulation` | the simulation bubble (phase 36): `simulate(law, eli, rounds=, people=)`, `personas()`, `simulations(eli)` |
 | `pjolroll.proposals` | improvements proposed: `propose(law, eli)` |
+| `pjolroll.transparency` | the declaration of transparency (phase 44): `offices()`, `geocode()`, `networks()` |
 | `pjolroll.model` | a model of an OpenAI-like api (the host's Ollama), JSON mode, the first object of what it wrote |
 | `pjolroll.__main__` | the same from a terminal: `task python:law -- act DU/1918/2` |
 

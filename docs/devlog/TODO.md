@@ -439,3 +439,11 @@ The order of phase 41 goes on (changelog phase 43). Along the *Lean* of Q23 (#14
 - [x] Public tenders (`task tenders`): every notice of e-Zamówienia by day (a full window split in two), TED's notices for Poland; polite, a refusal waited out
 - [x] MCP `regional_law` and `tenders`, `/api/regional`, `/api/tenders`, the catalog
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 44: the declaration of transparency
+
+The order of phase 41 goes on (changelog phase 44). Along the *Lean* of Q24 (#142).
+
+- [x] The changelog
+- [x] The offices (`pjolroll offices`): the official contact bases of dane.gov.pl read into one table; their places (`pjolroll geocode`, Nominatim, cached); the address space of the state in RIPE (`pjolroll networks`: 89 organisations, 108 networks, 82 autonomous systems here); MCP `transparency`, `/api/transparency`, the catalog, `task python:offices` / `geocode` / `networks`
+- [x] Tests, docs, the almanac's lines and AGENTS.md
