@@ -17,6 +17,9 @@ services:
     security_opt: ["no-new-privileges:true"]
     environment:
       LOG_DIR: /workspace/logs
+      # the executive agent's model (phase 33, task agent:container): Ollama of the profile llms
+      AGENT_OLLAMA_URL: ${AGENT_OLLAMA_URL:-http://llms-ollama:11434/v1}
+      AGENT_MODEL: ${AGENT_MODEL:-qwen3:8b}
     volumes:
       - .:/workspace
       # the home of the agents in it (their settings, history), kept between runs, never pushed

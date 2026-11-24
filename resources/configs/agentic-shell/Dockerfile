@@ -11,6 +11,10 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/* \
 	&& curl -fsSL https://taskfile.dev/install.sh | sh -s -- -d -b /usr/local/bin v3.54.0
 COPY --from=ghcr.io/astral-sh/uv:0.12.20 /uv /uvx /usr/local/bin/
+# opencode 2, the shell of the executive agent (phase 33: task agent:container); outside
+# /home/node, which is a volume of its own
+RUN curl -fsSL https://opencode.ai/v2/install | HOME=/opt/opencode bash -s -- --version 2.0.23 \
+	&& ln -s /opt/opencode/.opencode/bin/opencode /usr/local/bin/opencode
 
 # the user node (uid 1000) owns what it writes in /workspace, as a person on the host does
 USER node

@@ -393,3 +393,89 @@ test("an answer in English is not taken for Polish", async () => {
 	expect(polish("To jest ustawa, która nie obowiązuje")).toBe(true);
 	expect(polish("Rada Stanu składała się ze 110 członków")).toBe(true);
 });
+
+test("write_note writes a bare name into its folder, never outside it", async () => {
+	const { noteTool } = await import("../src/mastermind/note.js");
+	const folder = join(work, "agent");
+	const note = noteTool(folder);
+	expect(await note.run({ name: "../../AGENTS.md", content: "# x" })).toEqual({
+		ok: true,
+		text: "written resources/agent/AGENTS.md (3 characters)",
+	});
+	expect(readFileSync(join(folder, "AGENTS.md"), "utf8")).toBe("# x\n");
+	expect(
+		(await note.run({ name: "/etc/passwd", content: "y" })).text,
+	).toContain("resources/agent/passwd.md");
+	expect((await note.run({ name: "..", content: "z" })).ok).toBe(false);
+	expect((await note.run({ name: "a.md", content: "" })).ok).toBe(false);
+});
+
+test("the executive agent's own tool runs in the rounds beside MCP's", async () => {
+	let calls = 0;
+	const model = createServer((request, response) => {
+		request.resume();
+		request.on("end", () => {
+			response.setHeader("content-type", "application/json");
+			if (request.url === "/api/show") {
+				response.end(JSON.stringify({ capabilities: ["completion", "tools"] }));
+				return;
+			}
+			if (request.url === "/api/embed") {
+				response.end(JSON.stringify({ embeddings: [[0.6, 0.8, 0]] }));
+				return;
+			}
+			const message =
+				calls++ === 0
+					? {
+							content: "",
+							tool_calls: [
+								{
+									function: {
+										name: "write_note",
+										arguments: {
+											name: "rada.md",
+											content: "# Rada Stanu [DU/1918/2]",
+										},
+									},
+								},
+							],
+						}
+					: { content: "Zapisano [DU/1918/2]." };
+			response.end(`${JSON.stringify({ message, done: true })}\n`);
+		});
+	});
+	await new Promise<void>((done) => model.listen(0, "127.0.0.1", done));
+	const at = `http://127.0.0.1:${(model.address() as AddressInfo).port}`;
+	const { connect } = await import("../src/mcp/client.js");
+	const { ask } = await import("../src/mastermind/ask.js");
+	const { noteTool } = await import("../src/mastermind/note.js");
+	const client = await connect(`${url}/mcp`);
+	const folder = join(work, "agent-run");
+	const advice = await ask("Zapisz notatkę o Radzie Stanu.", client, {
+		keep: false,
+		system: "You are the executive agent.",
+		local: [noteTool(folder)],
+		config: {
+			url: at,
+			model: "qwen-stand-in",
+			key: "",
+			rounds: 4,
+			context: 4096,
+			read: 2000,
+			words: 512,
+			first: 1,
+			team: undefined,
+		},
+	});
+	await client.close();
+	model.close();
+	expect(advice.steps.map((one) => [one.tool, one.ok])).toEqual([
+		["search_meaning", true],
+		["act_text", true],
+		["write_note", true],
+	]);
+	expect(readFileSync(join(folder, "rada.md"), "utf8")).toBe(
+		"# Rada Stanu [DU/1918/2]\n",
+	);
+	expect(advice.answer).toBe("Zapisano [DU/1918/2].");
+});

@@ -25,6 +25,18 @@ tasks:
     cmds:
       - npx tsx src/mastermind/main.ts {{.CLI_ARGS}}
 
+  agent:
+    desc: 'The executive agent (phase 33): a small qwen in opencode does what you give it, reading the law through the MCP tools, writing only into resources/agent/ - task agent -- "what to do"; the host''s Ollama (AGENT_MODEL, AGENT_OLLAMA_URL); every run kept in resources/conversations/'
+    cmds:
+      - npx tsx src/mastermind/agent.ts {{.CLI_ARGS}}
+
+  agent:container:
+    desc: 'The executive agent in the agents'' shell (compose profiles agentic and llms: its own Ollama with the model pulled) - task agent:container -- "what to do"'
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - docker compose --profile agentic --profile llms up -d --build agentic-shell llms-ollama llms-models
+      - docker compose exec agentic-shell npx tsx src/mastermind/agent.ts {{.CLI_ARGS}}
+
   mastermind:compare:
     desc: 'Every team of resources/configs/mastermind/families.yaml asked the questions of questions.yaml (-- gemma bielik: only those); each conversation kept in resources/conversations/, a line per answer here (phase 31)'
     cmds:
