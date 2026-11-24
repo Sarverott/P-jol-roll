@@ -360,3 +360,12 @@ The owner's message, 2026-11-24 (changelog phase 34).
 - [x] The advanced strategy (`src/mastermind/strategy.ts`): a small model of the host first, a hard question on to a deepseek hosted by Hugging Face (`deepseek-ai/DeepSeek-R1-0528` through Inference Providers), given what the small one read and said; `task mastermind:ask -- --escalate` / `--hard`, `/api/ask?escalate=1` / `hard=1`, a switch in the chat when the host offers it
 - [x] The Python stack in a place of its own (`stacks/python/`): a uv project reading the law through the MCP tools, with its tests and tasks, its version kept with the others
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 35: the work of Sejm as discussion
+
+The owner's message, 2026-11-24 (changelog phase 35): every phase planned ahead, one after another, until one needs the owner.
+
+- [x] The owner's words in the changelog
+- [ ] The sittings gathered (`task sittings`): the sitting days of a term, the statements of each day (who, function, club, time) in `dataset/sejm/term<n>/transcripts/`, their texts with `--files` in `bucket/sejm/term<n>/transcripts/`
+- [ ] An act's debates: the days its bill was read on (the stages of its process) and who spoke then - `debates()` of the reading, the MCP tool `act_debates`, `/api/acts/.../debates`, a section in the act's page
+- [ ] Tests, docs, the almanac's lines and AGENTS.md
