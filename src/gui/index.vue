@@ -19,6 +19,7 @@ import {
 	ref,
 } from "vue";
 import { chosen, use } from "../i18n/browser.js";
+import { offerDevices } from "./assets/devices.js";
 import { createLibrary } from "./assets/library.js";
 import { href, useRoute } from "./assets/route.js";
 import { applyTheme, settings } from "./assets/settings.js";
@@ -79,6 +80,8 @@ onMounted(async () => {
 	ColorPick.paint(root.value);
 	applyTheme();
 	if (settings.webmcp) withdraw = offerTools(library);
+	// for the desktop app's menus: FIDO keys and Bluetooth printers (phase 40)
+	offerDevices();
 	await use(chosen());
 	await library.loadJournals();
 	await library.probe();

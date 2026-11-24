@@ -41,6 +41,7 @@ import type SaosPlanInterface from "./SaosPlan.interface.js";
 import type ScanRecordInterface from "./ScanRecord.interface.js";
 import type SearchPageInterface from "./SearchPage.interface.js";
 import type SejmPlanInterface from "./SejmPlan.interface.js";
+import type SignatureInterface from "./Signature.interface.js";
 import type SittingInterface from "./Sitting.interface.js";
 import type SittingDayInterface from "./SittingDay.interface.js";
 import type SittingsPlanInterface from "./SittingsPlan.interface.js";
@@ -99,6 +100,7 @@ export namespace ReadingScope {
 	export type Analysis = AnalysisInterface;
 	export type Debate = DebateInterface;
 	export type Finding = FindingInterface;
+	export type Signature = SignatureInterface;
 	export type Journal = JournalInterface;
 	export type ActPage = ActPageInterface;
 	export type ActView = ActViewInterface;

@@ -1,5 +1,6 @@
 import { fileURLToPath } from "node:url";
 import { app, Menu, nativeImage, Tray } from "electron";
+import { printLabel, registerKey, showForPhone, signPdf } from "./devices.js";
 import { print, saveAsPdf } from "./printing.js";
 
 /*
@@ -13,7 +14,7 @@ export const iconPath = fileURLToPath(
 
 let tray;
 
-export function setTray(showWindow, getWindow = () => undefined) {
+export function setTray(showWindow, getWindow = () => undefined, address = "") {
 	const image = nativeImage
 		.createFromPath(
 			fileURLToPath(new URL("../web/public/favicon-32.png", import.meta.url)),
@@ -27,6 +28,22 @@ export function setTray(showWindow, getWindow = () => undefined) {
 			{ type: "separator" },
 			{ label: "Print what it shows...", click: () => print(getWindow()) },
 			{ label: "Save it as PDF...", click: () => saveAsPdf(getWindow()) },
+			{
+				label: "Save it as PDF and sign...",
+				click: () => signPdf(getWindow()),
+			},
+			{
+				label: "Print a label of the act...",
+				click: () => printLabel(getWindow(), address),
+			},
+			{
+				label: "Show the act for a phone",
+				click: () => showForPhone(getWindow()),
+			},
+			{
+				label: "Register a security key...",
+				click: () => registerKey(getWindow()),
+			},
 			{ type: "separator" },
 			{ label: "Quit", click: () => app.quit() },
 		]),

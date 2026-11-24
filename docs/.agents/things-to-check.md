@@ -6,6 +6,12 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. The devices of phase 40 want Sett's hands.** Signing was
+  checked with a security key simulated in Chromium; whether Electron on
+  Linux reaches a real USB key (Chromium's own CTAP over HID, the udev
+  rights of `/dev/hidraw*`) is untried, as is a real Bluetooth sticker
+  printer (the services of `PRINTER_SERVICES`). The menus' new words are
+  English: the app's menus are not translated.
 - **2026-11-24. The chain of the law has no network yet** (phase 39): its
   genesis - which mirrors are validators, their stake, the chain's id - is
   Sett's (docs/guides/chain.md). Checked here: the module's tests and a
