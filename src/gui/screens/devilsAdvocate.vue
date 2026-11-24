@@ -57,13 +57,13 @@ async function send() {
 
 <template>
 	<section>
-		<p v-if="!about" class="notification">
+		<p v-if="!about" class="notification i18n-texts-slot">
 			No host here answers questions: the mastermind runs where its api has a
 			model - <code>task mastermind:ask</code>, or
 			<code>docker compose --profile mastermind up -d</code>.
 		</p>
 		<template v-else>
-			<p class="mb-3">
+			<p class="mb-3 i18n-texts-slot">
 				Ask about the law of Poland. The answer comes from the acts the model
 				reads through the project's tools, each cited act a link.
 				<strong>Not legal advice.</strong>
@@ -71,12 +71,15 @@ async function send() {
 					(<span translate="no">{{ about.model }}</span>)</span
 				>
 			</p>
-			<p v-if="!about.answers" class="notification is-warning is-light">
+			<p
+				v-if="!about.answers"
+				class="notification is-warning is-light i18n-texts-slot"
+			>
 				This host has no model to ask.
 			</p>
 			<div
 				v-else-if="about.signIn && !me?.user"
-				class="notification is-info is-light"
+				class="notification is-info is-light i18n-texts-slot"
 			>
 				The answers here run on your own Hugging Face account (its Inference
 				Providers credits).
@@ -87,20 +90,24 @@ async function send() {
 					>Sign in with Hugging Face</a
 				>
 			</div>
-			<p v-else-if="me?.user" class="is-size-7 mb-3">
+			<p v-else-if="me?.user" class="is-size-7 mb-3 i18n-texts-slot">
 				Signed in as <strong translate="no">{{ me.user.name }}</strong> ·
 				<a :href="`${api}/logout?back=/%23ask`" target="_top">sign out</a>
 			</p>
 
 			<div v-for="(one, i) in talk" :key="i" class="mb-4">
 				<p class="has-text-weight-semibold mb-2">{{ one.question }}</p>
-				<p v-if="one.waiting" class="has-text-grey">
+				<p v-if="one.waiting" class="has-text-grey i18n-texts-slot">
 					reading the acts and thinking… {{ seconds }} s
 				</p>
 				<AnswerCard v-else-if="one.advice" :advice="one.advice" />
 				<p v-else class="notification is-danger is-light">
 					{{ one.error }}
-					<a v-if="one.login" :href="`${api}${one.login}`" target="_top"
+					<a
+						v-if="one.login"
+						class="i18n-texts-slot"
+						:href="`${api}${one.login}`"
+						target="_top"
 						>Sign in with Hugging Face</a
 					>
 				</p>
@@ -119,7 +126,7 @@ async function send() {
 				<div class="control">
 					<button
 						type="submit"
-						class="button is-primary"
+						class="button is-primary i18n-texts-slot"
 						:class="{ 'is-loading': busy() }"
 						:disabled="!about.answers || busy()"
 					>

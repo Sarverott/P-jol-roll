@@ -348,6 +348,6 @@ The owner's message, 2026-11-24 (changelog phase 32).
 The owner's message, 2026-11-24 (changelog phase 33).
 
 - [x] The owner's words in the changelog
-- [ ] The chat's words in every pack: `task i18n:collect` walks every state of `#ask` (its api answered by stand-ins), the chat's interface marked for collecting, the packs translated, its Polish corrected by hand and marked reviewed, published to the gist; released at once
+- [x] The chat's words in every pack: `task i18n:collect` walks every state of `#ask` (its api answered by stand-ins), the chat's interface marked for collecting, the packs translated, its Polish corrected by hand and marked reviewed, published to the gist; released at once
 - [ ] The executive agent: a small qwen in the agents' shell (an opencode host), reading the law through MCP, doing what a person gives it
 - [ ] Tests, docs, the almanac's lines and AGENTS.md
