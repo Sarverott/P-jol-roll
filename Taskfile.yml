@@ -212,6 +212,16 @@ tasks:
     cmds:
       - npm run analyse
 
+  eu:
+    desc: 'The law of the EU binding Poland (phase 42): every act of years from the Publications Office (SPARQL), -- --texts the Polish texts of acts in force into bucket/EU/ (e.g. task eu -- 2016 2024; task eu -- 2016 --texts --limit 50)'
+    cmds:
+      - npm run eu -- {{.CLI_ARGS}}
+
+  international:
+    desc: 'The international agreements the journals of the state published, indexed from the listings here into dataset/international/ (phase 42) - asks no source'
+    cmds:
+      - npm run international
+
   sittings:
     desc: 'The sittings of Sejm (phase 35) - the days of a term and who spoke on each, -- --files the texts of the statements (e.g. task sittings -- 10 --files --limit 40); the owner starts it'
     cmds:

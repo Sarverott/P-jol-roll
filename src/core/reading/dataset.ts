@@ -1,4 +1,4 @@
-import { existsSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { monthPath, SAOS_DATASET } from "../apihandlers/saos.js";
 import { SEJM_DATASET, tablePath } from "../apihandlers/sejm.js";
@@ -193,6 +193,10 @@ export async function prepareDataset(
 		for (const name of SEJM_KINDS)
 			if (!second || second === name)
 				await remote.fromDataset(`sejm/term${first}/${name}.jsonl`);
+	} else if (kind === "eu" && first && /^\d{4}$/.test(first)) {
+		await remote.fromDataset(`EU/acts/${first}.jsonl`);
+	} else if (kind === "agreements") {
+		await remote.fromDataset("international/agreements.jsonl");
 	} else if (kind === "analysis") {
 		await remote.fromDataset("analysis/summary.json");
 		await remote.fromDataset("analysis/findings.jsonl");
@@ -235,4 +239,87 @@ export function findings(eli: string): ReadingScope.Finding[] {
 	return table<ReadingScope.Finding>(join(ANALYSIS(), "findings.jsonl")).filter(
 		(one) => one.ELI === eli,
 	);
+}
+
+/*
+International law (phase 42): the law of the EU by year (task eu) - its acts, one with its Polish
+text as markdown when the bucket has it - and the international agreements the journals of the
+state published (task international).
+*/
+const EU = () => join(store.DATASET_DIR, "EU", "acts");
+
+export function euYears() {
+	if (!existsSync(EU())) return [];
+	return readdirSync(EU())
+		.map((name) => /^(\d{4})\.jsonl$/.exec(name)?.[1])
+		.filter((year): year is string => Boolean(year))
+		.map(Number)
+		.sort((a, b) => a - b)
+		.map((year) => ({ year, acts: table(join(EU(), `${year}.jsonl`)).length }));
+}
+
+export function euActs(
+	year: number,
+	paging: {
+		query?: string;
+		offset?: number;
+		limit?: number;
+		inForce?: boolean;
+	} = {},
+) {
+	const lines = table<GatheringScope.EuAct>(join(EU(), `${year}.jsonl`)).filter(
+		(act) => !paging.inForce || act.inForce,
+	);
+	return paged(
+		lines as (GatheringScope.EuAct & Record<string, unknown>)[],
+		paging,
+	);
+}
+
+const CELEX = /^([0-9])([0-9]{4})[A-Z]{1,2}[0-9A-Z()_/-]{1,20}$/;
+
+export async function euAct(celex: string, length = 20000) {
+	const found = CELEX.exec(celex);
+	if (!found) return undefined;
+	const year = Number(found[2]);
+	if (remote.remote) await remote.fromDataset(`EU/acts/${year}.jsonl`);
+	const act = table<GatheringScope.EuAct>(join(EU(), `${year}.jsonl`)).find(
+		(one) => one.CELEX === celex,
+	);
+	if (!act) return undefined;
+	// the year of the document may differ from the year in its CELEX: both are looked in
+	const file = [year, Number(act.date.slice(0, 4))]
+		.map((one) =>
+			join(
+				store.BUCKET_DIR,
+				"EU",
+				String(one),
+				`${celex.replace(/\//g, "_")}.xhtml`,
+			),
+		)
+		.find((path) => existsSync(path));
+	let text = "";
+	if (file) {
+		const { toMarkdown } = await import("../parsing/text.js");
+		text = toMarkdown(readFileSync(file, "utf8")).slice(0, length);
+	}
+	return {
+		act,
+		text,
+		eurlex: `https://eur-lex.europa.eu/legal-content/PL/TXT/?uri=CELEX:${celex}`,
+	};
+}
+
+export function agreements(
+	paging: {
+		query?: string;
+		offset?: number;
+		limit?: number;
+		type?: string;
+	} = {},
+) {
+	const lines = table<Record<string, unknown>>(
+		join(store.DATASET_DIR, "international", "agreements.jsonl"),
+	).filter((one) => !paging.type || one.type === paging.type);
+	return paged(lines, paging);
 }
