@@ -357,7 +357,7 @@ wheels = [
 
 [[package]]
 name = "pjolroll-stack"
-version = "0.37.1"
+version = "0.37.4"
 source = { editable = "." }
 dependencies = [
     { name = "httpx2" },

@@ -2,6 +2,21 @@
 
 [![P_JOL_ROLL___BANNER_IMAGE](https://gist.githubusercontent.com/Sarverott/025bda4b967642107b88345c0e465b1a/raw/6cf448f5ef52a55ba8efb94e6d95e65f4df4954d/p-jol-roll_edited-color.png)](https://sarverott.github.io/P-jol-roll/)
 
+[![release](https://img.shields.io/github/actions/workflow/status/Sarverott/P-jol-roll/release.yml?branch=master&label=release)](https://github.com/Sarverott/P-jol-roll/actions/workflows/release.yml?query=branch%3Amaster)
+[![gate](https://img.shields.io/github/actions/workflow/status/Sarverott/P-jol-roll/gate.yml?branch=development&event=workflow_dispatch&label=gate)](https://github.com/Sarverott/P-jol-roll/actions/workflows/gate.yml)
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/Sarverott/P-jol-roll/codeql.yml?label=CodeQL)](https://github.com/Sarverott/P-jol-roll/actions/workflows/codeql.yml)
+[![GitHub release](https://img.shields.io/github/v/release/Sarverott/P-jol-roll?label=GitHub%20release)](https://github.com/Sarverott/P-jol-roll/releases)
+[![commits since release](https://img.shields.io/github/commits-since/Sarverott/P-jol-roll/latest/development?label=commits%20since%20release)](https://github.com/Sarverott/P-jol-roll/compare/master...development)
+[![node](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2FSarverott%2FP-jol-roll%2Fmaster%2Fpackage.json&query=%24.engines.node&label=node&color=339933)](https://nodejs.org/)
+[![docs](https://readthedocs.org/projects/lex-polonica/badge/?version=latest)](https://lex-polonica.readthedocs.io/)
+[![website](https://img.shields.io/badge/website-GitHub%20Pages-1d2440)](https://sarverott.github.io/P-jol-roll/)
+[![wiki](https://img.shields.io/badge/wiki-GitHub-blue)](https://github.com/Sarverott/P-jol-roll/wiki)
+[![discussions](https://img.shields.io/github/discussions/Sarverott/P-jol-roll?label=discussions)](https://github.com/Sarverott/P-jol-roll/discussions)
+[![license](https://img.shields.io/github/license/Sarverott/P-jol-roll)](https://github.com/Sarverott/P-jol-roll/blob/master/LICENSE)
+[![demo](https://img.shields.io/badge/demo-Hugging%20Face%20space-yellow?logo=huggingface)](https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland)
+[![dataset](https://img.shields.io/badge/dataset-Hugging%20Face-yellow?logo=huggingface)](https://huggingface.co/datasets/Sarverott/polish_national_law_docs)
+[![bucket](https://img.shields.io/badge/bucket-Hugging%20Face-yellow?logo=huggingface)](https://huggingface.co/buckets/Sarverott/raw-law-of-poland)
+[![MCP](https://img.shields.io/badge/MCP-%2Fmcp-informational)](https://sarverott-docs-of-law-by-gov-in-poland.hf.space/mcp)
 [![Architecture diagram](https://gitdiagram.com/diagram-badge.svg)](https://gitdiagram.com/sarverott/p-jol-roll)
 
 Polish **Journals of Laws resources operational lurker loader** - complex set of tools to handle datamining, crawling and parsing of all law documents released as published by polish goverment national legal code, package of approved acts or available constitution version
