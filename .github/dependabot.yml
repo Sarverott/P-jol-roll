@@ -48,8 +48,18 @@ updates:
     schedule:
       interval: weekly
   # the Python tools: the push to Hugging Face (scripts/) and the website (docs/)
+  # the Go stack and the chain of the law (phases 37-39): routine updates grouped, one pull
+  # request each, so security updates of one module do not race each other over go.sum
+  - package-ecosystem: gomod
+    directories: [/stacks/go, /stacks/go/lawchain]
+    target-branch: dev/dependabot
+    schedule:
+      interval: weekly
+    groups:
+      go-routine:
+        update-types: [minor, patch]
   - package-ecosystem: uv
-    directories: [/scripts, /docs]
+    directories: [/scripts, /docs, /stacks/python]
     target-branch: dev/dependabot
     schedule:
       interval: weekly
