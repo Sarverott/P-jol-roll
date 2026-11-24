@@ -24,7 +24,7 @@ const COPIES: [string, RegExp][] = [
 	["src/firefox-ext/manifest.json", field('"version":')],
 	["src/openapi/spec.ts", field("version:")],
 	["src/mcp/server.ts", field(String.raw`name:\s*"p-jol-roll",\s*version:`)],
-	...["pjolseed", "pjolmesh"].map((name): [string, RegExp] => [
+	...["pjolseed", "pjolmesh", "pjolchain"].map((name): [string, RegExp] => [
 		`stacks/go/cmd/${name}/main.go`,
 		field("const Version ="),
 	]),
