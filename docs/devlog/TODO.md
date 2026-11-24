@@ -401,5 +401,5 @@ The order of phase 35 goes on (changelog phase 38).
 The order of phase 35 goes on (changelog phase 39).
 
 - [x] The changelog: what this phase is understood to be
-- [ ] The chain of the law (`stacks/go/lawchain`, Cosmos SDK by Ignite): the module `law` - a mirror (a bonded validator) records the root of a year it sealed, the chain answers the root two thirds of the mirrors agree on; `pjolchain roots`, `task chain:build`, `task chain:seal`, the profile `chain`; a chain of one mirror checked for real (`task unittesting:chain`)
+- [x] The chain of the law (`stacks/go/lawchain`, Cosmos SDK by Ignite): the module `law` - a mirror (a bonded validator) records the root of a year it sealed, the chain answers the root two thirds of the mirrors agree on; `pjolchain roots`, `task chain:build`, `task chain:seal`, the profile `chain`; a chain of one mirror checked for real (`task unittesting:chain`)
 - [ ] Tests, docs, the almanac's lines and AGENTS.md

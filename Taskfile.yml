@@ -190,6 +190,17 @@ tasks:
     cmds:
       - docker compose --profile mirror down
 
+  chain:build:
+    desc: 'lawchaind, the chain of the law (phase 39): a Cosmos SDK chain where the mirrors agree on the roots of `task seal` - built into $GOPATH/bin'
+    cmds:
+      - task: go:chain:build
+
+  chain:seal:
+    desc: 'The roots of the years sealed here recorded on the chain of the law by this mirror''s key - task chain:seal -- <key> [journal]; it sends transactions, asks first'
+    interactive: true
+    cmds:
+      - scripts/devops/local/chain-seal.sh {{.CLI_ARGS}}
+
   torrents:publish:
     desc: 'The torrents put on IPFS - the owner''s move, it publishes: the IPFS node of compose (profile ipfs) started, torrents.car imported and pinned (asks first)'
     interactive: true
