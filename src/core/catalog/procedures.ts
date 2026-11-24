@@ -386,6 +386,30 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		ways: { cli: "npm start -- sejm" },
 	},
 	{
+		name: "sittings",
+		group: "gather",
+		title: "sittings of Sejm: who spoke on each day, and what (phase 35)",
+		params: [
+			{
+				name: "terms",
+				title: "terms (empty: the current)",
+				kind: "number",
+				many: true,
+				positional: true,
+			},
+			{
+				name: "files",
+				title: "the texts of the statements too",
+				kind: "flag",
+				option: "files",
+			},
+			limit(0, 20),
+		],
+		writes: true,
+		task: "sittings",
+		ways: { cli: "npm start -- sittings" },
+	},
+	{
 		name: "saos",
 		group: "gather",
 		title: "court judgments of SAOS, months of years",

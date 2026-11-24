@@ -33,6 +33,8 @@ search index --texts                 -> and the beginning of each text
 
 sejm                                 -> work of Sejm: processes and prints of the current term
 sejm 9 10 --files --limit 50         -> these terms, with details of processes and files of prints
+sittings                             -> sittings of Sejm of the current term: who spoke on each day (phase 35)
+sittings 10 --files --limit 40       -> and the texts of the statements, 40 days and then 40 texts at most
 saos 2024 2025 --limit 3             -> court judgments of these years, 3 months that are not here yet
 
 checkup 2026 --limit 6               -> browser visits websites that show acts of gathered year
@@ -50,6 +52,7 @@ const COMMANDS = [
 	"compile",
 	"text",
 	"sejm",
+	"sittings",
 	"saos",
 	"checkup",
 	"hub",
@@ -176,6 +179,16 @@ if (command === "sejm") {
 	await sejm({
 		terms: positionals.map(Number),
 		all: values.all,
+		files: values.files,
+		limit: Number(values.limit ?? 20),
+		rate: Number(values.rate ?? 120),
+	});
+}
+
+if (command === "sittings") {
+	const { sittings } = await import("./apihandlers/sittings.js");
+	await sittings({
+		terms: positionals.map(Number),
 		files: values.files,
 		limit: Number(values.limit ?? 20),
 		rate: Number(values.rate ?? 120),

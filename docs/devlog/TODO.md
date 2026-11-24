@@ -366,6 +366,6 @@ The owner's message, 2026-11-24 (changelog phase 34).
 The owner's message, 2026-11-24 (changelog phase 35): every phase planned ahead, one after another, until one needs the owner.
 
 - [x] The owner's words in the changelog
-- [ ] The sittings gathered (`task sittings`): the sitting days of a term, the statements of each day (who, function, club, time) in `dataset/sejm/term<n>/transcripts/`, their texts with `--files` in `bucket/sejm/term<n>/transcripts/`
+- [x] The sittings gathered (`task sittings`): the sitting days of a term, the statements of each day (who, function, club, time) in `dataset/sejm/term<n>/transcripts/`, their texts with `--files` in `bucket/sejm/term<n>/transcripts/`
 - [ ] An act's debates: the days its bill was read on (the stages of its process) and who spoke then - `debates()` of the reading, the MCP tool `act_debates`, `/api/acts/.../debates`, a section in the act's page
 - [ ] Tests, docs, the almanac's lines and AGENTS.md

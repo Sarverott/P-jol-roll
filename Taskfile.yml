@@ -160,6 +160,11 @@ tasks:
     cmds:
       - npm run sejm -- {{.CLI_ARGS}}
 
+  sittings:
+    desc: 'The sittings of Sejm (phase 35) - the days of a term and who spoke on each, -- --files the texts of the statements (e.g. task sittings -- 10 --files --limit 40); the owner starts it'
+    cmds:
+      - npm run sittings -- {{.CLI_ARGS}}
+
   saos:
     desc: Court judgments from SAOS by months of years, arguments after "--" (e.g. task saos -- 2025 --limit 3).
     cmds:
