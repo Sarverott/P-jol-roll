@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { cp, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
@@ -209,6 +210,20 @@ test("the mastermind reads through the MCP tools in rounds and checks what it ci
 		],
 	});
 	expect(tokens.join("")).toContain("I should read");
+	// the conversation kept: by family and instance, a file per session, the whole exchange
+	expect(advice.record).toMatch(
+		/conversations\/stand\/stand-in-latest\/\d{13}-czym-byla-rada-stanu\.json$/,
+	);
+	const kept = JSON.parse(readFileSync(advice.record, "utf8"));
+	expect(kept).toMatchObject({ family: "stand", instance: "stand-in-latest" });
+	expect(kept.settings.key).toBeUndefined();
+	expect(kept.exchange.map((one: { role: string }) => one.role)).toEqual([
+		"system",
+		"user",
+		"assistant",
+		"tool",
+		"assistant",
+	]);
 });
 
 test("/api/ask answers only where a mastermind is set, never on a public host", async () => {
@@ -222,4 +237,27 @@ test("/api/ask answers only where a mastermind is set, never on a public host", 
 	delete process.env.SPACE_ID;
 	expect((await ask("")).status).toBe(400);
 	delete process.env.MASTERMIND_URL;
+});
+
+test("a model's family and instance name the folders of its conversations", async () => {
+	const { familyOf, instanceOf } = await import("../src/mastermind/record.js");
+	expect(
+		[
+			"gemma4:12b",
+			"translategemma",
+			"embeddinggemma:300m",
+			"SpeakLeash/bielik-11b-v2.2-instruct:Q4_K_M",
+			"ministral-3:8b",
+			"deepseek-r1:8b",
+			"phi4",
+		].map((model) => [familyOf(model), instanceOf(model)]),
+	).toEqual([
+		["gemma", "gemma4-12b"],
+		["gemma", "translategemma-latest"],
+		["gemma", "embeddinggemma-300m"],
+		["bielik", "SpeakLeash-bielik-11b-v2.2-instruct-Q4_K_M"],
+		["mistral", "ministral-3-8b"],
+		["deepseek", "deepseek-r1-8b"],
+		["phi", "phi4-latest"],
+	]);
 });

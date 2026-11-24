@@ -8,4 +8,5 @@ export default interface Advice {
 	steps: { tool: string; arguments: Record<string, unknown>; ok: boolean }[];
 	model: string;
 	rounds: number; // the rounds of the conversation with the model
+	record: string; // where the conversation is kept (resources/conversations/...), "" when not
 }

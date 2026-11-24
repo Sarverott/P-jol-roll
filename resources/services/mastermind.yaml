@@ -39,6 +39,8 @@ services:
       - "127.0.0.1:${MASTERMIND_PORT:-8081}:8080"
     volumes:
       - ./resources:/data/resources:ro
+      # the one place it writes: its conversations, kept by family and model (phase 31)
+      - ./resources/conversations:/data/resources/conversations
     depends_on:
       llms-ollama:
         condition: service_started
