@@ -4,6 +4,19 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-24 · Cleo · phase 34: the advanced strategy, the Python stack
+
+- The weak answer is judged by what can be checked, not by a model: it
+  said nothing, cited nothing, or cited an act it did not open. The checks
+  of phase 31 show it would catch llama (three answers of five cite
+  nothing) and deepseek-r1:8b's unread citations; it would not catch broken
+  Polish - the team's translator does that.
+- The large one gets the small one's answer as a draft to check, and its
+  own first round (the nearest acts read) as every model does: the acts are
+  read again through MCP (local, cheap), only tokens cost there.
+- `mcp` 2.3 for Python differs from the 1.x of most examples (the almanac,
+  models.md). It needs `httpx2`, so the stack uses that one http library.
+
 ## 2026-11-24 · Cleo · phase 31: six families asked the same five questions
 
 `task mastermind:compare` on the RTX 3060 (12 GB), Ollama on the drive,

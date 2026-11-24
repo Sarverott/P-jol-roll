@@ -1,6 +1,6 @@
 [project]
 name = "pjolroll-stack"
-version = "0.30.3"
+version = "0.30.4"
 description = "P-JOL-ROLL :: the Python stack of the models and simulations - the law read through the project's own MCP tools"
 readme = "README.md"
 authors = [
