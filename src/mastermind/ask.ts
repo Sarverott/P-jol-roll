@@ -1,7 +1,13 @@
 import type { Client } from "@modelcontextprotocol/client";
 import { OLLAMA_URL } from "../core/reading/embeddings.js";
 import type { MastermindScope } from "../core/vars/interfaces/index.js";
-import { type Call, chat, type Message, type Reply } from "./model.js";
+import {
+	type Call,
+	chat,
+	type Message,
+	type Reply,
+	type Tool,
+} from "./model.js";
 import { keep } from "./record.js";
 import { guarded, polish, type Team, teamOf, translated } from "./team.js";
 
@@ -21,6 +27,13 @@ The model speaks one of two dialects:
 MASTERMIND_MODEL names the model, deepseek-r1:8b by default. Not legal advice: a devil's
 advocate everyone can afford, as the owner put it.
 */
+
+// a tool of the caller's own beside the MCP server's (the executive agent's writing)
+export type LocalTool = Tool & {
+	run: (
+		input: Record<string, unknown>,
+	) => Promise<{ ok: boolean; text: string }>;
+};
 
 export const settings = () => ({
 	url: (process.env.MASTERMIND_URL || OLLAMA_URL).replace(/\/+$/, ""),
@@ -88,13 +101,23 @@ export async function ask(
 		onToken = (_text: string) => {},
 		config = settings(),
 		keep: keeping = true, // a visitor's conversation on the demo is not kept
+		// the executive agent (agent.ts): its own instructions, and tools of its own beside MCP's
+		system = SYSTEM,
+		local = [] as LocalTool[],
 	} = {},
 ): Promise<MastermindScope.Advice> {
 	const started = Date.now();
-	const { tools } = await client.listTools();
+	const tools: Tool[] = [
+		...(await client.listTools()).tools,
+		...local.map(({ name, description, inputSchema }) => ({
+			name,
+			description,
+			inputSchema,
+		})),
+	];
 	const steps: MastermindScope.Advice["steps"] = [];
 	const read = new Set<string>();
-	const messages: Message[] = [{ role: "system", content: SYSTEM }];
+	const messages: Message[] = [{ role: "system", content: system }];
 
 	// one tool through MCP: its answer shortened; an act it opened remembered as read
 	const call = async (one: Call) => {
@@ -103,14 +126,18 @@ export async function ask(
 		try {
 			const tool = tools.find((each) => each.name === one.name);
 			if (tool) one.arguments = fitted(one.arguments, tool.inputSchema);
-			const result = await client.callTool({
-				name: one.name,
-				arguments: one.arguments,
-			});
-			text = (result.content as { type: string; text?: string }[])
-				.map((part) => part.text ?? "")
-				.join("\n");
-			ok = !result.isError;
+			const own = local.find((each) => each.name === one.name);
+			if (own) ({ ok, text } = await own.run(one.arguments));
+			else {
+				const result = await client.callTool({
+					name: one.name,
+					arguments: one.arguments,
+				});
+				text = (result.content as { type: string; text?: string }[])
+					.map((part) => part.text ?? "")
+					.join("\n");
+				ok = !result.isError;
+			}
 		} catch (error) {
 			text = `the tool failed: ${(error as Error).message}`;
 			ok = false;
