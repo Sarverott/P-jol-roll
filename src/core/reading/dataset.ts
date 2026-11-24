@@ -193,9 +193,46 @@ export async function prepareDataset(
 		for (const name of SEJM_KINDS)
 			if (!second || second === name)
 				await remote.fromDataset(`sejm/term${first}/${name}.jsonl`);
+	} else if (kind === "analysis") {
+		await remote.fromDataset("analysis/summary.json");
+		await remote.fromDataset("analysis/findings.jsonl");
 	} else if (kind === "judgments" && first && /^\d{4}$/.test(first) && second) {
 		await remote.fromDataset(
 			`SAOS/judgments/${first}/${first}-${second.padStart(2, "0")}.jsonl`,
 		);
 	}
+}
+
+/*
+The code of law analysed (phase 36, task analyse writes dataset/analysis/): how many findings of
+each kind, a page of one kind, and the findings of one act.
+*/
+const ANALYSIS = () => join(store.DATASET_DIR, "analysis");
+export const FINDING_KINDS = [
+	"basis-repealed",
+	"reference-repealed",
+	"consolidation-due",
+	"tribunal",
+] as const;
+
+export function analysis(): ReadingScope.Analysis | undefined {
+	return store.readJson<ReadingScope.Analysis>(
+		join(ANALYSIS(), "summary.json"),
+	);
+}
+
+export function findingsOf(
+	kind: string,
+	paging: { query?: string; offset?: number; limit?: number } = {},
+) {
+	const lines = table<ReadingScope.Finding>(
+		join(ANALYSIS(), "findings.jsonl"),
+	).filter((one) => !kind || one.kind === kind);
+	return paged(lines, paging);
+}
+
+export function findings(eli: string): ReadingScope.Finding[] {
+	return table<ReadingScope.Finding>(join(ANALYSIS(), "findings.jsonl")).filter(
+		(one) => one.ELI === eli,
+	);
 }

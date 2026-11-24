@@ -31,6 +31,29 @@ const server = createServer((request, response) => {
 			{ term: 10, number: "320", title: "bill", ELI: "DU/2024/862" },
 		],
 		"/sejm/term10/processes/320": { number: "320", stages: [] },
+		// the sittings (phase 35): one past, one planned, a number 0 the source lists too
+		"/sejm/term10/proceedings": [
+			{
+				number: 31,
+				title: "31. Posiedzenie",
+				dates: ["2025-03-19", "2025-03-20"],
+			},
+			{ number: 0, title: "planned", dates: ["2025-03-21"] },
+			{ number: 60, title: "60. Posiedzenie", dates: ["2099-01-01"] },
+		],
+		"/sejm/term10/proceedings/31/2025-03-19/transcripts": {
+			proceedingNum: 31,
+			date: "2025-03-19",
+			statements: [
+				{ num: 0, name: "Szymon Hołownia", function: "Marszałek" },
+				{
+					num: 1,
+					name: "Katarzyna Stachowicz",
+					function: "Poseł Sprawozdawca",
+					club: "KO",
+				},
+			],
+		},
 	};
 	const page = new URL(path, "http://x").searchParams.get("pageNumber");
 	if (path.startsWith("/saos/dump/judgments") && path.includes("2025-01-01")) {
@@ -43,6 +66,13 @@ const server = createServer((request, response) => {
 	} else if (path.startsWith("/saos/")) {
 		response.setHeader("content-type", "application/json;charset=UTF-8");
 		response.end(JSON.stringify({ items: [] }));
+	} else if (path.endsWith("/2025-03-20/transcripts")) {
+		response.writeHead(404).end();
+	} else if (/\/transcripts\/\d+$/.test(path)) {
+		response.setHeader("content-type", "text/html; charset=utf-8");
+		// a number, never the address itself, in what is answered as HTML (CodeQL)
+		const num = Number(path.slice(path.lastIndexOf("/") + 1));
+		response.end(`<p>Statement ${num} on druk nr 1058.</p>`);
 	} else if (path.endsWith(".pdf")) {
 		response.setHeader("content-type", "application/pdf");
 		response.end("%PDF draft");
@@ -84,6 +114,37 @@ test("work of Sejm: tables of the current term, then files that miss", async () 
 	asked.length = 0;
 	await sejm({ terms: [10], all: false, files: true, limit: 0, rate: 6000 });
 	expect(asked.filter((path) => path.includes("320"))).toEqual([]);
+}, 60_000);
+
+test("the sittings of Sejm: days that ended, who spoke, then their texts", async () => {
+	const { sittings, sittingsPath, dayPath, statementPath, missingDays } =
+		await import("../src/core/apihandlers/sittings.js");
+	asked.length = 0;
+	const today = new Date("2025-04-01");
+	await sittings({ terms: [], files: true, limit: 0, rate: 6000, today });
+	expect(asked.sort()).toEqual([
+		"/sejm/term",
+		"/sejm/term10/proceedings",
+		"/sejm/term10/proceedings/31/2025-03-19/transcripts",
+		"/sejm/term10/proceedings/31/2025-03-19/transcripts/0",
+		"/sejm/term10/proceedings/31/2025-03-19/transcripts/1",
+		// not 0 (no sitting), not 60 (after today); 03-20 the source does not have
+		"/sejm/term10/proceedings/31/2025-03-20/transcripts",
+	]);
+	expect(store.readJson<unknown[]>(sittingsPath(10))).toHaveLength(3);
+	expect(
+		store.readJson<{ statements: unknown[] }>(dayPath(10, 31, "2025-03-19"))
+			?.statements,
+	).toHaveLength(2);
+	expect(readFileSync(statementPath(10, 31, "2025-03-19", 1), "utf8")).toBe(
+		"<p>Statement 1 on druk nr 1058.</p>",
+	);
+	expect(missingDays(10, today)).toEqual([{ sitting: 31, date: "2025-03-20" }]);
+
+	// what is here is not asked for again
+	asked.length = 0;
+	await sittings({ terms: [10], files: true, limit: 0, rate: 6000, today });
+	expect(asked.filter((path) => path.includes("2025-03-19"))).toEqual([]);
 }, 60_000);
 
 test("judgments: months that ended, each one whole", async () => {

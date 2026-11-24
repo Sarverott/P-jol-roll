@@ -4,6 +4,60 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-24 · Cleo · phase 36: the code of law analysed, a bubble, proposals
+
+- The analysis needs no model: 165,006 acts, 750 thousand ties, 2 s. Of
+  23,238 acts in force: 1,064 stand on a repealed basis, 2,678 refer to a
+  repealed act, 153 wait for a consolidated text, 42 Tribunal judgments
+  were followed by no amendment. Amending acts were most of the noise at
+  first (their own references are spent) - left out.
+- The text in the dataset is the act as published: the Banking Law of 1997
+  spoke of state banks and a Minister of the State Treasury. The law in
+  force is its newest consolidated text, an act of its own (here
+  DU/2026/38): the bubble and the proposals read that one now.
+- ministral-3:8b: good voices for the bubble, but an explainer instead of
+  proposals; qwen3:8b followed the numbered findings, once each, after the
+  task was said again at the end of the prompt and the basis limited to
+  the findings or the text (it had invented "Dz. U. 2025 poz. 1234").
+- A small model breaks its JSON with quotes inside a post: JSON mode of
+  Ollama's /v1 asked for, and the fields read one by one when it still
+  breaks.
+
+## 2026-11-24 · Cleo · phase 34: the advanced strategy, the Python stack
+
+- The weak answer is judged by what can be checked, not by a model: it
+  said nothing, cited nothing, or cited an act it did not open. The checks
+  of phase 31 show it would catch llama (three answers of five cite
+  nothing) and deepseek-r1:8b's unread citations; it would not catch broken
+  Polish - the team's translator does that.
+- The large one gets the small one's answer as a draft to check, and its
+  own first round (the nearest acts read) as every model does: the acts are
+  read again through MCP (local, cheap), only tokens cost there.
+- `mcp` 2.3 for Python differs from the 1.x of most examples (the almanac,
+  models.md). It needs `httpx2`, so the stack uses that one http library.
+
+## 2026-11-24 · Cleo · phase 31: six families asked the same five questions
+
+`task mastermind:compare` on the RTX 3060 (12 GB), Ollama on the drive,
+the five questions of `resources/configs/mastermind/questions.yaml`, the
+same acts found by bge-m3 for each; 30 conversations in
+`resources/conversations/`.
+
+| Team | Models | A question | Acts cited (read) | What its answers were like |
+| --- | --- | --- | --- | --- |
+| gemma | gemma4:12b, functiongemma:270m, translategemma:4b, shieldgemma:2b | 65-150 s | 8 (6) | the closest to the text: the twelve virilists of DU/1918/2 named one by one; once "the acts do not answer" in English (the check of Polish then missed it - fixed); the slowest, four models taking turns on 12 GB; functiongemma called no tool in any round |
+| deepseek | deepseek-r1:8b | 31-69 s | 10 (9) | broken Polish, words of no language |
+| mistral | ministral-3:8b | 14-44 s | 11 (10) | fast, clear Polish with headings, citing what it read |
+| qwen | qwen3:8b | 20-52 s | 13 (12) | fluent, cites articles (`art. 12`) |
+| llama | llama3.1:8b | 8-46 s | 2 (2) | the fastest; three answers of five cite nothing |
+| bielik | Bielik 11B v3.0 Q4_K_M | 16-57 s | 8 (6) | the most natural Polish; adds what it knows beyond the acts read (the Council dissolved on 7 October 1918 - true, but not from them) |
+
+Not judged by a lawyer: read by Cleo against the acts given. For an answer
+from the text, gemma's team; for Polish, Bielik; for speed with care,
+ministral and qwen. embeddinggemma is pulled but no vectors of it are made
+(`task embed` with `EMBED_MODEL=embeddinggemma:300m`, hours over every act),
+so every team searched by bge-m3.
+
 ## 2026-11-22 · Cleo · phase 22: every function everywhere, a viewer that shines
 
 - The map of functionalities (`docs/devlog/scrapnote-1795373814912.md`)

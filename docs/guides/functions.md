@@ -13,9 +13,12 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | **read the law** | | |  |  |  |  |  |  |
 | `journals` journals gathered here, with their years |  | ✓ | `#acts` | `GET /api/journals` | `journals` | – | – | – |
 | `acts` acts of a year, by words of their titles |  | ✓ | `#acts` | `GET /api/acts/{journal}/{year}` | `search_acts` | – | – | – |
+| `meaning` acts of every year nearest in meaning to a question (the vectors of task embed, Ollama) |  | ✓ | – | – | `search_meaning` | – | – | – |
 | `act` one act: its line of the listing, details and the files gathered |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}` | `act` | – | `the popup` | – |
 | `act-text` the text of an act, as markdown |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/text` | `act_text` | – | – | – |
 | `act-ties` ties of an act to other acts, as a list or a mermaid flowchart |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/references` | `act_references` | – | – | – |
+| `analysis` the code of law analysed: findings over every act in force, or of one act |  | ✓ | `#act/DU/2026/1` | `GET /api/analysis, /api/acts/{journal}/{year}/{pos}/findings` | `analysis` | – | – | – |
+| `act-debates` an act in Sejm: the days its bill was read on, who said what |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/debates` | `act_debates` | – | – | – |
 | `search` words in titles and texts of every year (Typesense must run) |  | ✓ | `#acts` | `GET /api/search` | – | – | – | – |
 | `maps` maps of the whole law: the presets, and which are made |  | ✓ | `#map` | `GET /api/map` | – | – | – | – |
 | `statistics` the acts counted year by year: total, by type, by status |  | ✓ | `#statistics` | `GET /api/statistics` | `statistics` | – | – | – |
@@ -27,9 +30,11 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `gather:changes` acts changed since the previous such run, or since a day | ✎ | ✓ `task gather:changes` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- gather --since last` | – | `daily` |
 | `gather:everything` every journal, every year, every file - days of work | ✎ | ✓ `task gather:everything` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- gather --all --acts --limit 0` | – | – |
 | `sejm` work of Sejm: processes and prints of terms | ✎ | ✓ `task sejm` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- sejm` | – | – |
+| `sittings` sittings of Sejm: who spoke on each day, and what (phase 35) | ✎ | ✓ `task sittings` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- sittings` | – | – |
 | `saos` court judgments of SAOS, months of years | ✎ | ✓ `task saos` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- saos` | – | – |
 | `checkup` a browser visits the websites that show acts of a year | ✎ | ✓ `task checkup` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- checkup` | – | – |
 | **process what is gathered** | | |  |  |  |  |  |  |
+| `analyse` the code of law analysed: every act in force against its ties (phase 36) | ✎ | ✓ `task analyse` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- analyse` | – | – |
 | `seal` checksums of gathered files: write the missing, or check them all | ✎ | ✓ `task seal` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- seal` | – | `daily` |
 | `compile` tables of details and references from the raw files | ✎ | ✓ `task compile` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- compile` | – | `daily` |
 | `text` markdown of the acts from html (and from PDFs) | ✎ | ✓ `task text` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- text` | – | `daily` |
@@ -44,6 +49,8 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `resources:pull` take what is on Hugging Face and not here | ✎ | ✓ `task resources:pull` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- hub pull` | – | – |
 | `resources:push` send what is new here to Hugging Face (HF_TOKEN) | ✎ | ✓ `task resources:push` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- hub push` | – | `daily, after a yes` |
 | `resources:space:refresh` the demo space set to the newest release and built again | ✎ | ✓ `task resources:space:refresh` | local, after a yes | `POST /api/jobs` (local) | – | – | – | `release` |
+| `torrents` the dataset and the bucket as torrents, with their IPFS directory, made here (phase 37) | ✎ | ✓ `task torrents` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
+| `torrents:publish` the torrents put on IPFS: the node of compose started, imported, pinned | ✎ | ✓ `task torrents:publish` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
 | **the project itself** | | |  |  |  |  |  |  |
 | `init` first launch on this machine: tools, .env, secrets | ✎ | ✓ `task init` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
 | `check` every check: Biome, the build, the tests |  | ✓ `task check` | – | – | – | – | – | `checks` |

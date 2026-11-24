@@ -17,6 +17,10 @@
   never a project of a user: the devlog's board is brought from a terminal
   (`task github:devlog`, gh with the scope `project`), the issues by
   `devlog.yml` as well (phase 28).
+- An event made by the workflow's token starts no other workflow: a
+  release published by `release.yml` or a push of its merge back never
+  reaches a workflow listening for them, so the discussion of announcements
+  is written by the job that made the event, as its last step (phase 29).
 
 ## Cases
 

@@ -6,13 +6,75 @@ point was added.
 
 ## Decisions for Sett
 
-- **2026-11-24. The devlog's board (phase 28) needs the gh scope
-  `project`.** The milestones and the 62 issues (#43-#104) are made, and
-  `devlog.yml` keeps them following the markdown. The board "P_JOL_ROLL
-  devlog" is a project of Sett's account, which the workflow's token cannot
-  reach and Cleo's gh may not either: `gh auth refresh -s project`, then
-  `task github:devlog` makes the board and fills it (Done, In Progress,
-  Todo). An issue edited by hand is overwritten by the next run.
+- **2026-11-24. The torrents are not published, the bucket's not made**
+  (phase 37). `task torrents -- -only dataset` made 12 torrents here; the
+  bucket's 189 GB take one long run (`task torrents -- -only bucket`, kept
+  afterwards). Putting them on IPFS is Sett's: `task torrents:publish`
+  starts kubo with the swarm port 4001 open to the network. A web seed
+  answers only for what is on Hugging Face: `dataset/analysis/` (phase 36)
+  is not pushed yet, so its torrent downloads only from peers.
+- **2026-11-24. M4 closed without a major version** (phase 36): the
+  ROADMAP says a milestone bumps X, but M1-M3 closed in 0.x and so does
+  M4; v1.0.0 is Sett's to call.
+- **2026-11-24. The simulation bubble is the project's own** (phase 36),
+  not OASIS or MiroFish, which VISION named: OASIS (`camel-oasis` 0.2.6)
+  resolves on Python 3.12 but brings 138 packages with torch,
+  sentence-transformers and neo4j. It can be added as an engine of the
+  stack when Sett wants a social network simulated rather than a
+  conversation.
+- **2026-11-24. The findings of `task analyse` are the register's own
+  data read strictly**: a basis "repealed" may be kept alive by
+  transitional provisions, a "Tribunal judgment not followed" may have
+  been answered by a new act rather than an amendment. They are things to
+  look at, not errors proven.
+- **2026-11-24. The sittings of Sejm (phase 35) were not gathered from the
+  source.** The shapes of `/proceedings` and `/transcripts` come from the
+  API's documentation as Cleo knows it and from the stages of the processes
+  gathered here (`sittingNum`, `date`); the tests use a copy. Start with
+  `task sittings -- 10 --limit 5` and look at one day's file before taking
+  the texts (`--files`: hundreds of statements a day). A statement is marked
+  *about* the act only when it names a print of the bill: one that speaks
+  of it without the number is missed.
+- **2026-11-24. The hosted deepseek (phase 34) is not seen answering.**
+  `--escalate` and `--hard` pass against stand-ins of the host's model and
+  of Inference Providers; asking `deepseek-ai/DeepSeek-R1-0528` for real
+  needs credits on the token (`HF_TOKEN` here, the visitor's on the space),
+  and an agent does not spend them. To check: `task mastermind:ask --
+  --hard "..."` once there are credits; whether a provider gives it tools
+  (the router picks novita, deepinfra or featherless-ai).
+- **2026-11-24. The Python stack in CI** (`task python:check` in
+  `checks.yml`, uv by `astral-sh/setup-uv@v7`) passes here; first seen in
+  CI with the gate of phase 34.
+- **2026-11-24. The executive agent in opencode (phase 33)** is not
+  reliable: Code Mode did not find `p-jol-roll` in some runs, and
+  `search_meaning` was an unknown tool there even when `search_acts` was
+  found. The default is the agent's own rounds. `task agent:container`
+  (opencode in the agents' shell, Ollama of the profile llms) was not run
+  here: its image builds with opencode 2.0.23.
+- **2026-11-24. The demo's chat (phase 32) is not yet seen answering on
+  the space.** Signing in and the space's path pass against stand-ins, and
+  the chat answers on this machine; the real Inference Providers refused
+  Sett's token with 402 (no credits this month), the vector of bge-m3 too.
+  After the release: sign in on the space and ask with an account that has
+  credits. Whether the cookie holds inside the frame of huggingface.co
+  depends on the browser's third-party cookies - the space's own address
+  (`https://sarverott-docs-of-law-by-gov-in-poland.hf.space/#ask`) always
+  works.
+- **2026-11-24. `/usr/share/ollama/.ollama/models` (4.4 GB)** was not a
+  copy: `sebas`, `llama3`, `ifrit-0.1.0` were only there. Copied onto the
+  drive and compared byte by byte (phase 32); deleting it is Sett's `sudo
+  rm -rf /usr/share/ollama/.ollama/models`.
+- **2026-11-24. The mastermind's compose run (phase 30) was not started
+  here.** The image was run against the host's Ollama and answered
+  `/api/ask`; `docker compose --profile mastermind config` is valid with and
+  without `gpu.yaml`. Its own Ollama, `llms-models` pulling about 6 GB and
+  the GPU through the NVIDIA Container Toolkit wait for the first machine
+  that runs `task mastermind:up`.
+- **2026-11-24. deepseek-r1:8b is a small voice.** It answers from the
+  acts it was given, but now and then in English, with a word of another
+  script, or citing an act it did not open (marked not read). A larger
+  model is one variable away (`MASTERMIND_MODEL`); 12 GB of the RTX 3060
+  hold a 14b only with a short context.
 - **2026-11-24. The phases ahead (29-38, VISION)** are planned from Sett's
   own words (Q17, Q18, PP4, the milestones), not ordered: each starts when
   Sett says so. Phase 29 (deepseek-R1 and the embedder in Ollama, answering

@@ -82,6 +82,9 @@ nav:
       - guides/data.md
       - guides/development.md
       - guides/translations.md
+      - guides/mastermind.md
+      - guides/analysis.md
+      - guides/torrents.md
   - Glossary: glossary/README.md
   # the devlog and the almanac live in the wiki of GitHub, copied there by task docs:wiki (phase 28)
   - Devlog (wiki): https://github.com/Sarverott/P-jol-roll/wiki/Devlog
@@ -103,6 +106,11 @@ nav:
       - changelog/phase-21.md
       - changelog/phase-22.md
       - changelog/phase-28.md
+      - changelog/phase-29.md
+      - changelog/phase-30.md
+      - changelog/phase-31.md
+      - changelog/phase-32.md
+      - changelog/phase-33.md
       - changelog/phase-23.md
       - changelog/phase-24.md
       - changelog/phase-25.md

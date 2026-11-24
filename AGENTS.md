@@ -66,10 +66,12 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    this machine started with `--allow-writing` (the desktop app, `task
    serve -- --allow-writing`), which starts the writing functions of the
    catalog as jobs, each after a person's yes (Q19, changelog phase 25).
-   A public host (the space, the container, the website) never does. An
+   A public host (the space, the container, the website) never does; the
+   space's chat asks a model only on the signed-in visitor's own Hugging Face
+   token (phase 32), never on the owner's. An
    agent does not start a job against the real source unless asked.
 5. **Nothing is sent to huggingface by an agent.** `resources/dataset`,
-   `resources/space` and `resources/bucket` are filled locally; pushing and
+   `resources/space`, `resources/bucket` and `resources/conversations` are filled locally; pushing and
    syncing them is Sett's move.
 
 ## Questions and plans
@@ -123,10 +125,12 @@ src/core/              the gatherer itself; everything below is its tree
   apihandlers/         one file per source: addresses, shapes, and the walk when the source has its own
     eli.ts             addresses and shapes of ELI API
     sejm.ts            other source: processes and prints of Sejm
+    sittings.ts        the sittings of Sejm: the days of a term, who spoke on each, their texts (phase 35)
     saos.ts            other source: court judgments
   methods/             what a command does
     gather.ts          index -> lists -> years, then files of acts year by year; --since for changes
     seal.ts            checksums of gathered files: records, and check against them
+    analyse.ts         the code of law analysed: every act in force against its ties, into dataset/analysis/ (phase 36)
     map.ts             the map of the whole law: acts of a preset (presets.ts) placed by ForceAtlas2 into dataset/map/
     compile.ts         tables of details and references from raw files
     checkup.ts         browser (Camoufox) visits websites that show acts, writes what it saw
@@ -147,11 +151,19 @@ src/core/              the gatherer itself; everything below is its tree
   reading/             gathered data as readers see it - the only thing hosts below lean on
     library.ts         journals, pages of acts, one act, its text, ties and files; reads resources/ only
     dataset.ts         the rest of the dataset: work of Sejm, judgments, lists of the source, acts counted (task stats)
+    debates.ts         an act in Sejm: the days its bill was read on, the statements naming its print (phase 35)
     diagram.ts         the ties of an act as one mermaid flowchart, for every interface
     embeddings.ts      the vectors of task embed, and a question as a vector of the same model (Ollama)
     remote.ts          the remote mode of the demo: resources/ as a cache of the dataset on huggingface, raw files on the bucket
 src/openapi/           http api (/api, /openapi.json) with socket.io notices, serves dist/web too; writing.ts /api/jobs, only with --allow-writing on this machine
 src/mcp/               MCP server for AI agents, read-only: server.ts and tools/ (a folder per tool); main.ts over stdio, /mcp of the api over http; client.ts
+src/mastermind/        the law mastermind (phase 30): ask.ts a question answered by a model (the host's Ollama, deepseek-r1:8b)
+                       reading the acts through the MCP tools in rounds, citations checked; main.ts task mastermind:ask;
+                       /api/ask of an api started with MASTERMIND_URL, or of the space on the visitor's own Hugging Face
+                       (src/openapi/ask.ts, oauth.ts: hf_oauth, phase 32) - the viewer's tab #ask; record.ts every conversation into
+                       resources/conversations/<family>/<instance>/; agent.ts the executive agent (task agent), note.ts its only
+                       writing (resources/agent/); strategy.ts the advanced strategy (phase 34): a weak answer goes on to a
+                       deepseek hosted by Hugging Face (--escalate, --hard) - docs/guides/mastermind.md
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
 src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map,
@@ -172,6 +184,11 @@ src/almanac/           the almanac's mechanics, as in BOS: patterning.ts (chains
 src/devtools/          tools of the repository itself: version.ts (one version: sync, bump per commit, merge driver), init.ts (task init), merge.ts (task resources:merge)
 src/Taskfile.yml       tasks of everything above core, included in the root one
 src/README.md          every file of src/, what it does and why, with graphs - read it before changing src/
+stacks/                the other stacks, each in a place of its own (Q18): python/ (phase 34) the models and simulations, a uv
+                       project reading the law through the MCP tools (Law) and asking /api/ask (Mastermind); simulation.py the
+                       simulation bubble, proposals.py the improvements proposed (phase 36); go/ (phase 37) the decentralisation
+                       circuits: cmd/pjolseed the torrents of the dataset and the bucket pointed to by IPFS (internal/torrent,
+                       bencode, ipfs) - stacks/go/README.md
 scripts/               install.sh, install.bat, the python push - scripts/README.md
   devops/              every step of the workflows as a .sh (pages, release, docs, flow, checks, media), local/ routines behind task flow:*
 logs/             a file per run: log-<Date.now()>-<log mode>-<command>.log (LOG_DIR, LOG_LEVEL), ignored by git
@@ -192,6 +209,9 @@ resources/        .map.json lists huggingface repositories, their local sides ar
                   (task i18n:translate), .index.json lists them, EN-US the default; task i18n:pull / i18n:publish
   mediafiles/     the images of the project: the gist MEDIAFILES as a submodule; task resources:media makes
                   icons and og.jpg out of them into src/web/public (the webpage takes them too), docs/assets/images, src/firefox-ext/icons
+  torrents/       the torrents of the dataset and the bucket, their index, torrents.car and ROOT (phase 37, task torrents), ignored
+  conversations/  the mastermind's conversations, <family>/<instance>/<UNIXUSAT>-<question>.json (phase 31): the local side of the
+                  dataset Apokryf/Consiliariis-Polonicum-Lex (.map.json), its README.md (the card) kept in git
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
 examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported
@@ -205,7 +225,8 @@ docs/glossary/    words of the source and of the project, each with one meaning
 docs/.agents/     the agents' own domain (humans read only): NOTES.md (findings, newest on top), ideas.md, things-to-check.md (what waits for a decision
                   or was not verified - keep it current); point-of-view.md is personal
 docs/devlog/      the BOS devlog: VISION, ROADMAP, TODO, BRAINSTORM, ORDERS, INQUIRIES, PROPOSALS, scrapnotes
-                  (copied into the wiki, on GitHub as milestones, issues and a board - phase 28)
+                  (copied into the wiki, on GitHub as milestones, issues and a board - phase 28; what happened
+                  said in the discussion of announcements #107 - phase 29)
 docs/wiki/        the wiki of GitHub, a submodule: a copy of the devlog and the almanac made by task docs:wiki, never written by hand
 docs/almanac/     what was learnt the hard way: cataclistics/ (a case per page, an issue ready for GitHub), solutions/ (a topic
                   each), patterning/ and rulesets/ (JSON, as in BOS), faq.md; a solved problem gets its case here
@@ -213,7 +234,8 @@ docs/changelog/   what happened per phase, the owner's words word for word, appe
 .github/          paperwork: CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, SUPPORT, forms of issues, AUTHORS;
                   bos.json (the loop as data), dependabot.yml, workflows/ (gate - every check and scan of a
                   pull request into master, then automerge; checks, codeql, snyk-security, ossar called by it;
-                  bots, bots-land, automerge, phase-close, release, devlog, copilot-setup-steps), copilot-instructions.md
+                  bots, bots-land, automerge, phase-close, release, devlog, copilot-setup-steps; each that sees
+                  steps, a phase closed or a release says it in the discussion #107), copilot-instructions.md
                   and prompts/ (Jarvis's guide); task github:* runs and follows them from a terminal
 .obsidian/        the repository is an Obsidian vault; plugins/ holds separate repositories
 ```
@@ -241,6 +263,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task embed` (`-- 2026`) | vectors of the texts by a local multilingual model of Ollama into `dataset/embeddings/` |
 | `task compile` / `task text` | tables from raw files / markdown from html (`-- --pdf`: from PDFs too) |
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
+| `task sittings -- 10 --files --limit 40` | the sittings of Sejm: who spoke on each day, then the texts of the statements (phase 35) |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |
 | `task resources:media` | favicons, manifest icons, `og.jpg` and the extension icons made from `resources/mediafiles` (ffmpeg); committed |
@@ -257,9 +280,19 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task flow:phase-close -- <n>` | a done phase: Y bumped and the pull request to `master`, by a workflow; its gate merges it when everything passes |
 | `task github:run -- <workflow>` / `github:gate -- <pr>` / `github:pending` / `github:checks -- <pr>` | a workflow started from here (on development; `--ref`, `-f key=value`) / the gate of a pull request into master again / runs waiting for approval (`-- --approve`) / the checks of a pull request - no website needed |
 | `task github:devlog` (`-- --dry`) / `task docs:wiki` | the devlog on GitHub: milestones of ROADMAP, an issue per phase, `Q<n>` and `PP<n>`, the board (the workflow `devlog.yml` does it but the board on each push of the devlog) / the devlog and the almanac copied into the wiki (submodule `docs/wiki`), pushed, the submodule staged |
+| `task github:announce -- --dry steps <before> <after>` | what the workflows say in the discussion of announcements (#107): `steps <before> <after>`, `staging <phase> <pr>`, `release <tag>`; `--dry` prints it |
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it); `task serve -- --allow-writing`: the viewer starts writing functions too, each after a yes (this machine only) |
+| `task agent -- "..."` / `agent:container -- "..."` | the executive agent (phase 33): qwen does a task through the MCP tools and writes only into `resources/agent/`; here with the host's Ollama / in the agents' shell (`AGENT_ENGINE=opencode` for opencode 2) |
+| `task mastermind:compare` (`-- gemma bielik`) | every team of `resources/configs/mastermind/families.yaml` asked the same questions (`questions.yaml`), each conversation kept; `MASTERMIND_TEAM=gemma task mastermind:ask -- "..."` one team |
+| `task mastermind:ask -- --escalate "..."` / `-- --hard "..."` | the advanced strategy (phase 34): a weak answer of the host's model goes on to `deepseek-ai/DeepSeek-R1-0528` through Inference Providers, on `HF_TOKEN` / straight there; `/api/ask?escalate=1` / `hard=1` |
+| `task torrents` (`-- -only dataset`, `-dry`) / `torrents:publish` | the dataset and the bucket as torrents with web seeds on Hugging Face, their IPFS directory (CIDs offline, `torrents.car`) in `resources/torrents/` (phase 37) / the owner's: put on IPFS by the node of compose (profile `ipfs`); `task go:check` the Go stack |
+| `task analyse` | the code of law analysed (phase 36): every act in force against its ties - a basis repealed, a reference to a repealed act, a consolidated text due, a Tribunal's judgment not followed - into `dataset/analysis/`; local tables only |
+| `task python:simulate -- DU/1997/939` / `python:propose -- DU/1997/939` | the simulation bubble: invented people talk about an act in rounds, models of the host's Ollama (`resources/simulations/`) / improvements proposed by a model from the act, its findings, debates and simulations (`resources/proposals/`) - docs/guides/analysis.md |
+| `task python:check` / `python:law -- act DU/1918/2` | the Python stack (`stacks/python/`): ruff and pytest / the law through it (`tools`, `act`, `text`, `nearest`, `ask`) |
+| `task ollama:serve` / `ollama:copy` / `ollama:where` | the Ollama of this machine from its own drive (`OLLAMA_MODELS` of `.env`): the models of `~/.ollama/models` copied there first, then served / copied again, checked / where they are |
+| `task mastermind:ask -- "..."` / `mastermind:up` / `mastermind:down` | a question to the law mastermind: the host's Ollama reads the acts through MCP and cites them by ELI (`-- --json` all of it) / the same as containers for another machine (compose profile `mastermind`: Ollama, its models, the api with `/api/ask` on :8081; the GPU when there is one) / stopped |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |
 | `task examples:build` / `examples:edit` | the Python examples run and exported into `site/examples/` / opened in marimo |

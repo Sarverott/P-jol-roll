@@ -26,6 +26,7 @@ text --pdf                           -> and from the text layer of PDFs of acts 
 
 map                                  -> the map of the whole law: every preset placed by ForceAtlas2 into dataset/map/
 map statutes-in-force                -> one preset (statutes-in-force, statutes, in-force)
+analyse                              -> the code of law analysed: every act in force against its ties, into dataset/analysis/ (phase 36)
 stats                                -> the acts counted year by year, by type and status, into dataset/statistics/
 
 search index                         -> every act into Typesense (task search:index), titles and keywords
@@ -33,6 +34,8 @@ search index --texts                 -> and the beginning of each text
 
 sejm                                 -> work of Sejm: processes and prints of the current term
 sejm 9 10 --files --limit 50         -> these terms, with details of processes and files of prints
+sittings                             -> sittings of Sejm of the current term: who spoke on each day (phase 35)
+sittings 10 --files --limit 40       -> and the texts of the statements, 40 days and then 40 texts at most
 saos 2024 2025 --limit 3             -> court judgments of these years, 3 months that are not here yet
 
 checkup 2026 --limit 6               -> browser visits websites that show acts of gathered year
@@ -50,12 +53,14 @@ const COMMANDS = [
 	"compile",
 	"text",
 	"sejm",
+	"sittings",
 	"saos",
 	"checkup",
 	"hub",
 	"map",
 	"search",
 	"stats",
+	"analyse",
 ];
 const [first = "", ...rest] = process.argv.slice(2);
 const command = COMMANDS.includes(first) ? first : "gather";
@@ -150,6 +155,15 @@ if (command === "map") {
 	await map(positionals.length ? positionals : undefined);
 }
 
+if (command === "analyse") {
+	const { analyseAll, analysisPath } = await import("./methods/analyse.js");
+	const summary = await analyseAll();
+	log.info(
+		`analyse: ${summary.inForce} acts in force of ${summary.acts} checked, findings into ${analysisPath("findings.jsonl")}`,
+		summary,
+	);
+}
+
 if (command === "stats") {
 	const { statistics, statisticsPath } = await import("./reading/dataset.js");
 	const { saveJson } = await import("./resources/store.js");
@@ -176,6 +190,16 @@ if (command === "sejm") {
 	await sejm({
 		terms: positionals.map(Number),
 		all: values.all,
+		files: values.files,
+		limit: Number(values.limit ?? 20),
+		rate: Number(values.rate ?? 120),
+	});
+}
+
+if (command === "sittings") {
+	const { sittings } = await import("./apihandlers/sittings.js");
+	await sittings({
+		terms: positionals.map(Number),
 		files: values.files,
 		limit: Number(values.limit ?? 20),
 		rate: Number(values.rate ?? 120),

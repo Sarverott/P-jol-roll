@@ -20,6 +20,44 @@ tasks:
     cmds:
       - npx tsx src/mcp/client.ts {{.CLI_ARGS}}
 
+  mastermind:ask:
+    desc: 'A question to the law mastermind (phase 30): a model reads the acts through the MCP tools and cites them by ELI (task mastermind:ask -- "..."; -- --json all of it). The host''s Ollama and deepseek-r1:8b unless MASTERMIND_URL / MASTERMIND_MODEL; MCP_URL asks a running api''s tools'
+    cmds:
+      - npx tsx src/mastermind/main.ts {{.CLI_ARGS}}
+
+  agent:
+    desc: 'The executive agent (phase 33): a small qwen in opencode does what you give it, reading the law through the MCP tools, writing only into resources/agent/ - task agent -- "what to do"; the host''s Ollama (AGENT_MODEL, AGENT_OLLAMA_URL); every run kept in resources/conversations/'
+    cmds:
+      - npx tsx src/mastermind/agent.ts {{.CLI_ARGS}}
+
+  agent:container:
+    desc: 'The executive agent in the agents'' shell (compose profiles agentic and llms: its own Ollama with the model pulled) - task agent:container -- "what to do"'
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - docker compose --profile agentic --profile llms up -d --build agentic-shell llms-ollama llms-models
+      - docker compose exec agentic-shell npx tsx src/mastermind/agent.ts {{.CLI_ARGS}}
+
+  mastermind:compare:
+    desc: 'Every team of resources/configs/mastermind/families.yaml asked the questions of questions.yaml (-- gemma bielik: only those); each conversation kept in resources/conversations/, a line per answer here (phase 31)'
+    cmds:
+      - npx tsx src/mastermind/compare.ts {{.CLI_ARGS}}
+
+  mastermind:up:
+    desc: 'The mastermind as containers (compose profile mastermind): Ollama with its models pulled, the api answering /api/ask on 127.0.0.1:8081; the GPU taken when nvidia-smi answers - for a machine without the host''s Ollama'
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - |
+        files="-f compose.yaml"
+        if command -v nvidia-smi > /dev/null && nvidia-smi > /dev/null 2>&1; then files="$files -f resources/services/gpu.yaml"; echo "the GPU given to Ollama"; fi
+        docker compose $files --profile mastermind up -d --build
+        echo "models are pulled once (docker compose logs -f llms-models); then: curl -G http://127.0.0.1:${MASTERMIND_PORT:-8081}/api/ask --data-urlencode 'question=...'"
+
+  mastermind:down:
+    desc: 'The containers of the mastermind stopped (the models stay in resources/.containerdatavol/ollama)'
+    dir: '{{.ROOT_DIR}}'
+    cmds:
+      - docker compose --profile mastermind down
+
   web:build:
     desc: Website of src/web with the viewer of src/gui, into dist/web.
     cmds:

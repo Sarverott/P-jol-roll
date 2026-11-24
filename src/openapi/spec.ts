@@ -51,12 +51,72 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.25.0",
+		version: "0.34.0",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
 	},
 	paths: {
+		"/api/ask": {
+			get: {
+				summary:
+					"a question answered by the law mastermind from the acts it read through the MCP tools, each cited by its ELI - an api started with MASTERMIND_URL, or the demo space on the signed-in visitor's own Hugging Face token (401 until then); not (formally) legal advices",
+				parameters: [
+					{
+						name: "question",
+						in: "query",
+						required: true,
+						schema: { type: "string", maxLength: 2000 },
+					},
+					{
+						name: "hard",
+						in: "query",
+						description:
+							"1: straight to the deepseek hosted by Hugging Face (the advanced strategy, phase 34)",
+						schema: { type: "string", enum: ["1"] },
+					},
+					{
+						name: "escalate",
+						in: "query",
+						description:
+							"1: the usual model first, the hosted deepseek when its answer is weak (nothing cited read)",
+						schema: { type: "string", enum: ["1"] },
+					},
+				],
+				responses: {
+					200: {
+						description:
+							"the answer, the reasoning, the acts cited (read: whether a tool gave it), the tools called, and escalated: the smaller model's answer when it went on",
+					},
+					400: { description: "no question, or a too long one" },
+					401: {
+						description:
+							"the demo space: sign in with Hugging Face first (login)",
+					},
+					429: { description: "another question is being answered" },
+					502: { description: "the model did not answer" },
+					503: { description: "no mastermind on this host" },
+				},
+			},
+		},
+		"/api/ask/about": {
+			get: {
+				summary:
+					"whether this host answers questions (/api/ask), whether it asks the visitor to sign in with Hugging Face first, the model, and the deepseek of hard questions when it can pay for one",
+				responses: {
+					200: { description: "{ answers, signIn, model, hard }" },
+				},
+			},
+		},
+		"/api/me": {
+			get: {
+				summary:
+					"whether signing in with Hugging Face is possible here (the demo space, /login), and who is signed in",
+				responses: {
+					200: { description: "{ signingIn, user: { name } | null }" },
+				},
+			},
+		},
 		"/api/host": {
 			get: {
 				summary:
@@ -175,6 +235,47 @@ export const spec = {
 				responses: {
 					200: { description: "ties: from, type, to, date, art" },
 					404: missing,
+				},
+			},
+		},
+		"/api/acts/{journal}/{year}/{pos}/findings": {
+			get: {
+				summary:
+					"what the analysis of the code of law found about the act (phase 36, task analyse), each finding with the improvement it suggests",
+				parameters: eli,
+				responses: {
+					200: {
+						description:
+							"[{ ELI, kind, to, status, successor, count, since, proposal }]",
+					},
+				},
+			},
+		},
+		"/api/analysis": {
+			get: {
+				summary:
+					"the code of law analysed: findings of each kind over every act in force, and a page of one kind (basis-repealed, reference-repealed, consolidation-due, tribunal)",
+				parameters: ["kind", "q", "offset", "limit"].map((name) => ({
+					name,
+					in: "query",
+					schema: { type: "string" },
+				})),
+				responses: {
+					200: { description: "{ summary, page }" },
+					404: { description: "not analysed on this host (task analyse)" },
+				},
+			},
+		},
+		"/api/acts/{journal}/{year}/{pos}/debates": {
+			get: {
+				summary:
+					"the act in Sejm (phase 35): the days of the sittings its bill was read on, and who spoke on each - with the words of a statement that names the bill's print, where the texts are gathered",
+				parameters: eli,
+				responses: {
+					200: {
+						description:
+							"{ ELI, processes, days: [{ term, sitting, date, stage, gathered, statements }] }",
+					},
 				},
 			},
 		},

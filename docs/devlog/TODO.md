@@ -296,3 +296,93 @@ The owner's message, 2026-11-24 (changelog phase 28).
 - [x] `devlog.yml` leaves the board out: the workflow's token lists the owner's projects but may not make one
 - [x] The Dependabot alerts of master (3 high, 1 medium, the MCP server SDK 2.0.0 under `@mcp-b/global`): `@mcp-b/global` 6.2.0, which takes the server 2.4.0
 - [x] What the gate of #105 found: `langpacks.sh` did not parse (an apostrophe inside `${...:?...}`); shellcheck run here too before landing
+
+## Phase 29: announcements in the discussion
+
+The owner's message, 2026-11-24, and the discussion #107 (changelog phase 29).
+
+- [x] The owner's words in the changelog; the phases planned ahead moved one number on
+- [x] What happened said in the discussion of announcements (#107): the steps ticked on `development` with the phases and milestones they finished (`devlog.yml`), a phase closed on its way to `master` (`phase-close`), a release and how each of its jobs ended (`release.yml`); `task github:announce`
+- [x] Docs, the almanac's line and AGENTS.md
+- [x] The Dependabot alert of the introduction (i18next 19.9.2 under p5, medium): p5 2.4.0, which no longer takes i18next
+
+## Phase 30: the mastermind's first voice
+
+The owner's message, 2026-11-24 (changelog phase 30): the host's Ollama for
+development, a compose setup for other machines.
+
+- [x] The owner's words in the changelog; deepseek-r1:8b in the host's Ollama
+- [x] The MCP tool `search_meaning`: acts nearest to a question by meaning, over the vectors of `task embed` of every year, the question made a vector by the same model of Ollama
+- [x] The mastermind (`src/mastermind/`): a question answered by a model of an OpenAI-like api (Ollama, LiteLLM), which reads the law through the MCP tools in rounds and cites the acts by their ELI; the citations checked against what it read; `task mastermind:ask`
+- [x] `/api/ask` of an api started with a mastermind (`MASTERMIND_URL`); never on a public host
+- [x] The vectors of every year in the api's memory as int8 (about 190 MB): as numbers of JavaScript they did not fit its heap, which ran out on the first `/api/ask`
+- [x] Compose for another machine: the profile `mastermind` - Ollama, its models pulled by a container, the api asking it; the GPU by `resources/services/gpu.yaml` where there is one
+- [x] Tests: the search by meaning, the rounds of the mastermind against a stand-in model
+- [x] Docs, the almanac's lines and AGENTS.md
+
+## Phase 31: families of models, Ollama on its own drive, conversations kept
+
+The owner's message, 2026-11-24 (changelog phase 31).
+
+- [x] The owner's words in the changelog; the phases planned ahead moved one number on
+- [x] Ollama's storage on its own drive: `OLLAMA_MODELS` in `.env`, the models of `~/.ollama/models` copied there, served from there (`task ollama:serve`)
+- [x] Every conversation of the mastermind kept: `resources/conversations/<family>/<instance>/<session>.json`, the whole exchange with the tools
+- [x] Docs, the almanac's lines and AGENTS.md
+- [x] The conversations' own dataset on Hugging Face (`Apokryf/Consiliariis-Polonicum-Lex`): a line of `.map.json`, its card kept in git, the first conversation pushed there (the owner's order)
+- [x] The families as teams (`teams` of `resources/configs/mastermind/families.yaml`, `src/mastermind/team.ts`): one answers, one calls the tools (`functiongemma`), one translates an answer in another language (`translategemma`), one guards (`shieldgemma`); a model given thinking and tools only when it can take them; `MASTERMIND_TEAM`; `task mastermind:compare` asks every team the questions of `questions.yaml`
+- [x] An answer in English not taken for Polish: the words of the check that are English too (`do`, `to`, `i`) left out, so the translator takes such an answer
+- [x] The models pulled into the Ollama on the drive (gemma4:12b and its kin, ministral-3:8b, qwen3:8b, llama3.1:8b, Bielik 11B v3.0) and every team asked the same questions; what they did, compared
+
+## Phase 32: the demo's AI - a chat on the visitor's own Hugging Face
+
+The owner's message, 2026-11-24 (changelog phase 32).
+
+- [x] The owner's words in the changelog; the conversations pushed; Ollama's models of `/usr/share/ollama` copied onto the drive and the copy in `~/.ollama` deleted; the phases ahead moved one number on
+- [x] Signing in with Hugging Face on the space (`src/openapi/oauth.ts`): `/auth/login`, `/auth/callback`, `/auth/me`, `/auth/logout`, the visitor's token kept in the server's memory behind a cookie; the space's card asks for `hf_oauth` and `inference-api`
+- [x] `/api/ask` on the space with the visitor's token: the model through Inference Providers (`google/gemma-4-26B-A4B-it` by default, `DEMO_MODEL`), the question a vector by bge-m3 of Hugging Face, the vectors of the dataset taken on the first question
+- [x] The chat in the viewer (`#ask`): the conversation, the acts cited linked to their pages, the reasoning folded, signing in where the host asks for it
+- [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 33: the chat translated, and the executive agent
+
+The owner's message, 2026-11-24 (changelog phase 33).
+
+- [x] The owner's words in the changelog
+- [x] The chat's words in every pack: `task i18n:collect` walks every state of `#ask` (its api answered by stand-ins), the chat's interface marked for collecting, the packs translated, its Polish corrected by hand and marked reviewed, published to the gist; released at once
+- [x] The executive agent: a small qwen in the agents' shell (an opencode host), reading the law through MCP, doing what a person gives it - `task agent` / `agent:container`, writing only into `resources/agent/` (`write_note`); its own rounds the default engine, opencode 2 the other (`AGENT_ENGINE=opencode`, its Code Mode not yet reliable)
+- [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 34: the advanced strategy, and the Python stack
+
+The owner's message, 2026-11-24 (changelog phase 34).
+
+- [x] The owner's words in the changelog
+- [x] The advanced strategy (`src/mastermind/strategy.ts`): a small model of the host first, a hard question on to a deepseek hosted by Hugging Face (`deepseek-ai/DeepSeek-R1-0528` through Inference Providers), given what the small one read and said; `task mastermind:ask -- --escalate` / `--hard`, `/api/ask?escalate=1` / `hard=1`, a switch in the chat when the host offers it
+- [x] The Python stack in a place of its own (`stacks/python/`): a uv project reading the law through the MCP tools, with its tests and tasks, its version kept with the others
+- [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 35: the work of Sejm as discussion
+
+The owner's message, 2026-11-24 (changelog phase 35): every phase planned ahead, one after another, until one needs the owner.
+
+- [x] The owner's words in the changelog
+- [x] The sittings gathered (`task sittings`): the sitting days of a term, the statements of each day (who, function, club, time) in `dataset/sejm/term<n>/transcripts/`, their texts with `--files` in `bucket/sejm/term<n>/transcripts/`
+- [x] An act's debates: the days its bill was read on (the stages of its process) and who spoke then - `debates()` of the reading, the MCP tool `act_debates`, `/api/acts/.../debates`, a section in the act's page
+- [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 36: simulations of a change of law, the code of law analysed - M4 closes
+
+The order of phase 35 goes on (changelog phase 36).
+
+- [x] The changelog: what this phase is understood to be
+- [x] The code of law analysed (`task analyse`): every act in force against its ties - a basis repealed, a reference to a repealed act and its successor, amendments since the last consolidated text, a Tribunal's judgment with no amendment after it - into `dataset/analysis/`; in every interface (MCP `analysis`, `/api/analysis`, `/api/acts/.../findings`, the act's page); on this machine 23,238 acts in force checked, 4,944 findings
+- [x] The simulation bubble and the improvements proposed (`stacks/python`): personas read an act through MCP and talk about it in rounds, each a model of the host's Ollama (`task python:simulate -- <ELI>`, kept in `resources/simulations/`); a model reads the act - its newest consolidated text - its findings, debates and simulations through MCP and writes its proposals (`task python:propose -- <ELI>`, `resources/proposals/`); one item, as they share their module and tests
+- [x] Tests, docs, the almanac's lines and AGENTS.md; M4 closed in the ROADMAP
+
+## Phase 37: the dataset and the bucket as torrents pointed to by IPFS; the Go stack
+
+The order of phase 35 goes on (changelog phase 37). M5 begins.
+
+- [x] The changelog: what this phase is understood to be
+- [x] The Go stack (`stacks/go/`, in the checks, its version kept with the others) and in it `pjolseed`: torrents of the dataset (one per part) and the bucket (one per journal and year) with web seeds on Hugging Face, an index with their magnet links, their IPFS directory with CIDs computed offline - checked equal to kubo's - and a CAR file, in `resources/torrents/` (`task torrents`); the IPFS service in compose and `task torrents:publish` for the owner; one item, as they are one command and its tests
+- [x] Tests, docs, the almanac's lines and AGENTS.md

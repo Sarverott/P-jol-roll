@@ -22,7 +22,7 @@ private:
 ways:
   - name: MCP server
     path: /mcp
-    what: the tools journals, search_acts, act, act_text, act_references, statistics, sejm_work, source_list over streamable http
+    what: the tools journals, search_acts, search_meaning, act, act_text, act_references, statistics, sejm_work, source_list over streamable http
   - name: http api
     path: /openapi.json
     what: the same reading as JSON, described as OpenAPI

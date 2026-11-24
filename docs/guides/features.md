@@ -26,7 +26,9 @@ State of 2026-11-13.
 | Work of Sejm: processes, prints | `task sejm -- 10 --files --limit 50` | **built**: tests; one real request per address |
 | Court judgments of SAOS | `task saos -- 2025 --limit 3` | **built**: tests; one real request; republishing terms not checked |
 | Websites that show acts, visited by a browser | `task checkup -- 2026 --limit 6` | **built**: run against a local page only |
-| Votings, transcripts, interpellations of Sejm | | **wanted** |
+| The sittings of Sejm: who spoke on each day, and what | `task sittings -- 10 --files` | **built**: tests against a copy of the API; not run against the source here (the owner starts gathering) |
+| An act's debates: the days its bill was read on, the statements naming its print | the act's page, `/api/acts/.../debates`, MCP `act_debates` | **built**: tests; shows the processes and stages already gathered on this machine, the statements once `task sittings` has run |
+| Votings, interpellations of Sejm | | **wanted** |
 | Open data portal, court register, statistics, national bank | | **wanted** (looked at, see [ideas](../.agents/ideas.md)) |
 | European law | | **wanted**, put off by the owner |
 
@@ -62,6 +64,16 @@ State of 2026-11-13.
 | Search by meaning in any language (Typesense hybrid, the question by the same model) and a map by meaning | `/api/search?meaning=1`, the viewer's "by meaning"; `task map -- statutes-in-force-by-meaning` | **works** on DU 2020 in a copy: an English question found Polish acts; 63 statutes tied to their nearest |
 | The map of the whole law (sigma.js), from presets | `task map`, the viewer's tab | **works**: three presets made from the real dataset in 53 s (0.4-2.8 MB); headless browser draws them, hover and click checked |
 | Ties of an act drawn (mermaid, one drawing for api, MCP and viewer) and a minimap of them (Cytoscape.js) | `/api/acts/<eli>/diagram`, the viewer | **works**: headless browser over DU 2020, a click on a node opens that act |
+| The dataset and the bucket as torrents pointed to by IPFS | `task torrents`, `task torrents:publish` | **works** for the dataset: 12 torrents of 4.6 GB in 18 s, a torrent's pieces checked by an independent reader, every CID equal to kubo's, the CAR imported by kubo; the bucket's 189 GB not hashed here; not published (the owner's move) |
+| The code of law analysed: every act in force against its ties | `task analyse`, MCP `analysis`, `/api/analysis`, the act's page | **works**: 23,238 acts in force checked here in 2 s, 3,937 findings; tests on made-up acts for each kind and its exceptions |
+| The simulation bubble: invented people talk about an act in rounds | `task python:simulate -- DU/1997/939` | **works**: three people, two rounds of the Banking Law in 48 s (ministral-3:8b); tests against a stand-in |
+| Improvements proposed by a model from the act, its findings, debates and simulations | `task python:propose -- DU/1997/939` | **works**: qwen3:8b wrote one proposal per finding of the Banking Law from its consolidated text of 2026; a model's words, checked by nobody |
+| The advanced strategy: a weak answer on to a deepseek hosted by Hugging Face | `task mastermind:ask -- --escalate` / `--hard`, `/api/ask?escalate=1`, the switch in the chat | **built**: tested against stand-ins of the host's model and of Inference Providers; not seen answering for real - the owner's token gets 402 until it has credits |
+| The Python stack: the law through the MCP tools, the mastermind through the api | `stacks/python/`, `task python:law`, `task python:check` | **works**: its tests start the MCP server over stdio on a dataset of their own; `act` read from this machine's resources |
+| The executive agent: a task done by qwen through MCP, written into `resources/agent/` | `task agent`, `task agent:container` | **works** (its own rounds): the school decree of 1919 read and summed up into a file, correctly, the act marked read; opencode 2 as host not yet reliable; the container's image builds with opencode 2.0.23, the run in it not done here |
+| The law mastermind as a chat in the viewer (`#ask`); on the demo space on the visitor's own Hugging Face | the tab "ask the law", `/login` | **built**: the chat checked in a headless browser on this machine (ministral-3:8b, desktop and phone); signing in and the space's path tested against stand-ins; the real path refused by Hugging Face for want of credits (402), so not yet seen answering on the space |
+| The law mastermind: a question answered from acts read through MCP, cited by ELI (deepseek-r1:8b) | `task mastermind:ask`, `/api/ask` with `MASTERMIND_URL`, compose profile `mastermind` | **works**: the host's Ollama on an RTX 3060, 30 s to 3 min a question; `/api/ask` in the image against it; the citations checked. The compose run with its own Ollama not started here |
+| Acts by meaning in MCP (`search_meaning`) | MCP, `task do -- meaning "..."` | **works**: every embedded year (761 MB of vectors) kept as int8, 1.5 s a question after the first |
 | MCP server for AI agents, read-only | `task mcp`, `/mcp` of the api and the space, `task mcp:ask` | **built**: tools listed and called over stdio and over http |
 | Desktop window | `task desktop` | **built**: opened by the owner, the port problem fixed afterwards and not opened again |
 | Android app | `task app:sync` | **wanted**: configured, Capacitor not installed |

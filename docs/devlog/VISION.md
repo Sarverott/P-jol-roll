@@ -66,25 +66,29 @@ in the country, as open source.
 | 26 | one gate into master: the author a member, every check and scan, then automerge |
 | 27 | the space by its trusted publisher, and waited for until it serves the release |
 | 28 | the host says what it is in a corner; the devlog on GitHub (milestones, issues, a board), copied into the wiki; the language packs from their gist |
+| 29 | what happened said by the workflows in the discussion of announcements (#107): steps, phases, milestones, the staging, releases |
+| 30 | the mastermind's first voice: deepseek-R1 answers a question with the acts it read through the MCP tools, each cited by its ELI; the host's Ollama for development, compose with Ollama and its models for other machines |
+| 31 | families of models as teams (gemma4 and its kin first, then ministral, llama, qwen, Bielik), Ollama's storage on its own drive, every conversation kept in `resources/conversations/` |
+| 32 | the demo's AI: the visitor signs in with Hugging Face and the mastermind answers on the visitor's token through Inference Providers; a chat in the viewer |
+| 33 | the chat in every language pack; the executive agent - a small qwen in the agents' shell (opencode), reading the law through MCP |
+| 34 | the advanced strategy: a weak answer of the host's model on to a deepseek hosted by Hugging Face; the Python stack in `stacks/python/` |
+| 35 | the work of Sejm as discussion: the sittings gathered (who spoke on each day, and what), every act tied to the days its bill was read on |
+| 36 | the code of law analysed (every act in force against its ties), the simulation bubble, improvements proposed - M4 closed |
+| 37 | the Go stack begins: the dataset and the bucket as torrents with web seeds on Hugging Face, pointed to by IPFS (CIDs offline, a CAR) |
 
 ### Phases ahead (planned in phase 28)
 
 Planned from the owner's own words - the milestones, the law mastermind of
 Q18, the devices of Q17, PP4 - and not started: each begins when the owner
-says so, and its TODO items are written then. Numbers may move.
+says so, and its TODO items are written then. Numbers may move (one on in
+phases 29, 31 and 32).
 
 | Phase | Milestone | Idea |
 | ----- | --------- | ---- |
-| 29 | M4 | the mastermind's first voice: a small deepseek-R1 and the embedder in Ollama, a service of compose, answering a question with the acts it read through the MCP tools, each cited by its ELI |
-| 30 | M4 | the executive agent: a small qwen in the agents' shell (an opencode host), reading the law through MCP, doing what a person gives it |
-| 31 | M4 | the advanced strategy: a deepseek hosted by Hugging Face for the hard questions; the Python stack of the models and simulations in a place of its own |
-| 32 | M4 | the work of Sejm as discussion: the records of sittings gathered from the Sejm API, who said what about which act |
-| 33 | M4 | social simulations offline (MiroFish or OASIS) of how a change of law meets people; the code of law analysed deeply, improvements proposed - M4 closes |
-| 34 | M5 | the dataset and the bucket as torrents pointed to by IPFS; the Go stack begins |
-| 35 | M5 | mirrors per voivodeship or district on a WireGuard network, balanced by Traefik |
-| 36 | M5 | no centre: the mirrors agree on the law by Cosmos SDK, the checksums of `task seal` the shared truth |
-| 37 | M5 | the person's devices in the desktop app: printers, phones, FIDO keys for signing (Q17) |
-| 38 | M5 | off the grid: ESP32 boards as mesh nodes of the law (PP4, when decided) |
+| 38 | M5 | mirrors per voivodeship or district on a WireGuard network, balanced by Traefik |
+| 39 | M5 | no centre: the mirrors agree on the law by Cosmos SDK, the checksums of `task seal` the shared truth |
+| 40 | M5 | the person's devices in the desktop app: printers, phones, FIDO keys for signing (Q17) |
+| 41 | M5 | off the grid: ESP32 boards as mesh nodes of the law (PP4, when decided) |
 
 ## The law mastermind (Q18, phase 22)
 

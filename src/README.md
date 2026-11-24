@@ -29,7 +29,7 @@ The directories group into four parts. Each part only leans on the one below it.
 | Part | Directories | What it is |
 | --- | --- | --- |
 | **core** | `core/` | gathering, checksums, tables, markdown, and reading of all of it |
-| **hosts** | `openapi/`, `mcp/`, `workflows/` | serve what the core reads: to programs over http, to AI agents over stdio; and run the core's commands as durable runs |
+| **hosts** | `openapi/`, `mcp/`, `mastermind/`, `workflows/` | serve what the core reads: to programs over http, to AI agents over stdio; a model answering from it through MCP; and run the core's commands as durable runs |
 | **viewer** | `gui/`, `web/` | one Vue viewer, and the website that carries it |
 | **shells** | `desktop/`, `app/`, `firefox-ext/`, `chrome-ext/` | wrap the viewer or the api for one kind of device |
 
@@ -94,6 +94,7 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/core/crawl.ts` | One polite walk over addresses of an API: own User-Agent, two requests at a time, a pace per minute, queue in memory. Every gatherer uses it, so manners live in one place. |
 | `src/core/apihandlers/eli.ts` | Addresses of the ELI API of Sejm and the files of an act (`filesOf`). Where to ask, never what to do. |
 | `src/core/apihandlers/sejm.ts` | Second source: legislative processes and prints of Sejm, into `resources/dataset/sejm` and `bucket/sejm`. |
+| `src/core/apihandlers/sittings.ts` | The sittings of Sejm (phase 35): the days of a term (`/proceedings`), the statements of each day into `dataset/sejm/term<n>/transcripts/`, their texts into the bucket; days after today and sitting 0 never asked for. |
 | `src/core/apihandlers/saos.ts` | Third source: court judgments of SAOS by months, into `resources/dataset/SAOS`. |
 | `src/core/methods/gather.ts` | The gatherer: index, lists, listings of years, then files of acts year by year; `--since` takes changed acts again. Writes a checksum record for every file the moment it lands. |
 | `src/core/methods/seal.ts` | Checksum records for files gathered without them, and `--check` that reads every file again. |
@@ -122,15 +123,27 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/openapi/routes.ts` | The read-only routes under `/api`. |
 | `src/openapi/host.ts` | `/api/host`: what this host is - the release, the commit and the workflow's run that built it (build arguments of the image), a container or not, Hugging Face (`SPACE_ID`), the remote mode, writing or not, and its short name (`HF-demo-readonly-container`) for the viewer's corner. |
 | `src/openapi/writing.ts` | `/api/jobs`, mounted only with `--allow-writing`: a job started from the api's own pages (Host and Origin checked, JSON only) after the person's yes, and followed. socket.io hears only that a job ended. |
+| `src/openapi/ask.ts` | `/api/ask`: the mastermind through the api's own `/mcp` - with `MASTERMIND_URL` its model, one question at a time; on the space (`SPACE_ID`, phase 32) on the signed-in visitor's own token through Inference Providers (`DEMO_MODEL`), one per visitor and four in all, not kept; `/api/ask/about` says which. |
+| `src/openapi/oauth.ts` | Signing in with Hugging Face where the space's card has `hf_oauth` (phase 32): `/login`, `/login/callback`, `/logout`, `/api/me`; the visitor's token in the server's memory behind a random HttpOnly cookie. |
 | `src/openapi/spec.ts` | OpenAPI 3.1 description, served at `/openapi.json`. Kept by hand next to the routes. |
 | `src/workflows/flows/daily.ts` | The daily run: `gather --since`, `seal`, `compile`, `text`, `hub plan` of each repository, then it waits for an answer (3 days by default). Only "yes" makes it push; no answer ends it without pushing. |
 | `src/workflows/flows/steps.ts` | Steps: each runs one command of `src/core/main.ts` in its own process and keeps its last 40 lines. Retried 3 times by the runtime; every command is safe to repeat. |
 | `src/workflows/server/api/daily.post.ts` | `POST /api/daily` starts a run and answers with its approval token. `task workflows:daily`. |
 | `src/workflows/server/api/daily/approve.post.ts` | `POST /api/daily/approve` answers a waiting run. The server listens on this machine only, which is what makes the answer a person's. `task workflows:approve`. |
 | `src/workflows/nitro.config.ts` | Nitro with the `workflow/nitro` module. Built from inside `src/workflows` (`task workflows:build`), because names of workflows are paths from where the build runs. |
-| `src/mcp/server.ts` | The MCP server: tools `journals`, `search_acts`, `act`, `act_text`, `act_references`, `statistics`, `sejm_work`, `source_list`, a folder each in `tools/` (`metadata.ts`, `function.ts`; `shared.ts` what they share). Read-only, so an agent cannot start gathering. One factory for both ways in. |
+| `src/mcp/server.ts` | The MCP server: tools `journals`, `search_acts`, `search_meaning` (acts nearest to a question by the vectors of `task embed`, phase 30), `act`, `act_text`, `act_references`, `statistics`, `sejm_work`, `source_list`, a folder each in `tools/` (`metadata.ts`, `function.ts`; `shared.ts` what they share). Read-only, so an agent cannot start gathering. One factory for both ways in. |
 | `src/mcp/main.ts` | The server over stdio, for an agent on this machine. Over http it is `/mcp` of the api (`src/openapi/server.ts`), so the container and the space serve it too. |
 | `src/mcp/client.ts` | A client: what an agent gets, from a terminal (`task mcp:ask`) and in tests. |
+| `src/mastermind/ask.ts` | The law mastermind (phase 30): the acts nearest to the question by meaning and the texts of the nearest ones read through MCP and given with it, then rounds in which the model calls tools, then its answer; each ELI it cites marked read or not. Ollama's `/api/chat` or an OpenAI-like api, streamed (a thinking model may think longer than fetch waits); the calls deepseek-R1 writes as its own tokens parsed too. |
+| `src/gui/screens/devilsAdvocate.vue` | `#ask`: the mastermind as a chat (phase 32) - `/api/ask/about` and `/api/me` asked first, signing in with Hugging Face where the host asks for it; `components/ask/AnswerCard.vue` the answer read as pieces of text (bold, headings, every ELI a link), never as HTML. |
+| `src/mastermind/record.ts` | Every conversation kept (phase 31): `resources/conversations/<family>/<instance>/<UNIXUSAT>-<question>.json`, the family from `resources/configs/mastermind/families.yaml`, the whole exchange inside; a host that cannot write there still answers. |
+| `src/mastermind/model.ts` | Talking to a model: Ollama's `/api/chat` or an OpenAI-like api, streamed; thinking and tools only to a model whose `/api/show` says it takes them. |
+| `src/mastermind/team.ts` | The families and their teams of `resources/configs/mastermind/families.yaml`: the translator (translategemma's own prompt), the guard (shieldgemma), whether a text is Polish. |
+| `src/mastermind/compare.ts` | `task mastermind:compare`: every team asked the questions of `questions.yaml`, a line per answer, each kept. |
+| `src/mastermind/agent.ts` | `task agent`: the executive agent (phase 33) - a task done by qwen through the MCP tools; its own rounds (ask.ts with `write_note`) or opencode 2 (`AGENT_ENGINE=opencode`, its own config and data under `resources/.containerdatavol/agent/`, its Code Mode calls read out of the code); kept as a conversation. |
+| `src/mastermind/note.ts` | `write_note`: the agent's only writing - a bare name, markdown, into `resources/agent/`. |
+| `src/mastermind/strategy.ts` | The advanced strategy (phase 34): the host's model first, its answer weak (nothing said, nothing cited, an act cited unread) on to a deepseek hosted by Hugging Face (`HARD_MODEL`, Inference Providers), given the small one's answer to check; or straight there (`hard`). |
+| `src/mastermind/main.ts` | `task mastermind:ask`: a question from a terminal, over the MCP server on stdio (or `MCP_URL`); `--escalate`, `--hard`. |
 
 ### viewer
 
@@ -153,6 +166,8 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/i18n/terminal.ts` | `tr(text, { name })`: the words of the launcher, the REPL and the lists of tasks in the terminal's language; named places filled after the pack. |
 | `src/i18n/node.ts` | The packs outside a browser: the index, `packFor(code)`, the language of a terminal (`P_JOL_ROLL_LANG`, else `LANG`). |
 | `src/devtools/i18n.ts` | `task i18n:collect`: the built introduction and viewer opened in a headless browser, in several states; their English collected by the page's own runtime into `resources/locales/EN-US.json`. |
+| `src/core/methods/analyse.ts` | The code of law analysed (phase 36): every act in force against its ties - its basis or references repealed (with the act that repealed them), amendments since its last consolidated text, a Tribunal's judgment with no amendment after it; amending acts left out; into `dataset/analysis/`. |
+| `src/core/reading/debates.ts` | An act in Sejm (phase 35): its process, the stages read on sittings, the statements of those days, those naming the bill's print marked `about` with their words; tables and stages taken from Hugging Face on the demo. |
 | `src/core/reading/dataset.ts` | The rest of the dataset as readers see it (phase 22): terms, processes and prints of Sejm, months of court judgments, the lists of the source, the acts counted year by year (`task stats` writes them for the demo). Only reads `resources/`. |
 | `src/core/reading/diagram.ts` | The ties of an act as one mermaid flowchart - the one drawing the api, the MCP server (`act_references` with `as: mermaid`) and the viewer give. |
 | `src/web/pages/index.astro` | The website page that carries the viewer. `task web:build` writes `dist/web`, which the api serves. `PUBLIC_API` at build time points it at another host; `PUBLIC_SITE` is its own address for the card of a shared link (the demo by default). |

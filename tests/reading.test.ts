@@ -199,10 +199,13 @@ test("the MCP server answers at /mcp of the api with the same reading", async ()
 	expect(tools.map((tool) => tool.name).sort()).toEqual(
 		[
 			"act",
+			"act_debates",
 			"act_references",
 			"act_text",
+			"analysis",
 			"journals",
 			"search_acts",
+			"search_meaning",
 			"sejm_work",
 			"source_list",
 			"statistics",

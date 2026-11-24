@@ -6,7 +6,9 @@ import { PRESETS } from "../core/methods/presets.js";
 import * as dataset from "../core/reading/dataset.js";
 import * as library from "../core/reading/library.js";
 import { remote } from "../core/reading/remote.js";
+import { askRoutes } from "./ask.js";
 import { host } from "./host.js";
+import { oauthRoutes } from "./oauth.js";
 import { spec } from "./spec.js";
 
 // every route only reads gathered files - nothing here asks the source or writes
@@ -52,7 +54,7 @@ if (remote)
 		// a journal is letters only (DU, MP); anything else is not taken from Hugging Face
 		const named =
 			journal && /^[A-Za-z]{1,16}$/.test(journal) ? journal : undefined;
-		const OTHER = ["statistics", "lists", "sejm", "judgments"];
+		const OTHER = ["statistics", "lists", "sejm", "judgments", "analysis"];
 		const ready =
 			kind === "map"
 				? library.prepareMap(named)
@@ -65,6 +67,11 @@ if (remote)
 						);
 		ready.then(() => next(), next);
 	});
+
+// a question to the law mastermind, where this api has one (phase 30, ask.ts)
+routes.use(askRoutes);
+// signing in with Hugging Face, where the host is a space with hf_oauth (oauth.ts)
+routes.use(oauthRoutes);
 
 routes.get("/openapi.json", (_request, response) => {
 	response.json(spec);
@@ -225,6 +232,43 @@ routes.get("/api/acts/:journal/:year/:pos/references", (request, response) => {
 	if (ties) response.json(ties);
 	else notHere(response);
 });
+
+// what the analysis of the code of law found about it (phase 36, task analyse)
+routes.get(
+	"/api/acts/:journal/:year/:pos/findings",
+	async (request, response) => {
+		await dataset.prepareDataset("analysis");
+		response.json(dataset.findings(eliOf(request)));
+	},
+);
+
+// the analysis as a whole: how many findings of each kind, and a page of one kind
+routes.get("/api/analysis", (request, response) => {
+	const { kind, q, offset, limit } = request.query;
+	const summary = dataset.analysis();
+	if (!summary) {
+		response.status(404).json({ error: "not analysed here: task analyse" });
+		return;
+	}
+	const chosen = dataset.FINDING_KINDS.find((one) => one === kind) ?? "";
+	response.json({
+		summary,
+		page: dataset.findingsOf(chosen, {
+			query: typeof q === "string" ? q : "",
+			offset: Number(offset) || 0,
+			limit: Number(limit) || 50,
+		}),
+	});
+});
+
+// who said what about it in Sejm (phase 35): the days its bill was read on, their statements
+routes.get(
+	"/api/acts/:journal/:year/:pos/debates",
+	async (request, response) => {
+		const { debates } = await import("../core/reading/debates.js");
+		response.json(await debates(eliOf(request)));
+	},
+);
 
 routes.get("/api/acts/:journal/:year/:pos/diagram", (request, response) => {
 	const diagram = library.diagram(eliOf(request));

@@ -7,12 +7,13 @@
 # Models stay in resources/.containerdatavol/ollama/. OLLAMA_TOKEN in .env is not needed here.
 services:
   llms-ollama:
-    profiles: [llms]
+    profiles: [llms, mastermind]
     image: ollama/ollama:0.40.17
     # for task embed and the search by meaning (phase 17) - the same address as "ollama serve"
     # on the machine; one of the two runs
     ports:
-      - "127.0.0.1:11434:11434"
+      # OLLAMA_PORT where the machine runs its own Ollama on 11434 already
+      - "127.0.0.1:${OLLAMA_PORT:-11434}:11434"
     volumes:
       - ./resources/.containerdatavol/ollama:/root/.ollama
     restart: unless-stopped

@@ -55,6 +55,13 @@ The markdown here is the source; two places show it and are made from it:
   (the submodule `docs/wiki`). The website of the documentation links there
   instead of publishing them.
 
+- **The discussion of announcements** (#107, phase 29): the workflows say
+  there what happened - the steps ticked on `development` with the phases
+  and milestones they finished (`devlog.yml`), a phase closed on its way to
+  `master` (`phase-close`), a release and how each of its jobs ended
+  (`release.yml`). `scripts/devops/github/announce.py`; `task
+  github:announce -- --dry ...` shows a comment without posting it.
+
 An issue or a wiki page changed by hand is overwritten by the next run:
 answer in ORDERS.md, ask in INQUIRIES.md.
 

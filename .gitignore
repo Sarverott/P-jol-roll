@@ -10,6 +10,17 @@ resources/dataset
 
 # https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland
 resources/space
+# the conversations of the mastermind (phase 31): the local side of their dataset on Hugging
+# Face (.map.json "conversations"); only its card is kept in git
+resources/conversations/*
+# what the executive agent wrote (phase 33): a person reads it there, git keeps none of it
+resources/agent
+# the simulation bubble and the proposals of the Python stack (phase 36), kept here only
+resources/simulations
+resources/proposals
+# the torrents and their IPFS directory (phase 37, task torrents): made here, published by the owner
+resources/torrents
+!resources/conversations/README.md
 
 # the directories of other sources before phase 10 (task resources:merge moves them into
 # dataset/ and bucket/)
@@ -56,3 +67,5 @@ __pycache__/
 # marimo notebooks made from examples/notebooks/ (task examples:convert)
 examples/marimo
 examples/.venv
+# the environment of the Python stack (task python:sync)
+stacks/python/.venv

@@ -1,0 +1,54 @@
+# mastermind: the law mastermind's first voice (phase 30) as a collection of containers, for a
+# machine that has none of it - Ollama with its models, and an api that asks it (/api/ask) over
+# its own MCP tools. On the machine of development the host's Ollama is used instead
+# (task mastermind:ask); this is for the others.
+#   docker compose --profile mastermind up -d        ->  http://127.0.0.1:8081/api/ask?question=...
+#   task mastermind:up                               the same, the GPU taken when nvidia-smi is here
+#   docker compose -f compose.yaml -f resources/services/gpu.yaml --profile mastermind up -d
+# The models are pulled once by llms-models into resources/.containerdatavol/ollama/ (deepseek-r1:8b
+# about 5 GB, bge-m3 1.2 GB). The acts are read from ./resources: take the dataset first
+# (task resources:pull -- dataset), its embeddings/ too, or search_meaning has nothing to compare.
+# MASTERMIND_MODEL, EMBED_MODEL, MASTERMIND_PORT and OLLAMA_PORT in .env change them.
+services:
+  llms-models:
+    profiles: [llms, mastermind]
+    image: ollama/ollama:0.40.17
+    # the models the mastermind needs, pulled into the Ollama beside it, then it ends
+    entrypoint: ["sh", "-c", "for model in $$MODELS; do ollama pull $$model || exit 1; done"]
+    environment:
+      OLLAMA_HOST: http://llms-ollama:11434
+      MODELS: ${MASTERMIND_MODEL:-deepseek-r1:8b} ${EMBED_MODEL:-bge-m3} ${AGENT_MODEL:-qwen3:8b}
+    depends_on: [llms-ollama]
+    restart: "no"
+
+  mastermind:
+    profiles: [mastermind]
+    # the image of webapp-server, the api with a mastermind set: MASTERMIND_URL makes /api/ask answer
+    build:
+      context: .
+      dockerfile: resources/configs/webapp-server/Dockerfile
+    image: p-jol-roll-webapp-server
+    environment:
+      LOG_DIR: /tmp/logs
+      P_JOL_ROLL_CONTAINER: mastermind
+      MASTERMIND_URL: http://llms-ollama:11434
+      MASTERMIND_MODEL: ${MASTERMIND_MODEL:-deepseek-r1:8b}
+      OLLAMA_URL: http://llms-ollama:11434 # the question made a vector for search_meaning
+      EMBED_MODEL: ${EMBED_MODEL:-}
+    ports:
+      - "127.0.0.1:${MASTERMIND_PORT:-8081}:8080"
+    volumes:
+      - ./resources:/data/resources:ro
+      # the one place it writes: its conversations, kept by family and model (phase 31)
+      - ./resources/conversations:/data/resources/conversations
+    depends_on:
+      llms-ollama:
+        condition: service_started
+      llms-models:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://127.0.0.1:5514
+        tag: p-jol-roll-mastermind

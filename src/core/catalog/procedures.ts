@@ -1,4 +1,5 @@
 import * as dataset from "../reading/dataset.js";
+import { nearest } from "../reading/embeddings.js";
 import * as library from "../reading/library.js";
 import type { CatalogScope } from "../vars/interfaces/index.js";
 import type { CatalogScope as CatalogTypes } from "../vars/types/index.js";
@@ -98,6 +99,31 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		},
 	},
 	{
+		name: "meaning",
+		group: "read",
+		title:
+			"acts of every year nearest in meaning to a question (the vectors of task embed, Ollama)",
+		params: [
+			{
+				name: "question",
+				title: "the question, in any language",
+				kind: "text",
+				required: true,
+			},
+			{ ...journal, choices: ["", "DU", "MP"], default: "" },
+			limit(50, 10),
+		],
+		writes: false,
+		read: async (values) =>
+			(
+				await nearest(text(values, "question"), {
+					journal: text(values, "journal"),
+					limit: number(values, "limit"),
+				})
+			)?.map((one) => ({ ...one, title: library.find(one.ELI)?.title })),
+		ways: { mcp: "search_meaning" },
+	},
+	{
 		name: "act",
 		group: "read",
 		title: "one act: its line of the listing, details and the files gathered",
@@ -147,6 +173,67 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 			viewer: "#act/DU/2026/1",
 			api: "GET /api/acts/{journal}/{year}/{pos}/references",
 			mcp: "act_references",
+		},
+	},
+	{
+		name: "analysis",
+		group: "read",
+		title:
+			"the code of law analysed: findings over every act in force, or of one act",
+		params: [
+			{ name: "eli", title: "one act (empty: all)", kind: "text", default: "" },
+			{
+				name: "kind",
+				title: "kind of finding",
+				kind: "choice",
+				choices: [
+					"",
+					"basis-repealed",
+					"reference-repealed",
+					"consolidation-due",
+					"tribunal",
+				],
+				default: "",
+			},
+			query,
+			offset,
+			limit(50),
+		],
+		writes: false,
+		read: async (values) => {
+			await dataset.prepareDataset("analysis");
+			const eli = text(values, "eli");
+			return eli
+				? dataset.findings(eli)
+				: {
+						summary: dataset.analysis(),
+						page: dataset.findingsOf(text(values, "kind"), {
+							query: text(values, "query"),
+							offset: number(values, "offset"),
+							limit: number(values, "limit"),
+						}),
+					};
+		},
+		ways: {
+			viewer: "#act/DU/2026/1",
+			api: "GET /api/analysis, /api/acts/{journal}/{year}/{pos}/findings",
+			mcp: "analysis",
+		},
+	},
+	{
+		name: "act-debates",
+		group: "read",
+		title: "an act in Sejm: the days its bill was read on, who said what",
+		params: [eli],
+		writes: false,
+		read: async (values) => {
+			const { debates } = await import("../reading/debates.js");
+			return debates(text(values, "eli"));
+		},
+		ways: {
+			viewer: "#act/DU/2026/1",
+			api: "GET /api/acts/{journal}/{year}/{pos}/debates",
+			mcp: "act_debates",
 		},
 	},
 	{
@@ -360,6 +447,40 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		ways: { cli: "npm start -- sejm" },
 	},
 	{
+		name: "analyse",
+		group: "process",
+		title:
+			"the code of law analysed: every act in force against its ties (phase 36)",
+		params: [],
+		writes: true,
+		task: "analyse",
+		ways: { cli: "npm start -- analyse" },
+	},
+	{
+		name: "sittings",
+		group: "gather",
+		title: "sittings of Sejm: who spoke on each day, and what (phase 35)",
+		params: [
+			{
+				name: "terms",
+				title: "terms (empty: the current)",
+				kind: "number",
+				many: true,
+				positional: true,
+			},
+			{
+				name: "files",
+				title: "the texts of the statements too",
+				kind: "flag",
+				option: "files",
+			},
+			limit(0, 20),
+		],
+		writes: true,
+		task: "sittings",
+		ways: { cli: "npm start -- sittings" },
+	},
+	{
 		name: "saos",
 		group: "gather",
 		title: "court judgments of SAOS, months of years",
@@ -554,6 +675,26 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		writes: true,
 		task: "resources:space:refresh",
 		ways: { workflows: "release" },
+	},
+	{
+		name: "torrents",
+		group: "share",
+		title:
+			"the dataset and the bucket as torrents, with their IPFS directory, made here (phase 37)",
+		params: [],
+		writes: true,
+		task: "torrents",
+		ways: {},
+	},
+	{
+		name: "torrents:publish",
+		group: "share",
+		title:
+			"the torrents put on IPFS: the node of compose started, imported, pinned",
+		params: [],
+		writes: true,
+		task: "torrents:publish",
+		ways: {},
 	},
 
 	// the project itself

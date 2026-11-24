@@ -1,14 +1,20 @@
 import { createMcpHandler, McpServer } from "@modelcontextprotocol/server";
 import act from "./tools/act/function.js";
 import actMeta from "./tools/act/metadata.js";
+import actDebates from "./tools/act_debates/function.js";
+import actDebatesMeta from "./tools/act_debates/metadata.js";
 import actReferences from "./tools/act_references/function.js";
 import actReferencesMeta from "./tools/act_references/metadata.js";
 import actText from "./tools/act_text/function.js";
 import actTextMeta from "./tools/act_text/metadata.js";
+import analysis from "./tools/analysis/function.js";
+import analysisMeta from "./tools/analysis/metadata.js";
 import journals from "./tools/journals/function.js";
 import journalsMeta from "./tools/journals/metadata.js";
 import searchActs from "./tools/search_acts/function.js";
 import searchActsMeta from "./tools/search_acts/metadata.js";
+import searchMeaning from "./tools/search_meaning/function.js";
+import searchMeaningMeta from "./tools/search_meaning/metadata.js";
 import sejmWork from "./tools/sejm_work/function.js";
 import sejmWorkMeta from "./tools/sejm_work/metadata.js";
 import sourceList from "./tools/source_list/function.js";
@@ -25,12 +31,15 @@ Gathering is started by a person, so an agent cannot set off a crawl of the sour
 */
 
 export function createServer() {
-	const server = new McpServer({ name: "p-jol-roll", version: "0.25.0" });
+	const server = new McpServer({ name: "p-jol-roll", version: "0.34.0" });
 	server.registerTool("journals", journalsMeta, journals);
 	server.registerTool("search_acts", searchActsMeta, searchActs);
+	server.registerTool("search_meaning", searchMeaningMeta, searchMeaning);
 	server.registerTool("act", actMeta, act);
 	server.registerTool("act_text", actTextMeta, actText);
 	server.registerTool("act_references", actReferencesMeta, actReferences);
+	server.registerTool("act_debates", actDebatesMeta, actDebates);
+	server.registerTool("analysis", analysisMeta, analysis);
 	server.registerTool("statistics", statisticsMeta, statistics);
 	server.registerTool("sejm_work", sejmWorkMeta, sejmWork);
 	server.registerTool("source_list", sourceListMeta, sourceList);

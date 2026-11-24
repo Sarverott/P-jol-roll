@@ -5,6 +5,8 @@ import type ActFileInterface from "./ActFile.interface.js";
 import type ActPageInterface from "./ActPage.interface.js";
 import type ActTextInterface from "./ActText.interface.js";
 import type ActViewInterface from "./ActView.interface.js";
+import type AdviceInterface from "./Advice.interface.js";
+import type AnalysisInterface from "./Analysis.interface.js";
 import type ApprovalInterface from "./Approval.interface.js";
 import type AskedInterface from "./Asked.interface.js";
 import type ChainInterface from "./Chain.interface.js";
@@ -13,9 +15,11 @@ import type CheckupInterface from "./Checkup.interface.js";
 import type CheckupPlanInterface from "./CheckupPlan.interface.js";
 import type CommandResultInterface from "./CommandResult.interface.js";
 import type DailyPlanInterface from "./DailyPlan.interface.js";
+import type DebateInterface from "./Debate.interface.js";
 import type DifferenceInterface from "./Difference.interface.js";
 import type EdgeInterface from "./Edge.interface.js";
 import type FileRecordInterface from "./FileRecord.interface.js";
+import type FindingInterface from "./Finding.interface.js";
 import type FrontendInterface from "./Frontend.interface.js";
 import type GatherPlanInterface from "./GatherPlan.interface.js";
 import type HostInterface from "./Host.interface.js";
@@ -37,6 +41,10 @@ import type SaosPlanInterface from "./SaosPlan.interface.js";
 import type ScanRecordInterface from "./ScanRecord.interface.js";
 import type SearchPageInterface from "./SearchPage.interface.js";
 import type SejmPlanInterface from "./SejmPlan.interface.js";
+import type SittingInterface from "./Sitting.interface.js";
+import type SittingDayInterface from "./SittingDay.interface.js";
+import type SittingsPlanInterface from "./SittingsPlan.interface.js";
+import type StatementInterface from "./Statement.interface.js";
 import type StatisticsInterface from "./Statistics.interface.js";
 import type TaskEntryInterface from "./TaskEntry.interface.js";
 import type TermInterface from "./Term.interface.js";
@@ -76,6 +84,10 @@ export namespace GatheringScope {
 	export type SaosPlan = SaosPlanInterface;
 	export type ScanRecord = ScanRecordInterface;
 	export type SejmPlan = SejmPlanInterface;
+	export type Sitting = SittingInterface;
+	export type SittingDay = SittingDayInterface;
+	export type SittingsPlan = SittingsPlanInterface;
+	export type Statement = StatementInterface;
 	export type Term = TermInterface;
 	export type TextRecord = TextRecordInterface;
 	export type YearListing = YearListingInterface;
@@ -84,6 +96,9 @@ export namespace GatheringScope {
 
 // what readers of gathered data get: server, MCP, interfaces
 export namespace ReadingScope {
+	export type Analysis = AnalysisInterface;
+	export type Debate = DebateInterface;
+	export type Finding = FindingInterface;
 	export type Journal = JournalInterface;
 	export type ActPage = ActPageInterface;
 	export type ActView = ActViewInterface;
@@ -115,4 +130,9 @@ export namespace CatalogScope {
 	export type Parameter = ParameterInterface;
 	export type Job = JobInterface;
 	export type Host = HostInterface;
+}
+
+// the law mastermind (phase 30, src/mastermind): a question answered from acts read through MCP
+export namespace MastermindScope {
+	export type Advice = AdviceInterface;
 }
