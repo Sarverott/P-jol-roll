@@ -385,4 +385,4 @@ The order of phase 35 goes on (changelog phase 37). M5 begins.
 
 - [x] The changelog: what this phase is understood to be
 - [x] The Go stack (`stacks/go/`, in the checks, its version kept with the others) and in it `pjolseed`: torrents of the dataset (one per part) and the bucket (one per journal and year) with web seeds on Hugging Face, an index with their magnet links, their IPFS directory with CIDs computed offline - checked equal to kubo's - and a CAR file, in `resources/torrents/` (`task torrents`); the IPFS service in compose and `task torrents:publish` for the owner; one item, as they are one command and its tests
-- [ ] Tests, docs, the almanac's lines and AGENTS.md
+- [x] Tests, docs, the almanac's lines and AGENTS.md

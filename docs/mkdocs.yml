@@ -84,6 +84,7 @@ nav:
       - guides/translations.md
       - guides/mastermind.md
       - guides/analysis.md
+      - guides/torrents.md
   - Glossary: glossary/README.md
   # the devlog and the almanac live in the wiki of GitHub, copied there by task docs:wiki (phase 28)
   - Devlog (wiki): https://github.com/Sarverott/P-jol-roll/wiki/Devlog
