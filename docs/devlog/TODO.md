@@ -328,5 +328,5 @@ The owner's message, 2026-11-24 (changelog phase 31).
 - [x] Ollama's storage on its own drive: `OLLAMA_MODELS` in `.env`, the models of `~/.ollama/models` copied there, served from there (`task ollama:serve`)
 - [x] Every conversation of the mastermind kept: `resources/conversations/<family>/<instance>/<session>.json`, the whole exchange with the tools
 - [x] Docs, the almanac's lines and AGENTS.md
-- [ ] The conversations' own dataset on Hugging Face (`Apokryf/Consiliariis-Polonicum-Lex`): a line of `.map.json`, its card kept in git, the first conversation pushed there (the owner's order)
+- [x] The conversations' own dataset on Hugging Face (`Apokryf/Consiliariis-Polonicum-Lex`): a line of `.map.json`, its card kept in git, the first conversation pushed there (the owner's order)
 - [ ] After the owner starts Ollama from the drive: the families as teams - gemma4 and its kin first (one answers, `functiongemma` calls the tools, `embeddinggemma` makes the vectors, `translategemma` translates, `shieldgemma` guards), then ministral, llama, qwen and Bielik; the same questions to each, their conversations compared

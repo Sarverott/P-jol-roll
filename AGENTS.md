@@ -69,7 +69,7 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    A public host (the space, the container, the website) never does. An
    agent does not start a job against the real source unless asked.
 5. **Nothing is sent to huggingface by an agent.** `resources/dataset`,
-   `resources/space` and `resources/bucket` are filled locally; pushing and
+   `resources/space`, `resources/bucket` and `resources/conversations` are filled locally; pushing and
    syncing them is Sett's move.
 
 ## Questions and plans
@@ -196,7 +196,8 @@ resources/        .map.json lists huggingface repositories, their local sides ar
                   (task i18n:translate), .index.json lists them, EN-US the default; task i18n:pull / i18n:publish
   mediafiles/     the images of the project: the gist MEDIAFILES as a submodule; task resources:media makes
                   icons and og.jpg out of them into src/web/public (the webpage takes them too), docs/assets/images, src/firefox-ext/icons
-  conversations/  the mastermind's conversations, <family>/<instance>/<UNIXUSAT>-<question>.json (phase 31), ignored by git
+  conversations/  the mastermind's conversations, <family>/<instance>/<UNIXUSAT>-<question>.json (phase 31): the local side of the
+                  dataset Apokryf/Consiliariis-Polonicum-Lex (.map.json), its README.md (the card) kept in git
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
 examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported

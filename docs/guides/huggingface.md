@@ -15,6 +15,7 @@ The name after `--` is a key of `resources/.map.json`:
 | `dataset` | `resources/dataset` | [datasets/Sarverott/polish_national_law_docs](https://huggingface.co/datasets/Sarverott/polish_national_law_docs) |
 | `bucket` | `resources/bucket` | [buckets/Sarverott/raw-law-of-poland](https://huggingface.co/buckets/Sarverott/raw-law-of-poland) |
 | `space` | `resources/space` | [spaces/Sarverott/docs-of-law-by-gov-in-poland](https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland) |
+| `conversations` | `resources/conversations` | [datasets/Apokryf/Consiliariis-Polonicum-Lex](https://huggingface.co/datasets/Apokryf/Consiliariis-Polonicum-Lex) - the mastermind's conversations (phase 31); its card is `resources/conversations/README.md`, kept in git |
 
 The local sides are ignored by git of this repository.
 
