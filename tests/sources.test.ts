@@ -70,7 +70,9 @@ const server = createServer((request, response) => {
 		response.writeHead(404).end();
 	} else if (/\/transcripts\/\d+$/.test(path)) {
 		response.setHeader("content-type", "text/html; charset=utf-8");
-		response.end(`<p>Statement ${path.split("/").at(-1)} on druk nr 1058.</p>`);
+		// a number, never the address itself, in what is answered as HTML (CodeQL)
+		const num = Number(path.slice(path.lastIndexOf("/") + 1));
+		response.end(`<p>Statement ${num} on druk nr 1058.</p>`);
 	} else if (path.endsWith(".pdf")) {
 		response.setHeader("content-type", "application/pdf");
 		response.end("%PDF draft");
