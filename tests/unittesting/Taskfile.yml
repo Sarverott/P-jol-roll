@@ -5,6 +5,12 @@
 version: '3'
 
 tasks:
+  mirrors:
+    desc: 'Two mirrors of the law joined by WireGuard and balanced by Traefik, in containers (phase 38; needs Docker, Go, the wireguard module) - case -two-mirrors'
+    dir: '{{.TASKFILE_DIR}}/../..'
+    cmds:
+      - tests/unittesting/mirrors/-two-mirrors/run.sh
+
   parrot-os:
     desc: 'Parrot OS as a headless server: build the image, run a case (default -gather-and-parse; task unittesting:parrot-os -- <case>)'
     dir: '{{.TASKFILE_DIR}}/../..'
