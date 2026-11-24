@@ -50,6 +50,11 @@ Not gathered yet: votings, interpellations, committees, members.
 
 ## The sittings of Sejm: `sittings`
 
+A day's statements take the API 25 s and more to give (40 s timed out on
+2026-11-24): they are given two minutes, and a day whose statements still
+do not come is taken as one PDF, `bucket/sejm/term10/transcripts/<sitting>/<date>.pdf`
+(phase 41); an act's debates say so (`pdf: true`).
+
 The work of Sejm as discussion (phase 35): the sittings of a term, and what
 was said on each of their days.
 
@@ -79,6 +84,7 @@ the act's page (*in Sejm*), `/api/acts/DU/2025/637/debates`, the MCP tool
 ```sh
 task saos -- 2025                  # 3 months of 2025 that are not here yet
 task saos -- 2020 2021 --limit 0   # every month of these years
+task saos -- --quality             # judgments SAOS dates after today or before 1918, kept apart
 ```
 
 Source: `https://www.saos.org.pl/api`, System Analizy Orzeczeń Sądowych. It
@@ -121,6 +127,14 @@ Dates in SAOS are sometimes wrong (a judgment dated in year 208, another in
 Judgments name judges and case numbers. Parties are anonymised by the
 courts before publication.
 
+
+Until phase 41 SAOS refused every page of the crawler with 406: crawlee
+asked for HTML, SAOS gives only JSON. Every walk now asks for JSON first.
+SAOS holds judgments dated in years that cannot be (3013, 2101, 208); no
+month asks for them, so `--quality` takes them on their own into
+`judgments/misdated.jsonl` and counts them in `SAOS/quality.json`. SAOS is
+fed from the common courts' Portal Orzeczeń, which has no public API
+(Q25).
 ## What else was looked at
 
 See [ideas](../.agents/ideas.md), "Other government sources in Poland": the

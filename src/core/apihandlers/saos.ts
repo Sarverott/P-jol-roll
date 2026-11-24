@@ -54,25 +54,29 @@ export async function saos(plan: GatheringScope.SaosPlan) {
 	const router = createHttpRouter();
 
 	// month is written when its last page arrives
-	router.addDefaultHandler(async ({ request, json, log, addRequests }) => {
-		const { year, month, page } = request.userData;
-		const { items } = json as { items: GatheringScope.Judgment[] };
-		const key = `${year}-${month}`;
-		const all = [...(pages.get(key) ?? []), ...items];
-		pages.set(key, all);
-		if (items.length === PAGE) {
-			await addRequests([
-				{
-					url: monthUrl(year, month, page + 1),
-					userData: { year, month, page: page + 1 },
-				},
-			]);
-			return;
-		}
-		await store.saveJsonl(monthPath(year, month), all);
-		pages.delete(key);
-		log.info(`${year}-${month}: ${all.length} judgments`);
-	});
+	router.addDefaultHandler(
+		async ({ request, response, json, log, addRequests }) => {
+			if (response.statusCode !== 200 || !json)
+				throw new Error(`${request.url}: status ${response.statusCode}`);
+			const { year, month, page } = request.userData;
+			const { items } = json as { items: GatheringScope.Judgment[] };
+			const key = `${year}-${month}`;
+			const all = [...(pages.get(key) ?? []), ...items];
+			pages.set(key, all);
+			if (items.length === PAGE) {
+				await addRequests([
+					{
+						url: monthUrl(year, month, page + 1),
+						userData: { year, month, page: page + 1 },
+					},
+				]);
+				return;
+			}
+			await store.saveJsonl(monthPath(year, month), all);
+			pages.delete(key);
+			log.info(`${year}-${month}: ${all.length} judgments`);
+		},
+	);
 
 	await crawl(
 		months.slice(0, plan.limit || undefined).map(({ year, month }) => ({
@@ -82,4 +86,70 @@ export async function saos(plan: GatheringScope.SaosPlan) {
 		router,
 		plan.rate,
 	);
+}
+
+/*
+The quality of the source (phase 41): SAOS holds judgments dated in years that cannot be -
+3013, 2101 - which no month ever asks for, so they would be missed without a word. They are
+asked for on their own: every judgment dated after today or before 1918 (Dziennik Ustaw's first
+year), kept in judgments/misdated.jsonl as SAOS gives them, and counted in quality.json with a
+few to show.
+*/
+export const misdatedPath = () =>
+	join(SAOS_DATASET, "judgments", "misdated.jsonl");
+export const qualityPath = () => join(SAOS_DATASET, "quality.json");
+
+const range = (from: string, to: string, page: number) =>
+	`${SAOS_API}/dump/judgments?judgmentStartDate=${from}&judgmentEndDate=${to}&pageSize=${PAGE}&pageNumber=${page}`;
+
+export async function quality(plan: { rate: number; today?: Date }) {
+	const tomorrow = new Date((plan.today ?? new Date()).getTime() + 86_400_000)
+		.toISOString()
+		.slice(0, 10);
+	const windows = {
+		future: [tomorrow, "9999-12-31"],
+		past: ["0001-01-01", "1917-12-31"],
+	} as const;
+	const found: (GatheringScope.Judgment & { window: string })[] = [];
+	const router = createHttpRouter();
+	router.addDefaultHandler(async ({ request, response, json, addRequests }) => {
+		if (response.statusCode !== 200 || !json)
+			throw new Error(`${request.url}: status ${response.statusCode}`);
+		const { window, page } = request.userData;
+		const { items } = json as { items: GatheringScope.Judgment[] };
+		found.push(...items.map((item) => ({ ...item, window })));
+		if (items.length === PAGE) {
+			const [from, to] = windows[window as keyof typeof windows];
+			await addRequests([
+				{
+					url: range(from, to, page + 1),
+					userData: { window, page: page + 1 },
+				},
+			]);
+		}
+	});
+	await crawl(
+		Object.entries(windows).map(([window, [from, to]]) => ({
+			url: range(from, to, 0),
+			userData: { window, page: 0 },
+		})),
+		router,
+		plan.rate,
+	);
+	await store.saveJsonl(misdatedPath(), found);
+	const report = {
+		made: new Date().toISOString(),
+		misdated: found.length,
+		after: found.filter((one) => one.window === "future").length,
+		before: found.filter((one) => one.window === "past").length,
+		examples: found.slice(0, 10).map((one) => ({
+			id: one.id,
+			judgmentDate: one.judgmentDate,
+			courtType: one.courtType,
+			caseNumber: (one.courtCases as { caseNumber?: string }[] | undefined)?.[0]
+				?.caseNumber,
+		})),
+	};
+	await store.saveJson(qualityPath(), report);
+	return report;
 }

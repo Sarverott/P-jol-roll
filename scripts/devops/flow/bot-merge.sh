@@ -40,8 +40,27 @@ if [ "$branch" = dev/Jarvis ] && [ "$draft" = true ]; then
   echo "#$pr: a draft of Jarvis - merged when it is marked ready"
   exit 0
 fi
-gh pr merge "$pr" --merge --subject "chore(merge): #$pr of $author into $branch"
-echo "#$pr merged into $branch"
+# several pull requests of a bot opened at once race for the branch: "Base branch was
+# modified" is waited out and tried again; one that conflicts after another's merge (go.sum,
+# package-lock.json) is asked to rebase - Dependabot's own command - and merged on its next run
+for attempt in 1 2 3 4 5; do
+  mergeable=$(gh pr view "$pr" --json mergeable --jq .mergeable)
+  if [ "$mergeable" = CONFLICTING ]; then
+    if [ "$author" = dependabot ]; then
+      gh pr comment "$pr" --body "@dependabot rebase"
+      echo "#$pr: conflicts with $branch - Dependabot asked to rebase"
+    else
+      echo "#$pr: conflicts with $branch - left to Jarvis or a person"
+    fi
+    exit 0
+  fi
+  if gh pr merge "$pr" --merge --subject "chore(merge): #$pr of $author into $branch"; then
+    echo "#$pr merged into $branch"
+    break
+  fi
+  [ "$attempt" = 5 ] && { echo "#$pr: not merged after 5 tries" >&2; exit 1; }
+  sleep $((attempt * 15))
+done
 # one check of the branch for a pile of merges: a newer dispatch finds the older still queued
 gh workflow run checks.yml --ref "$branch"
 echo "checks of $branch dispatched"
