@@ -1,11 +1,12 @@
 import { writeFile } from "node:fs/promises";
 import { dialog, Menu } from "electron";
+import { printLabel, showForPhone, signPdf } from "./devices.js";
 
 /*
 Printing from the app (Q17, changelog phase 22): what the window shows - an act on its own
 screen prints as its text alone (the viewer's print styles hide the rest) - on a printer of the
 system, or into a PDF file. Offered by the menu of the window, its right-click menu and the
-tray. Bluetooth printers and phones, and signing with FIDO keys, come later (ROADMAP M5).
+tray. Signing with a FIDO key, labels for Bluetooth sticker printers and the act for a phone: devices.js (phase 40).
 */
 
 // the system's dialog of printing: the printer, the pages, the copies
@@ -31,7 +32,7 @@ export async function saveAsPdf(window) {
 }
 
 // the right-click menu of the window: copy what is chosen, print, back and forward
-export function setContextMenu(window) {
+export function setContextMenu(window, address) {
 	window.webContents.on("context-menu", (_event, where) => {
 		const web = window.webContents;
 		Menu.buildFromTemplate([
@@ -39,6 +40,9 @@ export function setContextMenu(window) {
 			{ type: "separator" },
 			{ label: "Print...", click: () => print(window) },
 			{ label: "Save as PDF...", click: () => saveAsPdf(window) },
+			{ label: "Save as PDF and sign...", click: () => signPdf(window) },
+			{ label: "Print a label...", click: () => printLabel(window, address) },
+			{ label: "Show it for a phone", click: () => showForPhone(window) },
 			{ type: "separator" },
 			{
 				label: "Back",

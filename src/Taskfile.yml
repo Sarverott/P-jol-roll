@@ -74,6 +74,11 @@ tasks:
       - task: web:build
       - npm run desktop -- {{.CLI_ARGS}}
 
+  sign:verify:
+    desc: 'A file signed by the desktop app with a FIDO key (phase 40) checked against its signature, offline - task sign:verify -- act.pdf (its act.pdf.sig.json beside it); says the key and its fingerprint'
+    cmds:
+      - npx tsx src/core/signing/main.ts {{.CLI_ARGS}}
+
   desktop:check:
     desc: The desktop app started with every window hidden - it prints what the viewer shows and quits (no screen needed; the website built first).
     env:

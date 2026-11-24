@@ -37,7 +37,7 @@ import (
 )
 
 // Version is the project's one version, kept by src/devtools/version.ts.
-const Version = "0.36.0"
+const Version = "0.37.0"
 
 // Part is one torrent to make: a directory of resources/ and where its files are on the web.
 type Part struct {

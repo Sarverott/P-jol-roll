@@ -172,8 +172,9 @@ src/gui/               index.vue - the one viewer that every interface shows (Bu
                        socket, settings, counting, webmcp); "Terms of use" gets AUTHORS and links as a prop (src/web/data/credits.ts)
 src/web/               Astro website carrying the viewer (pages/), built into dist/web; data/ read by node:fs at build (no ?raw imports)
 src/desktop/           Electron app: main.js puts together core (the api), window, loadingmodal, menus, hotkeys-shortcuts,
-                       apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1), printing (print, PDF);
-                       task desktop:check, no screen
+                       apptray, notifications, dialogs, deeplinks (p-jol-roll://act/DU/2026/1), printing (print, PDF),
+                       devices (phase 40: signing with a FIDO key, labels.js for Bluetooth sticker printers, a QR code for a
+                       phone; the page's side src/gui/assets/devices.js); task desktop:check, no screen
 src/app/               web app manifest and Capacitor config of the android app
 src/firefox-ext/       browser extension (manifest v3, loads in Chrome too)
 src/chrome-ext/        empty, kept
@@ -292,6 +293,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task torrents` (`-- -only dataset`, `-dry`) / `torrents:publish` | the dataset and the bucket as torrents with web seeds on Hugging Face, their IPFS directory (CIDs offline, `torrents.car`) in `resources/torrents/` (phase 37) / the owner's: put on IPFS by the node of compose (profile `ipfs`); `task go:check` the Go stack |
 | `task mirror:list` / `mirror:keys -- <mirror>` / `mirror:up -- <mirror>` / `mirror:down` | the mirrors of the law (phase 38, `resources/configs/mirrors/mirrors.yaml`) / this machine's WireGuard keys, the public one into the registry / its WireGuard and Traefik made, the profile `mirror` of compose up (site on :8095) / stopped; `task unittesting:mirrors` two mirrors with a real tunnel, in containers |
 | `task chain:build` / `chain:seal -- <key>` / `go:roots` | the chain of the law (phase 39): lawchaind built / the roots of the years sealed here recorded by this mirror (asks first) / the roots shown; `task unittesting:chain` a chain of one mirror for real; profile `chain` of compose a mirror's node |
+| `task sign:verify -- act.pdf` | a file signed with a FIDO key by the desktop app (phase 40) checked against its `.sig.json`, offline (`src/core/signing/`) |
 | `task analyse` | the code of law analysed (phase 36): every act in force against its ties - a basis repealed, a reference to a repealed act, a consolidated text due, a Tribunal's judgment not followed - into `dataset/analysis/`; local tables only |
 | `task python:simulate -- DU/1997/939` / `python:propose -- DU/1997/939` | the simulation bubble: invented people talk about an act in rounds, models of the host's Ollama (`resources/simulations/`) / improvements proposed by a model from the act, its findings, debates and simulations (`resources/proposals/`) - docs/guides/analysis.md |
 | `task python:check` / `python:law -- act DU/1918/2` | the Python stack (`stacks/python/`): ruff and pytest / the law through it (`tools`, `act`, `text`, `nearest`, `ask`) |
