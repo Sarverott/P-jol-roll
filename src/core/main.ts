@@ -36,6 +36,7 @@ sejm                                 -> work of Sejm: processes and prints of th
 sejm 9 10 --files --limit 50         -> these terms, with details of processes and files of prints
 sittings                             -> sittings of Sejm of the current term: who spoke on each day (phase 35)
 sittings 10 --files --limit 40       -> and the texts of the statements, 40 days and then 40 texts at most
+saos --quality                       -> judgments SAOS dates after today or before 1918, counted (phase 41)
 saos 2024 2025 --limit 3             -> court judgments of these years, 3 months that are not here yet
 
 checkup 2026 --limit 6               -> browser visits websites that show acts of gathered year
@@ -83,6 +84,7 @@ const { values, positionals } = parseArgs({
 		since: { type: "string" },
 		check: { type: "boolean", default: false },
 		files: { type: "boolean", default: false },
+		quality: { type: "boolean", default: false },
 		pdf: { type: "boolean", default: false },
 		texts: { type: "boolean", default: false },
 	},
@@ -206,7 +208,13 @@ if (command === "sittings") {
 	});
 }
 
-if (command === "saos") {
+if (command === "saos" && values.quality) {
+	const { quality, qualityPath } = await import("./apihandlers/saos.js");
+	const report = await quality({ rate: Number(values.rate ?? 30) });
+	log.info(
+		`saos: ${report.misdated} judgments dated after today or before 1918 (${report.after} after, ${report.before} before), into ${qualityPath()}`,
+	);
+} else if (command === "saos") {
 	if (!positionals.length) throw new Error("saos needs years: saos 2025");
 	const { saos } = await import("./apihandlers/saos.js");
 	await saos({

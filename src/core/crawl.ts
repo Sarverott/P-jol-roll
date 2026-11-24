@@ -1,4 +1,10 @@
-import { Configuration, HttpCrawler, type HttpCrawlerOptions } from "crawlee";
+import { randomUUID } from "node:crypto";
+import {
+	Configuration,
+	HttpCrawler,
+	type HttpCrawlerOptions,
+	RequestQueue,
+} from "crawlee";
 import log from "./logging/setup.js";
 import type { GatheringScope } from "./vars/interfaces/index.js";
 
@@ -25,6 +31,12 @@ export async function crawl(
 		tolerate = false,
 	}: { timeout?: number; tolerate?: boolean } = {},
 ) {
+	// a queue of its own: walks one after another in one process (the Sejm's days, then their
+	// PDFs; SAOS's months, then its misdated judgments) do not share what the first one left
+	const config = new Configuration({ persistStorage: false });
+	const requestQueue = await RequestQueue.open(`walk-${randomUUID()}`, {
+		config,
+	});
 	const crawler = new HttpCrawler(
 		{
 			requestHandler,
@@ -33,7 +45,12 @@ export async function crawl(
 			preNavigationHooks: [
 				(_context, gotOptions) => {
 					gotOptions.useHeaderGenerator = false;
-					gotOptions.headers = { "user-agent": USER_AGENT };
+					// JSON first, anything after: crawlee's default asks for HTML, and SAOS answers
+					// that with 406 "unsupported media type" (phase 41) - every source here is an API
+					gotOptions.headers = {
+						"user-agent": USER_AGENT,
+						accept: "application/json, */*;q=0.8",
+					};
 				},
 			],
 			useSessionPool: false,
@@ -43,10 +60,12 @@ export async function crawl(
 			maxRequestsPerMinute: rate,
 			// nothing is cut silently - run with everything means every request
 			maxRequestsPerCrawl: undefined,
+			requestQueue,
 		},
-		new Configuration({ persistStorage: false }),
+		config,
 	);
 	const stats = await crawler.run(requests);
+	await requestQueue.drop();
 	// a request that failed every retry is logged by crawlee above; the run must not end as if
 	// all went well (gather:changes did, when the API refused its "since" with 400)
 	if (stats.requestsFailed && tolerate)

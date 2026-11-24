@@ -4,7 +4,7 @@ import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { expect, test } from "vitest";
+import { afterAll, expect, test } from "vitest";
 
 // small copies of two other APIs: work of Sejm and court judgments
 const asked: string[] = [];
@@ -63,6 +63,24 @@ const server = createServer((request, response) => {
 				items: page === "0" ? judgments(1, 100) : judgments(101, 7),
 			}),
 		);
+	} else if (
+		path.startsWith("/saos/dump/judgments") &&
+		path.includes("9999-12-31")
+	) {
+		// what SAOS really holds: a judgment dated a thousand years ahead (phase 41)
+		response.setHeader("content-type", "application/json;charset=UTF-8");
+		response.end(
+			JSON.stringify({
+				items: [
+					{
+						id: 9,
+						judgmentDate: "3013-12-04",
+						courtType: "COMMON",
+						courtCases: [{ caseNumber: "I ACa 772/13" }],
+					},
+				],
+			}),
+		);
 	} else if (path.startsWith("/saos/")) {
 		response.setHeader("content-type", "application/json;charset=UTF-8");
 		response.end(JSON.stringify({ items: [] }));
@@ -85,12 +103,16 @@ const server = createServer((request, response) => {
 	}
 }).listen(0);
 
+afterAll(() => {
+	server.close();
+});
+
 const work = await mkdtemp(join(tmpdir(), "pjolroll-sources-"));
 const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
 process.env.SEJM_API = `${base}/sejm`;
 process.env.SAOS_API = `${base}/saos`;
 process.env.RESOURCES_DIR = join(work, "resources");
-process.env.CRAWLEE_LOG_LEVEL = "OFF";
+process.env.CRAWLEE_LOG_LEVEL = process.env.DEBUG_CRAWL ?? "OFF";
 
 const store = await import("../src/core/resources/store.js");
 
@@ -181,5 +203,31 @@ test("judgments: months that ended, each one whole", async () => {
 	expect(store.readJsonl(monthPath(2025, 1))).toHaveLength(107);
 	expect(store.readJsonl(monthPath(2025, 2))).toEqual([]);
 	expect(missingMonths([2025], today)).toEqual([]);
-	server.close();
+}, 60_000);
+
+test("the quality of SAOS: judgments dated after today or before 1918, kept apart and counted", async () => {
+	const { quality, misdatedPath, qualityPath } = await import(
+		"../src/core/apihandlers/saos.js"
+	);
+	asked.length = 0;
+	const report = await quality({ rate: 6000, today: new Date("2026-11-24") });
+	expect(asked.filter((path) => path.startsWith("/saos/")).sort()).toEqual([
+		"/saos/dump/judgments?judgmentStartDate=0001-01-01&judgmentEndDate=1917-12-31&pageSize=100&pageNumber=0",
+		"/saos/dump/judgments?judgmentStartDate=2026-11-25&judgmentEndDate=9999-12-31&pageSize=100&pageNumber=0",
+	]);
+	expect(report).toMatchObject({
+		misdated: 1,
+		after: 1,
+		before: 0,
+		examples: [
+			{
+				id: 9,
+				judgmentDate: "3013-12-04",
+				courtType: "COMMON",
+				caseNumber: "I ACa 772/13",
+			},
+		],
+	});
+	expect(store.readJsonl(misdatedPath())).toHaveLength(1);
+	expect(store.readJson<{ misdated: number }>(qualityPath())?.misdated).toBe(1);
 }, 60_000);
