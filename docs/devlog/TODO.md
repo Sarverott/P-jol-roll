@@ -411,3 +411,13 @@ The order of phase 35 goes on (changelog phase 40). Q17.
 - [x] The changelog: what this phase is understood to be
 - [x] The person's devices in the desktop app (`src/desktop/devices.js`, `src/gui/assets/devices.js`): signing with a FIDO key - registered once, "Save as PDF and sign" signs the PDF's sha256 by WebAuthn, the signature beside it (`.sig.json`), `task sign:verify` checks it offline, checked with a security key simulated in Chromium; an act's label in ESC/POS for a Bluetooth sticker printer; the act for a phone as a QR code; in the window's menu, the tray and the app's menu; one item, as they share their module and menus
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 41: sources that hold - Sejm, SAOS and the courts' own portals
+
+The owner's message, 2026-11-24 (changelog phase 41): the branches, the sources, and the phases 41-47 before ESP32.
+
+- [x] The owner's words in the changelog; `dev/dependabot` reviewed and taken in; the phases 41-47 in VISION and ROADMAP (M6), ESP32 moved to 48; Q20-Q24 asked (issues on GitHub)
+- [ ] The Sejm's transcripts given time: a day's statements asked with a longer wait, and the day's PDF taken into the bucket when the JSON does not come
+- [ ] SAOS checked: judgments dated before 1918 or after today counted and listed in a report of the source's quality, not shown as dated
+- [ ] The common courts' Portal Orzeczeń (orzeczenia.ms.gov.pl) as a source of its own: its judgments by publication, politely, into `dataset/courts/` and `bucket/courts/`
+- [ ] Tests, docs, the almanac's lines and AGENTS.md
