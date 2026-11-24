@@ -82,6 +82,7 @@ in the country, as open source.
 | 42 | international law adopted by Poland: the law of the EU by year from the Publications Office, the agreements the journals published indexed |
 | 43 | public tenders (e-Zamówienia by day, TED) and local and regional law (ten voivodeships' journals through their ELI API) |
 | 44 | the declaration of transparency: 4,933 public offices' official contacts and places, the state's networks in RIPE |
+| 45 | reports to the authorities: their official contacts, drafts with evidence (certificates of public servers), sent only after a person's yes |
 
 ### Phases ahead (planned in phase 28)
 
@@ -92,7 +93,6 @@ phases 29, 31 and 32; 41-47 put before ESP32 by the owner's order of phase 41).
 
 | Phase | Milestone | Idea |
 | ----- | --------- | ---- |
-| 45 | M6 | reports to the authorities by mail - Police, the army, CBA, ABW, AW, CERT Polska, NASK - drafted, read by a person, sent (Q20) |
 | 46 | M6 | mirrors of the repository on GitLab, Bitbucket, sourcehut, Gitea and a Gitea of our own, each with the same milestones, pull requests and devlog (Q21) |
 | 47 | M6 | the announcements of the discussion #107 on Tumblr, X, Blogger, Telegram, Discord and Mastodon (Q21) |
 | 48 | M5 | off the grid: ESP32 boards as mesh nodes of the law (PP4, when decided) |

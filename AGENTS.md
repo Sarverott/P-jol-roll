@@ -148,6 +148,7 @@ src/core/              the gatherer itself; everything below is its tree
     interfaces/        <Name>.interface.ts, and index.ts with namespaces GatheringScope, HuggingfaceScope
     types/             <Name>.type.ts, and index.ts with the same namespaces
   logging/             setup.ts: the one logger of every command (text or JSON lines, a file per run in logs/, syslog when asked) - import it first, then logRun(<command>)
+  reports/             reports to the authorities (phase 45, Q20): reports.ts drafts with evidence, sends after a person's yes
   search/              typesense.ts: every act into Typesense (task search:index) and /api/search over every year
   catalog/             every function of the project once (procedures.ts), for every way it runs: the launcher, the REPL,
                        task do, /api/catalog, the viewer; run.ts words into values and task arguments, map.ts the map of functions,
@@ -300,6 +301,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task torrents` (`-- -only dataset`, `-dry`) / `torrents:publish` | the dataset and the bucket as torrents with web seeds on Hugging Face, their IPFS directory (CIDs offline, `torrents.car`) in `resources/torrents/` (phase 37) / the owner's: put on IPFS by the node of compose (profile `ipfs`); `task go:check` the Go stack |
 | `task mirror:list` / `mirror:keys -- <mirror>` / `mirror:up -- <mirror>` / `mirror:down` | the mirrors of the law (phase 38, `resources/configs/mirrors/mirrors.yaml`) / this machine's WireGuard keys, the public one into the registry / its WireGuard and Traefik made, the profile `mirror` of compose up (site on :8095) / stopped; `task unittesting:mirrors` two mirrors with a real tunnel, in containers |
 | `task chain:build` / `chain:seal -- <key>` / `go:roots` | the chain of the law (phase 39): lawchaind built / the roots of the years sealed here recorded by this mirror (asks first) / the roots shown; `task unittesting:chain` a chain of one mirror for real; profile `chain` of compose a mirror's node |
+| `task report:draft` / `report:send -- <draft>` | reports to the authorities (phase 45): the problems found drafted with evidence / one sent from the owner's mailbox after a person's yes at a terminal - never by an agent |
 | `task sign:verify -- act.pdf` | a file signed with a FIDO key by the desktop app (phase 40) checked against its `.sig.json`, offline (`src/core/signing/`) |
 | `task analyse` | the code of law analysed (phase 36): every act in force against its ties - a basis repealed, a reference to a repealed act, a consolidated text due, a Tribunal's judgment not followed - into `dataset/analysis/`; local tables only |
 | `task python:simulate -- DU/1997/939` / `python:propose -- DU/1997/939` | the simulation bubble: invented people talk about an act in rounds, models of the host's Ollama (`resources/simulations/`) / improvements proposed by a model from the act, its findings, debates and simulations (`resources/proposals/`) - docs/guides/analysis.md |

@@ -447,3 +447,11 @@ The order of phase 41 goes on (changelog phase 44). Along the *Lean* of Q24 (#14
 - [x] The changelog
 - [x] The offices (`pjolroll offices`): the official contact bases of dane.gov.pl read into one table; their places (`pjolroll geocode`, Nominatim, cached); the address space of the state in RIPE (`pjolroll networks`: 89 organisations, 108 networks, 82 autonomous systems here); MCP `transparency`, `/api/transparency`, the catalog, `task python:offices` / `geocode` / `networks`
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 45: reports to the authorities by mail
+
+The order of phase 41 goes on (changelog phase 45). Along the *Lean* of Q20 (#138): nothing sent before the answer.
+
+- [x] The changelog
+- [x] The authorities' official contacts (`resources/configs/reports/authorities.yaml`); drafts with their evidence (`task report:draft`: public servers whose certificates do not verify); one draft sent after a person's yes, from the owner's mailbox (`task report:send`)
+- [x] Tests, docs, the almanac's lines and AGENTS.md
