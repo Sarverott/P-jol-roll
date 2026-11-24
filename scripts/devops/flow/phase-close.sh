@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Closing a phase of docs/devlog/TODO.md: Y of vX.Y.Z bumped on development, committed,
 # pushed, the pull request development → master opened (pull-request.sh) and its gate
-# started (gate.yml). Refuses when
+# started (gate.yml), and said in the discussion of announcements (announce.py). Refuses when
 # the phase still has an open step. Outputs version=<the new version>.
 # Usage: phase-close.sh <phase number>   (needs GH_TOKEN)
 # shellcheck source=../_common.sh
@@ -38,4 +38,6 @@ pr=$(sed -nE 's#^url=.*/pull/([0-9]+)$#\1#p' <<<"$opened")
 if [ -n "$pr" ]; then
   gh workflow run gate.yml --ref development -f pr="$pr"
   echo "the gate of #$pr is started"
+  # said in the discussion of announcements (phase 29); a phase closes even when it cannot be said
+  python3 "$(dirname "$0")/../github/announce.py" staging "$phase" "$pr" || echo "not announced" >&2
 fi
