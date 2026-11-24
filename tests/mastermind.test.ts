@@ -479,3 +479,127 @@ test("the executive agent's own tool runs in the rounds beside MCP's", async () 
 	);
 	expect(advice.answer).toBe("Zapisano [DU/1918/2].");
 });
+
+test("the advanced strategy: a weak answer of the small model goes on to the hosted deepseek", async () => {
+	// the small one of the host (Ollama's dialect) answers what is given in the question
+	let smallSays = "";
+	const small = createServer((request, response) => {
+		request.resume();
+		request.on("end", () => {
+			response.setHeader("content-type", "application/json");
+			if (request.url === "/api/show")
+				response.end(JSON.stringify({ capabilities: ["completion"] }));
+			else if (request.url === "/api/embed")
+				response.end(JSON.stringify({ embeddings: [[0.6, 0.8, 0]] }));
+			else
+				response.end(
+					`${JSON.stringify({ message: { content: smallSays }, done: true })}\n`,
+				);
+		});
+	});
+	// the hosted one (Inference Providers: the OpenAI dialect, streamed)
+	const heard: { authorization: string; model: string; asked: string }[] = [];
+	const hosted = createServer((request, response) => {
+		let body = "";
+		request.on("data", (chunk) => {
+			body += chunk;
+		});
+		request.on("end", () => {
+			const data = JSON.parse(body);
+			heard.push({
+				authorization: String(request.headers.authorization),
+				model: data.model,
+				asked: data.messages.at(-1).content,
+			});
+			response.setHeader("content-type", "text/event-stream");
+			response.end(
+				`data: ${JSON.stringify({ choices: [{ delta: { reasoning_content: "Czytam DU/1918/2." } }] })}\n\ndata: ${JSON.stringify({ choices: [{ delta: { content: "Rada Stanu doradzała [DU/1918/2]." } }] })}\n\ndata: [DONE]\n\n`,
+			);
+		});
+	});
+	for (const one of [small, hosted])
+		await new Promise<void>((done) => one.listen(0, "127.0.0.1", done));
+	const port = (one: typeof small) => (one.address() as AddressInfo).port;
+	const { connect } = await import("../src/mcp/client.js");
+	const { strategy, weak } = await import("../src/mastermind/strategy.js");
+	const client = await connect(`${url}/mcp`);
+	const config = {
+		url: `http://127.0.0.1:${port(small)}`,
+		model: "deepseek-r1:8b",
+		key: "",
+		rounds: 2,
+		context: 4096,
+		read: 2000,
+		words: 512,
+		first: 1,
+		team: undefined,
+	};
+	const hard = {
+		url: `http://127.0.0.1:${port(hosted)}/v1`,
+		model: "deepseek-ai/DeepSeek-R1-0528",
+		key: "hf_owner",
+	};
+	try {
+		// cited what it never opened: weak, so the deepseek answers, given the small one's answer
+		smallSays = "Rada Stanu to [DU/1918/3].";
+		const escalated = await strategy("Czym była Rada Stanu?", client, {
+			keep: false,
+			config,
+			hard,
+		});
+		expect(escalated.model).toBe("deepseek-ai/DeepSeek-R1-0528");
+		expect(escalated.answer).toBe("Rada Stanu doradzała [DU/1918/2].");
+		expect(escalated.thinking).toBe("Czytam DU/1918/2.");
+		expect(escalated.escalated).toMatchObject({
+			from: "deepseek-r1:8b",
+			answer: "Rada Stanu to [DU/1918/3].",
+			why: ["it cited DU/1918/3 without reading"],
+		});
+		expect(heard).toHaveLength(1);
+		expect(heard[0]).toMatchObject({
+			authorization: "Bearer hf_owner",
+			model: "deepseek-ai/DeepSeek-R1-0528",
+		});
+		expect(heard[0].asked).toContain(
+			"A smaller model (deepseek-r1:8b) answered first",
+		);
+		expect(heard[0].asked).toContain("Rada Stanu to [DU/1918/3].");
+
+		// what it cites read: the small one's answer stands, the hosted one is not asked
+		smallSays = `Rada Stanu [${escalated.steps[1].arguments.eli}].`;
+		const kept = await strategy("Czym była Rada Stanu?", client, {
+			keep: false,
+			config,
+			hard,
+		});
+		expect(weak(kept)).toEqual([]);
+		expect(kept.model).toBe("deepseek-r1:8b");
+		expect(kept.escalated).toBeUndefined();
+		expect(heard).toHaveLength(1);
+
+		// hard: straight there; without a token, refused before anything is asked
+		const straight = await strategy("Czym była Rada Stanu?", client, {
+			keep: false,
+			config,
+			hard,
+			mode: "hard",
+		});
+		expect(straight.model).toBe("deepseek-ai/DeepSeek-R1-0528");
+		expect(straight.escalated).toBeUndefined();
+		await expect(
+			strategy("Czym była Rada Stanu?", client, {
+				keep: false,
+				config,
+				hard: { ...hard, key: "" },
+				mode: "hard",
+			}),
+		).rejects.toThrow(/needs a token/);
+		expect(heard).toHaveLength(2);
+		expect(weak({ ...kept, answer: " " })).toEqual(["it said nothing"]);
+		expect(weak({ ...kept, cited: [] })).toEqual(["it cited no act"]);
+	} finally {
+		await client.close();
+		small.close();
+		hosted.close();
+	}
+});

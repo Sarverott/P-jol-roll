@@ -183,6 +183,7 @@ test("on the space the question is answered on the visitor's own token, and only
 			answers: true,
 			signIn: true,
 			model: "google/gemma-4-26B-A4B-it",
+			hard: "deepseek-ai/DeepSeek-R1-0528",
 		});
 
 		const start = await fetch(`${url}/login`, { redirect: "manual" });

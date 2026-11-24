@@ -357,6 +357,6 @@ The owner's message, 2026-11-24 (changelog phase 33).
 The owner's message, 2026-11-24 (changelog phase 34).
 
 - [x] The owner's words in the changelog
-- [ ] The advanced strategy (`src/mastermind/strategy.ts`): a small model of the host first, a hard question on to a deepseek hosted by Hugging Face (`deepseek-ai/DeepSeek-R1-0528` through Inference Providers), given what the small one read and said; `task mastermind:ask -- --hard`, `/api/ask?hard=1`
+- [x] The advanced strategy (`src/mastermind/strategy.ts`): a small model of the host first, a hard question on to a deepseek hosted by Hugging Face (`deepseek-ai/DeepSeek-R1-0528` through Inference Providers), given what the small one read and said; `task mastermind:ask -- --escalate` / `--hard`, `/api/ask?escalate=1` / `hard=1`, a switch in the chat when the host offers it
 - [ ] The Python stack in a place of its own (`stacks/python/`): a uv project reading the law through the MCP tools, with its tests and tasks, its version kept with the others
 - [ ] Tests, docs, the almanac's lines and AGENTS.md

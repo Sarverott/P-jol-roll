@@ -104,6 +104,9 @@ export async function ask(
 		// the executive agent (agent.ts): its own instructions, and tools of its own beside MCP's
 		system = SYSTEM,
 		local = [] as LocalTool[],
+		// what it is given before the acts (strategy.ts: the smaller model's answer to check)
+		given = [] as string[],
+		escalated = undefined as MastermindScope.Advice["escalated"],
 	} = {},
 ): Promise<MastermindScope.Advice> {
 	const started = Date.now();
@@ -162,7 +165,7 @@ export async function ask(
 	distilled model seldom calls a tool, and the pieces of a conversation with tools confuse
 	the template of deepseek-R1, which then imitates them instead of answering.
 	*/
-	const context: string[] = [];
+	const context: string[] = [...given];
 	if (tools.some((tool) => tool.name === "search_meaning")) {
 		const found = await call({
 			id: "start",
@@ -264,7 +267,7 @@ export async function ask(
 	const guard = config.team?.guard
 		? await guarded(config, config.team.guard, question, answer)
 		: null;
-	const advice = {
+	const advice: MastermindScope.Advice = {
 		question,
 		answer,
 		thinking,
@@ -278,6 +281,7 @@ export async function ask(
 		original,
 		guard,
 		rounds,
+		...(escalated ? { escalated } : {}),
 		record: "",
 	};
 	// kept with everything it was given and said (record.ts); the key never
