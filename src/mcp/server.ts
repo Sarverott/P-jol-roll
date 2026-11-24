@@ -1,6 +1,8 @@
 import { createMcpHandler, McpServer } from "@modelcontextprotocol/server";
 import act from "./tools/act/function.js";
 import actMeta from "./tools/act/metadata.js";
+import actDebates from "./tools/act_debates/function.js";
+import actDebatesMeta from "./tools/act_debates/metadata.js";
 import actReferences from "./tools/act_references/function.js";
 import actReferencesMeta from "./tools/act_references/metadata.js";
 import actText from "./tools/act_text/function.js";
@@ -27,13 +29,14 @@ Gathering is started by a person, so an agent cannot set off a crawl of the sour
 */
 
 export function createServer() {
-	const server = new McpServer({ name: "p-jol-roll", version: "0.31.0" });
+	const server = new McpServer({ name: "p-jol-roll", version: "0.31.4" });
 	server.registerTool("journals", journalsMeta, journals);
 	server.registerTool("search_acts", searchActsMeta, searchActs);
 	server.registerTool("search_meaning", searchMeaningMeta, searchMeaning);
 	server.registerTool("act", actMeta, act);
 	server.registerTool("act_text", actTextMeta, actText);
 	server.registerTool("act_references", actReferencesMeta, actReferences);
+	server.registerTool("act_debates", actDebatesMeta, actDebates);
 	server.registerTool("statistics", statisticsMeta, statistics);
 	server.registerTool("sejm_work", sejmWorkMeta, sejmWork);
 	server.registerTool("source_list", sourceListMeta, sourceList);

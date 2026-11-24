@@ -176,6 +176,22 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		},
 	},
 	{
+		name: "act-debates",
+		group: "read",
+		title: "an act in Sejm: the days its bill was read on, who said what",
+		params: [eli],
+		writes: false,
+		read: async (values) => {
+			const { debates } = await import("../reading/debates.js");
+			return debates(text(values, "eli"));
+		},
+		ways: {
+			viewer: "#act/DU/2026/1",
+			api: "GET /api/acts/{journal}/{year}/{pos}/debates",
+			mcp: "act_debates",
+		},
+	},
+	{
 		name: "search",
 		group: "read",
 		title: "words in titles and texts of every year (Typesense must run)",
@@ -384,6 +400,30 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		writes: true,
 		task: "sejm",
 		ways: { cli: "npm start -- sejm" },
+	},
+	{
+		name: "sittings",
+		group: "gather",
+		title: "sittings of Sejm: who spoke on each day, and what (phase 35)",
+		params: [
+			{
+				name: "terms",
+				title: "terms (empty: the current)",
+				kind: "number",
+				many: true,
+				positional: true,
+			},
+			{
+				name: "files",
+				title: "the texts of the statements too",
+				kind: "flag",
+				option: "files",
+			},
+			limit(0, 20),
+		],
+		writes: true,
+		task: "sittings",
+		ways: { cli: "npm start -- sittings" },
 	},
 	{
 		name: "saos",

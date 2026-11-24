@@ -30,6 +30,8 @@ export function createLibrary(api) {
 		text: "",
 		ties: [],
 		diagram: "",
+		// the act in Sejm (phase 35): the days its bill was read on, who spoke
+		debates: null,
 		// search of every year by Typesense (/api/search), offered only when the host has it
 		searchable: false,
 		everywhere: false,
@@ -97,6 +99,10 @@ export function createLibrary(api) {
 			files: [],
 		};
 		state.ties = (await ask(`/api/acts/${eli}/references`)) ?? [];
+		state.debates = null;
+		ask(`/api/acts/${eli}/debates`).then((debates) => {
+			if (state.chosen?.act.ELI === eli) state.debates = debates ?? null;
+		});
 		state.diagram = state.ties.length
 			? ((await ask(`/api/acts/${eli}/diagram`, "text")) ?? "")
 			: "";

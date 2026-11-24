@@ -1,6 +1,6 @@
 {
   "name": "P-jol-roll",
-  "version": "0.31.0",
+  "version": "0.31.4",
   "private": true,
   "type": "module",
   "description": "crawler to garher every PDF from https://dziennikustaw.gov.pl/DU",
@@ -92,6 +92,7 @@
     "search": "tsx src/core/main.ts search",
     "text": "tsx src/core/main.ts text",
     "sejm": "tsx src/core/main.ts sejm",
+    "sittings": "tsx src/core/main.ts sittings",
     "saos": "tsx src/core/main.ts saos",
     "checkup": "tsx src/core/main.ts checkup",
     "hub": "tsx src/core/main.ts hub",

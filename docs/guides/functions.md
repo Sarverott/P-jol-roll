@@ -17,6 +17,7 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `act` one act: its line of the listing, details and the files gathered |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}` | `act` | – | `the popup` | – |
 | `act-text` the text of an act, as markdown |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/text` | `act_text` | – | – | – |
 | `act-ties` ties of an act to other acts, as a list or a mermaid flowchart |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/references` | `act_references` | – | – | – |
+| `act-debates` an act in Sejm: the days its bill was read on, who said what |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/debates` | `act_debates` | – | – | – |
 | `search` words in titles and texts of every year (Typesense must run) |  | ✓ | `#acts` | `GET /api/search` | – | – | – | – |
 | `maps` maps of the whole law: the presets, and which are made |  | ✓ | `#map` | `GET /api/map` | – | – | – | – |
 | `statistics` the acts counted year by year: total, by type, by status |  | ✓ | `#statistics` | `GET /api/statistics` | `statistics` | – | – | – |
@@ -28,6 +29,7 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `gather:changes` acts changed since the previous such run, or since a day | ✎ | ✓ `task gather:changes` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- gather --since last` | – | `daily` |
 | `gather:everything` every journal, every year, every file - days of work | ✎ | ✓ `task gather:everything` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- gather --all --acts --limit 0` | – | – |
 | `sejm` work of Sejm: processes and prints of terms | ✎ | ✓ `task sejm` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- sejm` | – | – |
+| `sittings` sittings of Sejm: who spoke on each day, and what (phase 35) | ✎ | ✓ `task sittings` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- sittings` | – | – |
 | `saos` court judgments of SAOS, months of years | ✎ | ✓ `task saos` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- saos` | – | – |
 | `checkup` a browser visits the websites that show acts of a year | ✎ | ✓ `task checkup` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- checkup` | – | – |
 | **process what is gathered** | | |  |  |  |  |  |  |
