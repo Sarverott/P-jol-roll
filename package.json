@@ -1,6 +1,6 @@
 {
   "name": "P-jol-roll",
-  "version": "0.41.1",
+  "version": "0.42.0",
   "private": true,
   "type": "module",
   "description": "crawler to garher every PDF from https://dziennikustaw.gov.pl/DU",

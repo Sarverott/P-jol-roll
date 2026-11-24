@@ -14,7 +14,7 @@ import (
 )
 
 // Version is the project's one version, kept by src/devtools/version.ts.
-const Version = "0.41.1"
+const Version = "0.42.0"
 
 func main() {
 	if len(os.Args) < 2 || (os.Args[1] != "roots" && os.Args[1] != "version") {
