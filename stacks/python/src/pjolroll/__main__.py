@@ -54,7 +54,7 @@ async def bubble(eli: str, rounds: int, people: int) -> str:
 async def proposals(eli: str) -> str:
     async with Law.open() as law:
         done = await propose(law, eli)
-    return f"{done['text']}\n\n{done['model']} from {', '.join(done['sources'])}. Kept: {done['record']}. Not legal advice."
+    return f"{done['text']}\n\n{done['model']} from {', '.join(done['sources'])}. Kept: {done['record']}. Not (formally) legal advices."
 
 
 def main() -> int:
@@ -77,7 +77,7 @@ def main() -> int:
             print(advice.get("answer", ""))
             for one in advice.get("cited", []):
                 print(f"  [{one['ELI']}] {'read' if one['read'] else 'NOT READ'}")
-            print(f"{advice.get('model')}. Not legal advice.")
+            print(f"{advice.get('model')}. Not (formally) legal advices.")
         elif arguments.command == "simulate":
             print(asyncio.run(bubble(value, arguments.rounds, arguments.personas)))
         elif arguments.command == "propose":

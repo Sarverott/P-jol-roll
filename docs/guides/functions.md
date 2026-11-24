@@ -49,6 +49,8 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `resources:pull` take what is on Hugging Face and not here | ✎ | ✓ `task resources:pull` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- hub pull` | – | – |
 | `resources:push` send what is new here to Hugging Face (HF_TOKEN) | ✎ | ✓ `task resources:push` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- hub push` | – | `daily, after a yes` |
 | `resources:space:refresh` the demo space set to the newest release and built again | ✎ | ✓ `task resources:space:refresh` | local, after a yes | `POST /api/jobs` (local) | – | – | – | `release` |
+| `torrents` the dataset and the bucket as torrents, with their IPFS directory, made here (phase 37) | ✎ | ✓ `task torrents` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
+| `torrents:publish` the torrents put on IPFS: the node of compose started, imported, pinned | ✎ | ✓ `task torrents:publish` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
 | **the project itself** | | |  |  |  |  |  |  |
 | `init` first launch on this machine: tools, .env, secrets | ✎ | ✓ `task init` | local, after a yes | `POST /api/jobs` (local) | – | – | – | – |
 | `check` every check: Biome, the build, the tests |  | ✓ `task check` | – | – | – | – | – | `checks` |

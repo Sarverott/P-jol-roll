@@ -18,6 +18,7 @@ includes:
   almanac: ./docs/almanac/Taskfile.yml
   examples: ./examples/Taskfile.yml
   python: ./stacks/python/Taskfile.yml
+  go: ./stacks/go/Taskfile.yml
   devlog:
     taskfile: ./docs/devlog/Taskfile.yml
     dir: ./docs/devlog
@@ -159,6 +160,17 @@ tasks:
     desc: Work of Sejm - processes and prints of a term, arguments after "--" (e.g. task sejm -- 10 --files --limit 50).
     cmds:
       - npm run sejm -- {{.CLI_ARGS}}
+
+  torrents:
+    desc: 'The dataset and the bucket as torrents pointed to by IPFS (phase 37): one per part of the dataset and per journal and year of the bucket, web seeds on Hugging Face, their IPFS directory and torrents.car in resources/torrents/ - offline; -- -only dataset / -dry / -limit 5'
+    cmds:
+      - task: go:torrents
+
+  torrents:publish:
+    desc: 'The torrents put on IPFS - the owner''s move, it publishes: the IPFS node of compose (profile ipfs) started, torrents.car imported and pinned (asks first)'
+    interactive: true
+    cmds:
+      - scripts/devops/local/torrents-publish.sh
 
   analyse:
     desc: 'The code of law analysed (phase 36): every act in force against its ties - a basis repealed, a reference to a repealed act, amendments since the last consolidated text, a Tribunal judgment not followed - into dataset/analysis/; reads only what is here (task compile first)'

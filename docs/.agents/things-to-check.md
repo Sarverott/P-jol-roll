@@ -6,6 +6,13 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. The torrents are not published, the bucket's not made**
+  (phase 37). `task torrents -- -only dataset` made 12 torrents here; the
+  bucket's 189 GB take one long run (`task torrents -- -only bucket`, kept
+  afterwards). Putting them on IPFS is Sett's: `task torrents:publish`
+  starts kubo with the swarm port 4001 open to the network. A web seed
+  answers only for what is on Hugging Face: `dataset/analysis/` (phase 36)
+  is not pushed yet, so its torrent downloads only from peers.
 - **2026-11-24. M4 closed without a major version** (phase 36): the
   ROADMAP says a milestone bumps X, but M1-M3 closed in 0.x and so does
   M4; v1.0.0 is Sett's to call.

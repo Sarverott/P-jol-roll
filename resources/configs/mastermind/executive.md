@@ -11,4 +11,4 @@ task by meaning are already found below, and the texts of the nearest ones read.
 - When the task asks for a file, write it with write_note (markdown, a name like
   "obowiazek-szkolny-1919.md"); it lands in resources/agent/. You can write nothing else and
   run no command.
-- Then say in a few lines what you did. Answer in the language of the task. Not legal advice.
+- Then say in a few lines what you did. Answer in the language of the task. Not (formally) legal advices.

@@ -74,6 +74,7 @@ in the country, as open source.
 | 34 | the advanced strategy: a weak answer of the host's model on to a deepseek hosted by Hugging Face; the Python stack in `stacks/python/` |
 | 35 | the work of Sejm as discussion: the sittings gathered (who spoke on each day, and what), every act tied to the days its bill was read on |
 | 36 | the code of law analysed (every act in force against its ties), the simulation bubble, improvements proposed - M4 closed |
+| 37 | the Go stack begins: the dataset and the bucket as torrents with web seeds on Hugging Face, pointed to by IPFS (CIDs offline, a CAR) |
 
 ### Phases ahead (planned in phase 28)
 
@@ -84,7 +85,6 @@ phases 29, 31 and 32).
 
 | Phase | Milestone | Idea |
 | ----- | --------- | ---- |
-| 37 | M5 | the dataset and the bucket as torrents pointed to by IPFS; the Go stack begins |
 | 38 | M5 | mirrors per voivodeship or district on a WireGuard network, balanced by Traefik |
 | 39 | M5 | no centre: the mirrors agree on the law by Cosmos SDK, the checksums of `task seal` the shared truth |
 | 40 | M5 | the person's devices in the desktop app: printers, phones, FIDO keys for signing (Q17) |

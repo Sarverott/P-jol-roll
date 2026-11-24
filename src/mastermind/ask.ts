@@ -24,7 +24,7 @@ The model speaks one of two dialects:
                            GPU in development): its context set by MASTERMIND_CONTEXT
   an OpenAI-like api       MASTERMIND_URL ending in /v1 (LiteLLM of the profile llms, Ollama's
                            /v1, any other), with MASTERMIND_KEY when it wants one
-MASTERMIND_MODEL names the model, deepseek-r1:8b by default. Not legal advice: a devil's
+MASTERMIND_MODEL names the model, deepseek-r1:8b by default. Not (formally) legal advices: a devil's
 advocate everyone can afford, as the owner put it.
 */
 
@@ -58,7 +58,7 @@ more of them with act_text (and act for their status), search more with search_m
 search_acts when you need. Then answer in the language of the question, plainly, saying which \
 provisions say so. Cite every act you rely on by its ELI in square brackets, like [DU/<year>/<position>], and only \
 acts you read. Say when an act is no longer in force (its status) and when the acts you read do not \
-answer the question. This is not legal advice.`;
+answer the question. This is not (formally) legal advices.`;
 
 const ELI = /\b(?:DU|MP)\/\d{4}\/\d+\b/g;
 // the tools that open one act: an ELI given to one of them is an act read

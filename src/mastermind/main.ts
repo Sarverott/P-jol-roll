@@ -72,7 +72,7 @@ try {
 		if (advice.guard)
 			console.log(`  guard ${advice.guard.by}: ${advice.guard.verdict}`);
 		console.log(
-			`\n${advice.team ? `team ${advice.team}: ` : ""}${advice.model}, ${advice.rounds} round(s), ${advice.steps.length} tool call(s). Kept: ${advice.record || "no"}. Not legal advice.`,
+			`\n${advice.team ? `team ${advice.team}: ` : ""}${advice.model}, ${advice.rounds} round(s), ${advice.steps.length} tool call(s). Kept: ${advice.record || "no"}. Not (formally) legal advices.`,
 		);
 	}
 } finally {

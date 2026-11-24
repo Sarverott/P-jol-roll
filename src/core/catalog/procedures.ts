@@ -676,6 +676,26 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		task: "resources:space:refresh",
 		ways: { workflows: "release" },
 	},
+	{
+		name: "torrents",
+		group: "share",
+		title:
+			"the dataset and the bucket as torrents, with their IPFS directory, made here (phase 37)",
+		params: [],
+		writes: true,
+		task: "torrents",
+		ways: {},
+	},
+	{
+		name: "torrents:publish",
+		group: "share",
+		title:
+			"the torrents put on IPFS: the node of compose started, imported, pinned",
+		params: [],
+		writes: true,
+		task: "torrents:publish",
+		ways: {},
+	},
 
 	// the project itself
 	{

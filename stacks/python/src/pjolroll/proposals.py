@@ -4,7 +4,7 @@ writes what could be improved, provision by provision. Kept as markdown:
 
     resources/proposals/<journal>/<year>/<position>/<UNIXUSAT>.md
 
-PROPOSE_MODEL names its model, qwen3:8b by default, through SIMULATION_URL. A model's proposals, grounded in what it was given and checked by nobody: not legal advice.
+PROPOSE_MODEL names its model, qwen3:8b by default, through SIMULATION_URL. A model's proposals, grounded in what it was given and checked by nobody: not (formally) legal advices.
 """
 
 from __future__ import annotations
@@ -27,8 +27,8 @@ SYSTEM = (
     "### nagłówek, Przepis (art., ust. - albo cały akt), Problem, Propozycja zmiany, Podstawa "
     "(numer ustalenia analizy albo artykuł z tekstu powyżej - nic innego, żadnych innych "
     "ustaw ani dzienników). Każde ustalenie raz. Nie wymyślaj przepisów, których nie widzisz "
-    "w tekście; gdy czegoś nie wiesz, napisz to. Na końcu jedno zdanie: to nie jest porada "
-    "prawna."
+    "w tekście; gdy czegoś nie wiesz, napisz to. Na końcu jedno zdanie: nie jest to "
+    "(formalnie) porada prawna."
 )
 
 
@@ -81,7 +81,7 @@ async def propose(
     ]
     document = (
         f"<!-- {model.name}, {time.strftime('%Y-%m-%d', time.gmtime(started / 1000))}: "
-        f"{', '.join(sources)}. Not legal advice. -->\n\n{written}\n"
+        f"{', '.join(sources)}. Not (formally) legal advices. -->\n\n{written}\n"
     )
     path = ""
     if keep:

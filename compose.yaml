@@ -7,6 +7,7 @@
 #   --profile mastermind   ->   llms-ollama with its models (llms-models) and mastermind :8081, the api
 #                               answering /api/ask (phase 30); -f resources/services/gpu.yaml for the GPU
 #   --profile agentic      ->   agentic-shell, a shell for agents: no port, `task shell` (Q13)
+#   --profile ipfs         ->   ipfs (kubo): the torrents put on IPFS by the owner (phase 37), task torrents:publish
 # Each file is included with the root as its project directory: paths in it start here.
 include:
   - path: resources/services/webapp-server.yaml
@@ -32,4 +33,6 @@ include:
   - path: resources/services/mastermind.yaml
     project_directory: .
   - path: resources/services/agentic-shell.yaml
+    project_directory: .
+  - path: resources/services/ipfs.yaml
     project_directory: .

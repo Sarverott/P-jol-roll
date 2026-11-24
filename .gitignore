@@ -18,6 +18,8 @@ resources/agent
 # the simulation bubble and the proposals of the Python stack (phase 36), kept here only
 resources/simulations
 resources/proposals
+# the torrents and their IPFS directory (phase 37, task torrents): made here, published by the owner
+resources/torrents
 !resources/conversations/README.md
 
 # the directories of other sources before phase 10 (task resources:merge moves them into

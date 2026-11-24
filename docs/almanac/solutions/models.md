@@ -47,6 +47,11 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **Check CIDs against kubo without a network** (phase 37): `docker run
+  --rm --network none --entrypoint sh ipfs/kubo -c "ipfs init -e; ipfs add
+  -r --only-hash --cid-version=1 -Q /in/dir"` - and mount the files
+  anywhere but `/data`, which the image keeps for its own volume
+  (`/data/ipfs`; a read-only mount there fails to start).
 - **The text of an act is the act as published** (phase 36): the law in
   force is its newest consolidated text, an announcement of its own (*Inf.
   o tekście jednolitym* in its ties); a model given the 1997 text of the
