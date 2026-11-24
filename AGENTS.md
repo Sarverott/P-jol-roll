@@ -126,6 +126,8 @@ src/core/              the gatherer itself; everything below is its tree
     eli.ts             addresses and shapes of ELI API
     sejm.ts            other source: processes and prints of Sejm
     eu.ts              the law of the EU: every act of a year from the Publications Office (SPARQL), Polish texts (phase 42)
+    regional.ts        local and regional law: the voivodeships' journals through their ELI API (phase 43)
+    tenders.ts         public tenders: e-Zamówienia's notices by day, TED's for Poland (phase 43)
     sittings.ts        the sittings of Sejm: the days of a term, who spoke on each, their texts (phase 35)
     saos.ts            other source: court judgments
   methods/             what a command does
@@ -269,6 +271,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task compile` / `task text` | tables from raw files / markdown from html (`-- --pdf`: from PDFs too) |
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
 | `task eu -- 2016 2024` (`--texts --limit 50`) / `task international` | the law of the EU of years from the Publications Office, the Polish texts of acts in force (phase 42) / the agreements the journals published, indexed |
+| `task regional` (`-- POL_WOJ_LB --year 2025 --files`) / `task tenders -- 2026-11-20` | local and regional law: the voivodeships' journals, their acts and PDFs (phase 43) / public tenders of days: e-Zamówienia and TED |
 | `task sittings -- 10 --files --limit 40` | the sittings of Sejm: who spoke on each day, then the texts of the statements (phase 35) |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |

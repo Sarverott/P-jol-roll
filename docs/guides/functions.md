@@ -20,6 +20,8 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `analysis` the code of law analysed: findings over every act in force, or of one act |  | ✓ | `#act/DU/2026/1` | `GET /api/analysis, /api/acts/{journal}/{year}/{pos}/findings` | `analysis` | – | – | – |
 | `eu-law` the law of the EU: an act by its CELEX, or the acts of a year (phase 42) |  | ✓ | – | `GET /api/eu, /api/eu/{year}, /api/eu/act/{celex}` | `eu_law` | – | – | – |
 | `agreements` international agreements binding Poland, published in the journals (phase 42) |  | ✓ | – | `GET /api/agreements` | `agreements` | – | – | – |
+| `regional-law` local and regional law: a voivodeship journal's acts of a year (phase 43) |  | ✓ | – | `GET /api/regional, /api/regional/{code}/{year}` | `regional_law` | – | – | – |
+| `public-tenders` public tenders of a day: e-Zamówienia (BZP) or TED (phase 43) |  | ✓ | – | `GET /api/tenders/{source}/{day}` | `tenders` | – | – | – |
 | `act-debates` an act in Sejm: the days its bill was read on, who said what |  | ✓ | `#act/DU/2026/1` | `GET /api/acts/{journal}/{year}/{pos}/debates` | `act_debates` | – | – | – |
 | `search` words in titles and texts of every year (Typesense must run) |  | ✓ | `#acts` | `GET /api/search` | – | – | – | – |
 | `maps` maps of the whole law: the presets, and which are made |  | ✓ | `#map` | `GET /api/map` | – | – | – | – |
@@ -33,6 +35,8 @@ each after a person's yes; a public host shows it disabled (Q19). `–` is a hol
 | `gather:everything` every journal, every year, every file - days of work | ✎ | ✓ `task gather:everything` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- gather --all --acts --limit 0` | – | – |
 | `sejm` work of Sejm: processes and prints of terms | ✎ | ✓ `task sejm` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- sejm` | – | – |
 | `eu` the law of the EU: every act of years, the Polish texts of those in force (phase 42) | ✎ | ✓ `task eu` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- eu` | – | – |
+| `regional` the voivodeships' official journals: local and regional law (phase 43) | ✎ | ✓ `task regional` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- regional` | – | – |
+| `tenders` public tenders of days: e-Zamówienia and TED (phase 43) | ✎ | ✓ `task tenders` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- tenders` | – | – |
 | `sittings` sittings of Sejm: who spoke on each day, and what (phase 35) | ✎ | ✓ `task sittings` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- sittings` | – | – |
 | `saos` court judgments of SAOS, months of years | ✎ | ✓ `task saos` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- saos` | – | – |
 | `checkup` a browser visits the websites that show acts of a year | ✎ | ✓ `task checkup` | local, after a yes | `POST /api/jobs` (local) | – | `npm start -- checkup` | – | – |

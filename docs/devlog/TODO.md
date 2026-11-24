@@ -438,4 +438,4 @@ The order of phase 41 goes on (changelog phase 43). Along the *Lean* of Q23 (#14
 - [x] Local and regional law (`task regional`): the sixteen voivodeships' journals asked what they are, every act of a year of those answering as the ELI API, their PDFs; the state of each journal kept
 - [x] Public tenders (`task tenders`): every notice of e-Zamówienia by day (a full window split in two), TED's notices for Poland; polite, a refusal waited out
 - [x] MCP `regional_law` and `tenders`, `/api/regional`, `/api/tenders`, the catalog
-- [ ] Tests, docs, the almanac's lines and AGENTS.md
+- [x] Tests, docs, the almanac's lines and AGENTS.md
