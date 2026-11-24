@@ -36,6 +36,22 @@ tasks:
       - node_modules/.bin/tsx src/tui/launcher/main.ts
     silent: true
 
+  ollama:serve:
+    desc: 'The Ollama of this machine served from its own drive (OLLAMA_MODELS of .env, phase 31): the models of ~/.ollama/models copied there first when it has none; stop the Ollama that runs before'
+    interactive: true
+    cmds:
+      - scripts/devops/local/ollama.sh serve
+
+  ollama:copy:
+    desc: 'The models of ~/.ollama/models (FROM=...) copied into OLLAMA_MODELS of .env - again only what is missing - and checked; the old place is kept'
+    cmds:
+      - scripts/devops/local/ollama.sh copy
+
+  ollama:where:
+    desc: 'Where Ollama''s models are read from (OLLAMA_MODELS of .env), and how many are there'
+    cmds:
+      - scripts/devops/local/ollama.sh where
+
   shell:
     desc: The agentic-shell container (Q13) started, and bash in it - the repository at /workspace
     interactive: true

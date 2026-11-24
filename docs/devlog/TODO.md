@@ -325,6 +325,6 @@ development, a compose setup for other machines.
 The owner's message, 2026-11-24 (changelog phase 31).
 
 - [x] The owner's words in the changelog; the phases planned ahead moved one number on
-- [ ] Ollama's storage on its own drive: `OLLAMA_MODELS` in `.env`, the models of `~/.ollama/models` copied there, served from there (`task ollama:serve`)
+- [x] Ollama's storage on its own drive: `OLLAMA_MODELS` in `.env`, the models of `~/.ollama/models` copied there, served from there (`task ollama:serve`)
 - [ ] Every conversation of the mastermind kept: `resources/conversations/<family>/<instance>/<session>.json`, the whole exchange with the tools
 - [ ] Docs, the almanac's lines and AGENTS.md
