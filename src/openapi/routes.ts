@@ -8,6 +8,7 @@ import * as library from "../core/reading/library.js";
 import { remote } from "../core/reading/remote.js";
 import { askRoutes } from "./ask.js";
 import { host } from "./host.js";
+import { oauthRoutes } from "./oauth.js";
 import { spec } from "./spec.js";
 
 // every route only reads gathered files - nothing here asks the source or writes
@@ -69,6 +70,8 @@ if (remote)
 
 // a question to the law mastermind, where this api has one (phase 30, ask.ts)
 routes.use(askRoutes);
+// signing in with Hugging Face, where the host is a space with hf_oauth (oauth.ts)
+routes.use(oauthRoutes);
 
 routes.get("/openapi.json", (_request, response) => {
 	response.json(spec);
