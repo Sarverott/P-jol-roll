@@ -51,12 +51,80 @@ By hand: `docker compose --profile mastermind up -d`, and
 `-f compose.yaml -f resources/services/gpu.yaml` before `--profile` for the
 NVIDIA cards (the NVIDIA Container Toolkit is needed for them).
 
+## Ollama on its own drive
+
+The models are large and many, so the Ollama of this machine keeps them on
+a drive of their own: `OLLAMA_MODELS` in `.env` (the variable Ollama
+itself reads) names the directory.
+
+```bash
+task ollama:where        # where they are read from, and how many are there
+task ollama:serve        # the first start copies ~/.ollama/models there, then serves from there
+task ollama:copy         # the copy again: only what is missing, then checked
+```
+
+The old directory is never deleted by them. Stop the Ollama that runs
+first (`ss -ltnp | grep 11434` shows it). A drive whose root belongs to
+root needs its directory made once: `task ollama:serve` says the `sudo`
+line.
+
+## The conversations kept
+
+Every question is kept with everything said, so models and families can be
+compared:
+
+```text
+resources/conversations/<family>/<instance>/<UNIXUSAT>-<the question's first words>.json
+resources/conversations/deepseek/deepseek-r1-8b/1795498362594-czym-byla-rada-stanu-w-1918-roku.json
+```
+
+The family comes from `resources/configs/mastermind/families.yaml` (the
+models of one family act as one team: `gemma4`, `translategemma`,
+`embeddinggemma`, `shieldgemma`... are all `gemma`); the instance is the
+model with its size. A file holds the question, the answer, the reasoning,
+the acts cited, the tools called, how long it took and the whole exchange -
+the texts given and what the tools answered. The directory is the local side
+of their own dataset,
+[Apokryf/Consiliariis-Polonicum-Lex](https://huggingface.co/datasets/Apokryf/Consiliariis-Polonicum-Lex)
+(`conversations` of `resources/.map.json`): `task resources:push --
+conversations` sends what is new, a person's move; git keeps only its card.
+`MASTERMIND_KEEP=0` keeps nothing. In compose it is
+the one directory the mastermind writes.
+
+## Families as teams
+
+`resources/configs/mastermind/families.yaml` names the families and their
+teams: one model answers, one calls the tools in the rounds, one turns an
+answer given in another language into the question's, one guards (its
+verdict kept, nothing held back). A model is given thinking and tools only
+when Ollama says it can take them.
+
+```bash
+MASTERMIND_TEAM=gemma task mastermind:ask -- "..."   # gemma4 answers, functiongemma calls tools,
+                                                     # translategemma translates, shieldgemma guards
+task mastermind:compare                              # every team, the questions of questions.yaml
+task mastermind:compare -- bielik qwen               # only these
+task resources:push -- conversations                 # what they said, to their dataset
+```
+
+The first comparison (phase 31, 30 answers):
+
+| Team | Models | A question | Acts cited (read) | What its answers were like |
+| --- | --- | --- | --- | --- |
+| gemma | gemma4:12b, functiongemma:270m, translategemma:4b, shieldgemma:2b | 65-150 s | 8 (6) | the closest to the text: the twelve virilists of DU/1918/2 named one by one; once "the acts do not answer" in English (the check of Polish then missed it - fixed); the slowest, four models taking turns on 12 GB; functiongemma called no tool in any round |
+| deepseek | deepseek-r1:8b | 31-69 s | 10 (9) | broken Polish, words of no language |
+| mistral | ministral-3:8b | 14-44 s | 11 (10) | fast, clear Polish with headings, citing what it read |
+| qwen | qwen3:8b | 20-52 s | 13 (12) | fluent, cites articles (`art. 12`) |
+| llama | llama3.1:8b | 8-46 s | 2 (2) | the fastest; three answers of five cite nothing |
+| bielik | Bielik 11B v3.0 Q4_K_M | 16-57 s | 8 (6) | the most natural Polish; adds what it knows beyond the acts read (the Council dissolved on 7 October 1918 - true, but not from them) |
+
 ## Settings
 
 | Variable | Default | What it is |
 | --- | --- | --- |
 | `MASTERMIND_URL` | `OLLAMA_URL` | the model's api: an Ollama, or an OpenAI-like one ending in `/v1` (LiteLLM of the profile `llms`); set on an api, it makes `/api/ask` answer |
-| `MASTERMIND_MODEL` | `deepseek-r1:8b` | the model |
+| `MASTERMIND_TEAM` | | a team of `families.yaml` (`gemma`, `bielik`, ...) |
+| `MASTERMIND_MODEL` | the team's answer, else `deepseek-r1:8b` | the model that answers |
 | `MASTERMIND_KEY` | | a key for an OpenAI-like api |
 | `MASTERMIND_ROUNDS` | 6 | rounds of tools at most |
 | `MASTERMIND_CONTEXT` | 16384 | the context of an Ollama model, in tokens |
@@ -74,4 +142,4 @@ A public host - the demo space - never asks a model, even with
 most of it thinking. It is the smallest voice of the plan: it now and then
 answers in English, slips a word of another script into Polish, or cites an
 act it did not open - which the check marks. The larger deepseek of phase
-32 is for the hard questions.
+33 is for the hard questions; the families of phase 31 are tried first.

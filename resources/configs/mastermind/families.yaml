@@ -1,0 +1,47 @@
+# The families of models (phase 31, the owner's order: "all models from one familly acts as one
+# team"). A model belongs to the first family one of whose names begins its own name - the name
+# without who published it and without its tag: "SpeakLeash/bielik-11b-v2.2-instruct:Q4_K_M" is
+# "bielik-11b-v2.2-instruct", of the family bielik. A model of no family here is a family of its
+# own, named by its letters ("phi4" -> phi).
+# The conversations of the mastermind are kept by family: resources/conversations/<family>/.
+families:
+  gemma:
+    - gemma # gemma4, gemma3, gemma3n
+    - translategemma
+    - medgemma
+    - functiongemma
+    - embeddinggemma
+    - shieldgemma
+    - codegemma
+  deepseek: [deepseek]
+  qwen: [qwen, qwq]
+  llama: [llama, codellama]
+  mistral: [mistral, ministral, magistral, devstral, codestral, mixtral]
+  bielik: [bielik]
+  bge: [bge]
+
+# The teams (phase 31): the models of one family sharing the work of the mastermind.
+#   answer     reads what was found and answers (MASTERMIND_MODEL overrides it)
+#   tools      calls the MCP tools in the rounds, when another than the one that answers
+#   translate  turns an answer given in another language into the language of the question
+#   guard      judges the answer against its safety policies (kept, nothing is held back)
+#   embed      the model of the vectors it would search by - used once task embed made them
+# MASTERMIND_TEAM=gemma picks one; task mastermind:compare asks every team the same questions.
+# Sizes chosen for 12 GB of the RTX 3060 of the development machine.
+teams:
+  gemma:
+    answer: gemma4:12b
+    tools: functiongemma:270m
+    translate: translategemma:4b
+    guard: shieldgemma:2b
+    embed: embeddinggemma:300m
+  deepseek:
+    answer: deepseek-r1:8b
+  mistral:
+    answer: ministral-3:8b
+  qwen:
+    answer: qwen3:8b
+  llama:
+    answer: llama3.1:8b
+  bielik:
+    answer: SpeakLeash/bielik-11b-v3.0-instruct:Q4_K_M

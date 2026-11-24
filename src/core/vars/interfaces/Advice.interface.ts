@@ -6,6 +6,10 @@ export default interface Advice {
 	thinking: string; // the reasoning of a thinking model (deepseek-R1), "" when it gave none
 	cited: { ELI: string; read: boolean }[]; // read: opened by act, act_text or act_references
 	steps: { tool: string; arguments: Record<string, unknown>; ok: boolean }[];
-	model: string;
+	model: string; // the one that answered
+	team: string; // the team of its family it answered in (phase 31), "" alone
+	original: string; // the answer before the team's translator turned it into the question's language, "" when not
+	guard: { by: string; verdict: string; said: string } | null; // the team's guard on the answer
 	rounds: number; // the rounds of the conversation with the model
+	record: string; // where the conversation is kept (resources/conversations/...), "" when not
 }

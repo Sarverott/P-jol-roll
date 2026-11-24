@@ -6,6 +6,12 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. The 30 conversations of the first comparison (phase 31)
+  are not pushed.** `resources/conversations/` holds them; only the first
+  one went to `Apokryf/Consiliariis-Polonicum-Lex`, as Sett asked. Sending
+  the rest is Sett's `task resources:push -- conversations`.
+- **2026-11-24. `/usr/share/ollama/.ollama/models` (4.4 GB)** of an old
+  system service, not active, is left as it was - Sett's to keep or delete.
 - **2026-11-24. The mastermind's compose run (phase 30) was not started
   here.** The image was run against the host's Ollama and answered
   `/api/ask`; `docker compose --profile mastermind config` is valid with and

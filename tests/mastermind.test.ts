@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { cp, mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
@@ -63,6 +64,19 @@ const model = createServer((request, response) => {
 		body += chunk;
 	});
 	request.on("end", () => {
+		if (request.url === "/api/show") {
+			response.setHeader("content-type", "application/json");
+			const { model } = JSON.parse(body);
+			response.end(
+				JSON.stringify({
+					capabilities:
+						model === "plain"
+							? ["completion"]
+							: ["completion", "tools", "thinking"],
+				}),
+			);
+			return;
+		}
 		if (request.url === "/api/embed") {
 			response.setHeader("content-type", "application/json");
 			response.end(JSON.stringify({ embeddings: [[0.6, 0.8, 0]] }));
@@ -176,6 +190,7 @@ test("the mastermind reads through the MCP tools in rounds and checks what it ci
 			read: 2000,
 			words: 512,
 			first: 2,
+			team: undefined,
 		},
 	});
 	await client.close();
@@ -209,6 +224,20 @@ test("the mastermind reads through the MCP tools in rounds and checks what it ci
 		],
 	});
 	expect(tokens.join("")).toContain("I should read");
+	// the conversation kept: by family and instance, a file per session, the whole exchange
+	expect(advice.record).toMatch(
+		/conversations\/stand\/stand-in-latest\/\d{13}-czym-byla-rada-stanu\.json$/,
+	);
+	const kept = JSON.parse(readFileSync(advice.record, "utf8"));
+	expect(kept).toMatchObject({ family: "stand", instance: "stand-in-latest" });
+	expect(kept.settings.key).toBeUndefined();
+	expect(kept.exchange.map((one: { role: string }) => one.role)).toEqual([
+		"system",
+		"user",
+		"assistant",
+		"tool",
+		"assistant",
+	]);
 });
 
 test("/api/ask answers only where a mastermind is set, never on a public host", async () => {
@@ -222,4 +251,145 @@ test("/api/ask answers only where a mastermind is set, never on a public host", 
 	delete process.env.SPACE_ID;
 	expect((await ask("")).status).toBe(400);
 	delete process.env.MASTERMIND_URL;
+});
+
+test("a model's family and instance name the folders of its conversations", async () => {
+	const { familyOf, instanceOf } = await import("../src/mastermind/record.js");
+	expect(
+		[
+			"gemma4:12b",
+			"translategemma",
+			"embeddinggemma:300m",
+			"SpeakLeash/bielik-11b-v2.2-instruct:Q4_K_M",
+			"ministral-3:8b",
+			"deepseek-r1:8b",
+			"phi4",
+		].map((model) => [familyOf(model), instanceOf(model)]),
+	).toEqual([
+		["gemma", "gemma4-12b"],
+		["gemma", "translategemma-latest"],
+		["gemma", "embeddinggemma-300m"],
+		["bielik", "SpeakLeash-bielik-11b-v2.2-instruct-Q4_K_M"],
+		["mistral", "ministral-3-8b"],
+		["deepseek", "deepseek-r1-8b"],
+		["phi", "phi4-latest"],
+	]);
+});
+
+test("a team: one calls the tools, one answers, one translates, one guards", async () => {
+	// a stand-in Ollama that answers by the model asked
+	const asked: {
+		model: string;
+		think?: boolean;
+		tools?: unknown[];
+		last: string;
+	}[] = [];
+	let calls = 0;
+	const team = createServer((request, response) => {
+		let body = "";
+		request.on("data", (chunk) => {
+			body += chunk;
+		});
+		request.on("end", () => {
+			const data = JSON.parse(body || "{}");
+			response.setHeader("content-type", "application/json");
+			if (request.url === "/api/embed") {
+				response.end(JSON.stringify({ embeddings: [[0.6, 0.8, 0]] }));
+				return;
+			}
+			if (request.url === "/api/show") {
+				response.end(
+					JSON.stringify({
+						capabilities:
+							data.model === "caller"
+								? ["completion", "tools"]
+								: ["completion"],
+					}),
+				);
+				return;
+			}
+			asked.push({
+				model: data.model,
+				think: data.think,
+				tools: data.tools,
+				last: data.messages.at(-1).content,
+			});
+			const message =
+				data.model === "caller"
+					? calls++ === 0
+						? {
+								content: "",
+								tool_calls: [
+									{
+										function: { name: "act", arguments: { eli: "DU/1918/2" } },
+									},
+								],
+							}
+						: { content: "enough" }
+					: data.model === "answerer"
+						? { content: "The Council of State made laws [DU/1918/2]." }
+						: data.model === "translator"
+							? { content: "Rada Stanu stanowiła prawa [DU/1918/2]." }
+							: { content: "No, the response does not violate the policy." };
+			response.end(`${JSON.stringify({ message, done: true })}\n`);
+		});
+	});
+	await new Promise<void>((done) => team.listen(0, "127.0.0.1", done));
+	const at = `http://127.0.0.1:${(team.address() as AddressInfo).port}`;
+	const { connect } = await import("../src/mcp/client.js");
+	const { ask } = await import("../src/mastermind/ask.js");
+	const client = await connect(`${url}/mcp`);
+	process.env.MASTERMIND_KEEP = "0";
+	const advice = await ask("Czym była Rada Stanu?", client, {
+		config: {
+			url: at,
+			model: "answerer",
+			key: "",
+			rounds: 4,
+			context: 4096,
+			read: 2000,
+			words: 512,
+			first: 1,
+			team: {
+				name: "stand",
+				answer: "answerer",
+				tools: "caller",
+				translate: "translator",
+				guard: "guard",
+			},
+		},
+	});
+	delete process.env.MASTERMIND_KEEP;
+	await client.close();
+	team.close();
+	expect(asked.map((one) => one.model)).toEqual([
+		"caller",
+		"caller",
+		"answerer",
+		"translator",
+		"guard",
+	]);
+	// tools only to the one that calls them; thinking asked of none, as none can
+	expect(asked[0].tools?.length).toBeGreaterThan(0);
+	expect(asked[2].tools).toBeUndefined();
+	expect(asked.every((one) => one.think === undefined)).toBe(true);
+	// the one who answers gets what the caller gathered, with the question last
+	expect(asked[2].last).toContain('What act {"eli":"DU/1918/2"} gave:');
+	expect(asked[2].last).toMatch(/The question: Czym była Rada Stanu\?$/);
+	expect(advice).toMatchObject({
+		team: "stand",
+		model: "answerer",
+		original: "The Council of State made laws [DU/1918/2].",
+		answer: "Rada Stanu stanowiła prawa [DU/1918/2].",
+		guard: { by: "guard", verdict: "no" },
+		cited: [{ ELI: "DU/1918/2", read: true }],
+		record: "",
+	});
+});
+
+test("an answer in English is not taken for Polish", async () => {
+	const { polish } = await import("../src/mastermind/team.js");
+	expect(polish("The acts you read do not answer the question.")).toBe(false);
+	expect(polish("To jest ustawa, która nie obowiązuje")).toBe(true);
+	expect(polish("Rada Stanu składała się ze 110 członków")).toBe(true);
 });

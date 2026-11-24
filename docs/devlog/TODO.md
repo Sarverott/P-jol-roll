@@ -319,3 +319,16 @@ development, a compose setup for other machines.
 - [x] Compose for another machine: the profile `mastermind` - Ollama, its models pulled by a container, the api asking it; the GPU by `resources/services/gpu.yaml` where there is one
 - [x] Tests: the search by meaning, the rounds of the mastermind against a stand-in model
 - [x] Docs, the almanac's lines and AGENTS.md
+
+## Phase 31: families of models, Ollama on its own drive, conversations kept
+
+The owner's message, 2026-11-24 (changelog phase 31).
+
+- [x] The owner's words in the changelog; the phases planned ahead moved one number on
+- [x] Ollama's storage on its own drive: `OLLAMA_MODELS` in `.env`, the models of `~/.ollama/models` copied there, served from there (`task ollama:serve`)
+- [x] Every conversation of the mastermind kept: `resources/conversations/<family>/<instance>/<session>.json`, the whole exchange with the tools
+- [x] Docs, the almanac's lines and AGENTS.md
+- [x] The conversations' own dataset on Hugging Face (`Apokryf/Consiliariis-Polonicum-Lex`): a line of `.map.json`, its card kept in git, the first conversation pushed there (the owner's order)
+- [x] The families as teams (`teams` of `resources/configs/mastermind/families.yaml`, `src/mastermind/team.ts`): one answers, one calls the tools (`functiongemma`), one translates an answer in another language (`translategemma`), one guards (`shieldgemma`); a model given thinking and tools only when it can take them; `MASTERMIND_TEAM`; `task mastermind:compare` asks every team the questions of `questions.yaml`
+- [x] An answer in English not taken for Polish: the words of the check that are English too (`do`, `to`, `i`) left out, so the translator takes such an answer
+- [x] The models pulled into the Ollama on the drive (gemma4:12b and its kin, ministral-3:8b, qwen3:8b, llama3.1:8b, Bielik 11B v3.0) and every team asked the same questions; what they did, compared

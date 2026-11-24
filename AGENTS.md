@@ -69,7 +69,7 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    A public host (the space, the container, the website) never does. An
    agent does not start a job against the real source unless asked.
 5. **Nothing is sent to huggingface by an agent.** `resources/dataset`,
-   `resources/space` and `resources/bucket` are filled locally; pushing and
+   `resources/space`, `resources/bucket` and `resources/conversations` are filled locally; pushing and
    syncing them is Sett's move.
 
 ## Questions and plans
@@ -154,7 +154,8 @@ src/openapi/           http api (/api, /openapi.json) with socket.io notices, se
 src/mcp/               MCP server for AI agents, read-only: server.ts and tools/ (a folder per tool); main.ts over stdio, /mcp of the api over http; client.ts
 src/mastermind/        the law mastermind (phase 30): ask.ts a question answered by a model (the host's Ollama, deepseek-r1:8b)
                        reading the acts through the MCP tools in rounds, citations checked; main.ts task mastermind:ask;
-                       /api/ask of an api started with MASTERMIND_URL (src/openapi/ask.ts) - docs/guides/mastermind.md
+                       /api/ask of an api started with MASTERMIND_URL (src/openapi/ask.ts); record.ts every conversation into
+                       resources/conversations/<family>/<instance>/ - docs/guides/mastermind.md
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"
 src/gui/               index.vue - the one viewer that every interface shows (Bulma), made of layout/, screens/ (acts, an act, the map,
@@ -195,6 +196,8 @@ resources/        .map.json lists huggingface repositories, their local sides ar
                   (task i18n:translate), .index.json lists them, EN-US the default; task i18n:pull / i18n:publish
   mediafiles/     the images of the project: the gist MEDIAFILES as a submodule; task resources:media makes
                   icons and og.jpg out of them into src/web/public (the webpage takes them too), docs/assets/images, src/firefox-ext/icons
+  conversations/  the mastermind's conversations, <family>/<instance>/<UNIXUSAT>-<question>.json (phase 31): the local side of the
+                  dataset Apokryf/Consiliariis-Polonicum-Lex (.map.json), its README.md (the card) kept in git
   .containerdatavol/  data of containers that stays and is never pushed, a directory per volume, ignored
   secrets/        generated secrets, one file each, ignored; .env wins over them
 examples/         Python examples: notebooks/ (Jupyter, the source), marimo/ made from them (ignored), Taskfile; exported
@@ -266,6 +269,8 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task version:sync` | every version field written from `package.json` (also done by each bump) |
 | `task lint` / `task format` | Biome, check only / with fixes |
 | `task serve` / `task mcp` | http api with the website and MCP at `/mcp` on 127.0.0.1:8080 / MCP server over stdio, both read-only (`task mcp:ask` asks it); `task serve -- --allow-writing`: the viewer starts writing functions too, each after a yes (this machine only) |
+| `task mastermind:compare` (`-- gemma bielik`) | every team of `resources/configs/mastermind/families.yaml` asked the same questions (`questions.yaml`), each conversation kept; `MASTERMIND_TEAM=gemma task mastermind:ask -- "..."` one team |
+| `task ollama:serve` / `ollama:copy` / `ollama:where` | the Ollama of this machine from its own drive (`OLLAMA_MODELS` of `.env`): the models of `~/.ollama/models` copied there first, then served / copied again, checked / where they are |
 | `task mastermind:ask -- "..."` / `mastermind:up` / `mastermind:down` | a question to the law mastermind: the host's Ollama reads the acts through MCP and cites them by ELI (`-- --json` all of it) / the same as containers for another machine (compose profile `mastermind`: Ollama, its models, the api with `/api/ask` on :8081; the GPU when there is one) / stopped |
 | `task workflows:build` / `workflows:serve` | durable runs on 127.0.0.1:8090 |
 | `task workflows:daily` / `workflows:approve -- <token>` | one daily run that waits for you / your answer |

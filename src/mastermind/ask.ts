@@ -1,6 +1,9 @@
 import type { Client } from "@modelcontextprotocol/client";
 import { OLLAMA_URL } from "../core/reading/embeddings.js";
 import type { MastermindScope } from "../core/vars/interfaces/index.js";
+import { type Call, chat, type Message, type Reply } from "./model.js";
+import { keep } from "./record.js";
+import { guarded, polish, type Team, teamOf, translated } from "./team.js";
 
 /*
 The law mastermind's first voice (phase 30, Q18): a question in words answered by a model that
@@ -21,7 +24,12 @@ advocate everyone can afford, as the owner put it.
 
 export const settings = () => ({
 	url: (process.env.MASTERMIND_URL || OLLAMA_URL).replace(/\/+$/, ""),
-	model: process.env.MASTERMIND_MODEL || "deepseek-r1:8b",
+	// a team of one family (team.ts): MASTERMIND_TEAM=gemma; its answer the model unless named
+	team: teamOf(process.env.MASTERMIND_TEAM) as Team | undefined,
+	model:
+		process.env.MASTERMIND_MODEL ||
+		teamOf(process.env.MASTERMIND_TEAM)?.answer ||
+		"deepseek-r1:8b",
 	key: process.env.MASTERMIND_KEY || "",
 	rounds: Number(process.env.MASTERMIND_ROUNDS) || 6,
 	context: Number(process.env.MASTERMIND_CONTEXT) || 16384,
@@ -40,19 +48,8 @@ acts you read. Say when an act is no longer in force (its status) and when the a
 answer the question. This is not legal advice.`;
 
 const ELI = /\b(?:DU|MP)\/\d{4}\/\d+\b/g;
-const WRITTEN =
-	/<｜tool▁call▁begin｜>\s*function\s*<｜tool▁sep｜>\s*([\w-]+)\s*(?:```(?:json)?)?\s*(\{[\s\S]*?\})\s*(?:```)?\s*<｜tool▁call▁end｜>/g;
-
 // the tools that open one act: an ELI given to one of them is an act read
 const OPENING = new Set(["act", "act_text", "act_references"]);
-
-const parsed = (text: string): Record<string, unknown> => {
-	try {
-		return JSON.parse(text);
-	} catch {
-		return {};
-	}
-};
 
 // the arguments as the tool's schema wants them: "2026" a number where a number is asked,
 // names it does not take left out (small models invent both)
@@ -74,207 +71,6 @@ function fitted(arguments_: Record<string, unknown>, schema: unknown) {
 	);
 }
 
-type Call = { id: string; name: string; arguments: Record<string, unknown> };
-type Message =
-	| { role: "system" | "user"; content: string }
-	| { role: "assistant"; content: string; calls: Call[] }
-	| { role: "tool"; content: string; call: Call };
-type Reply = { content: string; thinking: string; calls: Call[] };
-type Tool = { name: string; description?: string; inputSchema: unknown };
-
-type Streamed = {
-	content: string;
-	thinking: string;
-	tool_calls: { id?: string; function: { name: string; arguments: unknown } }[];
-};
-
-/*
-The answer read as it is written: a thinking model may think for many minutes before its
-first word, longer than fetch waits for an answer that comes at once. Ollama sends a line of
-JSON per piece, an OpenAI-like api "data: {...}" lines with deltas.
-*/
-async function streamed(
-	answer: globalThis.Response,
-	openai: boolean,
-	onToken: (text: string) => void,
-): Promise<Streamed> {
-	const message: Streamed = { content: "", thinking: "", tool_calls: [] };
-	const pieces: Record<
-		number,
-		{ id?: string; name: string; arguments: string }
-	> = {};
-	const take = (line: string) => {
-		const json = openai ? line.replace(/^data:\s*/, "") : line;
-		if (
-			!json.trim() ||
-			json.trim() === "[DONE]" ||
-			(openai && !line.startsWith("data:"))
-		)
-			return;
-		const data = JSON.parse(json);
-		const part = openai ? data.choices?.[0]?.delta : data.message;
-		if (!part) return;
-		const thinking =
-			part.thinking ?? part.reasoning_content ?? part.reasoning ?? "";
-		message.thinking += thinking;
-		message.content += part.content ?? "";
-		if (thinking || part.content) onToken(thinking || part.content);
-		for (const [i, call] of (part.tool_calls ?? []).entries()) {
-			if (!openai) message.tool_calls.push(call);
-			else {
-				const at = call.index ?? i;
-				pieces[at] ??= { id: call.id, name: "", arguments: "" };
-				pieces[at].id ??= call.id;
-				pieces[at].name += call.function?.name ?? "";
-				pieces[at].arguments += call.function?.arguments ?? "";
-			}
-		}
-	};
-	const reader = (answer.body as ReadableStream<Uint8Array>).getReader();
-	const decoder = new TextDecoder();
-	let rest = "";
-	for (;;) {
-		const { done, value } = await reader.read();
-		rest += decoder.decode(value, { stream: !done });
-		const lines = rest.split("\n");
-		rest = done ? "" : (lines.pop() ?? "");
-		for (const line of lines) take(line);
-		if (done) break;
-	}
-	if (openai)
-		message.tool_calls = Object.values(pieces).map((one) => ({
-			id: one.id,
-			function: { name: one.name, arguments: one.arguments },
-		}));
-	return message;
-}
-
-// the model asked once, in its dialect; tools left out on the last round, so it answers
-async function chat(
-	config: ReturnType<typeof settings>,
-	messages: Message[],
-	tools: Tool[],
-	onToken: (text: string) => void = () => {},
-): Promise<Reply> {
-	const openai = config.url.endsWith("/v1");
-	const described = tools.map((tool) => ({
-		type: "function",
-		function: {
-			name: tool.name,
-			description: tool.description ?? "",
-			parameters: tool.inputSchema,
-		},
-	}));
-	const body = openai
-		? {
-				model: config.model,
-				stream: true,
-				max_tokens: config.words,
-				temperature: 0.6,
-				...(tools.length ? { tools: described } : {}),
-				messages: messages.map((one) =>
-					one.role === "assistant"
-						? {
-								role: "assistant",
-								content: one.content,
-								...(one.calls.length
-									? {
-											tool_calls: one.calls.map((call) => ({
-												id: call.id,
-												type: "function",
-												function: {
-													name: call.name,
-													arguments: JSON.stringify(call.arguments),
-												},
-											})),
-										}
-									: {}),
-							}
-						: one.role === "tool"
-							? {
-									role: "tool",
-									tool_call_id: one.call.id,
-									content: one.content,
-								}
-							: one,
-				),
-			}
-		: {
-				model: config.model,
-				stream: true,
-				think: true,
-				options: {
-					num_ctx: config.context,
-					num_predict: config.words,
-					temperature: 0.6, // as deepseek advises for R1
-					repeat_penalty: 1.1, // a small model otherwise loops on one word
-				},
-				...(tools.length ? { tools: described } : {}),
-				messages: messages.map((one) =>
-					one.role === "assistant"
-						? {
-								role: "assistant",
-								content: one.content,
-								tool_calls: one.calls.map((call) => ({
-									function: { name: call.name, arguments: call.arguments },
-								})),
-							}
-						: one.role === "tool"
-							? { role: "tool", tool_name: one.call.name, content: one.content }
-							: one,
-				),
-			};
-	const answer = await fetch(
-		`${config.url}${openai ? "/chat/completions" : "/api/chat"}`,
-		{
-			method: "POST",
-			headers: {
-				"content-type": "application/json",
-				...(config.key ? { authorization: `Bearer ${config.key}` } : {}),
-			},
-			body: JSON.stringify(body),
-			signal: AbortSignal.timeout(1_800_000),
-		},
-	);
-	if (!answer.ok)
-		throw new Error(
-			`the model at ${config.url} answered ${answer.status}: ${(await answer.text()).slice(0, 300)}`,
-		);
-	const message = await streamed(answer, openai, onToken);
-	const raw = message.tool_calls;
-	const content = message.content;
-	if (!raw.length) {
-		// deepseek-R1 distilled writes its calls as its own tokens in the text, which Ollama
-		// leaves unparsed: <｜tool▁call▁begin｜>function<｜tool▁sep｜>name ```json {...}``` <｜tool▁call▁end｜>
-		const written = [...content.matchAll(WRITTEN)];
-		if (written.length)
-			return {
-				content: content
-					.replace(WRITTEN, "")
-					.replace(/<｜tool▁calls?▁(?:begin|end)｜>/g, "")
-					.trim(),
-				thinking: message.thinking,
-				calls: written.map((one, i) => ({
-					id: `written-${i}`,
-					name: one[1],
-					arguments: parsed(one[2]),
-				})),
-			};
-	}
-	return {
-		content,
-		thinking: message.thinking,
-		calls: raw.map((call, i) => ({
-			id: call.id ?? `call-${i}`,
-			name: call.function.name,
-			arguments:
-				typeof call.function.arguments === "string"
-					? JSON.parse(call.function.arguments || "{}")
-					: ((call.function.arguments as Record<string, unknown>) ?? {}),
-		})),
-	};
-}
-
 // "<think>...</think>answer" -> its two parts (models that think inside their content)
 function split(content: string, thinking: string) {
 	const inside = content.match(/<think>([\s\S]*?)<\/think>/);
@@ -293,6 +89,7 @@ export async function ask(
 		config = settings(),
 	} = {},
 ): Promise<MastermindScope.Advice> {
+	const started = Date.now();
 	const { tools } = await client.listTools();
 	const steps: MastermindScope.Advice["steps"] = [];
 	const read = new Set<string>();
@@ -371,12 +168,17 @@ export async function ask(
 			: question,
 	});
 
+	// the team's caller of tools, when it has one, holds the rounds; the one who answers writes
+	const caller =
+		config.team?.tools && config.team.tools !== config.model
+			? { ...config, model: config.team.tools }
+			: config;
 	let rounds = 0;
 	let last: Reply = { content: "", thinking: "", calls: [] };
 	while (rounds < config.rounds) {
 		rounds++;
 		last = await chat(
-			config,
+			caller,
 			messages,
 			rounds < config.rounds ? tools : [],
 			onToken,
@@ -394,13 +196,47 @@ export async function ask(
 				call: one,
 			});
 	}
-	if (last.calls.length) {
+	if (caller !== config) {
+		// what the caller of tools gathered, given to the one who answers with the question
+		const gathered = messages
+			.filter((one) => one.role === "tool")
+			.map(
+				(one) =>
+					`What ${one.call.name} ${JSON.stringify(one.call.arguments)} gave:\n${one.content}`,
+			);
+		messages.push({
+			role: "user",
+			content: [
+				...context,
+				...gathered,
+				`Answer now, from what is above. The question: ${question}`,
+			].join("\n\n---\n\n"),
+		});
+		rounds++;
+		last = await chat(
+			config,
+			[messages[0], messages.at(-1) as Message],
+			[],
+			onToken,
+		);
+	} else if (last.calls.length) {
 		// it still wanted tools when the rounds ran out: once more, without them
 		rounds++;
 		last = await chat(config, messages, [], onToken);
 	}
-	const { answer, thinking } = split(last.content, last.thinking);
-	return {
+	const said = split(last.content, last.thinking);
+	let { answer } = said;
+	const { thinking } = said;
+	// an answer given in another language turned into the question's, by the team's translator
+	let original = "";
+	if (config.team?.translate && polish(question) && answer && !polish(answer)) {
+		original = answer;
+		answer = await translated(config, config.team.translate, answer);
+	}
+	const guard = config.team?.guard
+		? await guarded(config, config.team.guard, question, answer)
+		: null;
+	const advice = {
 		question,
 		answer,
 		thinking,
@@ -410,6 +246,21 @@ export async function ask(
 		})),
 		steps,
 		model: config.model,
+		team: config.team?.name ?? "",
+		original,
+		guard,
 		rounds,
+		record: "",
 	};
+	// kept with everything it was given and said (record.ts); the key never
+	const { key: _key, ...settings } = config;
+	advice.record = keep(
+		advice,
+		[
+			...messages,
+			{ role: "assistant", content: last.content, thinking: last.thinking },
+		],
+		{ url: config.url, started, settings },
+	);
+	return advice;
 }

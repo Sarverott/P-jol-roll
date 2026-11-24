@@ -40,6 +40,8 @@ COPY --from=build /app/resources/locales ./resources/locales
 # when it has none
 COPY resources/.map.json resources/frontends.json ./seed/
 COPY resources/configs/webapp-server/start.sh ./start.sh
+# the families of models, by which the mastermind keeps its conversations (phase 31)
+COPY resources/configs/mastermind ./resources/configs/mastermind
 RUN mkdir -p /data && chown node:node /data
 # uid 1000, as Hugging Face runs a space
 USER node
