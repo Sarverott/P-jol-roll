@@ -6,6 +6,12 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. The executive agent in opencode (phase 33)** is not
+  reliable: Code Mode did not find `p-jol-roll` in some runs, and
+  `search_meaning` was an unknown tool there even when `search_acts` was
+  found. The default is the agent's own rounds. `task agent:container`
+  (opencode in the agents' shell, Ollama of the profile llms) was not run
+  here: its image builds with opencode 2.0.23.
 - **2026-11-24. The demo's chat (phase 32) is not yet seen answering on
   the space.** Signing in and the space's path pass against stand-ins, and
   the chat answers on this machine; the real Inference Providers refused
@@ -15,9 +21,6 @@ point was added.
   depends on the browser's third-party cookies - the space's own address
   (`https://sarverott-docs-of-law-by-gov-in-poland.hf.space/#ask`) always
   works.
-- **2026-11-24. The chat's words are not in the language packs** ("ask the
-  law", the notes of the chat): `task i18n:collect` and `i18n:translate`,
-  then `task i18n:publish` to their gist.
 - **2026-11-24. `/usr/share/ollama/.ollama/models` (4.4 GB)** was not a
   copy: `sebas`, `llama3`, `ifrit-0.1.0` were only there. Copied onto the
   drive and compared byte by byte (phase 32); deleting it is Sett's `sudo

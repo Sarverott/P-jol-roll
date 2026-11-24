@@ -139,6 +139,8 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/mastermind/model.ts` | Talking to a model: Ollama's `/api/chat` or an OpenAI-like api, streamed; thinking and tools only to a model whose `/api/show` says it takes them. |
 | `src/mastermind/team.ts` | The families and their teams of `resources/configs/mastermind/families.yaml`: the translator (translategemma's own prompt), the guard (shieldgemma), whether a text is Polish. |
 | `src/mastermind/compare.ts` | `task mastermind:compare`: every team asked the questions of `questions.yaml`, a line per answer, each kept. |
+| `src/mastermind/agent.ts` | `task agent`: the executive agent (phase 33) - a task done by qwen through the MCP tools; its own rounds (ask.ts with `write_note`) or opencode 2 (`AGENT_ENGINE=opencode`, its own config and data under `resources/.containerdatavol/agent/`, its Code Mode calls read out of the code); kept as a conversation. |
+| `src/mastermind/note.ts` | `write_note`: the agent's only writing - a bare name, markdown, into `resources/agent/`. |
 | `src/mastermind/main.ts` | `task mastermind:ask`: a question from a terminal, over the MCP server on stdio (or `MCP_URL`). |
 
 ### viewer

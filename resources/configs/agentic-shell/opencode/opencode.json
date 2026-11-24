@@ -1,0 +1,62 @@
+{
+	"$schema": "https://opencode.ai/config.json",
+	"model": "ollama/qwen3:8b",
+	"default_agent": "executive",
+	"provider": {
+		"ollama": {
+			"npm": "@ai-sdk/openai-compatible",
+			"name": "Ollama",
+			"options": {
+				"baseURL": "{env:AGENT_OLLAMA_URL}"
+			},
+			"models": {
+				"qwen3:8b": {
+					"name": "qwen3 8B",
+					"tools": true
+				},
+				"qwen3:1.7b": {
+					"name": "qwen3 1.7B",
+					"tools": true
+				},
+				"ministral-3:8b": {
+					"name": "ministral 3 8B",
+					"tools": true
+				}
+			}
+		}
+	},
+	"mcp": {
+		"servers": {
+			"p-jol-roll": {
+				"type": "local",
+				"command": ["npx", "--no-install", "tsx", "src/mcp/main.ts"],
+				"disabled": false
+			}
+		}
+	},
+	"permission": {
+		"edit": "allow",
+		"bash": "deny",
+		"webfetch": "deny",
+		"websearch": "deny",
+		"codesearch": "deny",
+		"read": "deny",
+		"glob": "deny",
+		"grep": "deny",
+		"list": "deny",
+		"task": "deny",
+		"todowrite": "deny",
+		"todoread": "deny",
+		"skill": "deny",
+		"lsp": "deny",
+		"question": "deny"
+	},
+	"agent": {
+		"executive": {
+			"description": "The executive agent of P_JOL_ROLL: does what a person gives it, reading the law of Poland through the MCP tools",
+			"mode": "primary",
+			"model": "ollama/qwen3:8b",
+			"prompt": "{file:./executive.md}"
+		}
+	}
+}

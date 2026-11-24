@@ -17,7 +17,7 @@ services:
     entrypoint: ["sh", "-c", "for model in $$MODELS; do ollama pull $$model || exit 1; done"]
     environment:
       OLLAMA_HOST: http://llms-ollama:11434
-      MODELS: ${MASTERMIND_MODEL:-deepseek-r1:8b} ${EMBED_MODEL:-bge-m3}
+      MODELS: ${MASTERMIND_MODEL:-deepseek-r1:8b} ${EMBED_MODEL:-bge-m3} ${AGENT_MODEL:-qwen3:8b}
     depends_on: [llms-ollama]
     restart: "no"
 

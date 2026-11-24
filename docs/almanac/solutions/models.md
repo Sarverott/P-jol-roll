@@ -47,6 +47,18 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **Ollama's OpenAI-like api gives a model the context it was made
+  with**: opencode's prompt and tools were cut and the model never saw its
+  tools; a model of its own with `num_ctx` (`/api/create`, only a manifest)
+  is the agent's (phase 33).
+- **opencode 2 hands MCP tools over through Code Mode** - code for
+  `execute` calling `tools["server"].tool({...})`, a function body, never an
+  unrun arrow function; `codemode: false` (in its own `mcp.servers` form)
+  offered no tools at all, and in some runs the server's namespace was not
+  found. The agent's own rounds are the default.
+- **opencode 2 runs a background service**: `opencode run --standalone`
+  keeps the agent off the person's; `opencode debug ...` without it starts
+  one, which lingers with its MCP server - stopped by pid.
 - **Ollama's models live where `OLLAMA_MODELS` says** - the variable is
   read by `ollama serve` itself, not by the client; a server started
   without it reads `~/.ollama/models`. Blobs never change once written, so

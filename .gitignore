@@ -13,6 +13,8 @@ resources/space
 # the conversations of the mastermind (phase 31): the local side of their dataset on Hugging
 # Face (.map.json "conversations"); only its card is kept in git
 resources/conversations/*
+# what the executive agent wrote (phase 33): a person reads it there, git keeps none of it
+resources/agent
 !resources/conversations/README.md
 
 # the directories of other sources before phase 10 (task resources:merge moves them into
