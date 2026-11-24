@@ -214,6 +214,9 @@ export async function prepareDataset(
 		await remote.fromDataset(
 			`tenders/${first}/${second.slice(0, 4)}/${second}.jsonl`,
 		);
+	} else if (kind === "transparency") {
+		await remote.fromDataset("transparency/offices.jsonl");
+		await remote.fromDataset("transparency/networks.jsonl");
 	} else if (kind === "agreements") {
 		await remote.fromDataset("international/agreements.jsonl");
 	} else if (kind === "analysis") {
@@ -398,6 +401,38 @@ export function tenders(
 				day.slice(0, 4),
 				`${day}.jsonl`,
 			),
+		),
+		paging,
+	);
+}
+
+/*
+The declaration of transparency (phase 44, the Python stack's pjolroll offices / geocode /
+networks): every public office with its official contacts and its place, and the address space
+of the state in the RIPE database.
+*/
+export function offices(
+	paging: {
+		query?: string;
+		offset?: number;
+		limit?: number;
+		kind?: string;
+	} = {},
+) {
+	return paged(
+		table<Record<string, unknown>>(
+			join(store.DATASET_DIR, "transparency", "offices.jsonl"),
+		).filter((one) => !paging.kind || one.kind === paging.kind),
+		paging,
+	);
+}
+
+export function networks(
+	paging: { query?: string; offset?: number; limit?: number } = {},
+) {
+	return paged(
+		table<Record<string, unknown>>(
+			join(store.DATASET_DIR, "transparency", "networks.jsonl"),
 		),
 		paging,
 	);

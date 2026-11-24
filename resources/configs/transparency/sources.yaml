@@ -1,0 +1,17 @@
+# The declaration of transparency (phase 44, Q24): where the official contacts of public offices
+# come from - resources of dane.gov.pl, the open data of the state, each as its office publishes
+# it. A source is a resource's id there (https://dane.gov.pl/pl/dataset/<dataset>/resource/<id>);
+# `kind` says what offices it holds. More are added the same way.
+sources:
+  - {resource: 31903, kind: administracja zespolona, dataset: 2199} # voivodes' offices and their services
+  - {resource: 2729996, kind: Krajowa Administracja Skarbowa, dataset: 222}
+  - {resource: 64575, kind: urząd stanu cywilnego, dataset: 149}
+  - {resource: 50913, kind: placówka dyplomatyczna, dataset: 1767}
+
+# The address space of the state (pjolroll networks): the organisations of the RIPE database in
+# Poland whose e-mail is in these domains, or whose name has these words, and the networks and
+# autonomous systems registered to them. Only the organisation's key and name are kept, never the
+# people the RIPE objects name.
+ripe:
+  domains: [gov.pl]
+  words: [Ministerstwo, Urzad, Gmina, Starostwo, Kancelaria, Komenda, Prokuratura, Sad, Wojewodzki, Panstwow, Narodowy, Agencja Restrukturyzacji, Zaklad Ubezpieczen Spolecznych]

@@ -88,6 +88,7 @@ nav:
       - guides/mirrors.md
       - guides/chain.md
       - guides/devices.md
+      - guides/transparency.md
   - Glossary: glossary/README.md
   # the devlog and the almanac live in the wiki of GitHub, copied there by task docs:wiki (phase 28)
   - Devlog (wiki): https://github.com/Sarverott/P-jol-roll/wiki/Devlog

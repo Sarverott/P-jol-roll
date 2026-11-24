@@ -64,6 +64,7 @@ if (remote)
 			"agreements",
 			"regional",
 			"tenders",
+			"transparency",
 		];
 		const ready =
 			kind === "map"
@@ -306,6 +307,26 @@ routes.get("/api/tenders/:source/:day", (request, response) => {
 			limit: Number(limit) || 50,
 		}),
 	);
+});
+
+// the declaration of transparency (phase 44): offices and the address space of the state
+routes.get("/api/transparency/:of", async (request, response) => {
+	const { q, kind, offset, limit } = request.query;
+	await dataset.prepareDataset("transparency");
+	const paging = {
+		query: typeof q === "string" ? q : "",
+		offset: Number(offset) || 0,
+		limit: Number(limit) || 50,
+	};
+	if (request.params.of === "networks") response.json(dataset.networks(paging));
+	else if (request.params.of === "offices")
+		response.json(
+			dataset.offices({
+				...paging,
+				kind: typeof kind === "string" ? kind : "",
+			}),
+		);
+	else notHere(response);
 });
 
 routes.get("/api/agreements", async (request, response) => {

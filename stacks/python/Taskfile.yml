@@ -31,6 +31,24 @@ tasks:
     cmds:
       - uv run pjolroll propose {{.CLI_ARGS}}
 
+  offices:
+    desc: 'The declaration of transparency (phase 44): the public offices'' official contacts from dane.gov.pl (resources/configs/transparency/sources.yaml) into dataset/transparency/offices.jsonl'
+    dir: '{{.ROOT_DIR}}/stacks/python'
+    cmds:
+      - uv run pjolroll offices
+
+  geocode:
+    desc: 'Offices with no coordinates placed by OpenStreetMap''s Nominatim, one request a second, cached - task python:geocode -- --limit 3000 (about an hour)'
+    dir: '{{.ROOT_DIR}}/stacks/python'
+    cmds:
+      - uv run pjolroll geocode {{.CLI_ARGS}}
+
+  networks:
+    desc: 'The address space of the state: networks and autonomous systems registered in RIPE to Polish public institutions, into dataset/transparency/networks.jsonl'
+    dir: '{{.ROOT_DIR}}/stacks/python'
+    cmds:
+      - uv run pjolroll networks
+
   law:
     desc: 'The law from the Python stack - task python:law -- tools / act DU/1918/2 / text DU/1918/2 / nearest "..." / ask "..." [--escalate|--hard] (API_URL)'
     dir: '{{.ROOT_DIR}}/stacks/python'

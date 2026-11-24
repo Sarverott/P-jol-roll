@@ -51,7 +51,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.40.0",
+		version: "0.40.4",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
@@ -325,6 +325,22 @@ export const spec = {
 					schema: { type: "string" },
 				})),
 				responses: { 200: { description: "a page of notices" } },
+			},
+		},
+		"/api/transparency/{of}": {
+			get: {
+				summary:
+					"the declaration of transparency (phase 44): offices - official e-mails, phones, addresses, coordinates - or networks of the state in RIPE",
+				parameters: ["of", "q", "kind", "offset", "limit"].map((name) => ({
+					name,
+					in: name === "of" ? "path" : "query",
+					required: name === "of",
+					schema: { type: "string" },
+				})),
+				responses: {
+					200: { description: "a page of offices or networks" },
+					404: missing,
+				},
 			},
 		},
 		"/api/agreements": {

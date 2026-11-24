@@ -51,30 +51,31 @@ const source = createServer((request, response) => {
 	if (url.pathname === "/bzp/notice") {
 		const type = url.searchParams.get("NoticeType");
 		const from = url.searchParams.get("PublicationDateFrom") ?? "";
-		const to = url.searchParams.get("PublicationDateTo") ?? "";
 		if (type === "CompetitionNotice") {
 			response.writeHead(400);
 			return response.end("{}");
 		}
 		if (type !== "ContractNotice") return json([]);
-		// the whole day is full (100), each half has 60: the gatherer must split it
-		if (from.endsWith("T00:00:00") && to.endsWith("T23:59:59")) {
-			full++;
-			return json(
-				Array.from({ length: 100 }, (_, i) => ({
-					objectId: `x${i}`,
-					bzpNumber: `old ${i}`,
-				})),
-			);
-		}
-		const half = from.endsWith("T00:00:00") ? "a" : "b";
+		// as the real API: the notices from that moment on - its end's time ignored - oldest
+		// first, 100 at most; 160 of the day, two at one moment, and one of the next day
+		const day = Array.from({ length: 160 }, (_, i) => ({
+			objectId: `n${i}`,
+			bzpNumber: `2026/BZP ${i}`,
+			organizationName: "Gmina Lublin",
+			publicationDate: `2026-11-20T${String(Math.floor(i / 7)).padStart(2, "0")}:${String((i % 7) * 8).padStart(2, "0")}:00.5Z`,
+			htmlBody: `<p>notice ${i}</p>`,
+		}));
+		day.push({ ...day[159], objectId: "n160", bzpNumber: "2026/BZP 160" }); // the same moment
+		day.push({
+			...day[0],
+			objectId: "next",
+			publicationDate: "2026-11-21T00:01:00Z",
+		});
+		full++;
 		return json(
-			Array.from({ length: 60 }, (_, i) => ({
-				objectId: `${half}${i}`,
-				bzpNumber: `2026/BZP ${half}${i}`,
-				organizationName: "Gmina Lublin",
-				htmlBody: `<p>notice ${half}${i}</p>`,
-			})),
+			day
+				.filter((one) => one.publicationDate.slice(0, 19) >= from)
+				.slice(0, 100),
 		);
 	}
 	if (url.pathname === "/ted/notices/search" && request.method === "POST") {
@@ -170,18 +171,18 @@ test("public tenders: a full window split in two, the notices' HTML in the bucke
 		today: new Date("2026-11-24"),
 		wait: 0,
 	});
-	// the day after today is not taken; 100 came back for the day, so it was asked in halves
+	// the day after today is not taken; the day read as a cursor: a page of 100, then from its last
 	expect(sum).toEqual({
-		sum: { "BZP 2026-11-20": 120, "TED 2026-11-20": 1 },
+		sum: { "BZP 2026-11-20": 161, "TED 2026-11-20": 1 },
 		failed: [],
 	});
-	expect(full).toBe(1);
+	expect(full).toBe(2);
 	const notices = store.readJsonl<Record<string, unknown>>(
 		dayPath("BZP", "2026-11-20"),
 	);
-	expect(notices).toHaveLength(120);
+	expect(notices).toHaveLength(161); // the next day's notice left out
 	expect(notices[0].htmlBody).toBeUndefined(); // the HTML goes to the bucket
-	expect(existsSync(noticePath("2026-11-20", "a0"))).toBe(true);
+	expect(existsSync(noticePath("2026-11-20", "n0"))).toBe(true);
 	expect(
 		store.readJsonl<Record<string, unknown>>(dayPath("TED", "2026-11-20"))[0],
 	).toEqual({
@@ -190,7 +191,9 @@ test("public tenders: a full window split in two, the notices' HTML in the bucke
 	});
 	const dataset = await import("../src/core/reading/dataset.js");
 	expect(dataset.tenderDays("BZP")).toEqual(["2026-11-20"]);
-	expect(dataset.tenders("BZP", "2026-11-20", { query: "a59" }).total).toBe(1);
+	expect(dataset.tenders("BZP", "2026-11-20", { query: "BZP 159" }).total).toBe(
+		1,
+	);
 	const { daysOf } = await import("../src/core/apihandlers/tenders.js");
 	expect(daysOf(["2026-02"])).toHaveLength(28);
 });
