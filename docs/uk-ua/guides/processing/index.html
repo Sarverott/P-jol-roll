@@ -1,0 +1,2591 @@
+<!DOCTYPE html>
+
+<html lang="uk-UA" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Every act of the Polish journals of laws, gathered in the open">
+      
+      
+        <meta name="author" content="Sett Sarverott">
+      
+      
+        <link rel="canonical" href="https://sarverott.github.io/P-jol-roll/docs/guides/processing/">
+      
+      
+        <link rel="prev" href="../gathering/">
+      
+      
+        <link rel="next" href="../sources/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>From raw files to tables and texts - P_JOL_ROLL</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="P_JOL_ROLL">
+  <meta property="og:title" content="From raw files to tables and texts - P_JOL_ROLL">
+  <meta property="og:description" content="Every act of the Polish journals of laws, gathered in the open">
+  <meta property="og:url" content="https://sarverott.github.io/P-jol-roll/docs/guides/processing/">
+  <meta property="og:image" content="https://sarverott.github.io/P-jol-roll/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#1d2440">
+
+  <style data-p-languages="">.p-languages{display:flex;gap:.4rem;margin:0 .6rem;font-size:.7rem}.p-languages a{color:inherit;opacity:.7}.p-languages a[aria-current]{opacity:1;font-weight:700}</style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#from-raw-files-to-tables-and-texts" class="md-skip">
+          Про нас
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Заголовок">
+    <a href="../.." title="P_JOL_ROLL" class="md-header__button md-logo" aria-label="P_JOL_ROLL" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="Логін">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" /></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            P_JOL_ROLL
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              З сировини до таблиць і текстів
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="indigo" aria-label="темний режим" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="темний режим" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31" /></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="indigo" aria-label="легкий режим" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="легкий режим" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z" /></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5" /></svg>
+        </label>
+        <nav aria-label="languages" translate="no" class="p-languages"><a hreflang="en-US" href="../../../guides/processing/">EN</a><a hreflang="pl-PL" href="../../../pl-pl/guides/processing/">PL</a><a aria-current="true" hreflang="uk-UA" href="../../../uk-ua/guides/processing/">UK</a><a hreflang="de-DE" href="../../../de-de/guides/processing/">DE</a></nav><div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Пошук" placeholder="Пошук" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5" /></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z" /></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Пошук">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистити" aria-label="Очистити" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Налаштування пошуку
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Sarverott/P-jol-roll" title="Перейти на репозиторію" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" /></svg>
+  </div>
+  <div class="md-source__repository">
+    Sarverott/P-jol-roll
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навігація" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="P_JOL_ROLL" class="md-nav__button md-logo" aria-label="P_JOL_ROLL" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="Логін">
+
+    </a>
+    P_JOL_ROLL
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Sarverott/P-jol-roll" title="Перейти на репозиторію" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" /></svg>
+  </div>
+  <div class="md-source__repository">
+    Sarverott/P-jol-roll
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Головна
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Керівництво
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Керівництво
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Що P_JOL_ROLL можна зробити
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Функції
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Монтаж
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gathering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Збір
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    З сировини до таблиць і текстів
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    З сировини до таблиць і текстів
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Зміст">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Зміст
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#checksums-seal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Перекази: ущільнення
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tables-compile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Столи: компіляція
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#texts-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Тексти: текст
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#order-of-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Порядок роботи
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#texts-of-pdfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Тексти PDF
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-map-of-the-whole-law-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Карта всього закону: мапа
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-over-every-year-searchindex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пошук за кожним роком: search:index
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vectors-of-texts-embed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Вектори текстів: рельєф
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-by-meaning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пошук за змістом
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Інші джерела
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checkup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Перевірка сайтів
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../second-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Збір на другий машині
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../huggingface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Переміщення даних до Hugging Face
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дані
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Розробка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../translations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Переклади
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mastermind/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Магістр права
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The code of law analysed, simulated, improved
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../torrents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Torrents pointed to by IPFS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mirrors on a WireGuard network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The chain of the law
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../devices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The person's devices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transparency/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The declaration of transparency
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reports to the authorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors-of-the-repository/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The repository on five more places
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Глосарій
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sarverott/P-jol-roll/wiki/Devlog" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Демлог (вікі)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sarverott/P-jol-roll/wiki/Almanac" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Альманак (вікі)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Логін
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Логін
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 0: очистити грунт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 1: відремонтовані залежності
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 3: BOS інтеграція
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 4: веб-сайт проекту
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 5: збирання на іншому машині
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 6: послуги, вхід і запуск
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 8: релізи та процедури
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 9: колоди, демо простір, Dependabot гілки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 10: один відро, один набір даних, легкий демо, приклади
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 12: тексти актів, які мають лише PDF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 18: що зламався після v0.15.0, і almanac
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-19/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 19: Jarvis приєднується
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 20: відро tidied, банер
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-21/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 21: примітки власника по сарк
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 22: кожна функція всюди, глядача, що світиться
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-28/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 28: ведучий в своєму куті, делог на GitHub, вікі та пачки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 29: оголошення в обговоренні
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-30/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 30: перший голос майстра
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-31/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 31: сім'ї моделей, Оллама на власний диск, розмови зберігаються
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-32/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 32: демо AI - чат на власній Hugging Face
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-33/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 33: the chat translated, and the executive agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-23/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 23: зображення знову будується, без діалектизації
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 24: перевіряє на які землі
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-25/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 25: перевіряє перед штовхачем, функції запису за перемикачем
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-26/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 26: один ворота в майстер
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-27/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 27: простір довіреним видавцем, і чекав
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_7">
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Для агентів
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Для агентів
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/NOTES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ОНОВЛЕННЯ: результати агентів
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/jarvis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ярослав
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/things-to-check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Перевірка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/ideas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ідеї: що, де, як
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/point-of-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Точка зору
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Зміст">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Зміст
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#checksums-seal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Перекази: ущільнення
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tables-compile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Столи: компіляція
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#texts-text" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Тексти: текст
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#order-of-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Порядок роботи
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#texts-of-pdfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Тексти PDF
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-map-of-the-whole-law-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Карта всього закону: мапа
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-over-every-year-searchindex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пошук за кожним роком: search:index
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vectors-of-texts-embed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Вектори текстів: рельєф
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-by-meaning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Пошук за змістом
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/Sarverott/P-jol-roll/edit/development/docs/guides/processing.md" title="Редагувати сторінку" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z" /></svg>
+    </a>
+  
+  
+
+
+<h1 id="from-raw-files-to-tables-and-texts">З сировини до таблиць і текстів<a class="headerlink" href="#from-raw-files-to-tables-and-texts" title="Постійне посилання">¶</a></h1>
+<div class="highlight"><pre><span></span><code>task<span class="w"> </span>seal<span class="w">                 </span><span class="c1"># checksums for gathered files that have no record yet</span>
+task<span class="w"> </span>seal<span class="w"> </span>--<span class="w"> </span>--check<span class="w">      </span><span class="c1"># read every recorded file again, name the ones that differ</span>
+task<span class="w"> </span>compile<span class="w">              </span><span class="c1"># tables: details and references of acts, a year in a file</span>
+task<span class="w"> </span>text<span class="w">                 </span><span class="c1"># markdown from gathered HTML, with checksums</span>
+task<span class="w"> </span>text<span class="w"> </span>--<span class="w"> </span>--pdf<span class="w">        </span><span class="c1"># and from the PDFs of acts without HTML (poppler-utils)</span>
+</code></pre></div>
+<p>В інтернеті немає нічого. Прочитати <code>resources/bucket/</code>
+і писати <code>resources/dataset/</code>У будь-який час можна повторити.</p>
+<h2 id="checksums-seal">Checksums: <code>seal</code><a class="headerlink" href="#checksums-seal" title="Постійне посилання">¶</a></h2>
+<p>Відро на Hugging Face не дає дозволу файлу, тому проект зберігає свій власний. Один рядок за файл в <code>dataset/files/&lt;journal&gt;/&lt;year&gt;.jsonl</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"path"</span><span class="p">:</span><span class="s2">"DU/1918/WDU19180010001.json"</span><span class="p">,</span><span class="nt">"size"</span><span class="p">:</span><span class="mi">3578</span><span class="p">,</span><span class="nt">"sha256"</span><span class="p">:</span><span class="s2">"0c1f2c7e..."</span><span class="p">,</span><span class="nt">"url"</span><span class="p">:</span><span class="s2">"https://api.sejm.gov.pl/eli/acts/DU/1918/1"</span><span class="p">,</span><span class="nt">"gatheredAt"</span><span class="p">:</span><span class="s2">"2026-10-13T13:25:12.282Z"</span><span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Сфера</th>
+<th>Малювання</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td>файл, всередині відро</td>
+</tr>
+<tr>
+<td><code>size</code>, <code>sha256</code></td>
+<td>як було написано</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>де було прийнято</td>
+</tr>
+<tr>
+<td><code>gatheredAt</code></td>
+<td>коли</td>
+</tr>
+</tbody>
+</table>
+<p>Збирач пише запис в даний момент на диску, перш ніж все надішло. <code>task seal</code> є для файлів, зібраних до записів існував: він пише відсутні записи, з часом модифікації файлу, як
+<code>gatheredAt</code>.</p>
+<p><code>task seal -- --check</code> читати кожен записаний файл, який тут і порівнює. Видрукує доріжки, які відрізняються і закінчується помилкою, коли є будь-які. Виконайте його після витягування відра в іншу машину, або перед великим штовхачем.</p>
+<p>Коли файл має кілька записів, останній є струмом.</p>
+<h2 id="tables-compile">Tables: <code>compile</code><a class="headerlink" href="#tables-compile" title="Постійне посилання">¶</a></h2>
+<p>Деталі та посилання, що сидять у відрі, як один невеликий файл за актом. Для читання на сипучих носіях, рік у файлі:</p>
+<table>
+<thead>
+<tr>
+<th>Настільний</th>
+<th>Один рядок</th>
+<th>Виготовлений з</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dataset/details/&lt;journal&gt;/&lt;year&gt;.jsonl</code></td>
+<td>деталі одного акту, як API дав їм</td>
+<td><code>&lt;address&gt;.json</code></td>
+</tr>
+<tr>
+<td><code>dataset/references/&lt;journal&gt;/&lt;year&gt;.jsonl</code></td>
+<td>одна краватка між двома діями</td>
+<td>Промисловість <code>references</code> Деталі</td>
+</tr>
+</tbody>
+</table>
+<p>Лінія таблиці посилань:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"from"</span><span class="p">:</span><span class="s2">"DU/1918/2"</span><span class="p">,</span><span class="nt">"type"</span><span class="p">:</span><span class="s2">"Uchylenia wynikające z"</span><span class="p">,</span><span class="nt">"to"</span><span class="p">:</span><span class="s2">"DU/1918/23"</span><span class="p">,</span><span class="nt">"date"</span><span class="p">:</span><span class="s2">"1918-10-21"</span><span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Сфера</th>
+<th>Малювання</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>from</code></td>
+<td>ELI акту, деталями яких назвали краватку</td>
+</tr>
+<tr>
+<td><code>type</code></td>
+<td>вид краватки, від <code>lists/reference_types.json</code></td>
+</tr>
+<tr>
+<td><code>to</code></td>
+<td>ELI іншої дії</td>
+</tr>
+<tr>
+<td><code>date</code>, <code>art</code></td>
+<td>присутній, коли API дає їм</td>
+</tr>
+</tbody>
+</table>
+<p>Всі довідкові таблиці разом є графіком закону: які діють зміни, репетиції або провадять які. Перші шістьнадцять років Dziennik Ustaw дають 45,658 зв'язків за 11,008 актів.</p>
+<p>Акти, які деталі не збираються, але поки не вийшли. Столи письмові на кожен пробіг.</p>
+<h2 id="texts-text">Texts: <code>text</code><a class="headerlink" href="#texts-text" title="Постійне посилання">¶</a></h2>
+<p>Зібрано HTML файла markdown,
+<code>dataset/texts/&lt;journal&gt;/&lt;year&gt;/&lt;address&gt;.md</code>і лінія в
+<code>dataset/texts/&lt;journal&gt;/&lt;year&gt;.jsonl</code> стяжки до джерела:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"ELI"</span><span class="p">:</span><span class="s2">"DU/1918/2"</span><span class="p">,</span><span class="nt">"markdown"</span><span class="p">:</span><span class="s2">"texts/DU/1918/WDU19180020002.md"</span><span class="p">,</span><span class="nt">"sha256_md"</span><span class="p">:</span><span class="s2">"a85ee287..."</span><span class="p">,</span><span class="nt">"sha256_html"</span><span class="p">:</span><span class="s2">"1fd223bc..."</span><span class="p">,</span><span class="nt">"url"</span><span class="p">:</span><span class="s2">"https://api.sejm.gov.pl/eli/acts/DU/1918/2/text.html"</span><span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Сфера</th>
+<th>Малювання</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>markdown</code></td>
+<td>markdown файл, всередині даних</td>
+</tr>
+<tr>
+<td><code>sha256_md</code></td>
+<td>від markdown</td>
+</tr>
+<tr>
+<td><code>sha256_html</code></td>
+<td>checksum від HTML він був виготовлений з</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>HTML на джерело</td>
+</tr>
+</tbody>
+</table>
+<p>HTML, чия реєстрація не змінилася знову не приурочена.</p>
+<p>Як виглядає markdown:</p>
+<div class="highlight"><pre><span></span><code><span class="gh"># Ustawa z dnia 4 lutego 1918 r. o Radzie Stanu Królestwa Polskiego</span>
+
+<span class="gu">## Treść ustawy</span>
+
+<span class="gu">### Art. 1.</span>
+
+Rada Stanu Królestwa Polskiego z siedzibą w mieście stołecznem Warszawie składa się ze 110 członków, a mianowicie:
+
+a) 12 członków wirylistów,
+</code></pre></div>
+<p>Статті, абзаци<code>§</code>Український переклад І. Огієнка Відкрийте свою лінійку. Видалено сценарії та кнопки зчитувача Sejm.</p>
+<blockquote>
+<p><strong>Про нас</strong> markdown дивився лише на дії від 1918 до 1933. Нові дії можуть використовувати HTML цього сердечника, а таблиці не перетворюються в markdown таблиці. Прочитайте кілька нових, перш ніж довірити його на об'ємі.</p>
+</blockquote>
+<p>Тільки HTML подається: 39,110 з 164,638 актів, всі в Dziennik Ustaw. На другий три чверті мають лише PDF і більше markdown.</p>
+<h2 id="order-of-work">Порядок роботи<a class="headerlink" href="#order-of-work" title="Постійне посилання">¶</a></h2>
+<div class="highlight"><pre><span></span><code>gather ──► seal (once, for old files) ──► compile ──► text ──► resources:push
+</code></pre></div>
+<h2 id="texts-of-pdfs">Тексти PDF<a class="headerlink" href="#texts-of-pdfs" title="Постійне посилання">¶</a></h2>
+<p><code>task text -- --pdf</code> дає markdown діям, які мають лише PDF. Текстовий шар читайте <code>pdftotext</code> з попплера<code>scripts/install.sh</code> монтаж
+<code>poppler-utils</code>), що випливає з двох стовпчиків сторінки журналу. Лінії стають абзаци, слово нарізають в кінці рядка приклеюють назад, і
+<code>Art. 1.</code>, <code>§ 1.</code> і <code>Rozdział 1</code> стають заголовками, як в markdown від HTML. Чотири PDF-файли читаються в часі (<code>--parallel</code>); рік 1200 актів займає кілька секунд.</p>
+<p>Більшість PDF-файлів перед 2000-ма скануванням, що Adobe's Paper Capture дав шар визнаного тексту. Тексти пісень, а це означає: Це текст зберігається як це, з його помилками: нічого виправити, здогадуючи. Запис імен виробника PDF, тому читач може розповісти ці тексти окремо:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"ELI"</span><span class="p">:</span><span class="s2">"DU/1953/228"</span><span class="p">,</span><span class="nt">"markdown"</span><span class="p">:</span><span class="s2">"texts/DU/1953/WDU19530460228.md"</span><span class="p">,</span><span class="nt">"sha256_md"</span><span class="p">:</span><span class="s2">"..."</span><span class="p">,</span><span class="nt">"from"</span><span class="p">:</span><span class="s2">"pdf"</span><span class="p">,</span><span class="nt">"sha256_pdf"</span><span class="p">:</span><span class="s2">"..."</span><span class="p">,</span><span class="nt">"producer"</span><span class="p">:</span><span class="s2">"Adobe Acrobat 9.0 Paper Capture Plug-in"</span><span class="p">,</span><span class="nt">"url"</span><span class="p">:</span><span class="s2">"https://api.sejm.gov.pl/eli/acts/DU/1953/228/text.pdf"</span><span class="p">}</span>
+</code></pre></div>
+<p>А PDF без текстового шару (підйомка, ніж 40 літер на всіх сторінках, близько сто) не отримує markdown; вона названа в
+<code>dataset/texts/&lt;journal&gt;/&lt;year&gt;.scans.jsonl</code> і чекає на ОКР. Коли дія отримує свою HTML пізніше markdown з HTML знову.</p>
+<p>Без категорії <code>--pdf</code>, <code>task text</code> зберігає тексти з PDF, як вони.</p>
+<p>Читачі кажуть, що тексти це: акт в api має <code>text.from</code>
+(<code>html</code> або <code>pdf</code>) за адресою виробника та джерела, відповідь
+<code>/api/acts/&lt;journal&gt;/&lt;year&gt;/&lt;pos&gt;/text</code> здійснює заголовок <code>X-Text-From</code>, інструмент MCP <code>act_text</code> Відкриває такий текст із рядком, що нагадує його PDF, а глядач накладає замітку над ним.</p>
+<h2 id="the-map-of-the-whole-law-map">Карта всього закону: <code>map</code><a class="headerlink" href="#the-map-of-the-whole-law-map" title="Постійне посилання">¶</a></h2>
+<div class="highlight"><pre><span></span><code>task<span class="w"> </span>map<span class="w">                        </span><span class="c1"># every preset into dataset/map/</span>
+task<span class="w"> </span>map<span class="w"> </span>--<span class="w"> </span>statutes-in-force<span class="w">   </span><span class="c1"># one</span>
+</code></pre></div>
+<p>Всі 165 тис. актів з 750 тис. зв'язків занадто багато для сторінки, тому припуск бере участь в них, з зв'язками між діями від
+<code>dataset/references/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Зареєструватися</th>
+<th>Акції</th>
+<th>Цій (2026-11-22)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>statutes-in-force</code></td>
+<td>statutes (ustawy) в силі</td>
+<td>2,848 / 2,234</td>
+</tr>
+<tr>
+<td><code>statutes</code></td>
+<td>з 1918</td>
+<td>9,985 / 71,489</td>
+</tr>
+<tr>
+<td><code>in-force</code></td>
+<td>кожен акт в силі</td>
+<td>20,484 / 11,953</td>
+</tr>
+<tr>
+<td><code>statutes-in-force-by-meaning</code></td>
+<td>статути, які мають вектор (<code>task embed</code>), кожен прив'язаний до свого 5 найближчого значення замість зв'язків джерела</td>
+<td>як багато векторів</td>
+</tr>
+</tbody>
+</table>
+<p>ForceAtlas2 розміщує їх один раз, тут (близько хвилини для всіх трьох), тому браузер тільки малює: вкладка "map of the whole law" глядача показує їх з sigma.js, <code>/api/map/&lt;preset&gt;</code> дає їм. Пробіг <code>task compile</code> перше, тому стяжки свіжі. Файли переходять до Hugging Face з даними, тому демо може показати їх.</p>
+<h2 id="search-over-every-year-searchindex">Пошук за кожним роком: <code>search:index</code><a class="headerlink" href="#search-over-every-year-searchindex" title="Постійне посилання">¶</a></h2>
+<div class="highlight"><pre><span></span><code>task<span class="w"> </span>init<span class="w">                                         </span><span class="c1"># once: resources/secrets/typesense_api_key</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>search<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>typesense<span class="w">   </span><span class="c1"># Typesense 30.2 on 127.0.0.1:8108</span>
+task<span class="w"> </span>search:index<span class="w">                                 </span><span class="c1"># titles, types, statuses, keywords</span>
+task<span class="w"> </span>search:index<span class="w"> </span>--<span class="w"> </span>--texts<span class="w">                      </span><span class="c1"># and the first 2000 characters of each text</span>
+</code></pre></div>
+<p>Кожен акт надходить в колекцію <code>acts</code> (в дії вже є замінено). Заголовки, ключові слова та тексти кенуються як польською. Відповіді api <code>/api/search?q=...&amp;type=&amp;status=&amp;journal=&amp;page=</code> з актами, позначеними словами їх текстів та підрахунками на тип, статус та журнал. Відповіді на пошук. Без Typesense,
+<code>/api/search</code> Відповіді 503 і каже, як його запустити, і нічого іншого зміни. Всі 165 тис. актів приймають 10 секунд; з текстами 20 секунд і близько 450 Мб пам'яті в сервісі.</p>
+<h2 id="vectors-of-texts-embed">Вектори текстів: <code>embed</code><a class="headerlink" href="#vectors-of-texts-embed" title="Постійне посилання">¶</a></h2>
+<div class="highlight"><pre><span></span><code>ollama<span class="w"> </span>serve<span class="w"> </span><span class="p">&amp;</span><span class="w">              </span><span class="c1"># or: docker compose --profile llms up -d llms-ollama</span>
+ollama<span class="w"> </span>pull<span class="w"> </span>bge-m3<span class="w">          </span><span class="c1"># once, about 1.2 GB</span>
+task<span class="w"> </span>embed<span class="w">                  </span><span class="c1"># every text; task embed -- 2026 for one year</span>
+</code></pre></div>
+<p>Кожен акт з markdown отримує один вектор: його назву і перші 2000 символів його тексту, враховуючи локальну багатомовну модель через Ollama (04/07/2019)<code>EMBED_MODEL</code>, bge-m3 за замовчуванням: 1024 номерів, польські мови. Тексти пісень, а це означає: Вони йдуть біля текстів, в
+<code>dataset/embeddings/&lt;model&gt;/&lt;journal&gt;/&lt;year&gt;.parquet</code> (<code>ELI</code>, <code>sha256_md</code>,
+<code>vector</code>й <code>model.json</code> Як вони були зроблені. Акт, чия markdown не змінив зберігає свій вектор, тому старт повторюється, щоб прийняти те, що нового.</p>
+<p>DU 2020 (2453 дій) приймав 1 хвилин 46 секунд на GeForce RTX {10} і 4 Мб. Всі права будуть приймати близько двох годин і 670 Мб.</p>
+<h2 id="search-by-meaning">Пошук за змістом<a class="headerlink" href="#search-by-meaning" title="Постійне посилання">¶</a></h2>
+<p>З векторами, зроблені, <code>task search:index</code> кладуть їх в Typesense теж (у існуючій колекції надходить поле без створення нового). Пошук кожного року з <code>meaning=1</code> перетворює питання у вектор з такою ж моделлю Оллама, а Typesense р. виступає словами і за змістом разом. Питання англійською мовою знаходить польські акти: "protection of children against violence at school" знайшли акти Міністра освіти з питань безпеки у школах, де слова наодинці знайшли один акт. Без Ollama, пошук говорить <code>meaning: false</code> і твори слів поодинці. Переглядач показує поле "by meaning, in any language" тільки тоді, коли він може це зробити.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z" /></svg>
+  Повернутися до вершини
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Авторське право No 2026 Sett Sarverott, AGPL-3.0-only.
+    </div>
+  
+  
+    Виготовлений з
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Матеріал для MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "content.action.edit", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>

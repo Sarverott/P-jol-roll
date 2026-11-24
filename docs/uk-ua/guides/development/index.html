@@ -1,0 +1,2615 @@
+<!DOCTYPE html>
+
+<html lang="uk-UA" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Every act of the Polish journals of laws, gathered in the open">
+      
+      
+        <meta name="author" content="Sett Sarverott">
+      
+      
+        <link rel="canonical" href="https://sarverott.github.io/P-jol-roll/docs/guides/development/">
+      
+      
+        <link rel="prev" href="../data/">
+      
+      
+        <link rel="next" href="../translations/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>Development - P_JOL_ROLL</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="P_JOL_ROLL">
+  <meta property="og:title" content="Development - P_JOL_ROLL">
+  <meta property="og:description" content="Every act of the Polish journals of laws, gathered in the open">
+  <meta property="og:url" content="https://sarverott.github.io/P-jol-roll/docs/guides/development/">
+  <meta property="og:image" content="https://sarverott.github.io/P-jol-roll/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#1d2440">
+
+  <style data-p-languages="">.p-languages{display:flex;gap:.4rem;margin:0 .6rem;font-size:.7rem}.p-languages a{color:inherit;opacity:.7}.p-languages a[aria-current]{opacity:1;font-weight:700}</style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#development" class="md-skip">
+          Про нас
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Заголовок">
+    <a href="../.." title="P_JOL_ROLL" class="md-header__button md-logo" aria-label="P_JOL_ROLL" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="Логін">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" /></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            P_JOL_ROLL
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Розробка
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="indigo" aria-label="темний режим" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="темний режим" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31" /></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="indigo" aria-label="легкий режим" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="легкий режим" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z" /></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5" /></svg>
+        </label>
+        <nav aria-label="languages" translate="no" class="p-languages"><a hreflang="en-US" href="../../../guides/development/">EN</a><a hreflang="pl-PL" href="../../../pl-pl/guides/development/">PL</a><a aria-current="true" hreflang="uk-UA" href="../../../uk-ua/guides/development/">UK</a><a hreflang="de-DE" href="../../../de-de/guides/development/">DE</a></nav><div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Пошук" placeholder="Пошук" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5" /></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z" /></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Пошук">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Очистити" aria-label="Очистити" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Налаштування пошуку
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Sarverott/P-jol-roll" title="Перейти на репозиторію" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" /></svg>
+  </div>
+  <div class="md-source__repository">
+    Sarverott/P-jol-roll
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Навігація" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="P_JOL_ROLL" class="md-nav__button md-logo" aria-label="P_JOL_ROLL" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="Логін">
+
+    </a>
+    P_JOL_ROLL
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Sarverott/P-jol-roll" title="Перейти на репозиторію" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" /></svg>
+  </div>
+  <div class="md-source__repository">
+    Sarverott/P-jol-roll
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Головна
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Керівництво
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Керівництво
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Що P_JOL_ROLL можна зробити
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Функції
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Монтаж
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gathering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Збір
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    З сировини до таблиць і текстів
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Інші джерела
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checkup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Перевірка сайтів
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../second-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Збір на другий машині
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../huggingface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Переміщення даних до Hugging Face
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Дані
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Розробка
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Розробка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Зміст">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Зміст
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#the-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Код
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Завдання
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Тести
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-one-more-file-per-act" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Додавання одного файлу за акт
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-website-to-checkup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Додавання веб-сайту для перевірки
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Додавання джерела
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#style" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Стиль
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-stale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Що таке застібка
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#images-icons-the-card-of-a-link" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зображення, іконки, карта посилання
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../translations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Переклади
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mastermind/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Магістр права
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The code of law analysed, simulated, improved
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../torrents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Torrents pointed to by IPFS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mirrors on a WireGuard network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The chain of the law
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../devices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The person's devices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transparency/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The declaration of transparency
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reports to the authorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors-of-the-repository/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The repository on five more places
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Глосарій
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sarverott/P-jol-roll/wiki/Devlog" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Демлог (вікі)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sarverott/P-jol-roll/wiki/Almanac" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Альманак (вікі)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Логін
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Логін
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 0: очистити грунт
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 1: відремонтовані залежності
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 3: BOS інтеграція
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 4: веб-сайт проекту
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 5: збирання на іншому машині
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 6: послуги, вхід і запуск
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 8: релізи та процедури
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 9: колоди, демо простір, Dependabot гілки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 10: один відро, один набір даних, легкий демо, приклади
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 12: тексти актів, які мають лише PDF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 18: що зламався після v0.15.0, і almanac
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-19/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 19: Jarvis приєднується
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 20: відро tidied, банер
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-21/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 21: примітки власника по сарк
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 22: кожна функція всюди, глядача, що світиться
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-28/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 28: ведучий в своєму куті, делог на GitHub, вікі та пачки
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 29: оголошення в обговоренні
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-30/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 30: перший голос майстра
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-31/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 31: сім'ї моделей, Оллама на власний диск, розмови зберігаються
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-32/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 32: демо AI - чат на власній Hugging Face
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-33/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 33: the chat translated, and the executive agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-23/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 23: зображення знову будується, без діалектизації
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 24: перевіряє на які землі
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-25/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 25: перевіряє перед штовхачем, функції запису за перемикачем
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-26/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 26: один ворота в майстер
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-27/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Фаза 27: простір довіреним видавцем, і чекав
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_7">
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Для агентів
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Для агентів
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/NOTES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ОНОВЛЕННЯ: результати агентів
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/jarvis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ярослав
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/things-to-check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Перевірка
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/ideas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ідеї: що, де, як
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/point-of-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Точка зору
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Зміст">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Зміст
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#the-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Код
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tasks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Завдання
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Тести
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-one-more-file-per-act" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Додавання одного файлу за акт
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-website-to-checkup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Додавання веб-сайту для перевірки
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#adding-a-source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Додавання джерела
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#style" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Стиль
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-stale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Що таке застібка
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#images-icons-the-card-of-a-link" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Зображення, іконки, карта посилання
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/Sarverott/P-jol-roll/edit/development/docs/guides/development.md" title="Редагувати сторінку" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z" /></svg>
+    </a>
+  
+  
+
+
+<h1 id="development">Розробка<a class="headerlink" href="#development" title="Постійне посилання">¶</a></h1>
+<p>Як змінити код. Як пропонувати зміни, див.
+<a href="https://github.com/Sarverott/P-jol-roll/blob/development/.github/CONTRIBUTING.md">БУДІВНИЦТВО</a>.</p>
+<h2 id="the-code">Код<a class="headerlink" href="#the-code" title="Постійне посилання">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Головна</th>
+<th>Що це в ній</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/core/main.ts</code></td>
+<td>аргументи і команди. Використання написано вгорі</td>
+</tr>
+<tr>
+<td><code>src/core/apihandlers/eli.ts</code></td>
+<td>API: її адреса, форми відповідей, адреси кожної частини акту</td>
+</tr>
+<tr>
+<td><code>src/core/resources/store.ts</code></td>
+<td>де зібрані речі написані, і як (<code>.part</code>, потім перейменування</td>
+</tr>
+<tr>
+<td><code>src/core/crawl.ts</code></td>
+<td>одна polite прогулянка по адресах API: ім'я, темп, черга пам'яті</td>
+</tr>
+<tr>
+<td><code>src/core/methods/gather.ts</code></td>
+<td>індекс → списки → років, потім файли актів за рік; <code>--since</code> для змін</td>
+</tr>
+<tr>
+<td><code>src/core/methods/seal.ts</code></td>
+<td>чекуми зібраних файлів: написання записів, перевірка файлів проти них</td>
+</tr>
+<tr>
+<td><code>src/core/methods/compile.ts</code></td>
+<td>таблиці деталей та посилань з сировини</td>
+</tr>
+<tr>
+<td><code>src/core/parsing/text.ts</code></td>
+<td>markdown від HTML, з записами, які обв'язують як</td>
+</tr>
+<tr>
+<td><code>src/core/apihandlers/sejm.ts</code></td>
+<td>Ще одне джерело: процеси та друк Sejm</td>
+</tr>
+<tr>
+<td><code>src/core/apihandlers/saos.ts</code></td>
+<td>інше джерело: судові рішення</td>
+</tr>
+<tr>
+<td><code>src/core/methods/checkup.ts</code></td>
+<td>Веб-сайти, які відвідують веб-сайти, з Crawlee <code>PlaywrightCrawler</code> і Камуфокс</td>
+</tr>
+<tr>
+<td><code>src/core/resources/hub.ts</code></td>
+<td>порівняння і синхронізація з Hugging Face, з <code>@huggingface/hub</code></td>
+</tr>
+</tbody>
+</table>
+<p>Чотири правила читають:</p>
+<ul>
+<li><strong>Адреси та дані, що знаходяться в обробників.</strong> Рушник в <code>gather.ts</code> що відбувається; де запитати <code>eli.ts</code> і де писати
+  <code>store.ts</code>.</li>
+<li><strong>Одна команда, один файл.</strong> <code>main.ts</code> тільки прочитає аргументи і дзвінки.</li>
+<li><strong>Немає плоского обсягу.</strong> Файли сидять в каталозі свого роду під
+  <code>src/core/</code>: <code>apihandlers/</code> для джерел, <code>methods/</code> для чого команд робимо,
+  <code>parsing/</code> для сирих файлів в текст, <code>resources/</code> для локальних сторін і Hugging Face. Новий тип отримує новий каталог.</li>
+<li><strong>Види та інтерфейси, що живуть в <code>src/core/vars/</code>.</strong> Один за файл,
+  <code>types/&lt;Name&gt;.type.ts</code> або <code>interfaces/&lt;Name&gt;.interface.ts</code>, з експортом за замовчуванням та не каталогами всередині. Про нас <code>index.ts</code> з кожного каталогу надягає їх у робочі місця, <code>GatheringScope</code> і <code>HuggingfaceScope</code>і код бере їх звідти:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">GatheringScope</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">"../vars/interfaces/index.js"</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">GatheringScope</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">GatheringTypes</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s2">"../vars/types/index.js"</span><span class="p">;</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">trusted</span><span class="p">(</span><span class="nx">act</span><span class="o">:</span><span class="w"> </span><span class="kt">GatheringScope.Act</span><span class="p">,</span><span class="w"> </span><span class="nx">part</span><span class="o">:</span><span class="w"> </span><span class="kt">GatheringTypes.Part</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</code></pre></div>
+<p><code>src/cli-command.js</code>, <code>src/cli-repl.js</code>, <code>src/desktopapp/</code>, <code>src/webgui/</code>
+і <code>src/webserver/</code> починають інші способи в однакову ядру. Вони ще не пропускаються.</p>
+<h2 id="tasks">Завдання<a class="headerlink" href="#tasks" title="Постійне посилання">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Мета</th>
+<th>Що це робить</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>task lint</code></td>
+<td>Biome: розфарбовування і форматування, зміни нічого</td>
+</tr>
+<tr>
+<td><code>task format</code></td>
+<td>Біопам з безпечними кріпленнями</td>
+</tr>
+<tr>
+<td><code>task build</code></td>
+<td>ТипПисати в <code>dist/</code>Веб-сайт <code>dist/web</code></td>
+</tr>
+<tr>
+<td><code>task test</code></td>
+<td>тести, один раз</td>
+</tr>
+<tr>
+<td><code>task check</code> (або) <code>task verify</code>)</td>
+<td>Lint, build and tests - так само, як і CI. Запустити його перед звітною роботою</td>
+</tr>
+<tr>
+<td><code>task seal</code>, <code>compile</code>, <code>text</code></td>
+<td>робота над зібраними файлами без інтернету: див <a href="../processing/">обробка</a></td>
+</tr>
+<tr>
+<td><code>task github:repo</code>, <code>runs</code>, <code>issues</code>, <code>prs</code></td>
+<td>читати стан репозиторій на GitHub з <code>gh</code></td>
+</tr>
+</tbody>
+</table>
+<p>Кожен каталог з процедурами має власний <code>Taskfile.yml</code> (<code>.husky</code>,
+<code>.github</code>, <code>resources</code>), включений в корінь.</p>
+<h2 id="tests">Тести<a class="headerlink" href="#tests" title="Постійне посилання">¶</a></h2>
+<p>Випробування, в <code>tests/</code>. Вони ніколи не торкаються реальних API сайтів або Hugging Face.</p>
+<table>
+<thead>
+<tr>
+<th>Головна</th>
+<th>Що перевіряється</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eli.test.ts</code></td>
+<td>вибір журналів і років, адрес, шляхів файлів</td>
+</tr>
+<tr>
+<td><code>gather.test.ts</code></td>
+<td>всі зібрання проти локальної копії API: списки, порядок, обмеження, пропускання, що існує, записи, структура та інші тексти, зміни з дня; потім таблиці, markdown і чекуми, зроблені з результату</td>
+</tr>
+<tr>
+<td><code>sources.test.ts</code></td>
+<td>Sejm та судові рішення щодо місцевих копій своїх API</td>
+</tr>
+<tr>
+<td><code>checkup.test.ts</code></td>
+<td>як адреси сайтів заповнені з акту</td>
+</tr>
+<tr>
+<td><code>hub.test.ts</code></td>
+<td>нагадування репозиторіїв, і що тільки що відрізняється переміщається</td>
+</tr>
+</tbody>
+</table>
+<p>Тест, який потребує API, починає невеликий сервер і вказує код на нього:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">ELI_API</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`http://localhost:</span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+<span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">RESOURCES_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">join</span><span class="p">(</span><span class="nx">work</span><span class="p">,</span><span class="w"> </span><span class="s2">"resources"</span><span class="p">);</span>
+<span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">CRAWLEE_STORAGE_DIR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">join</span><span class="p">(</span><span class="nx">work</span><span class="p">,</span><span class="w"> </span><span class="s2">"storage"</span><span class="p">);</span>
+</code></pre></div>
+<p>Це необхідно встановити перед імпортом коду, оскільки <code>eli.ts</code> і
+<code>store.ts</code> читати їх один раз.</p>
+<h2 id="adding-one-more-file-per-act">Додавання одного файлу за акт<a class="headerlink" href="#adding-one-more-file-per-act" title="Постійне посилання">¶</a></h2>
+<p>Приклад <code>struct</code>, яка API дає як <code>/acts/DU/2026/1/struct</code>:</p>
+<ol>
+<li><code>src/core/apihandlers/eli.ts</code>: додати ім'я в <code>PARTS</code> і один рядок <code>filesOf</code>, з адресом, яку він просить і закінчення його імені. Якщо файл не існує для кожного акту, повернемо нічого за дії без нього.</li>
+<li><code>tests/gather.test.ts</code>: дайте локальну копію API відповіді на неї.</li>
+<li><code>docs/guides/data.md</code>, <code>docs/guides/gathering.md</code> і стіл в
+   <code>AGENTS.md</code>.</li>
+</ol>
+<p><code>gather.ts</code> і <code>seal.ts</code> не потрібно змін: закінчення файлу в <code>.json</code> зберігається як JSON, один кінець <code>.pdf</code> повинен бути PDF, і все інше, як це сталося. Це як <code>struct</code> додано.</p>
+<h2 id="adding-a-website-to-checkup">Додавання веб-сайту для перевірки<a class="headerlink" href="#adding-a-website-to-checkup" title="Постійне посилання">¶</a></h2>
+<p>Один запис <code>resources/frontends.json</code>. Читати сайт <code>robots.txt</code>
+перший і писати те, що він говорить в <code>title</code> коли він знезаряджає кравців.</p>
+<h2 id="adding-a-source">Додавання джерела<a class="headerlink" href="#adding-a-source" title="Постійне посилання">¶</a></h2>
+<p>Ще один API є ще одним файлом з його адресами, формами та зборами, і командуванням в <code>main.ts</code>; <code>sejm.ts</code> і <code>saos.ts</code> Приклади. <code>crawl.ts</code>
+дає полуйну прогулянку, <code>store.ts</code> написання файлів і <code>hub.ts</code> переміщення. Його режисери <code>resources/&lt;source&gt;-dataset</code> і
+<code>resources/&lt;source&gt;-bucket</code>. Попередити його першим з формою випуску "new source"; кандидати вже розглядаються в
+<a href="../../.agents/ideas/">ідеї</a>.</p>
+<h2 id="style">Стиль<a class="headerlink" href="#style" title="Постійне посилання">¶</a></h2>
+<p>Biome вирішує: вкладки, подвійні котирування, сортування імпорту. <code>package.json</code> зберігає місця. <code>.obsidian/</code> не перевіряється. Передкомітний гачок працює Biome на поетапних файлах через <code>.husky/Taskfile.yml</code>.</p>
+<p>Коментарі короткі і говорять чому. <code>// NOTE:</code> коментарі – завдання з підтримки, з <code>ANSWER:</code> лінії як відповідей; як і перебування.</p>
+<h2 id="what-is-stale">Що таке застібка<a class="headerlink" href="#what-is-stale" title="Постійне посилання">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Головна</th>
+<th>Стан</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Dockerfile</code></td>
+<td>за що <code>src/</code> тепер; зображення не було побудовано ще</td>
+</tr>
+<tr>
+<td><code>scripts/hf-push.py</code>, <code>scripts/Taskfile.yml</code></td>
+<td>зберігати; <code>task resources:push</code> робить той самий файл роботи файлом</td>
+</tr>
+<tr>
+<td><code>storage/</code></td>
+<td>черга першого збирача, сотні тисяч дрібних файлів; нічого не читає це зараз</td>
+</tr>
+</tbody>
+</table>
+<h2 id="images-icons-the-card-of-a-link">Зображення, іконки, карта посилання<a class="headerlink" href="#images-icons-the-card-of-a-link" title="Постійне посилання">¶</a></h2>
+<p>Картини проекту живуть в gist власника, <code>MEDIAFILES</code>, пов'язаний як підмодуль <code>resources/mediafiles</code>. <code>task resources:media</code> (ffmpeg) робить те, що сторінки потрібні з них, і результати виконуються, тому не будувати потреби ffmpeg або субмодуля:</p>
+<table>
+<thead>
+<tr>
+<th>Зроблено</th>
+<th>З</th>
+<th>Увійти</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>favicon.ico</code>, <code>favicon-16/32/48.png</code></td>
+<td>головка лисиця <code>lex-polonis.png</code></td>
+<td><code>src/web/public/</code></td>
+</tr>
+<tr>
+<td><code>apple-touch-icon.png</code>, <code>icon-192.png</code>, <code>icon-512.png</code>, <code>icon-maskable-512.png</code></td>
+<td>все <code>lex-polonis.png</code> (256 кольорів)</td>
+<td><code>src/web/public/</code>, названий <code>src/app/manifest.json</code></td>
+</tr>
+<tr>
+<td><code>og.jpg</code>, 1200x630</td>
+<td><code>p-jol-roll_edited-color.png</code></td>
+<td><code>src/web/public/</code></td>
+</tr>
+<tr>
+<td><code>favicon.png</code>, <code>logo.png</code></td>
+<td>головка lynx</td>
+<td><code>docs/assets/images/</code> (MkDocs)</td>
+</tr>
+<tr>
+<td><code>icon-48/96/128.png</code></td>
+<td>головка lynx</td>
+<td><code>src/firefox-ext/icons/</code></td>
+</tr>
+</tbody>
+</table>
+<p>Редакція<code>src/web</code>), введення (<code>webpage/</code>й <code>publicDir</code> Про нас
+<code>src/web/public</code>) і документація (<code>docs/_mkdocs/overrides/main.html</code>) перенести фавкон, <code>theme-color</code> і Open графічна карта, тому посилання на соціальні медіа-шоу <code>og.jpg</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z" /></svg>
+  Повернутися до вершини
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Авторське право No 2026 Sett Sarverott, AGPL-3.0-only.
+    </div>
+  
+  
+    Виготовлений з
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Матеріал для MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "content.action.edit", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>

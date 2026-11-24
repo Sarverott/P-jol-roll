@@ -1,0 +1,2781 @@
+<!DOCTYPE html>
+
+<html lang="de-DE" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Every act of the Polish journals of laws, gathered in the open">
+      
+      
+        <meta name="author" content="Sett Sarverott">
+      
+      
+        <link rel="canonical" href="https://sarverott.github.io/P-jol-roll/docs/guides/features/">
+      
+      
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../functions/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>What P_JOL_ROLL can do - P_JOL_ROLL</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="P_JOL_ROLL">
+  <meta property="og:title" content="What P_JOL_ROLL can do - P_JOL_ROLL">
+  <meta property="og:description" content="Every act of the Polish journals of laws, gathered in the open">
+  <meta property="og:url" content="https://sarverott.github.io/P-jol-roll/docs/guides/features/">
+  <meta property="og:image" content="https://sarverott.github.io/P-jol-roll/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#1d2440">
+
+  <style data-p-languages="">.p-languages{display:flex;gap:.4rem;margin:0 .6rem;font-size:.7rem}.p-languages a{color:inherit;opacity:.7}.p-languages a[aria-current]{opacity:1;font-weight:700}</style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#what-p_jol_roll-can-do" class="md-skip">
+          Überspringen zum Inhalt
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Kopfzeile">
+    <a href="../.." title="P_JOL_ROLL" class="md-header__button md-logo" aria-label="P_JOL_ROLL" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="Logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" /></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            P_JOL_ROLL
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Was P_JOL_ROLL kann
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="indigo" aria-label="Dunkelmodus" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dunkelmodus" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31" /></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="indigo" aria-label="Lichtmodus" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Lichtmodus" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z" /></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5" /></svg>
+        </label>
+        <nav aria-label="languages" translate="no" class="p-languages"><a hreflang="en-US" href="../../../guides/features/">EN</a><a hreflang="pl-PL" href="../../../pl-pl/guides/features/">PL</a><a hreflang="uk-UA" href="../../../uk-ua/guides/features/">UK</a><a aria-current="true" hreflang="de-DE" href="../../../de-de/guides/features/">DE</a></nav><div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Suche" placeholder="Suche" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5" /></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z" /></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Suche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="klar" aria-label="klar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisierung der Suche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Sarverott/P-jol-roll" title="Gehen Sie zum Repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" /></svg>
+  </div>
+  <div class="md-source__repository">
+    Sarverott/P-jol-roll
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="P_JOL_ROLL" class="md-nav__button md-logo" aria-label="P_JOL_ROLL" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="Logo">
+
+    </a>
+    P_JOL_ROLL
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Sarverott/P-jol-roll" title="Gehen Sie zum Repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" /></svg>
+  </div>
+  <div class="md-source__repository">
+    Sarverott/P-jol-roll
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zuhause
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Leitfäden
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Leitfäden
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Was P_JOL_ROLL kann
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Was P_JOL_ROLL kann
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#gathering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sammeln
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verarbeitung
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keeping-and-moving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Halten und Bewegen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-and-showing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lesen und Vorführen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entwicklung
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Funktionen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gathering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sammeln
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Von Rohdateien zu Tabellen und Texten
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Andere Quellen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checkup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Überprüfung der Websites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../second-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sammeln auf einer zweiten Maschine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../huggingface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Daten verschieben auf Hugging Face
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Die Daten
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entwicklung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../translations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersetzungen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mastermind/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Das Law Mastermind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The code of law analysed, simulated, improved
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../torrents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Torrents pointed to by IPFS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mirrors on a WireGuard network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The chain of the law
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../devices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The person's devices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transparency/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The declaration of transparency
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reports to the authorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors-of-the-repository/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The repository on five more places
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sarverott/P-jol-roll/wiki/Devlog" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devlog (Wiki)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sarverott/P-jol-roll/wiki/Almanac" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Almanach (Wiki)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Changelog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 0: Räumt den Boden
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 1: Abhängigkeiten repariert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 3: BOS-Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 4: eine Website des Projekts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 5: Sammeln auf einer anderen Maschine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 6: Services, Init und Launcher
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 8: Releases und Routinen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 9: Logs, der Demospace, Dependabot's Branch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 10: ein Bucket, ein Datensatz, eine leichtere Demo, Beispiele
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 12: Texte von Handlungen, die nur eine PDF haben
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 18: Was brach nach v0.15.0, und der Almanach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-19/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 19: Jarvis tritt bei
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 20: Der Bucket Tidied, das Banner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-21/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 21: Die Notizen des Besitzers über src
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 22: Jede Funktion überall, ein Viewer, der glänzt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-28/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 28: der Host in seiner Ecke, der Devlog auf GitHub, das Wiki und die Packs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 29: Ankündigungen in der Diskussion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-30/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 30: Die erste Stimme des Masterminds
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-31/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 31: Modelfamilien, Ollama auf eigene Faust, Gespräche gehalten
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-32/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 32: Die KI der Demo - ein Chat auf dem eigenen Hugging Face des Besuchers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-33/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 33: the chat translated, and the executive agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-23/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 23: Das Bild baut sich wieder auf, ohne einen Bundler-Dialekt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 24: Kontrollen, was landet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-25/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 25: Checks vor einem Push, Schreiben funktioniert hinter einem Switch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-26/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 26: Ein Tor zum Master
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-27/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 27: der Raum von seinem vertrauenswürdigen Herausgeber, und wartete auf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_7">
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    für Agenten
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    für Agenten
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/NOTES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ANMERKUNGEN: Feststellungen von Agenten
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/jarvis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Jarvis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/things-to-check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dinge zu überprüfen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/ideas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ideen: Was, Wo, Wie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/point-of-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standpunkt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#gathering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sammeln
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verarbeitung
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keeping-and-moving" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Halten und Bewegen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-and-showing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lesen und Vorführen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Entwicklung
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/Sarverott/P-jol-roll/edit/development/docs/guides/features.md" title="Bearbeiten dieser Seite" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z" /></svg>
+    </a>
+  
+  
+
+
+<h1 id="what-p_jol_roll-can-do">Was P_JOL_ROLL kann<a class="headerlink" href="#what-p_jol_roll-can-do" title="Dauerhafte Verbindung">¶</a></h1>
+<p>Jede Funktion des Projekts, mit wie sicher wir sind, dass es funktioniert. Aktualisiert mit der Arbeit; der Plan für das, was fehlt, ist in
+<a href="https://github.com/Sarverott/P-jol-roll/wiki/Devlog-TODO">Der Devlog</a>Ältere Ideen in
+<a href="../../.agents/ideas/">Ideen</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Markierung</th>
+<th>Mittel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bauarbeiten</strong></td>
+<td>verwendet auf realen Daten, oder überprüft Ende zu Ende gegen eine lokale Kopie der Quelle; wie gesagt wird</td>
+</tr>
+<tr>
+<td><strong>gebaut</strong></td>
+<td>geschrieben und abgedeckt durch tests oder einen rauchlauf, nie auf der realen sache verwendet.</td>
+</tr>
+<tr>
+<td><strong>gewollt</strong></td>
+<td>beantragt oder geplant, nicht gebaut</td>
+</tr>
+</tbody>
+</table>
+<p>Staat 2026-11-13.</p>
+<h2 id="gathering">Sammeln<a class="headerlink" href="#gathering" title="Dauerhafte Verbindung">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Funktion</th>
+<th>Kommando</th>
+<th>Staat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Listen und Auflistungen jedes Jahres, beide Zeitschriften (DU, MP)</td>
+<td><code>task gather -- --all</code></td>
+<td><strong>Bauarbeiten</strong>: Die Maschine des Besitzers listete alle 164,638 Akte im Oktober 2026 auf</td>
+</tr>
+<tr>
+<td>Aktendateien: Einzelheiten, Referenzen, PDF, HTML</td>
+<td><code>task gather -- 2026 --acts --limit 5</code>, <code>task gather:everything</code></td>
+<td><strong>Bauarbeiten</strong>: DU 1918-1933 und ein Teil von 2026 gesammelt (34,482 Dateien, 10 GB); der Rest wird auf dem externen Computer gesammelt</td>
+</tr>
+<tr>
+<td>Struktur eines Textes, andere Texte ()<code>U</code>, <code>T</code>) einer Handlung</td>
+<td>Teile <code>struct</code>, <code>texts</code> von <code>gather</code></td>
+<td><strong>gebaut</strong>: Tests und jeweils eine echte Anfrage für die Form</td>
+</tr>
+<tr>
+<td>Unterbrechen und wieder anfangen, nichts zweimal gefragt</td>
+<td>Strg + C, dann der gleiche Befehl</td>
+<td><strong>Bauarbeiten</strong>: Dateien erscheinen nur im Ganzen; Checksum-Datensätze sagen, was hier ist</td>
+</tr>
+<tr>
+<td>Tägliche Änderungen</td>
+<td><code>task gather:changes</code></td>
+<td><strong>gebaut</strong>: Tests gegen eine lokale Kopie; eine echte Anfrage für die Form</td>
+</tr>
+<tr>
+<td>Checksummenaufzeichnungen jeder Datei</td>
+<td><code>task seal</code>, <code>task seal -- --check</code></td>
+<td><strong>Bauarbeiten</strong>: über die 34,482 realen Dateien in ein Scratch-Verzeichnis laufen, 0 unterscheiden sich</td>
+</tr>
+<tr>
+<td>Arbeit von Sejm: Prozesse, Drucke</td>
+<td><code>task sejm -- 10 --files --limit 50</code></td>
+<td><strong>gebaut</strong>: Tests; eine echte Anfrage pro Adresse</td>
+</tr>
+<tr>
+<td>Gerichtsurteile von SAOS</td>
+<td><code>task saos -- 2025 --limit 3</code>, <code>task saos -- --quality</code></td>
+<td><strong>works again</strong> (phase 41): SAOS refused every page with 406 until the crawler asked for JSON; <code>--quality</code> keeps the judgments it dates after today or before 1918 apart - 5 on 2026-11-24</td>
+</tr>
+<tr>
+<td>Websites, die Handlungen zeigen, die von einem Browser besucht werden</td>
+<td><code>task checkup -- 2026 --limit 6</code></td>
+<td><strong>gebaut</strong>: nur gegen eine lokale Seite laufen</td>
+</tr>
+<tr>
+<td>The sittings of Sejm: who spoke on each day, and what</td>
+<td><code>task sittings -- 10 --files</code></td>
+<td><strong>gebaut</strong>: tests against a copy of the API; not run against the source here (the owner starts gathering)</td>
+</tr>
+<tr>
+<td>An act's debates: the days its bill was read on, the statements naming its print</td>
+<td>the act's page, <code>/api/acts/.../debates</code>, MCP <code>act_debates</code></td>
+<td><strong>gebaut</strong>: tests; shows the processes and stages already gathered on this machine, the statements once <code>task sittings</code> has run</td>
+</tr>
+<tr>
+<td>Votings, interpellations of Sejm</td>
+<td></td>
+<td><strong>gewollt</strong></td>
+</tr>
+<tr>
+<td>Open Data Portal, Gerichtsregister, Statistik, Nationalbank</td>
+<td></td>
+<td><strong>gewollt</strong> (gesehen, siehe) <a href="../../.agents/ideas/">Ideen</a>)</td>
+</tr>
+<tr>
+<td>Europäisches Recht</td>
+<td></td>
+<td><strong>gewollt</strong>, vom Eigentümer abgesetzt</td>
+</tr>
+</tbody>
+</table>
+<h2 id="processing">Verarbeitung<a class="headerlink" href="#processing" title="Dauerhafte Verbindung">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Funktion</th>
+<th>Kommando</th>
+<th>Staat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tabellen mit Details und Referenzen, das Diagramm der Verbindungen</td>
+<td><code>task compile</code></td>
+<td><strong>Bauarbeiten</strong>Echte Dateien von 1918-1933 in ein Scratch-Verzeichnis, 45,658 Bindungen von 11,008 Akten</td>
+</tr>
+<tr>
+<td>Markdown von HTML, mit Prüfsummen von beiden</td>
+<td><code>task text</code></td>
+<td><strong>Bauarbeiten</strong> auf Akte von 1918-1933 (1,464 Dateien); neuere HTML und Tabellen nicht gesehen</td>
+</tr>
+<tr>
+<td>Markdown aus PDFs von Acts ohne HTML, Scans aufgelistet</td>
+<td><code>task text -- --pdf</code></td>
+<td><strong>Bauarbeiten</strong> auf DU 1953 (261 Akte) und MP 2021 (1206); nicht über den gesamten Eimer laufen</td>
+</tr>
+<tr>
+<td>Markdown von PDF (drei Viertel der Acts haben nur eine PDF)</td>
+<td></td>
+<td><strong>gewollt</strong></td>
+</tr>
+<tr>
+<td>Texte nach Artikel, einheitliche Texte bevorzugt</td>
+<td></td>
+<td><strong>gewollt</strong></td>
+</tr>
+<tr>
+<td>Ein Datensatz zum Trainieren eines Modells; ein Berater</td>
+<td></td>
+<td><strong>gewollt</strong> (Das ferne Ziel)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="keeping-and-moving">Halten und Bewegen<a class="headerlink" href="#keeping-and-moving" title="Dauerhafte Verbindung">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Funktion</th>
+<th>Kommando</th>
+<th>Staat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vergleichen Sie lokale Daten mit Hugging Face</td>
+<td><code>task resources:plan -- dataset</code></td>
+<td><strong>Bauarbeiten</strong>: vom Eigentümer betrieben</td>
+</tr>
+<tr>
+<td>Senden oder nehmen Sie nur, was sich unterscheidet</td>
+<td><code>task resources:push</code> / <code>pull -- dataset</code></td>
+<td><strong>gebaut</strong>: niemals von einem Agenten ausgeführt (Senden ist der Umzug des Besitzers)</td>
+</tr>
+<tr>
+<td>Täglicher Lauf, der auf "yes" wartet, bevor er drückt</td>
+<td><code>task workflows:daily</code>, <code>workflows:approve</code></td>
+<td><strong>gebaut</strong>: Ende an Ende gegen eine lokale Kopie, mit "no" und ohne Antwort; Q9 fragt, ob es zu behalten</td>
+</tr>
+<tr>
+<td>Sammeln auf einer zweiten Maschine</td>
+<td><a href="../second-machine/">zweite Maschine</a>; <code>RESOURCES_DIR</code> in <code>.env</code></td>
+<td><strong>gebaut</strong>: der Leitfaden und <code>.env</code> für jede Aufgabe; das Problem auf Parrot OS wartet auf seinen Fehler (Q1)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="reading-and-showing">Lesen und Vorführen<a class="headerlink" href="#reading-and-showing" title="Dauerhafte Verbindung">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Funktion</th>
+<th>Kommando</th>
+<th>Staat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Http api mit OpenAPI Beschreibung und Live-Mitteilungen</td>
+<td><code>task serve</code></td>
+<td><strong>Bauarbeiten</strong>: Tests und ein Browser über die realen Einträge</td>
+</tr>
+<tr>
+<td>Website: Der Betrachter von Acts</td>
+<td><code>task web:build</code>, dann <code>task serve</code></td>
+<td><strong>Bauarbeiten</strong>: Headless-Browser über die echten Einträge (Liste, Act, PDF-Link)</td>
+</tr>
+<tr>
+<td>Suche über jedes Jahr (Typesense): Titel, Keywords, Textanfänge, Filter nach Typ und Status</td>
+<td><code>task search:index</code>, <code>/api/search</code>"every year" des Betrachters</td>
+<td><strong>Bauarbeiten</strong>: 165,006 Akte indiziert in 10 s (20 s mit Texten, 444 MB im Speicher); Headless Browser gesucht, gefiltert, sah die markierten Wörter</td>
+</tr>
+<tr>
+<td>Der Betrachter, die Einführung und die Dokumentation auf Polnisch, Ukrainisch und Deutsch und der Launcher, die REPL und die Aufgabenbeschreibungen (Packs von) <code>resources/locales/</code>, 1583 Texte</td>
+<td><code>?lang=PL-PL</code> oder den Schalter; <code>/docs/pl-pl/</code>; <code>P_JOL_ROLL_LANG=PL-PL task</code></td>
+<td><strong>Bauarbeiten</strong>: Headless Browser, Daten und Code unberührt, zurück nach Englisch ohne Nachladen; die Packungen sind maschinelle Übersetzungen, nicht von einer Person gelesen</td>
+</tr>
+<tr>
+<td>Vektoren von Texten eines lokalen mehrsprachigen Modells (Ollama, bge-m3)</td>
+<td><code>task embed</code></td>
+<td><strong>Bauarbeiten</strong>: DU 2020 in einer Kopie, 2453 Vektoren in 1 min 46 s; ein zweiter Durchlauf hielt sie alle</td>
+</tr>
+<tr>
+<td>Suche nach Bedeutung in jeder Sprache (Typesense Hybrid, die Frage nach dem gleichen Modell) und eine Karte nach Bedeutung</td>
+<td><code>/api/search?meaning=1</code>"by meaning" des Betrachters; <code>task map -- statutes-in-force-by-meaning</code></td>
+<td><strong>Bauarbeiten</strong> zu DU 2020 in einer Kopie: eine englische Frage fand polnische Handlungen; 63 Statuten an ihre nächste gebunden</td>
+</tr>
+<tr>
+<td>Die Karte des gesamten Gesetzes (sigma.js), aus Presets</td>
+<td><code>task map</code>Der Tab des Betrachters</td>
+<td><strong>Bauarbeiten</strong>: drei Presets aus dem realen Datensatz in 53 s (0.4-2.8 MB); Headless Browser zeichnet sie, schwebt und klickt überprüft</td>
+</tr>
+<tr>
+<td>Bindungen eines gezeichneten Aktes (mermaid, eine Zeichnung für api, MCP und Viewer) und eine Minimap davon (Cytoscape.js)</td>
+<td><code>/api/acts/&lt;eli&gt;/diagram</code>Der Betrachter</td>
+<td><strong>Bauarbeiten</strong>: Headless-Browser über DU 2020, ein Klick auf einen Knoten öffnet sich, der agiert</td>
+</tr>
+<tr>
+<td>Signing a PDF with a FIDO key, checked offline</td>
+<td>the window's menu, the tray, <code>task sign:verify</code></td>
+<td><strong>gebaut</strong>: signed and verified with a security key simulated by Chromium; the app starts with its window at localhost; a real key on USB not tried here</td>
+</tr>
+<tr>
+<td>A label of an act for a Bluetooth sticker printer; the act for a phone as a QR code</td>
+<td>the window's menu, the tray</td>
+<td><strong>gebaut</strong>: the label's ESC/POS bytes tested; no printer tried here</td>
+</tr>
+<tr>
+<td>The chain of the law: the mirrors agree on the roots of <code>task seal</code> by Cosmos SDK</td>
+<td><code>task chain:build</code>, <code>task chain:seal</code>, <code>lawchaind query law agreement</code></td>
+<td><strong>Bauarbeiten</strong> on one machine: the module's tests with four mirrors, a chain of one mirror started for real (a year sealed and agreed, a stranger refused); the image builds; no network of mirrors has had its genesis yet</td>
+</tr>
+<tr>
+<td>Mirrors of the law on a WireGuard network, balanced by Traefik</td>
+<td><code>task mirror:up -- &lt;mirror&gt;</code>, <code>task unittesting:mirrors</code></td>
+<td><strong>Bauarbeiten</strong> in containers: two mirrors with a real WireGuard tunnel, Traefik answering from both, keys equal to <code>wg pubkey</code>'s; the profile <code>mirror</code> with the real api not started here; no mirror runs on a machine of a voivodeship yet</td>
+</tr>
+<tr>
+<td>The dataset and the bucket as torrents pointed to by IPFS</td>
+<td><code>task torrents</code>, <code>task torrents:publish</code></td>
+<td><strong>Bauarbeiten</strong> for the dataset: 12 torrents of 4.6 GB in 18 s, a torrent's pieces checked by an independent reader, every CID equal to kubo's, the CAR imported by kubo; the bucket's 189 GB not hashed here; not published (the owner's move)</td>
+</tr>
+<tr>
+<td>The law of the EU binding Poland: every act of a year, Polish titles and texts</td>
+<td><code>task eu -- 2024</code>, MCP <code>eu_law</code>, <code>/api/eu</code></td>
+<td><strong>Bauarbeiten</strong>: 2024's listing taken here (3,765 acts, 2,310 in force); texts tested against a stand-in, not taken from the source here</td>
+</tr>
+<tr>
+<td>International agreements published in the journals</td>
+<td><code>task international</code>, MCP <code>agreements</code>, <code>/api/agreements</code></td>
+<td><strong>Bauarbeiten</strong>: 9,480 indexed from the listings here</td>
+</tr>
+<tr>
+<td>Local and regional law: the voivodeships' official journals</td>
+<td><code>task regional</code>, MCP <code>regional_law</code>, <code>/api/regional</code></td>
+<td><strong>Bauarbeiten</strong> for ten of sixteen: Lublin's 2026 taken here (5,635 acts); the other six refused (certificates, a timeout, another platform)</td>
+</tr>
+<tr>
+<td>Public tenders: e-Zamówienia and TED, by day</td>
+<td><code>task tenders</code>, MCP <code>tenders</code>, <code>/api/tenders</code></td>
+<td><strong>Bauarbeiten</strong>: 2026-11-20 taken here in 2 minutes - 2,631 notices of e-Zamówienia, 529 of TED; its API read as a cursor (it ignores the time of its end date, found in phase 44)</td>
+</tr>
+<tr>
+<td>The repository and its devlog on five more places</td>
+<td><code>mirrors.yml</code>, <code>task mirrors</code></td>
+<td><strong>gebaut</strong>: our own Gitea checked in a container (every branch, 7 milestones and 78 issues, written again with no change); the other four wait for their tokens (Q21)</td>
+</tr>
+<tr>
+<td>Reports to the authorities by mail: drafted with evidence, sent after a person's yes</td>
+<td><code>task report:draft</code>, <code>task report:send</code></td>
+<td><strong>gebaut</strong>: three real drafts (certificates of voivodeships' journals) to CERT Polska; sending tested with a transport that only says what it would send; nothing sent (Q20)</td>
+</tr>
+<tr>
+<td>The declaration of transparency: public offices' contacts and places, the state's networks</td>
+<td><code>task python:offices</code>, <code>python:geocode</code>, <code>python:networks</code>, MCP <code>transparency</code></td>
+<td><strong>Bauarbeiten</strong>: 4,933 offices taken here, a sample of 20 placed by Nominatim, 89 public organisations of RIPE with 108 networks and 82 autonomous systems</td>
+</tr>
+<tr>
+<td>The code of law analysed: every act in force against its ties</td>
+<td><code>task analyse</code>, MCP <code>analysis</code>, <code>/api/analysis</code>, the act's page</td>
+<td><strong>Bauarbeiten</strong>: 23,238 acts in force checked here in 2 s, 3,937 findings; tests on made-up acts for each kind and its exceptions</td>
+</tr>
+<tr>
+<td>The simulation bubble: invented people talk about an act in rounds</td>
+<td><code>task python:simulate -- DU/1997/939</code></td>
+<td><strong>Bauarbeiten</strong>: three people, two rounds of the Banking Law in 48 s (ministral-3:8b); tests against a stand-in</td>
+</tr>
+<tr>
+<td>Improvements proposed by a model from the act, its findings, debates and simulations</td>
+<td><code>task python:propose -- DU/1997/939</code></td>
+<td><strong>Bauarbeiten</strong>: qwen3:8b wrote one proposal per finding of the Banking Law from its consolidated text of 2026; a model's words, checked by nobody</td>
+</tr>
+<tr>
+<td>The advanced strategy: a weak answer on to a deepseek hosted by Hugging Face</td>
+<td><code>task mastermind:ask -- --escalate</code> / <code>--hard</code>, <code>/api/ask?escalate=1</code>, the switch in the chat</td>
+<td><strong>gebaut</strong>: tested against stand-ins of the host's model and of Inference Providers; not seen answering for real - the owner's token gets 402 until it has credits</td>
+</tr>
+<tr>
+<td>The Python stack: the law through the MCP tools, the mastermind through the api</td>
+<td><code>stacks/python/</code>, <code>task python:law</code>, <code>task python:check</code></td>
+<td><strong>Bauarbeiten</strong>: its tests start the MCP server over stdio on a dataset of their own; <code>act</code> read from this machine's resources</td>
+</tr>
+<tr>
+<td>The executive agent: a task done by qwen through MCP, written into <code>resources/agent/</code></td>
+<td><code>task agent</code>, <code>task agent:container</code></td>
+<td><strong>Bauarbeiten</strong> (its own rounds): the school decree of 1919 read and summed up into a file, correctly, the act marked read; opencode 2 as host not yet reliable; the container's image builds with opencode 2.0.23, the run in it not done here</td>
+</tr>
+<tr>
+<td>Das Law Mastermind als Chat im Viewer ()<code>#ask</code>); auf dem Demo-Space auf dem eigenen Hugging Face des Besuchers</td>
+<td>die Lasche "ask the law", <code>/login</code></td>
+<td><strong>gebaut</strong>Der chat wurde in einem headless-browser auf diesem rechner eingecheckt (ministral-3:8b, desktop und telefon); die anmeldung und der pfad des raums wurde gegen stand-ins getestet; der echte pfad wurde von Hugging Face aus mangel an credits abgelehnt (402), so dass noch nicht auf dem raum geantwortet wurde.</td>
+</tr>
+<tr>
+<td>Das Gesetz Mastermind: eine Frage beantwortet aus Handlungen durch MCP, zitiert von ELI (deepseek-r1:8b)</td>
+<td><code>task mastermind:ask</code>, <code>/api/ask</code> mit <code>MASTERMIND_URL</code>, Compose-Profil <code>mastermind</code></td>
+<td><strong>Bauarbeiten</strong>: das Ollama des Hosts auf einer RTX 3060, 30 s bis 3 min pro Frage; <code>/api/ask</code> im Bild dagegen; die Zitate überprüft. Der Kompositionslauf mit eigenem Ollama hat hier nicht angefangen</td>
+</tr>
+<tr>
+<td>Handeln Sie nach Bedeutung in MCP (<code>search_meaning</code>)</td>
+<td>MCP, <code>task do -- meaning "..."</code></td>
+<td><strong>Bauarbeiten</strong>: jedes eingebettete Jahr (761 MB von Vektoren) als int8 gehalten, 1.5 s eine Frage nach dem ersten</td>
+</tr>
+<tr>
+<td>MCP Server für KI-Agenten, Read-only</td>
+<td><code>task mcp</code>, <code>/mcp</code> api und der Raum, <code>task mcp:ask</code></td>
+<td><strong>gebaut</strong>: Tools aufgelistet und aufgerufen über stdio und über http</td>
+</tr>
+<tr>
+<td>Desktop-Fenster</td>
+<td><code>task desktop</code></td>
+<td><strong>gebaut</strong>: vom Eigentümer geöffnet, das Portproblem danach behoben und nicht wieder geöffnet</td>
+</tr>
+<tr>
+<td>Android App App App</td>
+<td><code>task app:sync</code></td>
+<td><strong>gewollt</strong>: konfiguriert, Kondensator nicht installiert</td>
+</tr>
+<tr>
+<td>Browsererweiterung (Firefox, Chrome)</td>
+<td><code>task extension</code></td>
+<td><strong>gebaut</strong>Zitate aus sieben Beispielen gelesen; nicht in einem Browser geladen</td>
+</tr>
+<tr>
+<td>Container: Website und api ()<code>webapp-server</code>)</td>
+<td><code>docker compose up</code></td>
+<td><strong>Bauarbeiten</strong>: das schlanke Bild gebaut, veröffentlicht bis ghcr.io von jedem Release, serviert auf 7860 für die Demo</td>
+</tr>
+<tr>
+<td>Dienste: Docs, Demo, Daemons, Routing, DNS, LLMs, Suche</td>
+<td><code>docker compose --profile &lt;name&gt; up</code></td>
+<td><strong>gebaut</strong>Jeder begann einmal und antwortete; die Dämonen wurden nicht ausgeführt, sie würden sich versammeln.</td>
+</tr>
+<tr>
+<td>Eine Shell für Agenten ()<code>agentic-shell</code>)</td>
+<td><code>task shell</code></td>
+<td><strong>gebaut</strong>: started, node, task, uv und git answer, das Repository ist beschreibbar, kein Docker-Socket, kein root (Q13)</td>
+</tr>
+<tr>
+<td>Launcher: Was Sie tun möchten, jede Funktion fragt, was sie braucht; jede Aufgabe; eine REPL</td>
+<td><code>task</code></td>
+<td><strong>gebaut</strong>: in einem Pseudoterminal getrieben (lesen Sie das Gesetz → darin beantwortete Handlungen); termui selbst bleibt ein Experiment (Q4)</td>
+</tr>
+<tr>
+<td>Der Host in seiner Ecke: das Release und was läuft es ()<code>HF-demo-readonly-container</code>), die ganze Note auf einem Schwebeflug oder einer Berührung</td>
+<td><code>/api/host</code>Jede Seite des Viewers</td>
+<td><strong>Bauarbeiten</strong>: Tests; gesehen in einem Browser bei 1280 und 360 Pixeln, die Ecke die gleiche Größe vor und nach einem Schwebeflug</td>
+</tr>
+<tr>
+<td>Jede Funktion in jeder Hinsicht: ein Katalog, <code>task do</code>, die REPL, <code>/api/catalog</code>, die Karte der Funktionen</td>
+<td><code>task do</code>, <code>task functions:map</code></td>
+<td><strong>Bauarbeiten</strong>: Tests; Messwerte im Terminal über den realen Datensatz beantwortet</td>
+</tr>
+<tr>
+<td>Der Rest des Datensatzes in der api, MCP und der Betrachter: die Arbeit von Sejm, Urteile, die Listen der Quelle, die Taten gezählt</td>
+<td><code>/api/sejm</code>, <code>/api/judgments</code>, <code>/api/lists</code>, <code>/api/statistics</code>; <code>task stats</code></td>
+<td><strong>Bauarbeiten</strong>: Tests; Headless Browser über eine Kopie von Begriff 10 und zwei Jahren</td>
+</tr>
+<tr>
+<td>Plots und Statistiken mit einer spielbaren Geschichte des Gesetzes</td>
+<td>Die Tabs des Betrachters</td>
+<td><strong>Bauarbeiten</strong>: Headless Browser, gespielt</td>
+</tr>
+<tr>
+<td>Einstellungen des Betrachters, jede Funktion gezeigt (Schreiben deaktiviert), "Terms of use"</td>
+<td>der Betrachter</td>
+<td><strong>Bauarbeiten</strong>Headless Browser</td>
+</tr>
+<tr>
+<td>WebMCP: das Lesen, das einem Agenten im Browser angeboten wird</td>
+<td>der Betrachter</td>
+<td><strong>gebaut</strong>: sechs Werkzeuge registriert am <code>document.modelContext</code> in einem Headless Browser; noch nicht von einem Agenten aufgerufen</td>
+</tr>
+<tr>
+<td>Kartensteuerung: Zoom, die ganze Karte, ein Akt gefunden</td>
+<td>Die Karte des Betrachters</td>
+<td><strong>Bauarbeiten</strong>Kopfloser Browser, die Kamera ging zur Tat</td>
+</tr>
+<tr>
+<td>Drucken eines Akts oder einer PDF davon aus der Desktop-App</td>
+<td><code>task desktop</code></td>
+<td><strong>gebaut</strong>: die Druckstile, die in einem Headless-Browser überprüft wurden; die App wurde versteckt geprüft, nicht auf Papier gedruckt</td>
+</tr>
+<tr>
+<td>Der Raum nach jedem Release für sich</td>
+<td>den Release-Workflow, <code>task resources:space:refresh</code></td>
+<td><strong>gebaut</strong>: ohne ein Zeichen sagt es so; nicht gegen Hugging Face laufen (braucht das Geheimnis) <code>HF_TOKEN</code>)</td>
+</tr>
+<tr>
+<td>Der lebende Hintergrund der Einführung (p5.js)</td>
+<td>Die Website</td>
+<td><strong>Bauarbeiten</strong>: Headless Browser, hell, dunkel und ein Telefon</td>
+</tr>
+<tr>
+<td>Website des Projekts: Idee und Zustand</td>
+<td><code>task docs:build</code></td>
+<td><strong>Bauarbeiten</strong>: veröffentlicht auf GitHub Seiten und Read the Docs von jedem Release</td>
+</tr>
+<tr>
+<td>Löschen auf Hugging Face, was nicht hier ist (Dataset, Space)</td>
+<td><code>task resources:prune -- space</code></td>
+<td><strong>gebaut</strong>: nicht laufen - es löscht dort, das ist der Besitzer</td>
+</tr>
+<tr>
+<td>Icons und die Karte eines gemeinsamen Links (Favicon, Manifest), <code>og:image</code>)</td>
+<td><code>task resources:media</code></td>
+<td><strong>gebaut</strong>Hergestellt aus dem gist <code>resources/mediafiles</code> mit ffmpeg; geprüft in den gebauten Seiten, noch nicht in einem echten Anteil</td>
+</tr>
+<tr>
+<td>Links zu Acts im Hugging Face Space</td>
+<td></td>
+<td><strong>gewollt</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="development">Entwicklung<a class="headerlink" href="#development" title="Dauerhafte Verbindung">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Funktion</th>
+<th>Kommando</th>
+<th>Staat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alle Kontrollen</td>
+<td><code>task verify</code></td>
+<td><strong>Bauarbeiten</strong>, außer dem Termui-Experiment (Q4)</td>
+</tr>
+<tr>
+<td>Kontrollen auf GitHub</td>
+<td><code>.github/workflows/checks.yml</code></td>
+<td><strong>Bauarbeiten</strong>: am Gate einer Pull Request in den Master, der Release, die Bots</td>
+</tr>
+<tr>
+<td>Tor zum Meister</td>
+<td><code>.github/workflows/gate.yml</code></td>
+<td><strong>gebaut</strong>: Autoren, verifizieren, CodeQL, Snyk, OSSAR, dann automerge; noch nicht auf GitHub laufen (Phase 26)</td>
+</tr>
+<tr>
+<td>Workflows von einem Terminal</td>
+<td><code>task github:run</code>, <code>github:gate</code>, <code>github:pending</code></td>
+<td><strong>gebaut</strong>: <code>gh</code> Konto des Eigentümers</td>
+</tr>
+<tr>
+<td>Haken: Biome vor einem Commit, konventionelle Nachrichten</td>
+<td>Githaken</td>
+<td><strong>Bauarbeiten</strong>: beide verweigern schlechte Eingabe (seit 2026-11-13; davor haben sie nie blockiert)</td>
+</tr>
+<tr>
+<td>Updates der Abhängigkeit</td>
+<td><code>.github/dependabot.yml</code></td>
+<td><strong>gebaut</strong>: aktiv, wenn es erreicht wird <code>master</code></td>
+</tr>
+<tr>
+<td>Bots-Niederlassungen (Dependabot, Jarvis)</td>
+<td><code>.github/workflows/bots.yml</code>, <code>bots-land.yml</code></td>
+<td><strong>gebaut</strong>: aktiv, sobald sie erreicht sind <code>master</code></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z" /></svg>
+  Zurück nach oben
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Sett Sarverott, AGPL-3.0-only. Keine (formal) Rechtsberatung.
+    </div>
+  
+  
+    Hergestellt mit
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material für MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "content.action.edit", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>

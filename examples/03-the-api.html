@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/apple-touch-icon.png" />
+    <link rel="manifest" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>03-the-api.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>03-the-api</title>
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/index-s-M1OXjs.js"></script>
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/rolldown-runtime-B0Z9INg1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/react-DVplv7_D.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/compiler-runtime-BrajqUja.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useEvent-Dfcbgjhg.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/react-dom-_LrxgvjW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/schemas-Dv42wLFq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/isObject-BCaOs5rp.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/isSymbol-oX0TOjjx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/now-Cmx0b_zA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/debounce-aFmHgJZY.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/isArrayLikeObject-DnwgSs_Z.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/_baseMerge-CQpUq7ep.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/objects-snlMn4yk.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useEventListener-D9cftcHj.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/invariant-Ci2dTZ72.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/config-VPSq73n8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/utils-B4K466FK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/session-DqoWmb7X.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/Deferred-CrTnjj37.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/config-DX8Y2WbJ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/clsx-DB0hHKMi.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/cn-ldLVeaqm.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/jsx-runtime-B74pBk57.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/fullscreen-B9tHcfpV.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-iaThVDkA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/menu-items-BrwnTgyK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/use-restore-focus-BxEGwIbk.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/createLucideIcon-DfJ2oMlA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/circle-DXf-VWZG.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/button-COI-NGrx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/check-BQNapYaf.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/I18nProvider-Cg2I_s1_.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useNumberFormatter-D7O_26UI.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/select-DTBn5eTb.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/toast-BGzLGnvw.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/tooltip-C9TuY18o.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/paths-bkIFVj8h.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useLifecycle-Mq4gc5kS.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/toDate-DOj9Q6uC.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/database-zap-B_PMVg8T.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/alert-dialog-BaPGzeOK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/arrays-BqUx5USx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/once-Haz_uxEL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/numbers-Mk3-CcoU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useDebounce-B_ccBZTp.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/input-BoBxR50a.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/use-toast-Wu434mLr.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/requests-lt0JK8Jt.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/uuid-k9DpjH68.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/write-secret-modal-DzKAInL2.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/plus-C5silF6g.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/trash-2-DcgaW8fn.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/preload-helper-uBIymjUX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-Cny7_yZb.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-DBMV4gqt.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/capabilities-BJvf-MD4.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/cjs-C49f7GXV.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/createReducer-DgRODTW6.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-qhAY4L2r.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/marked.esm-B_3iMIUq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/strings-B2vv-ENv.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-BOfh4hMd.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/badge-crT3E0Rm.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-DtH-7lot.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-BmExfiwX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-1tmpVXyz.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-LSsCJjA3.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-DusFODSa.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/stex-Dc5bKD4z.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useTheme-COhSHkCj.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useAsyncData-C7aJJz0Y.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/purify.es--06brOip.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/cells-BRkCaSsh.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/coerce-CpE6kUdX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/get-DjNf4SIX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/_hasPath-BmRQipI0.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/hasIn-yw4sIeJR.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/_baseSet-Bpdo9AvU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/pick-DKIID_Mo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/state-BAJYRhmO.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/state-C3oDoyFe.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/LazyAnyLanguageCodeMirror-CKcCbG2G.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/copy-D8O_CYCG.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/micromark-factory-space-D9Dr-k4J.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/chunk-YOKDWASO-BIpRENEC.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/markdown-renderer-BG3sp2rs.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/copy-Djr5m5ac.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/copy-icon-BIiRXh_3.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useRunCells-B2vUhREg.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/RenderHTML-BbOqmHy3.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/blob-D5nfNHOo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/kbd-pdKBv96t.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useInstallPackage-iX1eufdl.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/errors-DCrsa1nH.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/api-BeC_VSGv.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/share-BZW3tzEX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/events-CbeVJ6OD.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/state-_Qai_QyX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/pair-CaQyK6En.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/ErrorBoundary-Gl5nCA8C.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/config-BOKzA3tF.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/chevron-right-eAtVhbNZ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dropdown-menu-C1rnl-0o.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/html-to-image-DK9Zl1lU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/download-DCJXy66H.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/switch-CTaiAjrz.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/tabs-BuQlZFbt.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/table-DG7Ap4H4.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/eye-off-CxVozGAC.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/refresh-cw-Qw1f8Jhy.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/tree-actions-GM5E_bUs.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/ellipsis-63DyBLHQ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/external-link-UrX9KO36.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/spinner-DyNE-o8o.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/message-circle-C3rKm8_a.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/hat-glasses-C8RhSVii.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/package-GSoSTiIK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/datasource-Cq6x_5ML.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/alert-DTaqCu_d.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/state-XsPO8hNi.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/cell-link-LSth_8hT.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/MarimoErrorOutput-D60XkCny.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useDateFormatter-DA-62E-Y.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/en-US-Buu61juQ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/isValid-q_Ad80ug.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dates-BbFQ2oE4.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/defaultLocale-CNPGWpMu.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/precisionRound-Bq_nmf5u.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/defaultLocale-D5bOh7g6.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/vega-loader.browser-CLRkNgm7.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/tooltip-mT3CGest.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/react-icons.esm-D6tfmvq8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/extends-CvVTau-c.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/objectWithoutPropertiesLoose-Do6ywDBO.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useIframeCapabilities-CwTkczVN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/error-banner-Cd69vvyX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/utils-CaQYvazl.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/formats-yZ06h1Pl.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/table-vrvqpuKJ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/react-resizable-panels.browser.esm-Dbe0MrFr.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/JsonOutput-D6HIIsCb.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/chart-no-axes-column-C4_v6fQW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/square-function-_W_Lo0P4.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/spec-BfSBcO5B.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/semaphore-BjoL5P0h.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/fileToBase64-BgBraYAr.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useBoolean-BDD6_xQQ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/code-xml-SQaZqvcO.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/file-headphone-Dl35U6h3.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/file-BPBVl9pl.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/image-wZvTj8WY.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/file-icons-CdJgUy-I.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/globe-UdPdIbF7.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/esm-CI_o7NhW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useAddCell-GR7eEQrT.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/readonly-python-code-DCSMIsTX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/data-grid-types-DgHVN_Zz.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/glide-utils-CIrAxdjv.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/column-preview-Cm2D6vyX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/square-BPmgQFnh.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/triangle-alert-DmIqR8sY.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/prop-types-Djf4O40e.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/es-Cqst59WX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/package-data-dv4FBHxR.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/markdown-export-DzhB1FrN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/renderShortcut-BkVJQ_Zh.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/bundle.esm-D3tw5rqW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/icons-CiZ_8zS-.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useDeepCompareMemoize-DFIVN9dn.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/pathUtils-DPmlLd-r.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/floating-outline-XD9FAV-f.js">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/cells-0PFKL3SH.css">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/markdown-renderer-DjIHoF9Z.css">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/JsonOutput-B0GmlMnR.css">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/index-Bcdzex-3.css">
+  
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_STATIC__", {
+        value: Object.freeze({
+            files: Object.freeze({}),
+            modelNotifications: Object.freeze([]),
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "import marimo\n\n__generated_with = \"0.25.2\"\napp = marimo.App()\n\n\n@app.cell\ndef _():\n    import marimo as mo\n\n    return (mo,)\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    # 3. The api of the webapp\n\n    The project's own server (`task serve` at home, or the demo space) answers\n    under `/api`, described at `/openapi.json`. The same api feeds the website,\n    the desktop window, the browser extension and the MCP server.\n\n    The dataset is public: nothing here needs a token. Run it with\n    `uv run --project examples --with jupyterlab jupyter lab examples/notebooks` (or the marimo version: `task examples:convert`, then\n    version: `task examples:convert`, then\n    `uv run --project examples marimo edit examples/marimo`).\n\n    `P_JOL_ROLL_API` points it elsewhere; by default it asks the demo space.\n    \"\"\")\n    return\n\n\n@app.cell\ndef _():\n    import os\n\n    import pandas as pd\n    import requests\n\n    API = os.environ.get(\"P_JOL_ROLL_API\", \"https://sarverott-docs-of-law-by-gov-in-poland.hf.space\").rstrip(\"/\")\n\n\n    def get(path, **params):\n        answer = requests.get(f\"{API}{path}\", params=params, timeout=120)\n        answer.raise_for_status()\n        return answer\n\n\n    try:\n        journals = get(\"/api/journals\").json()\n        print([(journal[\"code\"], len(journal[\"years\"])) for journal in journals])\n    except Exception as error:  # the space may be asleep or starting\n        journals = []\n        print(f\"{API} does not answer now:\", error)\n    return get, journals, pd\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## Searching titles of a year\n    \"\"\")\n    return\n\n\n@app.cell\ndef _(get, journals, pd):\n    if journals:\n        found = get(\"/api/acts/DU/2025\", q=\"podatku\", limit=20).json()\n        print(found[\"total\"], \"acts with this word in the title\")\n        shown = pd.DataFrame(found[\"items\"], columns=[\"pos\", \"title\", \"status\"])\n    else:\n        shown = \"no answer from the api\"\n    shown\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    ## One act and its ties\n    \"\"\")\n    return\n\n\n@app.cell\ndef _(get, journals, pd):\n    if journals:\n        view = get(\"/api/acts/DU/2016/1\").json()\n        print(view[\"act\"][\"title\"])\n        print(\"files:\", view[\"files\"], \"- markdown:\", view[\"markdown\"])\n        ties = pd.DataFrame(get(\"/api/acts/DU/2016/1/references\").json())\n    else:\n        ties = \"no answer from the api\"\n    ties\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    A raw file, `/api/acts/DU/2016/1/file/.pdf`, is served by the server at\n    home and redirected to the bucket by the demo.\n    \"\"\")\n    return\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "03-the-api.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.25.2",
+            "serverToken": "static",
+            "config": {"ai": {"allow_provider_config": true, "custom_providers": {}, "enabled": true, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "auto_close_pairs": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "code_lens": true, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "uv"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "after_delay", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "compact"},
+            "layout": null,
+            "view": {"showAppCode": true},
+            "notebook": {"cells": [{"code": "import marimo as mo", "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e", "config": {"column": null, "disabled": false, "expand_output": false, "hide_code": false}, "id": "Hbol", "name": "_"}, {"code": "mo.md(r\"\"\"\n# 3. The api of the webapp\n\nThe project's own server (`task serve` at home, or the demo space) answers\nunder `/api`, described at `/openapi.json`. The same api feeds the website,\nthe desktop window, the browser extension and the MCP server.\n\nThe dataset is public: nothing here needs a token. Run it with\n`uv run --project examples --with jupyterlab jupyter lab examples/notebooks` (or the marimo version: `task examples:convert`, then\nversion: `task examples:convert`, then\n`uv run --project examples marimo edit examples/marimo`).\n\n`P_JOL_ROLL_API` points it elsewhere; by default it asks the demo space.\n\"\"\")", "code_hash": "6b40b3b86cf967a2eddec02be976a204", "config": {"column": null, "disabled": false, "expand_output": false, "hide_code": true}, "id": "MJUe", "name": "_"}, {"code": "import os\n\nimport pandas as pd\nimport requests\n\nAPI = os.environ.get(\"P_JOL_ROLL_API\", \"https://sarverott-docs-of-law-by-gov-in-poland.hf.space\").rstrip(\"/\")\n\n\ndef get(path, **params):\n    answer = requests.get(f\"{API}{path}\", params=params, timeout=120)\n    answer.raise_for_status()\n    return answer\n\n\ntry:\n    journals = get(\"/api/journals\").json()\n    print([(journal[\"code\"], len(journal[\"years\"])) for journal in journals])\nexcept Exception as error:  # the space may be asleep or starting\n    journals = []\n    print(f\"{API} does not answer now:\", error)", "code_hash": "d386ce4c1d06dbdd4a912ff3a1d42fb8", "config": {"column": null, "disabled": false, "expand_output": false, "hide_code": false}, "id": "vblA", "name": "_"}, {"code": "mo.md(r\"\"\"\n## Searching titles of a year\n\"\"\")", "code_hash": "3abc9cca6dbca309d2235e62e2c2dc2a", "config": {"column": null, "disabled": false, "expand_output": false, "hide_code": true}, "id": "bkHC", "name": "_"}, {"code": "if journals:\n    found = get(\"/api/acts/DU/2025\", q=\"podatku\", limit=20).json()\n    print(found[\"total\"], \"acts with this word in the title\")\n    shown = pd.DataFrame(found[\"items\"], columns=[\"pos\", \"title\", \"status\"])\nelse:\n    shown = \"no answer from the api\"\nshown", "code_hash": "935962a04fbf36df06548fb663516213", "config": {"column": null, "disabled": false, "expand_output": false, "hide_code": false}, "id": "lEQa", "name": "_"}, {"code": "mo.md(r\"\"\"\n## One act and its ties\n\"\"\")", "code_hash": "633de388dcffa3244e715eec3d483c07", "config": {"column": null, "disabled": false, "expand_output": false, "hide_code": true}, "id": "PKri", "name": "_"}, {"code": "if journals:\n    view = get(\"/api/acts/DU/2016/1\").json()\n    print(view[\"act\"][\"title\"])\n    print(\"files:\", view[\"files\"], \"- markdown:\", view[\"markdown\"])\n    ties = pd.DataFrame(get(\"/api/acts/DU/2016/1/references\").json())\nelse:\n    ties = \"no answer from the api\"\nties", "code_hash": "44cebacb31660a4dbd7349da8b4f7189", "config": {"column": null, "disabled": false, "expand_output": false, "hide_code": false}, "id": "Xref", "name": "_"}, {"code": "mo.md(r\"\"\"\nA raw file, `/api/acts/DU/2016/1/file/.pdf`, is served by the server at\nhome and redirected to the bucket by the demo.\n\"\"\")", "code_hash": "f792036ab86ec74c5c920a16cc9621e5", "config": {"column": null, "disabled": false, "expand_output": false, "hide_code": true}, "id": "SFPL", "name": "_"}], "metadata": {"marimo_version": "0.25.2"}, "version": "1"},
+            "session": {"cells": [{"code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e", "console": [], "id": "Hbol", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "6b40b3b86cf967a2eddec02be976a204", "console": [], "id": "MJUe", "outputs": [{"data": {"text/markdown": "\u003Cspan class=\"markdown prose dark:prose-invert contents\"\u003E\u003Ch1 id=\"3-the-api-of-the-webapp\"\u003E3. The api of the webapp\u003C/h1\u003E\n\u003Cspan class=\"paragraph\"\u003EThe project's own server (\u003Ccode\u003Etask serve\u003C/code\u003E at home, or the demo space) answers\nunder \u003Ccode\u003E/api\u003C/code\u003E, described at \u003Ccode\u003E/openapi.json\u003C/code\u003E. The same api feeds the website,\nthe desktop window, the browser extension and the MCP server.\u003C/span\u003E\n\u003Cspan class=\"paragraph\"\u003EThe dataset is public: nothing here needs a token. Run it with\n\u003Ccode\u003Euv run --project examples --with jupyterlab jupyter lab examples/notebooks\u003C/code\u003E (or the marimo version: \u003Ccode\u003Etask examples:convert\u003C/code\u003E, then\nversion: \u003Ccode\u003Etask examples:convert\u003C/code\u003E, then\n\u003Ccode\u003Euv run --project examples marimo edit examples/marimo\u003C/code\u003E).\u003C/span\u003E\n\u003Cspan class=\"paragraph\"\u003E\u003Ccode\u003EP_JOL_ROLL_API\u003C/code\u003E points it elsewhere; by default it asks the demo space.\u003C/span\u003E\u003C/span\u003E"}, "type": "data"}]}, {"code_hash": "d386ce4c1d06dbdd4a912ff3a1d42fb8", "console": [{"mimetype": "text/plain", "name": "stdout", "text": "[('DU', 105), ('MP', 92)]\n", "type": "stream"}], "id": "vblA", "outputs": [{"data": {"text/plain": ""}, "type": "data"}]}, {"code_hash": "3abc9cca6dbca309d2235e62e2c2dc2a", "console": [], "id": "bkHC", "outputs": [{"data": {"text/markdown": "\u003Cspan class=\"markdown prose dark:prose-invert contents\"\u003E\u003Ch2 id=\"searching-titles-of-a-year\"\u003ESearching titles of a year\u003C/h2\u003E\u003C/span\u003E"}, "type": "data"}]}, {"code_hash": "935962a04fbf36df06548fb663516213", "console": [{"mimetype": "text/plain", "name": "stdout", "text": "72 acts with this word in the title\n", "type": "stream"}], "id": "lEQa", "outputs": [{"data": {"text/html": "\u003Cmarimo-ui-element object-id='lEQa-0' random-id='58079164-5361-2516-e334-559772569f7b'\u003E\u003Cmarimo-table data-initial-value='[]' data-label='null' data-data='\u0026quot;[{\u0026#92;\u0026quot;pos\u0026#92;\u0026quot;:60,\u0026#92;\u0026quot;title\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Rozporz\u0026#92;\u0026#92;u0105dzenie Ministra Finans\u0026#92;\u0026#92;u00f3w z dnia 16 stycznia 2025 r. zmieniaj\u0026#92;\u0026#92;u0105ce rozporz\u0026#92;\u0026#92;u0105dzenie w sprawie zwolnie\u0026#92;\u0026#92;u0144 od podatku od towar\u0026#92;\u0026#92;u00f3w i us\u0026#92;\u0026#92;u0142ug oraz warunk\u0026#92;\u0026#92;u00f3w stosowania tych zwolnie\u0026#92;\u0026#92;u0144\u0026#92;\u0026quot;,\u0026#92;\u0026quot;status\u0026#92;\u0026quot;:\u0026#92;\u0026quot;akt obj\u0026#92;\u0026#92;u0119ty tekstem jednolitym\u0026#92;\u0026quot;},{\u0026#92;\u0026quot;pos\u0026#92;\u0026quot;:126,\u0026#92;\u0026quot;title\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Obwieszczenie Marsza\u0026#92;\u0026#92;u0142ka Sejmu Rzeczypospolitej Polskiej z dnia 23 grudnia 2024 r. w sprawie og\u0026#92;\u0026#92;u0142oszenia jednolitego tekstu ustawy o podatku akcyzowym\u0026#92;\u0026quot;,\u0026#92;\u0026quot;status\u0026#92;\u0026quot;:\u0026#92;\u0026quot;wyga\u0026#92;\u0026#92;u015bni\u0026#92;\u0026#92;u0119cie aktu\u0026#92;\u0026quot;},{\u0026#92;\u0026quot;pos\u0026#92;\u0026quot;:131,\u0026#92;\u0026quot;title\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Rozporz\u0026#92;\u0026#92;u0105dzenie Ministra Finans\u0026#92;\u0026#92;u00f3w z dnia 27 stycznia 2025 r. w sprawie wzor\u0026#92;\u0026#92;u00f3w deklaracji o podatku od towar\u0026#92;\u0026#92;u00f3w i us\u0026#92;\u0026#92;u0142ug od podmiot\u0026#92;\u0026#92;u00f3w innych ni\u0026#92;\u0026#92;u017c zarejestrowane jako podatnicy VAT czynni\u0026#92;\u0026quot;,\u0026#92;\u0026quot;status\u0026#92;\u0026quot;:\u0026#92;\u0026quot;obowi\u0026#92;\u0026#92;u0105zuj\u0026#92;\u0026#92;u0105cy\u0026#92;\u0026quot;},{\u0026#92;\u0026quot;pos\u0026#92;\u0026quot;:163,\u0026#92;\u0026quot;title\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Obwieszczenie Marsza\u0026#92;\u0026#92;u0142ka Sejmu Rzeczypospolitej Polskiej z dnia 10 stycznia 2025 r. w sprawie og\u0026#92;\u0026#92;u0142oszenia jednolitego tekstu ustawy o podatku dochodowym od os\u0026#92;\u0026#92;u00f3b fizycznych\u0026#92;\u0026quot;,\u0026#92;\u0026quot;status\u0026#92;\u0026quot;:\u0026#92;\u0026quot;wyga\u0026#92;\u0026#92;u015bni\u0026#92;\u0026#92;u0119cie aktu\u0026#92;\u0026quot;},{\u0026#92;\u0026quot;pos\u0026#92;\u0026quot;:176,\u0026#92;\u0026quot;title\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Obwieszczenie Marsza\u0026#92;\u0026#92;u0142ka Sejmu Rzeczypospolitej Polskiej z dnia 5 lutego 2025 r. w sprawie og\u0026#92;\u0026#92;u0142oszenia jednolitego tekstu ustawy o podatku le\u0026#92;\u0026#92;u015bnym\u0026#92;\u0026quot;,\u0026#92;\u0026quot;status\u0026#92;\u0026quot;:\u0026#92;\u0026quot;obowi\u0026#92;\u0026#92;u0105zuj\u0026#92;\u0026#92;u0105cy\u0026#92;\u0026quot;},{\u0026#92;\u0026quot;pos\u0026#92;\u0026quot;:222,\u0026#92;\u0026quot;title\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Ustawa z dnia 24 stycznia 2025 r. o zmianie ustawy o podatku od towar\u0026#92;\u0026#92;u00f3w i us\u0026#92;\u0026#92;u0142ug, ustawy o podatku akcyzowym oraz niekt\u0026#92;\u0026#92;u00f3rych innych ustaw\u0026#92;\u0026quot;,\u0026#92;\u0026quot;status\u0026#92;\u0026quot;:\u0026#92;\u0026quot;obowi\u0026#92;\u0026#92;u0105zuj\u0026#92;\u0026#92;u0105cy\u0026#92;\u0026quot;},{\u0026#92;\u0026quot;pos\u0026#92;\u0026quot;:231,\u0026#92;\u0026quot;title\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Rozporz\u0026#92;\u0026#92;u0105dzenie Ministra Finans\u0026#92;\u0026#92;u00f3w z dnia 21 lutego 2025 r. w sprawie wzor\u0026#92;\u0026#92;u00f3w deklaracji o podatku od towar\u0026#92;\u0026#92;u00f3w i us\u0026#92;\u0026#92;u0142ug dotycz\u0026#92;\u0026#92;u0105cych transakcji wewn\u0026#92;\u0026#92;u0105trzwsp\u0026#92;\u0026#92;u00f3lnotowych w zakresie nowych \u0026#92;\u0026#92;u015brodk\u0026#92;\u0026#92;u00f3w transportu\u0026#92;\u0026quot;,\u0026#92;\u0026quot;status\u0026#92;\u0026quot;:\u0026#92;\u0026quot;obowi\u0026#92;\u0026#92;u0105zuj\u0026#92;\u0026#92;u0105cy\u0026#92;\u0026quot;},{\u0026#92;\u0026quot;pos\u0026#92;\u0026quot;:232,\u0026#92;\u0026quot;title\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Obwieszczenie Ministra Finans\u0026#92;\u0026#92;u00f3w z dnia 16 lutego 2025 r. w sprawie og\u0026#92;\u0026#92;u0142oszenia jednolitego tekstu rozporz\u0026#92;\u0026#92;u0105dzenia Ministra Finans\u0026#92;\u0026#92;u00f3w w sprawie wy\u0026#92;\u0026#92;u0142\u0026#92;\u0026#92;u0105czenia obowi\u0026#92;\u0026#92;u0105zku poboru zrycza\u0026#92;\u0026#92;u0142towanego podatku dochodowego od os\u0026#92;\u0026#92;u00f3b fizycznych\u0026#92;\u0026quot;,\u0026#92;\u0026quot;status\u0026#92;\u0026quot;:\u0026#92;\u0026quot;obowi\u0026#92;\u0026#92;u0105zuj\u0026#92;\u0026#92;u0105cy\u0026#92;\u0026quot;},{\u0026#92;\u0026quot;pos\u0026#92;\u0026quot;:245,\u0026#92;\u0026quot;title\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Rozporz\u0026#92;\u0026#92;u0105dzenie Ministra Finans\u0026#92;\u0026#92;u00f3w z dnia 25 lutego 2025 r. zmieniaj\u0026#92;\u0026#92;u0105ce rozporz\u0026#92;\u0026#92;u0105dzenie w sprawie szczeg\u0026#92;\u0026#92;u00f3\u0026#92;\u0026#92;u0142owego zakresu danych zawartych w deklaracjach podatkowych i w ewidencji w zakresie podatku od towar\u0026#92;\u0026#92;u00f3w i us\u0026#92;\u0026#92;u0142ug\u0026#92;\u0026quot;,\u0026#92;\u0026quot;status\u0026#92;\u0026quot;:\u0026#92;\u0026quot;obowi\u0026#92;\u0026#92;u0105zuj\u0026#92;\u0026#92;u0105cy\u0026#92;\u0026quot;},{\u0026#92;\u0026quot;pos\u0026#92;\u0026quot;:260,\u0026#92;\u0026quot;title\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Obwieszczenie Ministra Finans\u0026#92;\u0026#92;u00f3w z dnia 13 lutego 2025 r. w sprawie og\u0026#92;\u0026#92;u0142oszenia jednolitego tekstu rozporz\u0026#92;\u0026#92;u0105dzenia Ministra Finans\u0026#92;\u0026#92;u00f3w w sprawie przed\u0026#92;\u0026#92;u0142u\u0026#92;\u0026#92;u017cenia terminu do wp\u0026#92;\u0026#92;u0142aty przez podatnik\u0026#92;\u0026#92;u00f3w podatku dochodowego od os\u0026#92;\u0026#92;u00f3b fizycznych podatku nale\u0026#92;\u0026#92;u017cnego od dochod\u0026#92;\u0026#92;u00f3w z niezrealizowanych zysk\u0026#92;\u0026#92;u00f3w\u0026#92;\u0026quot;,\u0026#92;\u0026quot;status\u0026#92;\u0026quot;:\u0026#92;\u0026quot;obowi\u0026#92;\u0026#92;u0105zuj\u0026#92;\u0026#92;u0105cy\u0026#92;\u0026quot;}]\u0026quot;' data-total-rows='20' data-total-columns='3' data-max-columns='50' data-banner-text='\u0026quot;\u0026quot;' data-pagination='true' data-page-size='10' data-field-types='[[\u0026quot;pos\u0026quot;,[\u0026quot;integer\u0026quot;,\u0026quot;int64\u0026quot;]],[\u0026quot;title\u0026quot;,[\u0026quot;string\u0026quot;,\u0026quot;str\u0026quot;]],[\u0026quot;status\u0026quot;,[\u0026quot;string\u0026quot;,\u0026quot;str\u0026quot;]]]' data-show-filters='true' data-show-download='true' data-show-search='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'\u003E\u003C/marimo-table\u003E\u003C/marimo-ui-element\u003E"}, "type": "data"}]}, {"code_hash": "633de388dcffa3244e715eec3d483c07", "console": [], "id": "PKri", "outputs": [{"data": {"text/markdown": "\u003Cspan class=\"markdown prose dark:prose-invert contents\"\u003E\u003Ch2 id=\"one-act-and-its-ties\"\u003EOne act and its ties\u003C/h2\u003E\u003C/span\u003E"}, "type": "data"}]}, {"code_hash": "44cebacb31660a4dbd7349da8b4f7189", "console": [{"mimetype": "text/plain", "name": "stdout", "text": "Obwieszczenie Ministra Nauki i Szkolnictwa Wy\u017cszego z dnia 9 grudnia 2015 r. w sprawie og\u0142oszenia jednolitego tekstu rozporz\u0105dzenia Ministra Nauki i Szkolnictwa Wy\u017cszego w sprawie szczeg\u00f3\u0142owych zasad, trybu i kryteri\u00f3w udzielania, sp\u0142acania oraz umarzania kredyt\u00f3w i po\u017cyczek studenckich\nfiles: ['.json', '.references.json', '.pdf', '.html', '.struct.json'] - markdown: True\n", "type": "stream"}], "id": "Xref", "outputs": [{"data": {"text/html": "\u003Cmarimo-ui-element object-id='Xref-0' random-id='7aab80c0-36d7-95c5-7805-5239bf6a0eba'\u003E\u003Cmarimo-table data-initial-value='[]' data-label='null' data-data='\u0026quot;[{\u0026#92;\u0026quot;from\u0026#92;\u0026quot;:\u0026#92;\u0026quot;DU/2016/1\u0026#92;\u0026quot;,\u0026#92;\u0026quot;type\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Podstawa prawna\u0026#92;\u0026quot;,\u0026#92;\u0026quot;to\u0026#92;\u0026quot;:\u0026#92;\u0026quot;DU/2000/718\u0026#92;\u0026quot;,\u0026#92;\u0026quot;art\u0026#92;\u0026quot;:NaN,\u0026#92;\u0026quot;date\u0026#92;\u0026quot;:NaN},{\u0026#92;\u0026quot;from\u0026#92;\u0026quot;:\u0026#92;\u0026quot;DU/2016/1\u0026#92;\u0026quot;,\u0026#92;\u0026quot;type\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Podstawa prawna z art.\u0026#92;\u0026quot;,\u0026#92;\u0026quot;to\u0026#92;\u0026quot;:\u0026#92;\u0026quot;DU/2000/718\u0026#92;\u0026quot;,\u0026#92;\u0026quot;art\u0026#92;\u0026quot;:\u0026#92;\u0026quot;art. 16 ust. 3\u0026#92;\u0026quot;,\u0026#92;\u0026quot;date\u0026#92;\u0026quot;:NaN},{\u0026#92;\u0026quot;from\u0026#92;\u0026quot;:\u0026#92;\u0026quot;DU/2016/1\u0026#92;\u0026quot;,\u0026#92;\u0026quot;type\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Tekst jednolity dla aktu\u0026#92;\u0026quot;,\u0026#92;\u0026quot;to\u0026#92;\u0026quot;:\u0026#92;\u0026quot;DU/2010/560\u0026#92;\u0026quot;,\u0026#92;\u0026quot;art\u0026#92;\u0026quot;:NaN,\u0026#92;\u0026quot;date\u0026#92;\u0026quot;:NaN},{\u0026#92;\u0026quot;from\u0026#92;\u0026quot;:\u0026#92;\u0026quot;DU/2016/1\u0026#92;\u0026quot;,\u0026#92;\u0026quot;type\u0026#92;\u0026quot;:\u0026#92;\u0026quot;Uchylenia wynikaj\u0026#92;\u0026#92;u0105ce z\u0026#92;\u0026quot;,\u0026#92;\u0026quot;to\u0026#92;\u0026quot;:\u0026#92;\u0026quot;DU/2017/1905\u0026#92;\u0026quot;,\u0026#92;\u0026quot;art\u0026#92;\u0026quot;:NaN,\u0026#92;\u0026quot;date\u0026#92;\u0026quot;:\u0026#92;\u0026quot;2017-10-21\u0026#92;\u0026quot;}]\u0026quot;' data-total-rows='4' data-total-columns='5' data-max-columns='50' data-banner-text='\u0026quot;\u0026quot;' data-pagination='false' data-page-size='10' data-field-types='[[\u0026quot;from\u0026quot;,[\u0026quot;string\u0026quot;,\u0026quot;str\u0026quot;]],[\u0026quot;type\u0026quot;,[\u0026quot;string\u0026quot;,\u0026quot;str\u0026quot;]],[\u0026quot;to\u0026quot;,[\u0026quot;string\u0026quot;,\u0026quot;str\u0026quot;]],[\u0026quot;art\u0026quot;,[\u0026quot;string\u0026quot;,\u0026quot;str\u0026quot;]],[\u0026quot;date\u0026quot;,[\u0026quot;string\u0026quot;,\u0026quot;str\u0026quot;]]]' data-show-filters='true' data-show-download='true' data-show-search='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='false' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-hidden-columns='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'\u003E\u003C/marimo-table\u003E\u003C/marimo-ui-element\u003E"}, "type": "data"}]}, {"code_hash": "f792036ab86ec74c5c920a16cc9621e5", "console": [], "id": "SFPL", "outputs": [{"data": {"text/markdown": "\u003Cspan class=\"markdown prose dark:prose-invert contents\"\u003E\u003Cspan class=\"paragraph\"\u003EA raw file, \u003Ccode\u003E/api/acts/DU/2016/1/file/.pdf\u003C/code\u003E, is served by the server at\nhome and redirected to the bucket by the demo.\u003C/span\u003E\u003C/span\u003E"}, "type": "data"}]}], "metadata": {"marimo_version": "0.25.2", "script_metadata_hash": null}, "version": "1"},
+            "runtimeConfig": null
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  
+<marimo-code hidden="">
+    import%20marimo%0A%0A__generated_with%20%3D%20%220.25.2%22%0Aapp%20%3D%20marimo.App()%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%0A%20%20%20%20return%20(mo%2C)%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%203.%20The%20api%20of%20the%20webapp%0A%0A%20%20%20%20The%20project's%20own%20server%20(%60task%20serve%60%20at%20home%2C%20or%20the%20demo%20space)%20answers%0A%20%20%20%20under%20%60%2Fapi%60%2C%20described%20at%20%60%2Fopenapi.json%60.%20The%20same%20api%20feeds%20the%20website%2C%0A%20%20%20%20the%20desktop%20window%2C%20the%20browser%20extension%20and%20the%20MCP%20server.%0A%0A%20%20%20%20The%20dataset%20is%20public%3A%20nothing%20here%20needs%20a%20token.%20Run%20it%20with%0A%20%20%20%20%60uv%20run%20--project%20examples%20--with%20jupyterlab%20jupyter%20lab%20examples%2Fnotebooks%60%20(or%20the%20marimo%20version%3A%20%60task%20examples%3Aconvert%60%2C%20then%0A%20%20%20%20version%3A%20%60task%20examples%3Aconvert%60%2C%20then%0A%20%20%20%20%60uv%20run%20--project%20examples%20marimo%20edit%20examples%2Fmarimo%60).%0A%0A%20%20%20%20%60P_JOL_ROLL_API%60%20points%20it%20elsewhere%3B%20by%20default%20it%20asks%20the%20demo%20space.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20os%0A%0A%20%20%20%20import%20pandas%20as%20pd%0A%20%20%20%20import%20requests%0A%0A%20%20%20%20API%20%3D%20os.environ.get(%22P_JOL_ROLL_API%22%2C%20%22https%3A%2F%2Fsarverott-docs-of-law-by-gov-in-poland.hf.space%22).rstrip(%22%2F%22)%0A%0A%0A%20%20%20%20def%20get(path%2C%20**params)%3A%0A%20%20%20%20%20%20%20%20answer%20%3D%20requests.get(f%22%7BAPI%7D%7Bpath%7D%22%2C%20params%3Dparams%2C%20timeout%3D120)%0A%20%20%20%20%20%20%20%20answer.raise_for_status()%0A%20%20%20%20%20%20%20%20return%20answer%0A%0A%0A%20%20%20%20try%3A%0A%20%20%20%20%20%20%20%20journals%20%3D%20get(%22%2Fapi%2Fjournals%22).json()%0A%20%20%20%20%20%20%20%20print(%5B(journal%5B%22code%22%5D%2C%20len(journal%5B%22years%22%5D))%20for%20journal%20in%20journals%5D)%0A%20%20%20%20except%20Exception%20as%20error%3A%20%20%23%20the%20space%20may%20be%20asleep%20or%20starting%0A%20%20%20%20%20%20%20%20journals%20%3D%20%5B%5D%0A%20%20%20%20%20%20%20%20print(f%22%7BAPI%7D%20does%20not%20answer%20now%3A%22%2C%20error)%0A%20%20%20%20return%20get%2C%20journals%2C%20pd%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20Searching%20titles%20of%20a%20year%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(get%2C%20journals%2C%20pd)%3A%0A%20%20%20%20if%20journals%3A%0A%20%20%20%20%20%20%20%20found%20%3D%20get(%22%2Fapi%2Facts%2FDU%2F2025%22%2C%20q%3D%22podatku%22%2C%20limit%3D20).json()%0A%20%20%20%20%20%20%20%20print(found%5B%22total%22%5D%2C%20%22acts%20with%20this%20word%20in%20the%20title%22)%0A%20%20%20%20%20%20%20%20shown%20%3D%20pd.DataFrame(found%5B%22items%22%5D%2C%20columns%3D%5B%22pos%22%2C%20%22title%22%2C%20%22status%22%5D)%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20shown%20%3D%20%22no%20answer%20from%20the%20api%22%0A%20%20%20%20shown%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%23%20One%20act%20and%20its%20ties%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(get%2C%20journals%2C%20pd)%3A%0A%20%20%20%20if%20journals%3A%0A%20%20%20%20%20%20%20%20view%20%3D%20get(%22%2Fapi%2Facts%2FDU%2F2016%2F1%22).json()%0A%20%20%20%20%20%20%20%20print(view%5B%22act%22%5D%5B%22title%22%5D)%0A%20%20%20%20%20%20%20%20print(%22files%3A%22%2C%20view%5B%22files%22%5D%2C%20%22-%20markdown%3A%22%2C%20view%5B%22markdown%22%5D)%0A%20%20%20%20%20%20%20%20ties%20%3D%20pd.DataFrame(get(%22%2Fapi%2Facts%2FDU%2F2016%2F1%2Freferences%22).json())%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20ties%20%3D%20%22no%20answer%20from%20the%20api%22%0A%20%20%20%20ties%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20A%20raw%20file%2C%20%60%2Fapi%2Facts%2FDU%2F2016%2F1%2Ffile%2F.pdf%60%2C%20is%20served%20by%20the%20server%20at%0A%20%20%20%20home%20and%20redirected%20to%20the%20bucket%20by%20the%20demo.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A
+</marimo-code>
+
+<marimo-code-hash hidden="">0c79b70d72928eb86a80e98aaa2a5a66</marimo-code-hash>
+</body>
+</html>

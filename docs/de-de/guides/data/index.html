@@ -1,0 +1,2655 @@
+<!DOCTYPE html>
+
+<html lang="de-DE" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Every act of the Polish journals of laws, gathered in the open">
+      
+      
+        <meta name="author" content="Sett Sarverott">
+      
+      
+        <link rel="canonical" href="https://sarverott.github.io/P-jol-roll/docs/guides/data/">
+      
+      
+        <link rel="prev" href="../huggingface/">
+      
+      
+        <link rel="next" href="../development/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
+    
+    
+      
+        <title>The data - P_JOL_ROLL</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.57a0d79d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.fb2fffe2.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="P_JOL_ROLL">
+  <meta property="og:title" content="The data - P_JOL_ROLL">
+  <meta property="og:description" content="Every act of the Polish journals of laws, gathered in the open">
+  <meta property="og:url" content="https://sarverott.github.io/P-jol-roll/docs/guides/data/">
+  <meta property="og:image" content="https://sarverott.github.io/P-jol-roll/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#1d2440">
+
+  <style data-p-languages="">.p-languages{display:flex;gap:.4rem;margin:0 .6rem;font-size:.7rem}.p-languages a{color:inherit;opacity:.7}.p-languages a[aria-current]{opacity:1;font-weight:700}</style></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-data" class="md-skip">
+          Überspringen zum Inhalt
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Kopfzeile">
+    <a href="../.." title="P_JOL_ROLL" class="md-header__button md-logo" aria-label="P_JOL_ROLL" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="Logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z" /></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            P_JOL_ROLL
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Die Daten
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="red" data-md-color-accent="indigo" aria-label="Dunkelmodus" type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Dunkelmodus" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31" /></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="indigo" aria-label="Lichtmodus" type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Lichtmodus" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z" /></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5" /></svg>
+        </label>
+        <nav aria-label="languages" translate="no" class="p-languages"><a hreflang="en-US" href="../../../guides/data/">EN</a><a hreflang="pl-PL" href="../../../pl-pl/guides/data/">PL</a><a hreflang="uk-UA" href="../../../uk-ua/guides/data/">UK</a><a aria-current="true" hreflang="de-DE" href="../../../de-de/guides/data/">DE</a></nav><div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Suche" placeholder="Suche" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5" /></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z" /></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Suche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="klar" aria-label="klar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" /></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisierung der Suche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Sarverott/P-jol-roll" title="Gehen Sie zum Repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" /></svg>
+  </div>
+  <div class="md-source__repository">
+    Sarverott/P-jol-roll
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="P_JOL_ROLL" class="md-nav__button md-logo" aria-label="P_JOL_ROLL" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.png" alt="Logo">
+
+    </a>
+    P_JOL_ROLL
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Sarverott/P-jol-roll" title="Gehen Sie zum Repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4" /></svg>
+  </div>
+  <div class="md-source__repository">
+    Sarverott/P-jol-roll
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Zuhause
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Leitfäden
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Leitfäden
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Was P_JOL_ROLL kann
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Funktionen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../gathering/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sammeln
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../processing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Von Rohdateien zu Tabellen und Texten
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Andere Quellen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../checkup/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Überprüfung der Websites
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../second-machine/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sammeln auf einer zweiten Maschine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../huggingface/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Daten verschieben auf Hugging Face
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Die Daten
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Die Daten
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#how-an-act-is-named" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wie eine Handlung benannt wird
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#listing-of-a-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auflistung eines Jahres
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#details-of-an-act" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Einzelheiten eines Rechtsakts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Struktur
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referenzen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#texts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Texte
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checkups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kontrollen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Was es ist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-is-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Was es nicht ist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rights-to-the-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rechte an Inhalten
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#persons-named-in-acts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In Handlungen genannte Personen
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Entwicklung
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../translations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Übersetzungen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mastermind/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Das Law Mastermind
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The code of law analysed, simulated, improved
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../torrents/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Torrents pointed to by IPFS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mirrors on a WireGuard network
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../chain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The chain of the law
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../devices/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The person's devices
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../transparency/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The declaration of transparency
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reports to the authorities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mirrors-of-the-repository/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The repository on five more places
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../glossary/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Glossar
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sarverott/P-jol-roll/wiki/Devlog" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Devlog (Wiki)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/Sarverott/P-jol-roll/wiki/Almanac" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Almanach (Wiki)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_6">
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Changelog
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Changelog
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 0: Räumt den Boden
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 1: Abhängigkeiten repariert
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 3: BOS-Integration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 4: eine Website des Projekts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 5: Sammeln auf einer anderen Maschine
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 6: Services, Init und Launcher
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-8/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 8: Releases und Routinen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-9/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 9: Logs, der Demospace, Dependabot's Branch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-10/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 10: ein Bucket, ein Datensatz, eine leichtere Demo, Beispiele
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-12/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 12: Texte von Handlungen, die nur eine PDF haben
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 18: Was brach nach v0.15.0, und der Almanach
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-19/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 19: Jarvis tritt bei
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-20/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 20: Der Bucket Tidied, das Banner
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-21/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 21: Die Notizen des Besitzers über src
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-22/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 22: Jede Funktion überall, ein Viewer, der glänzt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-28/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 28: der Host in seiner Ecke, der Devlog auf GitHub, das Wiki und die Packs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-29/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 29: Ankündigungen in der Diskussion
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-30/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 30: Die erste Stimme des Masterminds
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-31/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 31: Modelfamilien, Ollama auf eigene Faust, Gespräche gehalten
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-32/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 32: Die KI der Demo - ein Chat auf dem eigenen Hugging Face des Besuchers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-33/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 33: the chat translated, and the executive agent
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-23/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 23: Das Bild baut sich wieder auf, ohne einen Bundler-Dialekt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-24/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 24: Kontrollen, was landet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-25/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 25: Checks vor einem Push, Schreiben funktioniert hinter einem Switch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-26/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 26: Ein Tor zum Master
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../changelog/phase-27/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase 27: der Raum von seinem vertrauenswürdigen Herausgeber, und wartete auf
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle" type="checkbox" id="__nav_7">
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    für Agenten
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    für Agenten
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/NOTES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ANMERKUNGEN: Feststellungen von Agenten
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/jarvis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Jarvis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/things-to-check/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dinge zu überprüfen
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/ideas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ideen: Was, Wo, Wie
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.agents/point-of-view/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Standpunkt
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Inhaltsverzeichnis">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Inhaltsverzeichnis
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#how-an-act-is-named" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Wie eine Handlung benannt wird
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#listing-of-a-year" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Auflistung eines Jahres
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#details-of-an-act" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Einzelheiten eines Rechtsakts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Struktur
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Referenzen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#texts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Texte
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checkups" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kontrollen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Was es ist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-is-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Was es nicht ist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rights-to-the-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rechte an Inhalten
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#persons-named-in-acts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In Handlungen genannte Personen
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/Sarverott/P-jol-roll/edit/development/docs/guides/data.md" title="Bearbeiten dieser Seite" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z" /></svg>
+    </a>
+  
+  
+
+
+<h1 id="the-data">Die Daten<a class="headerlink" href="#the-data" title="Dauerhafte Verbindung">¶</a></h1>
+<p>Alles sammelte Land in <code>resources/</code>an zwei Orten mit zwei Jobs.</p>
+<div class="highlight"><pre><span></span><code>resources/
+├── dataset/                    tables: small, read often
+│   ├── lists/
+│   │   ├── index.json          what the API offers, with addresses
+│   │   ├── publishers.json     journals with their years and counts of acts
+│   │   ├── statuses.json       every status an act can have
+│   │   ├── document_types.json every type of act (Ustawa, Rozporządzenie, ...)
+│   │   ├── reference_types.json every kind of tie between acts
+│   │   ├── keywords.json
+│   │   └── institutions.json
+│   ├── acts/&lt;journal&gt;/&lt;year&gt;.jsonl        metadata, one act per line
+│   ├── files/&lt;journal&gt;/&lt;year&gt;.jsonl       checksum and source of every gathered file
+│   ├── details/&lt;journal&gt;/&lt;year&gt;.jsonl     details of acts, put together by compile
+│   ├── references/&lt;journal&gt;/&lt;year&gt;.jsonl  ties between acts, one per line
+│   ├── texts/&lt;journal&gt;/&lt;year&gt;.jsonl       which markdown was made from which HTML
+│   ├── texts/&lt;journal&gt;/&lt;year&gt;/&lt;address&gt;.md  the text as markdown
+│   └── checkups/&lt;journal&gt;/&lt;year&gt;.jsonl    what the browser saw, one visit per line
+└── bucket/                     raw files of every act
+    └── &lt;journal&gt;/&lt;year&gt;/
+        ├── &lt;address&gt;.json              details
+        ├── &lt;address&gt;.references.json   ties to other acts
+        ├── &lt;address&gt;.pdf               the published text
+        ├── &lt;address&gt;.html              the text as HTML, for some acts
+        ├── &lt;address&gt;.struct.json       parts, chapters, articles of the HTML text
+        └── &lt;address&gt;.T.pdf, .U.pdf     other texts of the act
+</code></pre></div>
+<p>Die Tabellen <code>files</code>, <code>details</code>, <code>references</code> und <code>texts</code> sind beschrieben in
+<a href="../processing/">von Rohdateien zu Tabellen und Texten</a>Die Arbeit von Sejm und die Gerichtsurteile haben ihre eigenen Verzeichnisse: siehe <a href="../sources/">andere Quellen</a>.</p>
+<p><code>&lt;journal&gt;</code> ist <code>DU</code> oder <code>MP</code>. <code>&lt;address&gt;</code> ist die Kennung, die die API jedem Akt gibt, zum Beispiel <code>WDU20260000001</code>.</p>
+<h2 id="how-an-act-is-named">Wie eine Handlung benannt wird<a class="headerlink" href="#how-an-act-is-named" title="Dauerhafte Verbindung">¶</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Beispiel</th>
+<th>Verwendet für</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ELI</td>
+<td><code>DU/2026/1</code></td>
+<td>Adressen der API: Zeitschrift, Jahr, Position</td>
+</tr>
+<tr>
+<td>Anschrift</td>
+<td><code>WDU20260000001</code></td>
+<td>Name der Dateien; die von ISAP verwendete ID</td>
+</tr>
+<tr>
+<td>Anzeigeadresse</td>
+<td><code>Dz.U. 2026 poz. 1</code></td>
+<td>Wie Anwälte es zitieren</td>
+</tr>
+</tbody>
+</table>
+<p>Alte Taten haben auch eine Reihe von der Zeitschrift Ausgabe ()<code>volume</code>), wie in
+<code>Dz.U. 1918 nr 2 poz. 2</code>.</p>
+<h2 id="listing-of-a-year">Auflistung eines Jahres<a class="headerlink" href="#listing-of-a-year" title="Dauerhafte Verbindung">¶</a></h2>
+<p><code>dataset/acts/DU/1918.jsonl</code>, eine Zeile pro Akt, sortiert nach Position:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span><span class="nt">"address"</span><span class="p">:</span><span class="s2">"WDU19180020002"</span><span class="p">,</span><span class="nt">"announcementDate"</span><span class="p">:</span><span class="s2">"1918-02-04"</span><span class="p">,</span><span class="nt">"changeDate"</span><span class="p">:</span><span class="s2">"2024-03-14T21:22:56"</span><span class="p">,</span><span class="nt">"displayAddress"</span><span class="p">:</span><span class="s2">"Dz.U. 1918 nr 2 poz. 2"</span><span class="p">,</span><span class="nt">"pos"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">"promulgation"</span><span class="p">:</span><span class="s2">"1918-02-06"</span><span class="p">,</span><span class="nt">"publisher"</span><span class="p">:</span><span class="s2">"DU"</span><span class="p">,</span><span class="nt">"status"</span><span class="p">:</span><span class="s2">"uznany za uchylony"</span><span class="p">,</span><span class="nt">"textHTML"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="nt">"textPDF"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="nt">"title"</span><span class="p">:</span><span class="s2">"Ustawa o Radzie Stanu Królestwa Polskiego"</span><span class="p">,</span><span class="nt">"type"</span><span class="p">:</span><span class="s2">"Ustawa"</span><span class="p">,</span><span class="nt">"volume"</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">"year"</span><span class="p">:</span><span class="mi">1918</span><span class="p">,</span><span class="nt">"ELI"</span><span class="p">:</span><span class="s2">"DU/1918/2"</span><span class="p">}</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Feld</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ELI</code>, <code>address</code>, <code>displayAddress</code></td>
+<td>Die drei oben genannten Namen</td>
+</tr>
+<tr>
+<td><code>publisher</code>, <code>year</code>, <code>pos</code>, <code>volume</code></td>
+<td>Zeitschrift, Jahr, Position, Nummer der Ausgabe</td>
+</tr>
+<tr>
+<td><code>title</code>, <code>type</code></td>
+<td>Titel und Typ von <code>document_types.json</code></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>von <code>statuses.json</code>z.B. <code>obowiązujący</code>, <code>uchylony</code></td>
+</tr>
+<tr>
+<td><code>announcementDate</code></td>
+<td>Datum der Handlung selbst</td>
+</tr>
+<tr>
+<td><code>promulgation</code></td>
+<td>Datum der Veröffentlichung im Journal</td>
+</tr>
+<tr>
+<td><code>changeDate</code></td>
+<td>wenn der Datensatz zuletzt an der Quelle geändert wurde</td>
+</tr>
+<tr>
+<td><code>textPDF</code>, <code>textHTML</code></td>
+<td>welche Texte existieren. Der Sammler vertraut diesen</td>
+</tr>
+</tbody>
+</table>
+<p>Die Bedeutungen der beiden Daten sind, wie ich die Daten gelesen habe, nicht etwas, was mir die Dokumentation des API gesagt hat. <em>(angenommen)</em></p>
+<h2 id="details-of-an-act">Einzelheiten eines Rechtsakts<a class="headerlink" href="#details-of-an-act" title="Dauerhafte Verbindung">¶</a></h2>
+<p><code>bucket/DU/1918/WDU19180020002.json</code> wiederholt die Felder der Auflistung und fügt unter anderem hinzu:</p>
+<table>
+<thead>
+<tr>
+<th>Feld</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inForce</code></td>
+<td><code>IN_FORCE</code>, <code>NOT_IN_FORCE</code> oder unbekannt</td>
+</tr>
+<tr>
+<td><code>entryIntoForce</code>, <code>validFrom</code></td>
+<td>Datum, an dem das Gesetz anzuwenden begann</td>
+</tr>
+<tr>
+<td><code>releasedBy</code></td>
+<td>Wer es ausstellt, von <code>institutions.json</code></td>
+</tr>
+<tr>
+<td><code>authorizedBody</code>, <code>obligated</code></td>
+<td>Institute, die durch den Rechtsakt ermächtigt oder verpflichtet werden <em>(angenommen)</em></td>
+</tr>
+<tr>
+<td><code>keywords</code>, <code>keywordsNames</code></td>
+<td>Themen und Namen genannt</td>
+</tr>
+<tr>
+<td><code>texts</code></td>
+<td>jede Textdatei der Quelle hat: <code>fileName</code> und <code>type</code></td>
+</tr>
+<tr>
+<td><code>references</code></td>
+<td>Verbindungen zu anderen Handlungen, wie IDs, gruppiert nach Art</td>
+</tr>
+<tr>
+<td><code>prints</code></td>
+<td>Drucke von Sejm die Tat kam von</td>
+</tr>
+<tr>
+<td><code>directives</code></td>
+<td>Europäische Richtlinien, die das Gesetz ausführt</td>
+</tr>
+<tr>
+<td><code>previousTitle</code></td>
+<td>frühere Titel</td>
+</tr>
+</tbody>
+</table>
+<p><code>texts</code> listet jede Textdatei des Gesetzes auf. Die API dokumentiert fünf Typen und sagt nicht, was die Buchstaben bedeuten:</p>
+<table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Was es ist</th>
+<th>Gepflegt als</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>O</code></td>
+<td>den veröffentlichten Text. Die gleiche Datei wie <code>text.pdf</code> (verglichen mit Byte on) <code>DU/1918/2</code>)</td>
+<td><code>&lt;address&gt;.pdf</code></td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td>Der HTML-Text</td>
+<td><code>&lt;address&gt;.html</code></td>
+</tr>
+<tr>
+<td><code>I</code></td>
+<td>In den Akten betrachtet, der gleiche Dateiname wie <code>O</code></td>
+<td>nicht zweimal eingenommen</td>
+</tr>
+<tr>
+<td><code>T</code></td>
+<td>weitere PDF, benannt wie <code>D20260001L.pdf</code></td>
+<td><code>&lt;address&gt;.T.pdf</code></td>
+</tr>
+<tr>
+<td><code>U</code></td>
+<td>weitere PDF, benannt wie <code>D20260001Lj.pdf</code></td>
+<td><code>&lt;address&gt;.U.pdf</code></td>
+</tr>
+</tbody>
+</table>
+<p>Auf der ISAP-Website werden die gleichen drei Dateien als "tekst ogłoszony", "tekst aktu" und "tekst ujednolicony" angeboten. Wenn <code>U</code> ist der letzte von ihnen, es ist der Wortlaut des Gesetzes mit späteren Änderungen, die vom Büro von Sejm bearbeitet wurden: kein offizieller Text und der nützlichste, um das Gesetz so zu lesen, wie es ist. <em>(aus den Dateinamen angenommen; nicht bestätigt)</em> [<code>TODO</code>]</p>
+<h2 id="structure">Struktur<a class="headerlink" href="#structure" title="Dauerhafte Verbindung">¶</a></h2>
+<p><code>bucket/DU/2024/WDU20240001907.struct.json</code> ist das Skelett des HTML-Textes: ein Baum von Teilen, Kapiteln, Artikeln, Absätzen und Punkten, jeder mit einem <code>id</code> wie <code>chpt_1-arti_1-pint_2</code>Die API gibt sie nur für Taten, die HTML haben; für die anderen antwortet sie 404.</p>
+<p>Die gleichen IDs adressieren eine Einheit des Textes an der Quelle ()<code>/acts/DU/2024/1907/struct/{path}</code>. Das ist nicht gesammelt: die ganze HTML hält bereits jede Einheit.</p>
+<h2 id="references">Referenzen<a class="headerlink" href="#references" title="Dauerhafte Verbindung">¶</a></h2>
+<p><code>bucket/DU/1918/WDU19180020002.references.json</code> ist der gleiche Satz von Bindungen, mit dem anderen Akt vollständig beschrieben:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">"Akty wykonawcze"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">"act"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"ELI"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DU/1918/20"</span><span class="p">,</span><span class="w"> </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Rozporządzenie Ministra Sprawiedliwości ..."</span><span class="p">,</span><span class="w"> </span><span class="nt">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bez statusu"</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">"Uchylenia wynikające z"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="nt">"act"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">"ELI"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DU/1918/23"</span><span class="p">,</span><span class="w"> </span><span class="nt">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Orędzie Rady Regencyjnej do Narodu Polskiego"</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nt">"date"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1918-10-21"</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Die Schlüssel sind die Arten von <code>reference_types.json</code>: Rechtsgrundlage, Änderungen, Aufhebungen, Exekutivakte, konsolidierte Texte, Urteile des Verfassungsgerichtshofs und andere. Zusammen sind die Referenzen aller Handlungen ein Graph: welcher Akt ändert, aufhebt oder ausführt. Die vorstehenden Beispiele sind gekürzt.</p>
+<h2 id="texts">Texte<a class="headerlink" href="#texts" title="Dauerhafte Verbindung">¶</a></h2>
+<ul>
+<li><strong>PDF</strong> ist der veröffentlichte Text. Für alte Jahre ist es ein Scan des gedruckten Journals.</li>
+<li><strong>HTML</strong> existiert nur für einige Taten. In der Auflistung von 2026 keiner von 1321 Taten hatte es (überprüft auf 2026-10-13).</li>
+</ul>
+<p>HTML wird zu markdown <code>task text</code>. <code>task text -- --pdf</code> liest auch die Textschicht der PDF jedes Akts ohne HTML (Phase 12, PP2): 125,759 von 165,006 Akten. Siehe <a href="../processing/#texts-of-pdfs">Verarbeitung</a>.</p>
+<h2 id="checkups">Kontrollen<a class="headerlink" href="#checkups" title="Dauerhafte Verbindung">¶</a></h2>
+<p>Siehe <a href="../checkup/#what-it-writes">Kontrolle</a>.</p>
+<h2 id="what-it-is">Was es ist<a class="headerlink" href="#what-it-is" title="Dauerhafte Verbindung">¶</a></h2>
+<ul>
+<li><strong>Eine Kopie einer offiziellen Quelle.</strong> Jede Datei hat eine Adresse an
+  <code>api.sejm.gov.pl</code>So kann jeder unsere Kopie mit dem Original vergleichen.</li>
+<li><strong>Eine Momentaufnahme.</strong> Eine Datei enthält, was die Quelle an dem Tag sagte, an dem sie gesammelt wurde. <code>changeDate</code> In der Auflistung wird angezeigt, wann die Quelle den Datensatz zuletzt geändert hat; eine Auflistung, die neuer als eine Detaildatei ist, bedeutet, dass die Details möglicherweise veraltet sind.</li>
+<li><strong>Unchanged.</strong> JSON wird gespeichert, wie es beantwortet wurde (formatiert mit Tabs), und PDF und HTML Byte für Byte.</li>
+</ul>
+<h2 id="what-it-is-not">Was es nicht ist<a class="headerlink" href="#what-it-is-not" title="Dauerhafte Verbindung">¶</a></h2>
+<ul>
+<li><strong>Keine (formal) Rechtsberatung</strong>, und nicht eine Erklärung des heute geltenden Gesetzes. Eine Handlung, die <code>obowiązujący</code> kann viele male geändert worden sein; der veröffentlichte text eines gesetzes ist der text des tages, an dem es veröffentlicht wurde. Der aktuelle Wortlaut eines Statuts ist in seinem neuesten konsolidierten Text ()<code>tekst
+  jednolity</code>) und die Änderungsanträge danach.</li>
+<li><strong>Keine vollständige Geschichte.</strong> Dziennik Ustaw hat keine Jahre 1940 bis 1943. Gesetz der Partitionen vor 1918, lokales Recht und offizielle Zeitschriften von Ministerien sind nicht hier.</li>
+<li><strong>Nicht das einzige Gesetz, das in Polen gilt.</strong> Das Recht der Europäischen Union, die an anderer Stelle veröffentlichten ratifizierten Verträge und Gerichtsurteile befinden sich außerhalb dieser beiden Zeitschriften.</li>
+</ul>
+<h2 id="rights-to-the-content">Rechte an Inhalten<a class="headerlink" href="#rights-to-the-content" title="Dauerhafte Verbindung">¶</a></h2>
+<p>Das polnische Urheberrecht umfasst keine normativen Rechtsakte und offiziellen Dokumente (Artikel 4 des Gesetzes vom 4. Februar 1994 über Urheberrecht und verwandte Schutzrechte), so dass die Texte der Rechtsakte kopiert und geteilt werden können. Dies ist meine Lektüre und nicht (formal) Rechtsberatung; die Bedingungen des API selbst wurden nirgendwo geschrieben gefunden.<code>TODO</code>: Bestätigen Sie die Bedingungen mit der Quelle</p>
+<p>Der Code dieses Repository ist AGPL-3.0-only. Die Lizenz des Datensatzes auf Hugging Face wird dort vom Eigentümer festgelegt.</p>
+<h2 id="persons-named-in-acts">In Handlungen genannte Personen<a class="headerlink" href="#persons-named-in-acts" title="Dauerhafte Verbindung">¶</a></h2>
+<p>Handlungen sind öffentlich, und einige nennen Privatpersonen: Monitor Polski veröffentlicht zum Beispiel Entscheidungen über staatliche Dekorationen. Der Projektspiegel agiert unverändert und baut nichts, was Personen über Akte hinweg sammelt.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z" /></svg>
+  Zurück nach oben
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2026 Sett Sarverott, AGPL-3.0-only. Keine (formal) Rechtsberatung.
+    </div>
+  
+  
+    Hergestellt mit
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material für MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.top", "content.code.copy", "content.action.edit", "search.highlight"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
+      
+    
+  </body>
+</html>
