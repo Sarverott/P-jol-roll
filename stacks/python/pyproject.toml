@@ -1,6 +1,6 @@
 [project]
 name = "pjolroll-stack"
-version = "0.32.3"
+version = "0.32.4"
 description = "P-JOL-ROLL :: the Python stack of the models and simulations - the law read through the project's own MCP tools"
 readme = "README.md"
 authors = [
@@ -11,6 +11,7 @@ requires-python = ">=3.12"
 dependencies = [
     "httpx2>=2.16",
     "mcp>=2.3",
+    "pyyaml>=6.0.4",
 ]
 
 [project.scripts]

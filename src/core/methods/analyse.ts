@@ -10,12 +10,12 @@ suggests. Read from the listings (dataset/acts) and the ties (dataset/references
 written to dataset/analysis/:
   findings.jsonl   a finding a line, sorted by act
   summary.json     how many acts were read, how many in force, findings of each kind
-The kinds:
+An act that only amends others ("o zmianie", "zmieniające") is left out: its references are
+spent, its changes live in the act it amended, which is checked. The kinds:
   basis-repealed      its legal basis ("Podstawa prawna") is an act repealed or expired: it may
                       have lost force with it, unless kept by transitional provisions
   reference-repealed  it refers ("Odesłania") to an act repealed: the reference points to nothing
                       in force; the act that repealed it is named where the ties say so
-  (an act that only amends others - "o zmianie", "zmieniające" - is left out of the two below)
   consolidation-due   amended CONSOLIDATE times or more since its last consolidated text (or ever,
                       without one): a new consolidated text would gather them
   tribunal            judged by the Constitutional Tribunal ("Orzeczenie TK") and not amended since
@@ -88,6 +88,7 @@ export function analyse(
 	for (const [eli, act] of known) {
 		if (!IN_FORCE.has(act.status)) continue;
 		inForce++;
+		if (AMENDING.test(act.title)) continue;
 		const finding = (one: {
 			kind: ReadingScope.Finding["kind"];
 			proposal: string;
@@ -126,7 +127,6 @@ export function analyse(
 			});
 		}
 
-		if (AMENDING.test(act.title)) continue;
 		if (CONSOLIDATED.has(act.type)) {
 			const last =
 				(consolidations.get(eli) ?? [])

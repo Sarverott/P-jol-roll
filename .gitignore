@@ -15,6 +15,9 @@ resources/space
 resources/conversations/*
 # what the executive agent wrote (phase 33): a person reads it there, git keeps none of it
 resources/agent
+# the simulation bubble and the proposals of the Python stack (phase 36), kept here only
+resources/simulations
+resources/proposals
 !resources/conversations/README.md
 
 # the directories of other sources before phase 10 (task resources:merge moves them into
