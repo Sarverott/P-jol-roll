@@ -53,8 +53,10 @@ def gh(*args: str, data: dict | None = None, quiet: bool = False):
     return json.loads(done.stdout) if done.stdout.strip().startswith(("{", "[")) else done.stdout
 
 
-REPO = gh("repo", "view", "--json", "nameWithOwner")["nameWithOwner"]
-OWNER = REPO.split("/")[0]
+# the repository, asked of gh only when GitHub is written (main): the model above and below is
+# read by the mirrors' devlog too (scripts/devops/mirrors/devlog.py, phase 46)
+REPO = ""
+OWNER = ""
 
 
 # --- what the markdown says ------------------------------------------------------------------
@@ -266,34 +268,26 @@ def changelog_link(phase: int) -> str:
     return f"[changelog of phase {phase}]({BLOB}docs/changelog/phase-{phase}.md)" if page.exists() else ""
 
 
-def main():
+def wanted() -> tuple[list[dict], set[int], list[dict]]:
+    """What the devlog wants anywhere it is written: the milestones of ROADMAP, the phases done,
+    and the issues - each {key, title, body, labels, milestone (a title or None), state, ticked}."""
     plan = milestones()
     found = phases()
     complete = {n for n, one in found.items() if one["items"] and all("- [x]" in item for item in one["items"])}
     milestone_of = {phase: one["title"] for one in plan for phase in one["phases"]}
-    ensure_labels()
-    numbers_of = sync_milestones(plan, complete)
-    have = existing_issues() if not DRY else {}
-    cards: list[tuple[dict, str]] = []
-
-    def milestone(phase: int | None):
-        return numbers_of.get(milestone_of.get(phase, ""), None) if phase is not None else None
-
+    issues: list[dict] = []
     for n, one in sorted(found.items()):
         lines = [f"**Phase {n}** of [TODO]({WIKI}Devlog-TODO) - {changelog_link(n) or 'no changelog yet'}.", ""]
         if one["planned"]:
             lines += [one["planned"], "", "_Planned in phase 28, not started: its items are written when the owner says so._"]
         else:
             lines += one["items"]
-        state = "closed" if n in complete else "open"
-        issue = sync_issue(
-            have, f"phase-{n}",
-            {"title": f"Phase {n}: {one['title']}", "body": "\n".join(lines), "labels": ["devlog", "phase"],
-             "milestone": milestone(n), "state": state},
+        issues.append(
+            {"key": f"phase-{n}", "title": f"Phase {n}: {one['title']}", "body": "\n".join(lines),
+             "labels": ["devlog", "phase"], "milestone": milestone_of.get(n),
+             "state": "closed" if n in complete else "open",
+             "ticked": any("- [x]" in item for item in one["items"])}
         )
-        ticked = any("- [x]" in item for item in one["items"])
-        cards.append((issue, "Done" if state == "closed" else "In Progress" if ticked else "Todo"))
-
     answered = answers()
     for kind, path, label, where in (
         ("Q", "docs/devlog/BRAINSTORM.md", "question", "BRAINSTORM"),
@@ -309,12 +303,34 @@ def main():
             lines = [f"**{key}** of [{where}]({WIKI}Devlog-{where}) - as it stood there:", "", *text.splitlines()[1:]]
             if answer and not is_open:
                 lines += ["", "---", "", f"**The owner's answer**, word for word ({changelog_link(phase)}):", "", answer]
-            issue = sync_issue(
-                have, key,
-                {"title": title, "body": "\n".join(lines).strip(), "labels": ["devlog", label],
-                 "milestone": milestone(phase), "state": "open" if is_open else "closed"},
+            issues.append(
+                {"key": key, "title": title, "body": "\n".join(lines).strip(), "labels": ["devlog", label],
+                 "milestone": milestone_of.get(phase) if phase is not None else None,
+                 "state": "open" if is_open else "closed", "ticked": False}
             )
-            cards.append((issue, "Todo" if is_open else "Done"))
+    return plan, complete, issues
+
+
+def main():
+    global REPO, OWNER
+    REPO = gh("repo", "view", "--json", "nameWithOwner")["nameWithOwner"]
+    OWNER = REPO.split("/")[0]
+    plan, complete, issues = wanted()
+    ensure_labels()
+    numbers_of = sync_milestones(plan, complete)
+    have = existing_issues() if not DRY else {}
+    cards: list[tuple[dict, str]] = []
+    for one in issues:
+        issue = sync_issue(
+            have, one["key"],
+            {"title": one["title"], "body": one["body"], "labels": one["labels"],
+             "milestone": numbers_of.get(one["milestone"]) if one["milestone"] else None, "state": one["state"]},
+        )
+        if one["key"].startswith("phase-"):
+            column = "Done" if one["state"] == "closed" else "In Progress" if one["ticked"] else "Todo"
+        else:
+            column = "Todo" if one["state"] == "open" else "Done"
+        cards.append((issue, column))
 
     if NO_BOARD:
         print("the board left out (--no-board): task github:devlog brings it from a terminal")

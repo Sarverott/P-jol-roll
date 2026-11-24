@@ -11,6 +11,12 @@ tasks:
     cmds:
       - tests/unittesting/chain/-one-mirror/run.sh
 
+  mirrors-gitea:
+    desc: 'A Gitea of our own as a mirror (phase 46), in a container: the repository made, every branch pushed, the devlog written as on GitHub, and again with no change (needs Docker)'
+    dir: '{{.TASKFILE_DIR}}/../..'
+    cmds:
+      - tests/unittesting/mirrors/-own-gitea/run.sh
+
   mirrors:
     desc: 'Two mirrors of the law joined by WireGuard and balanced by Traefik, in containers (phase 38; needs Docker, Go, the wireguard module) - case -two-mirrors'
     dir: '{{.TASKFILE_DIR}}/../..'
