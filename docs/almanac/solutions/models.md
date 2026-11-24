@@ -44,7 +44,7 @@ the MCP tools of `src/mcp`.
   in a frame**: the space's links to `/login` open at the top, and the
   cookie is `SameSite=None; Secure` for the space shown inside
   huggingface.co.
-- **Models write markdown** (`**`, `###`, `[ELI](ELI)`): the chat reads it as
+- **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
 - **Ollama's models live where `OLLAMA_MODELS` says** - the variable is
