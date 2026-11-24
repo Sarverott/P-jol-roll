@@ -15,6 +15,8 @@ import euLaw from "./tools/eu_law/function.js";
 import euLawMeta from "./tools/eu_law/metadata.js";
 import journals from "./tools/journals/function.js";
 import journalsMeta from "./tools/journals/metadata.js";
+import regionalLaw from "./tools/regional_law/function.js";
+import regionalLawMeta from "./tools/regional_law/metadata.js";
 import searchActs from "./tools/search_acts/function.js";
 import searchActsMeta from "./tools/search_acts/metadata.js";
 import searchMeaning from "./tools/search_meaning/function.js";
@@ -25,6 +27,8 @@ import sourceList from "./tools/source_list/function.js";
 import sourceListMeta from "./tools/source_list/metadata.js";
 import statistics from "./tools/statistics/function.js";
 import statisticsMeta from "./tools/statistics/metadata.js";
+import tenders from "./tools/tenders/function.js";
+import tendersMeta from "./tools/tenders/metadata.js";
 
 /*
 The MCP server of gathered law: every tool of tools/ (a folder each - metadata.ts says what it
@@ -35,7 +39,7 @@ Gathering is started by a person, so an agent cannot set off a crawl of the sour
 */
 
 export function createServer() {
-	const server = new McpServer({ name: "p-jol-roll", version: "0.39.0" });
+	const server = new McpServer({ name: "p-jol-roll", version: "0.40.0" });
 	server.registerTool("journals", journalsMeta, journals);
 	server.registerTool("search_acts", searchActsMeta, searchActs);
 	server.registerTool("search_meaning", searchMeaningMeta, searchMeaning);
@@ -46,6 +50,8 @@ export function createServer() {
 	server.registerTool("analysis", analysisMeta, analysis);
 	server.registerTool("eu_law", euLawMeta, euLaw);
 	server.registerTool("agreements", agreementsMeta, agreements);
+	server.registerTool("regional_law", regionalLawMeta, regionalLaw);
+	server.registerTool("tenders", tendersMeta, tenders);
 	server.registerTool("statistics", statisticsMeta, statistics);
 	server.registerTool("sejm_work", sejmWorkMeta, sejmWork);
 	server.registerTool("source_list", sourceListMeta, sourceList);

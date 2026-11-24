@@ -217,6 +217,16 @@ tasks:
     cmds:
       - npm run eu -- {{.CLI_ARGS}}
 
+  regional:
+    desc: 'Local and regional law (phase 43): the voivodeships'' official journals asked what they are, the newest year of each - task regional -- POL_WOJ_LB --year 2025 --files --limit 50'
+    cmds:
+      - npm run regional -- {{.CLI_ARGS}}
+
+  tenders:
+    desc: 'Public tenders of days (phase 43): every notice of e-Zamówienia and the EU''s TED notices for Poland - task tenders -- 2026-11-20 2026-11 (-- --source BZP)'
+    cmds:
+      - npm run tenders -- {{.CLI_ARGS}}
+
   international:
     desc: 'The international agreements the journals of the state published, indexed from the listings here into dataset/international/ (phase 42) - asks no source'
     cmds:

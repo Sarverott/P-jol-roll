@@ -39,6 +39,9 @@ sittings                             -> sittings of Sejm of the current term: wh
 sittings 10 --files --limit 40       -> and the texts of the statements, 40 days and then 40 texts at most
 eu 2016 2024                         -> the law of the EU of these years: every act, its Polish title (phase 42)
 eu 2016 --texts --limit 50           -> and the Polish texts of acts in force, 50 at most
+regional                             -> the voivodeships' journals asked what they are, the newest year of each (phase 43)
+regional POL_WOJ_LB --year 2025 --files --limit 50   -> one journal, a year, the PDFs of its acts
+tenders 2026-11-20 2026-11            -> public tenders of these days: e-Zamowienia and TED (phase 43)
 saos --quality                       -> judgments SAOS dates after today or before 1918, counted (phase 41)
 saos 2024 2025 --limit 3             -> court judgments of these years, 3 months that are not here yet
 
@@ -60,6 +63,8 @@ const COMMANDS = [
 	"sittings",
 	"saos",
 	"eu",
+	"regional",
+	"tenders",
 	"checkup",
 	"hub",
 	"map",
@@ -90,6 +95,8 @@ const { values, positionals } = parseArgs({
 		check: { type: "boolean", default: false },
 		files: { type: "boolean", default: false },
 		quality: { type: "boolean", default: false },
+		year: { type: "string", multiple: true, default: [] },
+		source: { type: "string", multiple: true, default: [] },
 		pdf: { type: "boolean", default: false },
 		texts: { type: "boolean", default: false },
 	},
@@ -250,6 +257,44 @@ if (command === "eu") {
 		limit: Number(values.limit ?? 20),
 		rate: Number(values.rate ?? 30),
 	});
+}
+
+if (command === "regional") {
+	const { regional, journalsPath } = await import("./apihandlers/regional.js");
+	const states = await regional({
+		codes: positionals,
+		years: (values.year as string[]).map(Number),
+		files: Boolean(values.files),
+		limit: Number(values.limit ?? 20),
+		rate: Number(values.rate ?? 30),
+	});
+	log.info(
+		`regional: ${states.filter((one) => one.answers).length} of ${states.length} journals answer, into ${journalsPath()}`,
+		Object.fromEntries(
+			states.map((one) => [one.voivodeship, one.code ?? one.error]),
+		),
+	);
+}
+
+if (command === "tenders") {
+	if (!positionals.length)
+		throw new Error("tenders needs days or months: tenders 2026-11-20 2026-11");
+	const { tenders } = await import("./apihandlers/tenders.js");
+	const sources = (values.source as string[]).length
+		? (values.source as string[]).filter(
+				(one) => one === "BZP" || one === "TED",
+			)
+		: ["BZP", "TED"];
+	const { sum, failed } = await tenders({
+		days: positionals,
+		sources: sources as ("BZP" | "TED")[],
+		limit: Number(values.limit ?? 7),
+	});
+	log.info(`tenders: ${Object.keys(sum).length} days taken`, sum);
+	if (failed.length) {
+		log.error(`tenders: ${failed.length} days not taken`, { failed });
+		process.exitCode = 1;
+	}
 }
 
 if (command === "checkup") {

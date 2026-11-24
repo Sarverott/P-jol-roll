@@ -429,3 +429,13 @@ The order of phase 41 goes on (changelog phase 42). Along the *Lean* of Q22 (#14
 - [x] The changelog
 - [x] The law of the EU (`task eu`): every act of a year from the Publications Office's SPARQL endpoint, the Polish texts of those in force into `bucket/EU/`; the international agreements of the journals indexed (`task international`); MCP `eu_law` and `agreements`, `/api/eu`, `/api/agreements`, the catalog
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 43: public tenders, local and regional law
+
+The order of phase 41 goes on (changelog phase 43). Along the *Lean* of Q23 (#141).
+
+- [x] The changelog
+- [x] Local and regional law (`task regional`): the sixteen voivodeships' journals asked what they are, every act of a year of those answering as the ELI API, their PDFs; the state of each journal kept
+- [x] Public tenders (`task tenders`): every notice of e-Zamówienia by day (a full window split in two), TED's notices for Poland; polite, a refusal waited out
+- [x] MCP `regional_law` and `tenders`, `/api/regional`, `/api/tenders`, the catalog
+- [x] Tests, docs, the almanac's lines and AGENTS.md
