@@ -42,8 +42,14 @@ try {
 			console.log(
 				`  [${one.ELI}] ${one.read ? "read through the tools" : "NOT READ - the model named it from memory"}`,
 			);
+		if (advice.original)
+			console.log(
+				`  translated by ${config.team?.translate} from what ${advice.model} said in another language`,
+			);
+		if (advice.guard)
+			console.log(`  guard ${advice.guard.by}: ${advice.guard.verdict}`);
 		console.log(
-			`\n${advice.model}, ${advice.rounds} round(s), ${advice.steps.length} tool call(s). Not legal advice.`,
+			`\n${advice.team ? `team ${advice.team}: ` : ""}${advice.model}, ${advice.rounds} round(s), ${advice.steps.length} tool call(s). Kept: ${advice.record || "no"}. Not legal advice.`,
 		);
 	}
 } finally {

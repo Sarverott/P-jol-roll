@@ -83,8 +83,12 @@ models of one family act as one team: `gemma4`, `translategemma`,
 `embeddinggemma`, `shieldgemma`... are all `gemma`); the instance is the
 model with its size. A file holds the question, the answer, the reasoning,
 the acts cited, the tools called, how long it took and the whole exchange -
-the texts given and what the tools answered. The directory is ignored by
-git and pushed nowhere; `MASTERMIND_KEEP=0` keeps nothing. In compose it is
+the texts given and what the tools answered. The directory is the local side
+of their own dataset,
+[Apokryf/Consiliariis-Polonicum-Lex](https://huggingface.co/datasets/Apokryf/Consiliariis-Polonicum-Lex)
+(`conversations` of `resources/.map.json`): `task resources:push --
+conversations` sends what is new, a person's move; git keeps only its card.
+`MASTERMIND_KEEP=0` keeps nothing. In compose it is
 the one directory the mastermind writes.
 
 ## Settings

@@ -10,8 +10,10 @@ resources/dataset
 
 # https://huggingface.co/spaces/Sarverott/docs-of-law-by-gov-in-poland
 resources/space
-# the conversations of the mastermind (phase 31): collected here, never pushed by themselves
-resources/conversations
+# the conversations of the mastermind (phase 31): the local side of their dataset on Hugging
+# Face (.map.json "conversations"); only its card is kept in git
+resources/conversations/*
+!resources/conversations/README.md
 
 # the directories of other sources before phase 10 (task resources:merge moves them into
 # dataset/ and bucket/)
