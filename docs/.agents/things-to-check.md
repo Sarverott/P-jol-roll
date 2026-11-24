@@ -6,6 +6,17 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. One Go advisory has no fix: GO-2026-5932**, the whole
+  `golang.org/x/crypto/openpgp` package (unmaintained, unsafe by design).
+  The Cosmos SDK imports its `armor` for exported keys (`crypto/keyring`),
+  even in 0.53.8, the newest 0.53. govulncheck reports it as reachable in
+  `lawchain`; every other alert was fixed by raising its module. Clearing it
+  means replacing that package inside the SDK (a shim module over
+  ProtonMail's maintained `openpgp/armor`), or a newer SDK when it drops it.
+- **2026-11-24. The gate's `pull_request` run fails on every phase's pull
+  request** ("a workflow file issue", no job runs), since phase 33 at
+  least; the run `phase-close` dispatches passes and merges, so nothing is
+  held. The README's badge of the gate follows the dispatched run.
 - **2026-11-24. The devices of phase 40 want Sett's hands.** Signing was
   checked with a security key simulated in Chromium; whether Electron on
   Linux reaches a real USB key (Chromium's own CTAP over HID, the udev
