@@ -203,6 +203,7 @@ test("the MCP server answers at /mcp of the api with the same reading", async ()
 			"act_text",
 			"journals",
 			"search_acts",
+			"search_meaning",
 			"sejm_work",
 			"source_list",
 			"statistics",

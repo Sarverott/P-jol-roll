@@ -1,0 +1,13 @@
+# gpu: the NVIDIA cards of the machine given to Ollama (phase 30). Not included by compose.yaml -
+# a machine without them (or without the NVIDIA Container Toolkit) would not start the service -
+# but added on the command line where they are (task mastermind:up does it when nvidia-smi answers):
+#   docker compose -f compose.yaml -f resources/services/gpu.yaml --profile mastermind up -d
+services:
+  llms-ollama:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

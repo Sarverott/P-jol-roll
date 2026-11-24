@@ -67,6 +67,7 @@ in the country, as open source.
 | 27 | the space by its trusted publisher, and waited for until it serves the release |
 | 28 | the host says what it is in a corner; the devlog on GitHub (milestones, issues, a board), copied into the wiki; the language packs from their gist |
 | 29 | what happened said by the workflows in the discussion of announcements (#107): steps, phases, milestones, the staging, releases |
+| 30 | the mastermind's first voice: deepseek-R1 answers a question with the acts it read through the MCP tools, each cited by its ELI; the host's Ollama for development, compose with Ollama and its models for other machines |
 
 ### Phases ahead (planned in phase 28)
 
@@ -77,7 +78,6 @@ phase 29).
 
 | Phase | Milestone | Idea |
 | ----- | --------- | ---- |
-| 30 | M4 | the mastermind's first voice: a small deepseek-R1 and the embedder in Ollama, a service of compose, answering a question with the acts it read through the MCP tools, each cited by its ELI |
 | 31 | M4 | the executive agent: a small qwen in the agents' shell (an opencode host), reading the law through MCP, doing what a person gives it |
 | 32 | M4 | the advanced strategy: a deepseek hosted by Hugging Face for the hard questions; the Python stack of the models and simulations in a place of its own |
 | 33 | M4 | the work of Sejm as discussion: the records of sittings gathered from the Sejm API, who said what about which act |

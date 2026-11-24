@@ -29,7 +29,7 @@ The directories group into four parts. Each part only leans on the one below it.
 | Part | Directories | What it is |
 | --- | --- | --- |
 | **core** | `core/` | gathering, checksums, tables, markdown, and reading of all of it |
-| **hosts** | `openapi/`, `mcp/`, `workflows/` | serve what the core reads: to programs over http, to AI agents over stdio; and run the core's commands as durable runs |
+| **hosts** | `openapi/`, `mcp/`, `mastermind/`, `workflows/` | serve what the core reads: to programs over http, to AI agents over stdio; a model answering from it through MCP; and run the core's commands as durable runs |
 | **viewer** | `gui/`, `web/` | one Vue viewer, and the website that carries it |
 | **shells** | `desktop/`, `app/`, `firefox-ext/`, `chrome-ext/` | wrap the viewer or the api for one kind of device |
 
@@ -122,15 +122,18 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/openapi/routes.ts` | The read-only routes under `/api`. |
 | `src/openapi/host.ts` | `/api/host`: what this host is - the release, the commit and the workflow's run that built it (build arguments of the image), a container or not, Hugging Face (`SPACE_ID`), the remote mode, writing or not, and its short name (`HF-demo-readonly-container`) for the viewer's corner. |
 | `src/openapi/writing.ts` | `/api/jobs`, mounted only with `--allow-writing`: a job started from the api's own pages (Host and Origin checked, JSON only) after the person's yes, and followed. socket.io hears only that a job ended. |
+| `src/openapi/ask.ts` | `/api/ask`: the mastermind through the api's own `/mcp`, only with `MASTERMIND_URL` and never on Hugging Face (`SPACE_ID`); one question at a time. |
 | `src/openapi/spec.ts` | OpenAPI 3.1 description, served at `/openapi.json`. Kept by hand next to the routes. |
 | `src/workflows/flows/daily.ts` | The daily run: `gather --since`, `seal`, `compile`, `text`, `hub plan` of each repository, then it waits for an answer (3 days by default). Only "yes" makes it push; no answer ends it without pushing. |
 | `src/workflows/flows/steps.ts` | Steps: each runs one command of `src/core/main.ts` in its own process and keeps its last 40 lines. Retried 3 times by the runtime; every command is safe to repeat. |
 | `src/workflows/server/api/daily.post.ts` | `POST /api/daily` starts a run and answers with its approval token. `task workflows:daily`. |
 | `src/workflows/server/api/daily/approve.post.ts` | `POST /api/daily/approve` answers a waiting run. The server listens on this machine only, which is what makes the answer a person's. `task workflows:approve`. |
 | `src/workflows/nitro.config.ts` | Nitro with the `workflow/nitro` module. Built from inside `src/workflows` (`task workflows:build`), because names of workflows are paths from where the build runs. |
-| `src/mcp/server.ts` | The MCP server: tools `journals`, `search_acts`, `act`, `act_text`, `act_references`, `statistics`, `sejm_work`, `source_list`, a folder each in `tools/` (`metadata.ts`, `function.ts`; `shared.ts` what they share). Read-only, so an agent cannot start gathering. One factory for both ways in. |
+| `src/mcp/server.ts` | The MCP server: tools `journals`, `search_acts`, `search_meaning` (acts nearest to a question by the vectors of `task embed`, phase 30), `act`, `act_text`, `act_references`, `statistics`, `sejm_work`, `source_list`, a folder each in `tools/` (`metadata.ts`, `function.ts`; `shared.ts` what they share). Read-only, so an agent cannot start gathering. One factory for both ways in. |
 | `src/mcp/main.ts` | The server over stdio, for an agent on this machine. Over http it is `/mcp` of the api (`src/openapi/server.ts`), so the container and the space serve it too. |
 | `src/mcp/client.ts` | A client: what an agent gets, from a terminal (`task mcp:ask`) and in tests. |
+| `src/mastermind/ask.ts` | The law mastermind (phase 30): the acts nearest to the question by meaning and the texts of the nearest ones read through MCP and given with it, then rounds in which the model calls tools, then its answer; each ELI it cites marked read or not. Ollama's `/api/chat` or an OpenAI-like api, streamed (a thinking model may think longer than fetch waits); the calls deepseek-R1 writes as its own tokens parsed too. |
+| `src/mastermind/main.ts` | `task mastermind:ask`: a question from a terminal, over the MCP server on stdio (or `MCP_URL`). |
 
 ### viewer
 

@@ -60,6 +60,7 @@ into the page.
 | [The viewer](solutions/viewer.md) | [sigma's edges](cataclistics/sigma-edges.md) · [parquet in zstd](cataclistics/hyparquet-zstd.md) · [two servers, no notices](cataclistics/inotify-watches.md) |
 | [The source API](solutions/source-api.md) | [`/changes` wants a time](cataclistics/eli-changes-400.md) |
 | [The terminal](solutions/terminal.md) | [Ctrl+C in the launcher](cataclistics/launcher-ctrl-c.md) · [no workflows in the web interface](cataclistics/workflow-web-manifest.md) |
+| [Language models](solutions/models.md) | (phase 30, lines only) |
 | [The repository](solutions/repository.md) | [the media submodule](cataclistics/gist-submodule.md) · [checked before the last change](cataclistics/checked-before-last-change.md) |
 
 ## Topics

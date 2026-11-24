@@ -1,0 +1,6 @@
+{
+	"model": "stand-in",
+	"by": "tests/mastermind.test.ts: three acts, three dimensions",
+	"dimensions": 3,
+	"normalized": true
+}

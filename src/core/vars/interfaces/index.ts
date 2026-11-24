@@ -5,6 +5,7 @@ import type ActFileInterface from "./ActFile.interface.js";
 import type ActPageInterface from "./ActPage.interface.js";
 import type ActTextInterface from "./ActText.interface.js";
 import type ActViewInterface from "./ActView.interface.js";
+import type AdviceInterface from "./Advice.interface.js";
 import type ApprovalInterface from "./Approval.interface.js";
 import type AskedInterface from "./Asked.interface.js";
 import type ChainInterface from "./Chain.interface.js";
@@ -115,4 +116,9 @@ export namespace CatalogScope {
 	export type Parameter = ParameterInterface;
 	export type Job = JobInterface;
 	export type Host = HostInterface;
+}
+
+// the law mastermind (phase 30, src/mastermind): a question answered from acts read through MCP
+export namespace MastermindScope {
+	export type Advice = AdviceInterface;
 }

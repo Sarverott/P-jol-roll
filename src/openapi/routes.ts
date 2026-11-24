@@ -6,6 +6,7 @@ import { PRESETS } from "../core/methods/presets.js";
 import * as dataset from "../core/reading/dataset.js";
 import * as library from "../core/reading/library.js";
 import { remote } from "../core/reading/remote.js";
+import { askRoutes } from "./ask.js";
 import { host } from "./host.js";
 import { spec } from "./spec.js";
 
@@ -65,6 +66,9 @@ if (remote)
 						);
 		ready.then(() => next(), next);
 	});
+
+// a question to the law mastermind, where this api has one (phase 30, ask.ts)
+routes.use(askRoutes);
 
 routes.get("/openapi.json", (_request, response) => {
 	response.json(spec);

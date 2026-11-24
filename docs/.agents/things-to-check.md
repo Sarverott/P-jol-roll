@@ -6,13 +6,17 @@ point was added.
 
 ## Decisions for Sett
 
-- **2026-11-24. The devlog's board (phase 28) needs the gh scope
-  `project`.** The milestones and the 62 issues (#43-#104) are made, and
-  `devlog.yml` keeps them following the markdown. The board "P_JOL_ROLL
-  devlog" is a project of Sett's account, which the workflow's token cannot
-  reach and Cleo's gh may not either: `gh auth refresh -s project`, then
-  `task github:devlog` makes the board and fills it (Done, In Progress,
-  Todo). An issue edited by hand is overwritten by the next run.
+- **2026-11-24. The mastermind's compose run (phase 30) was not started
+  here.** The image was run against the host's Ollama and answered
+  `/api/ask`; `docker compose --profile mastermind config` is valid with and
+  without `gpu.yaml`. Its own Ollama, `llms-models` pulling about 6 GB and
+  the GPU through the NVIDIA Container Toolkit wait for the first machine
+  that runs `task mastermind:up`.
+- **2026-11-24. deepseek-r1:8b is a small voice.** It answers from the
+  acts it was given, but now and then in English, with a word of another
+  script, or citing an act it did not open (marked not read). A larger
+  model is one variable away (`MASTERMIND_MODEL`); 12 GB of the RTX 3060
+  hold a 14b only with a short context.
 - **2026-11-24. The phases ahead (29-38, VISION)** are planned from Sett's
   own words (Q17, Q18, PP4, the milestones), not ordered: each starts when
   Sett says so. Phase 29 (deepseek-R1 and the embedder in Ollama, answering
