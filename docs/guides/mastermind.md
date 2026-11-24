@@ -51,6 +51,44 @@ By hand: `docker compose --profile mastermind up -d`, and
 `-f compose.yaml -f resources/services/gpu.yaml` before `--profile` for the
 NVIDIA cards (the NVIDIA Container Toolkit is needed for them).
 
+## The executive agent
+
+Not a chat but a task (phase 33): a small qwen does what a person gives it,
+reading the law through the MCP tools, and writes what it is asked for into
+`resources/agent/` - the only place it can write; it runs no command and
+fetches no page.
+
+```bash
+task agent -- "Przeczytaj dekret DU/1919/147 i zapisz w pliku obowiazek-szkolny-1919.md streszczenie"
+task agent:container -- "..."     # the same in the agents' shell, with Ollama of the profile llms
+```
+
+Its first real task, on this machine: it read the school decree of 1919 and
+wrote `resources/agent/obowiazek-szkolny-1919.md` - school age from 7, seven
+years of school, to 14 - citing the articles, the act marked read. Every
+run is kept as a conversation (`resources/conversations/qwen/...`).
+
+Two engines (`AGENT_ENGINE`):
+
+- **own** (the default): the mastermind's rounds with the MCP tools given
+  directly, and one tool of its own, `write_note` (a bare file name, markdown,
+  never outside `resources/agent/`); its instructions are
+  `resources/configs/mastermind/executive.md`.
+- **opencode**: opencode 2 as its host, as planned, from
+  `resources/configs/agentic-shell/opencode/` - its own config and data
+  directories (`resources/.containerdatavol/agent/`), so neither the
+  person's opencode settings nor sessions are touched, `--standalone`, a
+  model of its own with a 24k context. Not yet reliable: opencode 2 hands an
+  MCP server's tools over through Code Mode, and in some runs it does not
+  find the server's namespace (*Unknown tool 'p-jol-roll.act_text'*).
+
+| Variable | Default | What it is |
+| --- | --- | --- |
+| `AGENT_MODEL` | `qwen3:8b` | the model |
+| `AGENT_OLLAMA_URL` | `http://127.0.0.1:11434/v1` | its Ollama (`http://llms-ollama:11434/v1` in the shell) |
+| `AGENT_ENGINE` | `own` | `own` or `opencode` |
+| `AGENT_ROUNDS`, `AGENT_CONTEXT` | 8, 24576 | rounds of tools (own); context of its model (opencode) |
+
 ## Ollama on its own drive
 
 The models are large and many, so the Ollama of this machine keeps them on
