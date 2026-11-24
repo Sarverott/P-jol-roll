@@ -315,6 +315,7 @@ development, a compose setup for other machines.
 - [x] The MCP tool `search_meaning`: acts nearest to a question by meaning, over the vectors of `task embed` of every year, the question made a vector by the same model of Ollama
 - [x] The mastermind (`src/mastermind/`): a question answered by a model of an OpenAI-like api (Ollama, LiteLLM), which reads the law through the MCP tools in rounds and cites the acts by their ELI; the citations checked against what it read; `task mastermind:ask`
 - [x] `/api/ask` of an api started with a mastermind (`MASTERMIND_URL`); never on a public host
+- [x] The vectors of every year in the api's memory as int8 (about 190 MB): as numbers of JavaScript they did not fit its heap, which ran out on the first `/api/ask`
 - [ ] Compose for another machine: the profile `mastermind` - Ollama, its models pulled by a container, the api asking it; the GPU by `resources/services/gpu.yaml` where there is one
 - [ ] Tests: the search by meaning, the rounds of the mastermind against a stand-in model
 - [ ] Docs, the almanac's lines and AGENTS.md

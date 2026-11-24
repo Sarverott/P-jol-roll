@@ -93,12 +93,33 @@ export function embeddedYears(): string[] {
 		.sort();
 }
 
-// the vectors read once per process: a year is not read again for each question
-const read = new Map<string, Promise<Map<string, number[]>>>();
+/*
+The vectors of a year read once per process, kept small: one matrix of int8 per year (each
+normalized vector times 127), a quarter of float32 and enough to rank by - every year at once
+as numbers of JavaScript would not fit the heap of the api (phase 30).
+*/
+type Year = { elis: string[]; matrix: Int8Array; size: number };
+const read = new Map<string, Promise<Year>>();
 const cached = (journal: string, year: number) => {
 	const key = `${journal}/${year}`;
-	if (!read.has(key)) read.set(key, vectorsOf(journal, year));
-	return read.get(key) as Promise<Map<string, number[]>>;
+	if (!read.has(key))
+		read.set(
+			key,
+			vectorsOf(journal, year).then((vectors) => {
+				const elis = [...vectors.keys()];
+				const size = vectors.values().next().value?.length ?? 0;
+				const matrix = new Int8Array(elis.length * size);
+				elis.forEach((eli, row) => {
+					const vector = vectors.get(eli) as number[];
+					for (let i = 0; i < size; i++)
+						matrix[row * size + i] = Math.round(
+							Math.max(-1, Math.min(1, vector[i])) * 127,
+						);
+				});
+				return { elis, matrix, size };
+			}),
+		);
+	return read.get(key) as Promise<Year>;
 };
 
 /*
@@ -120,10 +141,13 @@ export async function nearest(
 	const best: { ELI: string; score: number }[] = [];
 	for (const one of years) {
 		const [name, year] = one.split("/");
-		for (const [ELI, vector] of await cached(name, Number(year))) {
+		const { elis, matrix, size } = await cached(name, Number(year));
+		for (let row = 0; row < elis.length; row++) {
+			const ELI = elis[row];
 			let score = 0;
-			for (let i = 0; i < wanted.length; i++)
-				score += wanted[i] * (vector[i] ?? 0);
+			for (let i = 0; i < size; i++)
+				score += wanted[i] * matrix[row * size + i];
+			score /= 127;
 			if (best.length < limit || score > best[best.length - 1].score) {
 				best.push({ ELI, score: Math.round(score * 1000) / 1000 });
 				best.sort((a, b) => b.score - a.score);
