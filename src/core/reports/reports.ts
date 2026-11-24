@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import {
 	mkdirSync,
 	readdirSync,
@@ -56,41 +57,62 @@ export function authorities(): Authority[] {
 		.authorities;
 }
 
-// a server's chain of certificates as Node sees it: verified or not, and what it presents
-export function certificateOf(host: string, port = 443) {
-	return new Promise<Record<string, unknown>>((done) => {
-		// not refused when it does not verify: the failure is the evidence, read with the rest
-		const socket = connect(
-			{
-				host,
-				port,
-				servername: host,
-				timeout: 20_000,
-				rejectUnauthorized: false,
-			},
-			() => {
-				const peer = socket.getPeerCertificate();
-				done({
-					verified: socket.authorized,
-					error: socket.authorizationError
-						? String(socket.authorizationError)
-						: "",
-					subject: peer.subject?.CN ?? "",
-					issuer: [peer.issuer?.O, peer.issuer?.CN].filter(Boolean).join(", "),
-					validFrom: peer.valid_from ?? "",
-					validTo: peer.valid_to ?? "",
-				});
-				socket.end();
-			},
-		);
-		socket.on("timeout", () => {
-			socket.destroy();
-			done({ verified: false, error: "no answer in 20 s" });
-		});
-		socket.on("error", (error: NodeJS.ErrnoException) =>
-			done({ verified: false, error: error.code ?? error.message }),
-		);
-	});
+// a server's chain of certificates: whether it verifies, as any client of the journal's API meets
+// it (verification on - never turned off here), and what the server presents, as openssl shows it
+// (the same command the letter gives the reader to check it)
+export async function certificateOf(host: string, port = 443) {
+	const verdict = await new Promise<{ verified: boolean; error: string }>(
+		(done) => {
+			const socket = connect(
+				{ host, port, servername: host, timeout: 20_000 },
+				() => {
+					done({ verified: true, error: "" });
+					socket.end();
+				},
+			);
+			socket.on("timeout", () => {
+				socket.destroy();
+				done({ verified: false, error: "no answer in 20 s" });
+			});
+			socket.on("error", (error: NodeJS.ErrnoException) =>
+				done({ verified: false, error: error.code ?? error.message }),
+			);
+		},
+	);
+	return { ...verdict, ...presented(host, port) };
+}
+
+// what the server presents, by openssl s_client: subject, issuer, dates, its verify result
+function presented(host: string, port: number): Record<string, string> {
+	const shown = spawnSync(
+		"openssl",
+		["s_client", "-connect", `${host}:${port}`, "-servername", host],
+		{ input: "", encoding: "utf8", timeout: 30_000 },
+	);
+	if (shown.error || !shown.stdout) return {};
+	const pem =
+		/-----BEGIN CERTIFICATE-----[\s\S]+?-----END CERTIFICATE-----/.exec(
+			shown.stdout,
+		)?.[0];
+	const details = pem
+		? spawnSync(
+				"openssl",
+				["x509", "-noout", "-subject", "-issuer", "-startdate", "-enddate"],
+				{
+					input: pem,
+					encoding: "utf8",
+				},
+			).stdout
+		: "";
+	const field = (name: string) =>
+		new RegExp(`^${name}=\\s*(.+)$`, "m").exec(details)?.[1]?.trim() ?? "";
+	return {
+		subject: field("subject"),
+		issuer: field("issuer"),
+		validFrom: field("notBefore"),
+		validTo: field("notAfter"),
+		openssl: /Verify return code: .+/.exec(shown.stdout)?.[0] ?? "",
+	};
 }
 
 const letter = (draft: Draft) => `Dzień dobry,
