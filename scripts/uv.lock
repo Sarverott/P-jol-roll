@@ -1745,7 +1745,7 @@ wheels = [
 
 [[package]]
 name = "pjolroll-scripts-and-tools"
-version = "0.42.0"
+version = "0.43.0"
 source = { editable = "." }
 dependencies = [
     { name = "appimage-builder" },

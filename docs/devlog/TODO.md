@@ -455,3 +455,11 @@ The order of phase 41 goes on (changelog phase 45). Along the *Lean* of Q20 (#13
 - [x] The changelog
 - [x] The authorities' official contacts (`resources/configs/reports/authorities.yaml`); drafts with their evidence (`task report:draft`: public servers whose certificates do not verify); one draft sent after a person's yes, from the owner's mailbox (`task report:send`)
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 46: the repository on five more places
+
+The order of phase 41 goes on (changelog phase 46). Accounts and tokens: Q21 (#139).
+
+- [x] The changelog
+- [x] The mirrors (`bos.json: mirrors`, `mirrors.yml`): every branch and tag to gitea.com, gitlab.com, bitbucket.org, sr.ht and our own Gitea, a badge each; the same devlog on Gitea and GitLab (`scripts/devops/mirrors/devlog.py`, GitHub's `devlog.py` split into a shared model); the compose profile `gitea`; checked in a container with our own Gitea (`task unittesting:mirrors-gitea`)
+- [x] Tests, docs, the almanac's lines and AGENTS.md

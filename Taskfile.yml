@@ -201,6 +201,18 @@ tasks:
     cmds:
       - scripts/devops/local/chain-seal.sh {{.CLI_ARGS}}
 
+  mirrors:
+    desc: 'The repository and its devlog on its mirrors (phase 46): GitLab, Bitbucket, sourcehut, Gitea and our own - each with its token in the environment (MIRROR_*; the workflow mirrors.yml does it on every push to development); MIRRORS_ONLY=own-gitea for one'
+    cmds:
+      - python3 scripts/devops/mirrors/devlog.py --ensure
+      - scripts/devops/mirrors/mirrors.sh "${TMPDIR:-/tmp}/p-jol-roll-badges"
+      - python3 scripts/devops/mirrors/devlog.py
+
+  mirror:gitea:up:
+    desc: 'A Gitea of our own (phase 46), the compose profile gitea, on 127.0.0.1:3000 - then an administrator made in it, its token as MIRROR_OWN_GITEA_TOKEN'
+    cmds:
+      - docker compose --profile gitea up -d gitea
+
   torrents:publish:
     desc: 'The torrents put on IPFS - the owner''s move, it publishes: the IPFS node of compose (profile ipfs) started, torrents.car imported and pinned (asks first)'
     interactive: true
