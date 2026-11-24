@@ -38,3 +38,30 @@ Understood as:
   work of the mastermind - one answers, one calls tools, one makes the
   vectors, one translates, one guards - gemma first (`gemma4` and its kin),
   then ministral, llama, qwen and Bielik, which was made for Polish users.
+
+## UNIXUSAT=1795499454320 · commit d1344db
+
+The owner's message in the chat, 2026-11-24, after Ollama's move was
+prepared. Word for word:
+
+```text
+alright, i had prepare dedicated placing of that conversations to be storred for us - https://huggingface.co/datasets/Apokryf/Consiliariis-Polonicum-Lex . our server is rerunned according to what you guide me to do and after moving that current one conversation to subrepository and after we place that inside repo like we do that with other things delegated at huggingface we can continue next moves. please proceede
+```
+
+Checked: `ollama serve` runs again with `OLLAMA_MODELS` on the drive
+(`task ollama:where`: 2 models, 6.0 GB there). The dataset
+`Apokryf/Consiliariis-Polonicum-Lex` is public, holding a README with the
+licence CC-BY-SA-4.0 only.
+
+Understood as:
+
+- **The conversations have a repository of their own on Hugging Face**,
+  delegated the way the dataset, the bucket and the space are: a line of
+  `resources/.map.json`, so `resources/conversations/` is its local side and
+  `task resources:plan / pull / push -- conversations` move it. Its card is
+  kept in git, as the bucket's is.
+- **The one conversation kept so far is sent there**, by the owner's
+  order in this message - the first time an agent pushes to Hugging Face
+  here, asked for.
+- **Then the next moves**: the families as teams.
+
