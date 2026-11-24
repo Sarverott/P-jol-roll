@@ -134,3 +134,85 @@ test("going back after signing in stays on this host", async () => {
 	});
 	expect(back.headers.get("location")).toBe("/");
 });
+
+test("on the space the question is answered on the visitor's own token, and only signed in", async () => {
+	// a stand-in of Inference Providers: the OpenAI dialect, streamed as data: lines
+	const heard: { authorization: string; model: string; tools: number }[] = [];
+	const providers = createServer((request, response) => {
+		let body = "";
+		request.on("data", (chunk) => {
+			body += chunk;
+		});
+		request.on("end", () => {
+			const data = JSON.parse(body);
+			heard.push({
+				authorization: String(request.headers.authorization),
+				model: data.model,
+				tools: data.tools?.length ?? 0,
+			});
+			response.setHeader("content-type", "text/event-stream");
+			const pieces = ["Rada Stanu ", "doradzała [DU/1918/2]."];
+			response.end(
+				`${pieces
+					.map(
+						(content) =>
+							`data: ${JSON.stringify({ choices: [{ delta: { content } }] })}\n\n`,
+					)
+					.join("")}data: [DONE]\n\n`,
+			);
+		});
+	});
+	await new Promise<void>((done) => providers.listen(0, "127.0.0.1", done));
+	process.env.SPACE_ID = "Sarverott/docs-of-law-by-gov-in-poland";
+	process.env.DEMO_URL = `http://127.0.0.1:${(providers.address() as AddressInfo).port}/v1`;
+	process.env.DEMO_MODEL = "google/gemma-4-26B-A4B-it";
+	try {
+		const ask = (cookie?: string) =>
+			fetch(
+				`${url}/api/ask?question=${encodeURIComponent("Czym była Rada Stanu?")}`,
+				{
+					headers: cookie ? { cookie } : {},
+				},
+			);
+		const refused = await ask();
+		expect(refused.status).toBe(401);
+		expect(await refused.json()).toMatchObject({
+			login: "/login?back=/%23ask",
+		});
+		expect(await (await fetch(`${url}/api/ask/about`)).json()).toEqual({
+			answers: true,
+			signIn: true,
+			model: "google/gemma-4-26B-A4B-it",
+		});
+
+		const start = await fetch(`${url}/login`, { redirect: "manual" });
+		const state = new URL(
+			String(start.headers.get("location")),
+		).searchParams.get("state");
+		const back = await fetch(`${url}/login/callback?code=c&state=${state}`, {
+			redirect: "manual",
+		});
+		const session = String(back.headers.get("set-cookie")).split(";")[0];
+		const answered = await ask(session);
+		expect(answered.status).toBe(200);
+		expect(await answered.json()).toMatchObject({
+			answer: "Rada Stanu doradzała [DU/1918/2].",
+			model: "google/gemma-4-26B-A4B-it",
+			cited: [{ ELI: "DU/1918/2", read: false }],
+			record: "",
+		});
+		expect(heard).toEqual([
+			{
+				authorization: "Bearer hf_visitor",
+				model: "google/gemma-4-26B-A4B-it",
+				tools: expect.any(Number),
+			},
+		]);
+		expect(heard[0].tools).toBeGreaterThan(0);
+	} finally {
+		delete process.env.SPACE_ID;
+		delete process.env.DEMO_URL;
+		delete process.env.DEMO_MODEL;
+		providers.close();
+	}
+});

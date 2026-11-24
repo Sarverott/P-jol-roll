@@ -87,6 +87,7 @@ export async function ask(
 		onStep = (_step: MastermindScope.Advice["steps"][number]) => {},
 		onToken = (_text: string) => {},
 		config = settings(),
+		keep: keeping = true, // a visitor's conversation on the demo is not kept
 	} = {},
 ): Promise<MastermindScope.Advice> {
 	const started = Date.now();
@@ -254,13 +255,15 @@ export async function ask(
 	};
 	// kept with everything it was given and said (record.ts); the key never
 	const { key: _key, ...settings } = config;
-	advice.record = keep(
-		advice,
-		[
-			...messages,
-			{ role: "assistant", content: last.content, thinking: last.thinking },
-		],
-		{ url: config.url, started, settings },
-	);
+	advice.record = keeping
+		? keep(
+				advice,
+				[
+					...messages,
+					{ role: "assistant", content: last.content, thinking: last.thinking },
+				],
+				{ url: config.url, started, settings },
+			)
+		: "";
 	return advice;
 }
