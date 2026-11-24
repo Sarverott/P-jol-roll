@@ -70,6 +70,7 @@ in the country, as open source.
 | 30 | the mastermind's first voice: deepseek-R1 answers a question with the acts it read through the MCP tools, each cited by its ELI; the host's Ollama for development, compose with Ollama and its models for other machines |
 | 31 | families of models as teams (gemma4 and its kin first, then ministral, llama, qwen, Bielik), Ollama's storage on its own drive, every conversation kept in `resources/conversations/` |
 | 32 | the demo's AI: the visitor signs in with Hugging Face and the mastermind answers on the visitor's token through Inference Providers; a chat in the viewer |
+| 33 | the chat in every language pack; the executive agent - a small qwen in the agents' shell (opencode), reading the law through MCP |
 
 ### Phases ahead (planned in phase 28)
 
@@ -80,7 +81,6 @@ phases 29, 31 and 32).
 
 | Phase | Milestone | Idea |
 | ----- | --------- | ---- |
-| 33 | M4 | the executive agent: a small qwen in the agents' shell (an opencode host), reading the law through MCP, doing what a person gives it |
 | 34 | M4 | the advanced strategy: a deepseek hosted by Hugging Face for the hard questions; the Python stack of the models and simulations in a place of its own |
 | 35 | M4 | the work of Sejm as discussion: the records of sittings gathered from the Sejm API, who said what about which act |
 | 36 | M4 | social simulations offline (MiroFish or OASIS) of how a change of law meets people; the code of law analysed deeply, improvements proposed - M4 closes |

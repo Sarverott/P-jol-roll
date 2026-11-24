@@ -56,7 +56,7 @@ const lines = computed(() =>
 				<br v-if="!line.pieces.length">
 			</div>
 		</div>
-		<div class="tags mt-3">
+		<div class="tags mt-3 i18n-texts-slot">
 			<a
 				v-for="one in advice.cited"
 				:key="one.ELI"
@@ -73,14 +73,16 @@ const lines = computed(() =>
 			>
 		</div>
 		<details v-if="advice.thinking" class="mt-2">
-			<summary class="is-size-7">how it reasoned</summary>
+			<summary class="is-size-7 i18n-texts-slot">how it reasoned</summary>
 			<p class="answer is-size-7 has-text-grey">{{ advice.thinking }}</p>
 		</details>
 		<details v-if="advice.original" class="mt-2">
-			<summary class="is-size-7">as it was said before the translation</summary>
+			<summary class="is-size-7 i18n-texts-slot">
+				as it was said before the translation
+			</summary>
 			<p class="answer is-size-7 has-text-grey">{{ advice.original }}</p>
 		</details>
-		<p class="is-size-7 has-text-grey mt-2">
+		<p class="is-size-7 has-text-grey mt-2 i18n-texts-slot">
 			<span translate="no">{{ advice.model }}</span>,
 			{{ advice.steps?.length ?? 0 }} tool calls<template v-if="advice.guard"
 				>, guard: {{ advice.guard.verdict }}</template
