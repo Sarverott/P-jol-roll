@@ -7,8 +7,12 @@ import actReferences from "./tools/act_references/function.js";
 import actReferencesMeta from "./tools/act_references/metadata.js";
 import actText from "./tools/act_text/function.js";
 import actTextMeta from "./tools/act_text/metadata.js";
+import agreements from "./tools/agreements/function.js";
+import agreementsMeta from "./tools/agreements/metadata.js";
 import analysis from "./tools/analysis/function.js";
 import analysisMeta from "./tools/analysis/metadata.js";
+import euLaw from "./tools/eu_law/function.js";
+import euLawMeta from "./tools/eu_law/metadata.js";
 import journals from "./tools/journals/function.js";
 import journalsMeta from "./tools/journals/metadata.js";
 import searchActs from "./tools/search_acts/function.js";
@@ -31,7 +35,7 @@ Gathering is started by a person, so an agent cannot set off a crawl of the sour
 */
 
 export function createServer() {
-	const server = new McpServer({ name: "p-jol-roll", version: "0.37.10" });
+	const server = new McpServer({ name: "p-jol-roll", version: "0.37.11" });
 	server.registerTool("journals", journalsMeta, journals);
 	server.registerTool("search_acts", searchActsMeta, searchActs);
 	server.registerTool("search_meaning", searchMeaningMeta, searchMeaning);
@@ -40,6 +44,8 @@ export function createServer() {
 	server.registerTool("act_references", actReferencesMeta, actReferences);
 	server.registerTool("act_debates", actDebatesMeta, actDebates);
 	server.registerTool("analysis", analysisMeta, analysis);
+	server.registerTool("eu_law", euLawMeta, euLaw);
+	server.registerTool("agreements", agreementsMeta, agreements);
 	server.registerTool("statistics", statisticsMeta, statistics);
 	server.registerTool("sejm_work", sejmWorkMeta, sejmWork);
 	server.registerTool("source_list", sourceListMeta, sourceList);

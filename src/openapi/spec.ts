@@ -51,7 +51,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.37.10",
+		version: "0.37.11",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
@@ -247,6 +247,60 @@ export const spec = {
 					200: {
 						description:
 							"[{ ELI, kind, to, status, successor, count, since, proposal }]",
+					},
+				},
+			},
+		},
+		"/api/eu": {
+			get: {
+				summary:
+					"the years of the law of the EU gathered here (phase 42, task eu), with their acts counted",
+				responses: { 200: { description: "[{ year, acts }]" } },
+			},
+		},
+		"/api/eu/{year}": {
+			get: {
+				summary:
+					"the acts of the EU of a year: CELEX, date, kind, in force, Polish title, ELI",
+				parameters: ["year", "q", "inForce", "offset", "limit"].map((name) => ({
+					name,
+					in: name === "year" ? "path" : "query",
+					required: name === "year",
+					schema: { type: "string" },
+				})),
+				responses: { 200: { description: "a page of acts" } },
+			},
+		},
+		"/api/eu/act/{celex}": {
+			get: {
+				summary:
+					"one act of the EU, with its Polish text as markdown when it is gathered",
+				parameters: [
+					{
+						name: "celex",
+						in: "path",
+						required: true,
+						schema: { type: "string" },
+					},
+				],
+				responses: {
+					200: { description: "{ act, text, eurlex }" },
+					404: missing,
+				},
+			},
+		},
+		"/api/agreements": {
+			get: {
+				summary:
+					"the international agreements binding Poland that the journals published (phase 42, task international)",
+				parameters: ["q", "type", "offset", "limit"].map((name) => ({
+					name,
+					in: "query",
+					schema: { type: "string" },
+				})),
+				responses: {
+					200: {
+						description: "a page of agreements: ELI, type, title, date, status",
 					},
 				},
 			},

@@ -421,3 +421,11 @@ The owner's message, 2026-11-24 (changelog phase 41): the branches, the sources,
 - [x] SAOS checked: it answered the crawler 406 (crawlee asked for HTML; every walk now asks for JSON first) - judgments dated before 1918 or after today counted and listed in a report of the source's quality, not shown as dated
 - ~~[ ] The common courts' Portal Orzeczeń (orzeczenia.ms.gov.pl) as a source of its own: its judgments by publication, politely, into `dataset/courts/` and `bucket/courts/`~~ - not built: the portal has no public API (its `ncourt-api` answers pages, its search is a stateful form of Tapestry over some 300 portals of single courts), SAOS is fed from it and works again since the 406 was found (the item above); whether to imitate a person's search there anyway is Q25
 - [x] Tests, docs, the almanac's lines and AGENTS.md
+
+## Phase 42: international law adopted by Poland
+
+The order of phase 41 goes on (changelog phase 42). Along the *Lean* of Q22 (#140).
+
+- [x] The changelog
+- [x] The law of the EU (`task eu`): every act of a year from the Publications Office's SPARQL endpoint, the Polish texts of those in force into `bucket/EU/`; the international agreements of the journals indexed (`task international`); MCP `eu_law` and `agreements`, `/api/eu`, `/api/agreements`, the catalog
+- [ ] Tests, docs, the almanac's lines and AGENTS.md

@@ -221,6 +221,58 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		},
 	},
 	{
+		name: "eu-law",
+		group: "read",
+		title:
+			"the law of the EU: an act by its CELEX, or the acts of a year (phase 42)",
+		params: [
+			{
+				name: "celex",
+				title: "CELEX (empty: a year)",
+				kind: "text",
+				default: "",
+			},
+			{ name: "year", title: "year", kind: "number", default: 0 },
+			query,
+			offset,
+			limit(50),
+		],
+		writes: false,
+		read: async (values) => {
+			const celex = text(values, "celex");
+			if (celex) return dataset.euAct(celex);
+			const year = number(values, "year");
+			if (!year) return dataset.euYears();
+			await dataset.prepareDataset("eu", String(year));
+			return dataset.euActs(year, {
+				query: text(values, "query"),
+				offset: number(values, "offset"),
+				limit: number(values, "limit"),
+			});
+		},
+		ways: {
+			api: "GET /api/eu, /api/eu/{year}, /api/eu/act/{celex}",
+			mcp: "eu_law",
+		},
+	},
+	{
+		name: "agreements",
+		group: "read",
+		title:
+			"international agreements binding Poland, published in the journals (phase 42)",
+		params: [query, offset, limit(50)],
+		writes: false,
+		read: async (values) => {
+			await dataset.prepareDataset("agreements");
+			return dataset.agreements({
+				query: text(values, "query"),
+				offset: number(values, "offset"),
+				limit: number(values, "limit"),
+			});
+		},
+		ways: { api: "GET /api/agreements", mcp: "agreements" },
+	},
+	{
 		name: "act-debates",
 		group: "read",
 		title: "an act in Sejm: the days its bill was read on, who said what",
@@ -447,6 +499,16 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		ways: { cli: "npm start -- sejm" },
 	},
 	{
+		name: "international",
+		group: "process",
+		title:
+			"the international agreements the journals published, indexed (phase 42)",
+		params: [],
+		writes: true,
+		task: "international",
+		ways: { cli: "npm start -- international" },
+	},
+	{
 		name: "analyse",
 		group: "process",
 		title:
@@ -455,6 +517,31 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		writes: true,
 		task: "analyse",
 		ways: { cli: "npm start -- analyse" },
+	},
+	{
+		name: "eu",
+		group: "gather",
+		title:
+			"the law of the EU: every act of years, the Polish texts of those in force (phase 42)",
+		params: [
+			{
+				name: "years",
+				title: "years",
+				kind: "number",
+				many: true,
+				positional: true,
+			},
+			{
+				name: "texts",
+				title: "the Polish texts too",
+				kind: "flag",
+				option: "texts",
+			},
+			limit(0, 20),
+		],
+		writes: true,
+		task: "eu",
+		ways: { cli: "npm start -- eu" },
 	},
 	{
 		name: "sittings",
