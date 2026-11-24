@@ -2,6 +2,8 @@ module github.com/Sarverott/P-jol-roll/stacks/go
 
 go 1.26.8
 
+toolchain go1.26.11
+
 require (
 	github.com/ipfs/boxo v0.43.0
 	github.com/ipfs/go-cid v0.6.2
