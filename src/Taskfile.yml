@@ -20,6 +20,11 @@ tasks:
     cmds:
       - npx tsx src/mcp/client.ts {{.CLI_ARGS}}
 
+  mastermind:ask:
+    desc: 'A question to the law mastermind (phase 30): a model reads the acts through the MCP tools and cites them by ELI (task mastermind:ask -- "..."; -- --json all of it). The host''s Ollama and deepseek-r1:8b unless MASTERMIND_URL / MASTERMIND_MODEL; MCP_URL asks a running api''s tools'
+    cmds:
+      - npx tsx src/mastermind/main.ts {{.CLI_ARGS}}
+
   web:build:
     desc: Website of src/web with the viewer of src/gui, into dist/web.
     cmds:
