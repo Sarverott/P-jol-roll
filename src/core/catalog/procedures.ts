@@ -273,6 +273,77 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		ways: { api: "GET /api/agreements", mcp: "agreements" },
 	},
 	{
+		name: "regional-law",
+		group: "read",
+		title:
+			"local and regional law: a voivodeship journal's acts of a year (phase 43)",
+		params: [
+			{
+				name: "code",
+				title: "journal (empty: every one)",
+				kind: "text",
+				default: "",
+			},
+			{ name: "year", title: "year", kind: "number", default: 0 },
+			query,
+			offset,
+			limit(50),
+		],
+		writes: false,
+		read: async (values) => {
+			const code = text(values, "code");
+			const year = number(values, "year");
+			await dataset.prepareDataset("regional", code, String(year));
+			return code && year
+				? dataset.regionalActs(code, year, {
+						query: text(values, "query"),
+						offset: number(values, "offset"),
+						limit: number(values, "limit"),
+					})
+				: dataset.regionalJournals();
+		},
+		ways: {
+			api: "GET /api/regional, /api/regional/{code}/{year}",
+			mcp: "regional_law",
+		},
+	},
+	{
+		name: "public-tenders",
+		group: "read",
+		title: "public tenders of a day: e-Zamówienia (BZP) or TED (phase 43)",
+		params: [
+			{
+				name: "source",
+				title: "BZP or TED",
+				kind: "choice",
+				choices: ["BZP", "TED"],
+				default: "BZP",
+			},
+			{
+				name: "day",
+				title: "day (empty: the days gathered)",
+				kind: "text",
+				default: "",
+			},
+			query,
+			offset,
+			limit(50),
+		],
+		writes: false,
+		read: async (values) => {
+			const source = values.source === "TED" ? "TED" : "BZP";
+			const day = text(values, "day");
+			if (!day) return dataset.tenderDays(source);
+			await dataset.prepareDataset("tenders", source, day);
+			return dataset.tenders(source, day, {
+				query: text(values, "query"),
+				offset: number(values, "offset"),
+				limit: number(values, "limit"),
+			});
+		},
+		ways: { api: "GET /api/tenders/{source}/{day}", mcp: "tenders" },
+	},
+	{
 		name: "act-debates",
 		group: "read",
 		title: "an act in Sejm: the days its bill was read on, who said what",
@@ -542,6 +613,49 @@ export const PROCEDURES: CatalogScope.Procedure[] = [
 		writes: true,
 		task: "eu",
 		ways: { cli: "npm start -- eu" },
+	},
+	{
+		name: "regional",
+		group: "gather",
+		title:
+			"the voivodeships' official journals: local and regional law (phase 43)",
+		params: [
+			{
+				name: "codes",
+				title: "journals (empty: every one that answers)",
+				kind: "text",
+				many: true,
+				positional: true,
+			},
+			{
+				name: "files",
+				title: "the PDFs of the acts too",
+				kind: "flag",
+				option: "files",
+			},
+			limit(0, 20),
+		],
+		writes: true,
+		task: "regional",
+		ways: { cli: "npm start -- regional" },
+	},
+	{
+		name: "tenders",
+		group: "gather",
+		title: "public tenders of days: e-Zamówienia and TED (phase 43)",
+		params: [
+			{
+				name: "days",
+				title: "days or months (2026-11-20, 2026-11)",
+				kind: "text",
+				many: true,
+				positional: true,
+			},
+			limit(0, 7),
+		],
+		writes: true,
+		task: "tenders",
+		ways: { cli: "npm start -- tenders" },
 	},
 	{
 		name: "sittings",

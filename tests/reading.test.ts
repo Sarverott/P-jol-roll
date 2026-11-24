@@ -206,11 +206,13 @@ test("the MCP server answers at /mcp of the api with the same reading", async ()
 			"analysis",
 			"eu_law",
 			"journals",
+			"regional_law",
 			"search_acts",
 			"search_meaning",
 			"sejm_work",
 			"source_list",
 			"statistics",
+			"tenders",
 		].sort(),
 	);
 	const text = (result: Awaited<ReturnType<typeof client.callTool>>) =>

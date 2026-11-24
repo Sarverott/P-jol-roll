@@ -51,7 +51,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.38.1",
+		version: "0.38.2",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
@@ -287,6 +287,44 @@ export const spec = {
 					200: { description: "{ act, text, eurlex }" },
 					404: missing,
 				},
+			},
+		},
+		"/api/regional": {
+			get: {
+				summary:
+					"the voivodeships' official journals (phase 43, task regional): whether each answers, its code, its years, why not",
+				responses: {
+					200: {
+						description:
+							"[{ voivodeship, host, code, answers, years, acts, error }]",
+					},
+				},
+			},
+		},
+		"/api/regional/{code}/{year}": {
+			get: {
+				summary:
+					"a voivodeship journal's acts of a year: resolutions of communes, districts and regions, orders of voivodes",
+				parameters: ["code", "year", "q", "offset", "limit"].map((name) => ({
+					name,
+					in: name === "code" || name === "year" ? "path" : "query",
+					required: name === "code" || name === "year",
+					schema: { type: "string" },
+				})),
+				responses: { 200: { description: "a page of acts" } },
+			},
+		},
+		"/api/tenders/{source}/{day}": {
+			get: {
+				summary:
+					"public tenders of a day (phase 43, task tenders): BZP the notices of e-Zamówienia, TED the EU's with a buyer in Poland",
+				parameters: ["source", "day", "q", "offset", "limit"].map((name) => ({
+					name,
+					in: name === "source" || name === "day" ? "path" : "query",
+					required: name === "source" || name === "day",
+					schema: { type: "string" },
+				})),
+				responses: { 200: { description: "a page of notices" } },
 			},
 		},
 		"/api/agreements": {
