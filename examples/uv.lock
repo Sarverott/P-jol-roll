@@ -980,7 +980,7 @@ wheels = [
 
 [[package]]
 name = "p-jol-roll-examples"
-version = "0.30.4"
+version = "0.31.0"
 source = { virtual = "." }
 dependencies = [
     { name = "huggingface-hub" },
