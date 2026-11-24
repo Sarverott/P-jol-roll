@@ -1,8 +1,8 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { parse } from "yaml";
 import { RESOURCES_DIR } from "../core/resources/store.js";
 import type { MastermindScope } from "../core/vars/interfaces/index.js";
+import { families } from "./team.js";
 
 /*
 Every conversation of the mastermind kept (phase 31, the owner's order: "collect as many
@@ -19,24 +19,13 @@ MASTERMIND_KEEP=0 keeps nothing.
 
 export const CONVERSATIONS_DIR = join(RESOURCES_DIR, "conversations");
 
-let families: Record<string, string[]> | undefined;
-const known = () => {
-	if (!families) {
-		const path = join("resources", "configs", "mastermind", "families.yaml");
-		families = existsSync(path)
-			? (parse(readFileSync(path, "utf8"))?.families ?? {})
-			: {};
-	}
-	return families as Record<string, string[]>;
-};
-
 // "SpeakLeash/bielik-11b-v2.2-instruct:Q4_K_M" -> "bielik-11b-v2.2-instruct"
 const bare = (model: string) =>
 	(model.split("/").pop() ?? model).split(":")[0].toLowerCase();
 
 export function familyOf(model: string): string {
 	const name = bare(model);
-	for (const [family, names] of Object.entries(known()))
+	for (const [family, names] of Object.entries(families()))
 		if (names.some((one) => name.startsWith(one.toLowerCase()))) return family;
 	return name.match(/^[a-z]+/)?.[0] ?? "other";
 }

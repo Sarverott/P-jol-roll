@@ -25,6 +25,11 @@ tasks:
     cmds:
       - npx tsx src/mastermind/main.ts {{.CLI_ARGS}}
 
+  mastermind:compare:
+    desc: 'Every team of resources/configs/mastermind/families.yaml asked the questions of questions.yaml (-- gemma bielik: only those); each conversation kept in resources/conversations/, a line per answer here (phase 31)'
+    cmds:
+      - npx tsx src/mastermind/compare.ts {{.CLI_ARGS}}
+
   mastermind:up:
     desc: 'The mastermind as containers (compose profile mastermind): Ollama with its models pulled, the api answering /api/ask on 127.0.0.1:8081; the GPU taken when nvidia-smi answers - for a machine without the host''s Ollama'
     dir: '{{.ROOT_DIR}}'
