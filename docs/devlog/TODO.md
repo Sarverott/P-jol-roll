@@ -341,4 +341,4 @@ The owner's message, 2026-11-24 (changelog phase 32).
 - [x] Signing in with Hugging Face on the space (`src/openapi/oauth.ts`): `/auth/login`, `/auth/callback`, `/auth/me`, `/auth/logout`, the visitor's token kept in the server's memory behind a cookie; the space's card asks for `hf_oauth` and `inference-api`
 - [x] `/api/ask` on the space with the visitor's token: the model through Inference Providers (`google/gemma-4-26B-A4B-it` by default, `DEMO_MODEL`), the question a vector by bge-m3 of Hugging Face, the vectors of the dataset taken on the first question
 - [x] The chat in the viewer (`#ask`): the conversation, the acts cited linked to their pages, the reasoning folded, signing in where the host asks for it
-- [ ] Tests, docs, the almanac's lines and AGENTS.md
+- [x] Tests, docs, the almanac's lines and AGENTS.md

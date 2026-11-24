@@ -6,12 +6,22 @@ point was added.
 
 ## Decisions for Sett
 
-- **2026-11-24. The 30 conversations of the first comparison (phase 31)
-  are not pushed.** `resources/conversations/` holds them; only the first
-  one went to `Apokryf/Consiliariis-Polonicum-Lex`, as Sett asked. Sending
-  the rest is Sett's `task resources:push -- conversations`.
-- **2026-11-24. `/usr/share/ollama/.ollama/models` (4.4 GB)** of an old
-  system service, not active, is left as it was - Sett's to keep or delete.
+- **2026-11-24. The demo's chat (phase 32) is not yet seen answering on
+  the space.** Signing in and the space's path pass against stand-ins, and
+  the chat answers on this machine; the real Inference Providers refused
+  Sett's token with 402 (no credits this month), the vector of bge-m3 too.
+  After the release: sign in on the space and ask with an account that has
+  credits. Whether the cookie holds inside the frame of huggingface.co
+  depends on the browser's third-party cookies - the space's own address
+  (`https://sarverott-docs-of-law-by-gov-in-poland.hf.space/#ask`) always
+  works.
+- **2026-11-24. The chat's words are not in the language packs** ("ask the
+  law", the notes of the chat): `task i18n:collect` and `i18n:translate`,
+  then `task i18n:publish` to their gist.
+- **2026-11-24. `/usr/share/ollama/.ollama/models` (4.4 GB)** was not a
+  copy: `sebas`, `llama3`, `ifrit-0.1.0` were only there. Copied onto the
+  drive and compared byte by byte (phase 32); deleting it is Sett's `sudo
+  rm -rf /usr/share/ollama/.ollama/models`.
 - **2026-11-24. The mastermind's compose run (phase 30) was not started
   here.** The image was run against the host's Ollama and answered
   `/api/ask`; `docker compose --profile mastermind config` is valid with and

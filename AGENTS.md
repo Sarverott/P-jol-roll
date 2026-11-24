@@ -66,7 +66,9 @@ repository: `../Sarverott/AGENTS.md` and `../Sarverott/docs/agents/`.
    this machine started with `--allow-writing` (the desktop app, `task
    serve -- --allow-writing`), which starts the writing functions of the
    catalog as jobs, each after a person's yes (Q19, changelog phase 25).
-   A public host (the space, the container, the website) never does. An
+   A public host (the space, the container, the website) never does; the
+   space's chat asks a model only on the signed-in visitor's own Hugging Face
+   token (phase 32), never on the owner's. An
    agent does not start a job against the real source unless asked.
 5. **Nothing is sent to huggingface by an agent.** `resources/dataset`,
    `resources/space`, `resources/bucket` and `resources/conversations` are filled locally; pushing and
@@ -154,7 +156,8 @@ src/openapi/           http api (/api, /openapi.json) with socket.io notices, se
 src/mcp/               MCP server for AI agents, read-only: server.ts and tools/ (a folder per tool); main.ts over stdio, /mcp of the api over http; client.ts
 src/mastermind/        the law mastermind (phase 30): ask.ts a question answered by a model (the host's Ollama, deepseek-r1:8b)
                        reading the acts through the MCP tools in rounds, citations checked; main.ts task mastermind:ask;
-                       /api/ask of an api started with MASTERMIND_URL (src/openapi/ask.ts); record.ts every conversation into
+                       /api/ask of an api started with MASTERMIND_URL, or of the space on the visitor's own Hugging Face
+                       (src/openapi/ask.ts, oauth.ts: hf_oauth, phase 32) - the viewer's tab #ask; record.ts every conversation into
                        resources/conversations/<family>/<instance>/ - docs/guides/mastermind.md
 src/workflows/         durable runs (Workflow SDK on Nitro): flows/ daily.ts and steps.ts, server/api/ start and approve;
                        built from inside that directory; the run pushes only after a person answers "yes"

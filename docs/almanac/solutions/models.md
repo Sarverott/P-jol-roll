@@ -36,6 +36,17 @@ the MCP tools of `src/mcp`.
 - **A check of language by common words must leave out the words two
   languages share** ("do", "to", "i"): "The acts you read do not answer the
   question" passed for Polish (phase 31).
+- **Inference Providers are paid from the account whose token asks**
+  (402 *Purchase pre-paid credits* when they are spent), the embedder of
+  `hf-inference` too: the demo space asks on the visitor's token, never on
+  the owner's (phase 32).
+- **Signing in with Hugging Face goes to huggingface.co, which is not shown
+  in a frame**: the space's links to `/login` open at the top, and the
+  cookie is `SameSite=None; Secure` for the space shown inside
+  huggingface.co.
+- **Models write markdown** (`**`, `###`, `[ELI](ELI)`): the chat reads it as
+  pieces of text, never as HTML, so an answer cannot put anything on the
+  page.
 - **Ollama's models live where `OLLAMA_MODELS` says** - the variable is
   read by `ollama serve` itself, not by the client; a server started
   without it reads `~/.ollama/models`. Blobs never change once written, so
