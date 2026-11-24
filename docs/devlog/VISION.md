@@ -73,6 +73,7 @@ in the country, as open source.
 | 33 | the chat in every language pack; the executive agent - a small qwen in the agents' shell (opencode), reading the law through MCP |
 | 34 | the advanced strategy: a weak answer of the host's model on to a deepseek hosted by Hugging Face; the Python stack in `stacks/python/` |
 | 35 | the work of Sejm as discussion: the sittings gathered (who spoke on each day, and what), every act tied to the days its bill was read on |
+| 36 | the code of law analysed (every act in force against its ties), the simulation bubble, improvements proposed - M4 closed |
 
 ### Phases ahead (planned in phase 28)
 
@@ -83,7 +84,6 @@ phases 29, 31 and 32).
 
 | Phase | Milestone | Idea |
 | ----- | --------- | ---- |
-| 36 | M4 | social simulations offline (MiroFish or OASIS) of how a change of law meets people; the code of law analysed deeply, improvements proposed - M4 closes |
 | 37 | M5 | the dataset and the bucket as torrents pointed to by IPFS; the Go stack begins |
 | 38 | M5 | mirrors per voivodeship or district on a WireGuard network, balanced by Traefik |
 | 39 | M5 | no centre: the mirrors agree on the law by Cosmos SDK, the checksums of `task seal` the shared truth |

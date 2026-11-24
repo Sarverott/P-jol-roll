@@ -26,6 +26,7 @@ text --pdf                           -> and from the text layer of PDFs of acts 
 
 map                                  -> the map of the whole law: every preset placed by ForceAtlas2 into dataset/map/
 map statutes-in-force                -> one preset (statutes-in-force, statutes, in-force)
+analyse                              -> the code of law analysed: every act in force against its ties, into dataset/analysis/ (phase 36)
 stats                                -> the acts counted year by year, by type and status, into dataset/statistics/
 
 search index                         -> every act into Typesense (task search:index), titles and keywords
@@ -59,6 +60,7 @@ const COMMANDS = [
 	"map",
 	"search",
 	"stats",
+	"analyse",
 ];
 const [first = "", ...rest] = process.argv.slice(2);
 const command = COMMANDS.includes(first) ? first : "gather";
@@ -151,6 +153,15 @@ if (command === "text") {
 if (command === "map") {
 	const { map } = await import("./methods/map.js");
 	await map(positionals.length ? positionals : undefined);
+}
+
+if (command === "analyse") {
+	const { analyseAll, analysisPath } = await import("./methods/analyse.js");
+	const summary = await analyseAll();
+	log.info(
+		`analyse: ${summary.inForce} acts in force of ${summary.acts} checked, findings into ${analysisPath("findings.jsonl")}`,
+		summary,
+	);
 }
 
 if (command === "stats") {

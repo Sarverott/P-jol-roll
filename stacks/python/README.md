@@ -30,6 +30,9 @@ print(Mastermind().ask("Czym była Rada Stanu?", escalate=True)["answer"])
 | --- | --- |
 | `pjolroll.law` | `Law`: the MCP tools - `act`, `text`, `references`, `search`, `nearest`, `call` |
 | `pjolroll.mastermind` | `Mastermind`: `/api/ask` of a running api - `ask(question, escalate=, hard=)`, `about()` |
+| `pjolroll.simulation` | the simulation bubble (phase 36): `simulate(law, eli, rounds=, people=)`, `personas()`, `simulations(eli)` |
+| `pjolroll.proposals` | improvements proposed: `propose(law, eli)` |
+| `pjolroll.model` | a model of an OpenAI-like api (the host's Ollama), JSON mode, the first object of what it wrote |
 | `pjolroll.__main__` | the same from a terminal: `task python:law -- act DU/1918/2` |
 
 | Variable | Default | What it is |
@@ -42,6 +45,10 @@ print(Mastermind().ask("Czym była Rada Stanu?", escalate=True)["answer"])
 task python:sync      # uv sync
 task python:check     # ruff, then pytest (the tests start the MCP server over stdio)
 task python:law -- nearest "obowiązek szkolny"
+task python:simulate -- DU/1997/939 --rounds 3 --personas 6
+task python:propose -- DU/1997/939
 ```
+
+The simulations and proposals: [the guide](../../docs/guides/analysis.md).
 
 Its version is the project's, kept by `task version:sync` with the others.

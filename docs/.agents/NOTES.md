@@ -4,6 +4,25 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-24 · Cleo · phase 36: the code of law analysed, a bubble, proposals
+
+- The analysis needs no model: 165,006 acts, 750 thousand ties, 2 s. Of
+  23,238 acts in force: 1,064 stand on a repealed basis, 2,678 refer to a
+  repealed act, 153 wait for a consolidated text, 42 Tribunal judgments
+  were followed by no amendment. Amending acts were most of the noise at
+  first (their own references are spent) - left out.
+- The text in the dataset is the act as published: the Banking Law of 1997
+  spoke of state banks and a Minister of the State Treasury. The law in
+  force is its newest consolidated text, an act of its own (here
+  DU/2026/38): the bubble and the proposals read that one now.
+- ministral-3:8b: good voices for the bubble, but an explainer instead of
+  proposals; qwen3:8b followed the numbered findings, once each, after the
+  task was said again at the end of the prompt and the basis limited to
+  the findings or the text (it had invented "Dz. U. 2025 poz. 1234").
+- A small model breaks its JSON with quotes inside a post: JSON mode of
+  Ollama's /v1 asked for, and the fields read one by one when it still
+  breaks.
+
 ## 2026-11-24 · Cleo · phase 34: the advanced strategy, the Python stack
 
 - The weak answer is judged by what can be checked, not by a model: it
