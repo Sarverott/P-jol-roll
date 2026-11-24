@@ -4,6 +4,28 @@ Findings, newest on top, dated. People answer in `docs/devlog/`, not here.
 What waits for a decision or was not verified is kept in
 [things-to-check.md](things-to-check.md).
 
+## 2026-11-24 · Cleo · phase 31: six families asked the same five questions
+
+`task mastermind:compare` on the RTX 3060 (12 GB), Ollama on the drive,
+the five questions of `resources/configs/mastermind/questions.yaml`, the
+same acts found by bge-m3 for each; 30 conversations in
+`resources/conversations/`.
+
+| Team | Models | A question | Acts cited (read) | What its answers were like |
+| --- | --- | --- | --- | --- |
+| gemma | gemma4:12b, functiongemma:270m, translategemma:4b, shieldgemma:2b | 65-150 s | 8 (6) | the closest to the text: the twelve virilists of DU/1918/2 named one by one; once "the acts do not answer" in English (the check of Polish then missed it - fixed); the slowest, four models taking turns on 12 GB; functiongemma called no tool in any round |
+| deepseek | deepseek-r1:8b | 31-69 s | 10 (9) | broken Polish, words of no language |
+| mistral | ministral-3:8b | 14-44 s | 11 (10) | fast, clear Polish with headings, citing what it read |
+| qwen | qwen3:8b | 20-52 s | 13 (12) | fluent, cites articles (`art. 12`) |
+| llama | llama3.1:8b | 8-46 s | 2 (2) | the fastest; three answers of five cite nothing |
+| bielik | Bielik 11B v3.0 Q4_K_M | 16-57 s | 8 (6) | the most natural Polish; adds what it knows beyond the acts read (the Council dissolved on 7 October 1918 - true, but not from them) |
+
+Not judged by a lawyer: read by Cleo against the acts given. For an answer
+from the text, gemma's team; for Polish, Bielik; for speed with care,
+ministral and qwen. embeddinggemma is pulled but no vectors of it are made
+(`task embed` with `EMBED_MODEL=embeddinggemma:300m`, hours over every act),
+so every team searched by bge-m3.
+
 ## 2026-11-22 · Cleo · phase 22: every function everywhere, a viewer that shines
 
 - The map of functionalities (`docs/devlog/scrapnote-1795373814912.md`)

@@ -134,6 +134,9 @@ that touched `src/` are shown. `git log --oneline -- src` gives the newest.
 | `src/mcp/client.ts` | A client: what an agent gets, from a terminal (`task mcp:ask`) and in tests. |
 | `src/mastermind/ask.ts` | The law mastermind (phase 30): the acts nearest to the question by meaning and the texts of the nearest ones read through MCP and given with it, then rounds in which the model calls tools, then its answer; each ELI it cites marked read or not. Ollama's `/api/chat` or an OpenAI-like api, streamed (a thinking model may think longer than fetch waits); the calls deepseek-R1 writes as its own tokens parsed too. |
 | `src/mastermind/record.ts` | Every conversation kept (phase 31): `resources/conversations/<family>/<instance>/<UNIXUSAT>-<question>.json`, the family from `resources/configs/mastermind/families.yaml`, the whole exchange inside; a host that cannot write there still answers. |
+| `src/mastermind/model.ts` | Talking to a model: Ollama's `/api/chat` or an OpenAI-like api, streamed; thinking and tools only to a model whose `/api/show` says it takes them. |
+| `src/mastermind/team.ts` | The families and their teams of `resources/configs/mastermind/families.yaml`: the translator (translategemma's own prompt), the guard (shieldgemma), whether a text is Polish. |
+| `src/mastermind/compare.ts` | `task mastermind:compare`: every team asked the questions of `questions.yaml`, a line per answer, each kept. |
 | `src/mastermind/main.ts` | `task mastermind:ask`: a question from a terminal, over the MCP server on stdio (or `MCP_URL`). |
 
 ### viewer

@@ -91,12 +91,40 @@ conversations` sends what is new, a person's move; git keeps only its card.
 `MASTERMIND_KEEP=0` keeps nothing. In compose it is
 the one directory the mastermind writes.
 
+## Families as teams
+
+`resources/configs/mastermind/families.yaml` names the families and their
+teams: one model answers, one calls the tools in the rounds, one turns an
+answer given in another language into the question's, one guards (its
+verdict kept, nothing held back). A model is given thinking and tools only
+when Ollama says it can take them.
+
+```bash
+MASTERMIND_TEAM=gemma task mastermind:ask -- "..."   # gemma4 answers, functiongemma calls tools,
+                                                     # translategemma translates, shieldgemma guards
+task mastermind:compare                              # every team, the questions of questions.yaml
+task mastermind:compare -- bielik qwen               # only these
+task resources:push -- conversations                 # what they said, to their dataset
+```
+
+The first comparison (phase 31, 30 answers):
+
+| Team | Models | A question | Acts cited (read) | What its answers were like |
+| --- | --- | --- | --- | --- |
+| gemma | gemma4:12b, functiongemma:270m, translategemma:4b, shieldgemma:2b | 65-150 s | 8 (6) | the closest to the text: the twelve virilists of DU/1918/2 named one by one; once "the acts do not answer" in English (the check of Polish then missed it - fixed); the slowest, four models taking turns on 12 GB; functiongemma called no tool in any round |
+| deepseek | deepseek-r1:8b | 31-69 s | 10 (9) | broken Polish, words of no language |
+| mistral | ministral-3:8b | 14-44 s | 11 (10) | fast, clear Polish with headings, citing what it read |
+| qwen | qwen3:8b | 20-52 s | 13 (12) | fluent, cites articles (`art. 12`) |
+| llama | llama3.1:8b | 8-46 s | 2 (2) | the fastest; three answers of five cite nothing |
+| bielik | Bielik 11B v3.0 Q4_K_M | 16-57 s | 8 (6) | the most natural Polish; adds what it knows beyond the acts read (the Council dissolved on 7 October 1918 - true, but not from them) |
+
 ## Settings
 
 | Variable | Default | What it is |
 | --- | --- | --- |
 | `MASTERMIND_URL` | `OLLAMA_URL` | the model's api: an Ollama, or an OpenAI-like one ending in `/v1` (LiteLLM of the profile `llms`); set on an api, it makes `/api/ask` answer |
-| `MASTERMIND_MODEL` | `deepseek-r1:8b` | the model |
+| `MASTERMIND_TEAM` | | a team of `families.yaml` (`gemma`, `bielik`, ...) |
+| `MASTERMIND_MODEL` | the team's answer, else `deepseek-r1:8b` | the model that answers |
 | `MASTERMIND_KEY` | | a key for an OpenAI-like api |
 | `MASTERMIND_ROUNDS` | 6 | rounds of tools at most |
 | `MASTERMIND_CONTEXT` | 16384 | the context of an Ollama model, in tokens |
