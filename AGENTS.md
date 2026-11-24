@@ -125,11 +125,13 @@ src/core/              the gatherer itself; everything below is its tree
   apihandlers/         one file per source: addresses, shapes, and the walk when the source has its own
     eli.ts             addresses and shapes of ELI API
     sejm.ts            other source: processes and prints of Sejm
+    eu.ts              the law of the EU: every act of a year from the Publications Office (SPARQL), Polish texts (phase 42)
     sittings.ts        the sittings of Sejm: the days of a term, who spoke on each, their texts (phase 35)
     saos.ts            other source: court judgments
   methods/             what a command does
     gather.ts          index -> lists -> years, then files of acts year by year; --since for changes
     seal.ts            checksums of gathered files: records, and check against them
+    international.ts   the international agreements the journals published, indexed (phase 42)
     analyse.ts         the code of law analysed: every act in force against its ties, into dataset/analysis/ (phase 36)
     map.ts             the map of the whole law: acts of a preset (presets.ts) placed by ForceAtlas2 into dataset/map/
     compile.ts         tables of details and references from raw files
@@ -266,6 +268,7 @@ Every directory with procedures has its own `Taskfile.yml` (`.husky`,
 | `task embed` (`-- 2026`) | vectors of the texts by a local multilingual model of Ollama into `dataset/embeddings/` |
 | `task compile` / `task text` | tables from raw files / markdown from html (`-- --pdf`: from PDFs too) |
 | `task sejm -- 10 --files --limit 50` | processes and prints of a term of Sejm |
+| `task eu -- 2016 2024` (`--texts --limit 50`) / `task international` | the law of the EU of years from the Publications Office, the Polish texts of acts in force (phase 42) / the agreements the journals published, indexed |
 | `task sittings -- 10 --files --limit 40` | the sittings of Sejm: who spoke on each day, then the texts of the statements (phase 35) |
 | `task saos -- 2025 --limit 3` | court judgments, 3 months that are not here |
 | `task checkup -- 2026 --limit 6` | browser visits websites for acts of a gathered year |

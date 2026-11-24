@@ -428,4 +428,4 @@ The order of phase 41 goes on (changelog phase 42). Along the *Lean* of Q22 (#14
 
 - [x] The changelog
 - [x] The law of the EU (`task eu`): every act of a year from the Publications Office's SPARQL endpoint, the Polish texts of those in force into `bucket/EU/`; the international agreements of the journals indexed (`task international`); MCP `eu_law` and `agreements`, `/api/eu`, `/api/agreements`, the catalog
-- [ ] Tests, docs, the almanac's lines and AGENTS.md
+- [x] Tests, docs, the almanac's lines and AGENTS.md
