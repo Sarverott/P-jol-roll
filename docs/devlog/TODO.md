@@ -304,3 +304,4 @@ The owner's message, 2026-11-24, and the discussion #107 (changelog phase 29).
 - [x] The owner's words in the changelog; the phases planned ahead moved one number on
 - [x] What happened said in the discussion of announcements (#107): the steps ticked on `development` with the phases and milestones they finished (`devlog.yml`), a phase closed on its way to `master` (`phase-close`), a release and how each of its jobs ended (`release.yml`); `task github:announce`
 - [x] Docs, the almanac's line and AGENTS.md
+- [x] The Dependabot alert of the introduction (i18next 19.9.2 under p5, medium): p5 2.4.0, which no longer takes i18next
