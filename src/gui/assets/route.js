@@ -10,6 +10,7 @@ bookmarked and opened by the desktop app (p-jol-roll://act/DU/2026/1):
   #plots            the acts in plots: per year, by type, by status
   #statistics       numbers of the whole, and the history of the law played year by year
   #settings         the viewer's settings, and every function of the project
+  #ask              the law mastermind as a chat (phase 32)
 Tabs and links are plain <a href>, so the browser's back and forward move between them.
 */
 
@@ -21,6 +22,7 @@ export const SCREENS = [
 	"plots",
 	"statistics",
 	"settings",
+	"ask",
 ];
 
 export function parse(hash) {

@@ -332,3 +332,13 @@ The owner's message, 2026-11-24 (changelog phase 31).
 - [x] The families as teams (`teams` of `resources/configs/mastermind/families.yaml`, `src/mastermind/team.ts`): one answers, one calls the tools (`functiongemma`), one translates an answer in another language (`translategemma`), one guards (`shieldgemma`); a model given thinking and tools only when it can take them; `MASTERMIND_TEAM`; `task mastermind:compare` asks every team the questions of `questions.yaml`
 - [x] An answer in English not taken for Polish: the words of the check that are English too (`do`, `to`, `i`) left out, so the translator takes such an answer
 - [x] The models pulled into the Ollama on the drive (gemma4:12b and its kin, ministral-3:8b, qwen3:8b, llama3.1:8b, Bielik 11B v3.0) and every team asked the same questions; what they did, compared
+
+## Phase 32: the demo's AI - a chat on the visitor's own Hugging Face
+
+The owner's message, 2026-11-24 (changelog phase 32).
+
+- [x] The owner's words in the changelog; the conversations pushed; Ollama's models of `/usr/share/ollama` copied onto the drive and the copy in `~/.ollama` deleted; the phases ahead moved one number on
+- [x] Signing in with Hugging Face on the space (`src/openapi/oauth.ts`): `/auth/login`, `/auth/callback`, `/auth/me`, `/auth/logout`, the visitor's token kept in the server's memory behind a cookie; the space's card asks for `hf_oauth` and `inference-api`
+- [x] `/api/ask` on the space with the visitor's token: the model through Inference Providers (`google/gemma-4-26B-A4B-it` by default, `DEMO_MODEL`), the question a vector by bge-m3 of Hugging Face, the vectors of the dataset taken on the first question
+- [x] The chat in the viewer (`#ask`): the conversation, the acts cited linked to their pages, the reasoning folded, signing in where the host asks for it
+- [x] Tests, docs, the almanac's lines and AGENTS.md

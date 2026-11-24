@@ -1,7 +1,9 @@
+import { AsyncLocalStorage } from "node:async_hooks";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { asyncBufferFromFile, parquetReadObjects } from "hyparquet";
 import * as store from "../resources/store.js";
+import { DATASET_URL, fromDataset, remote } from "./remote.js";
 
 /*
 The vectors of texts that task embed made (scripts/embeddings/embed.py, phase 17): one per
@@ -54,12 +56,57 @@ export async function vectorsOf(publisher: string, year: number) {
 	return vectors;
 }
 
-// a question as a vector of the same model, or undefined without Ollama
+/*
+The Hugging Face token of the visitor asking (phase 32): set for the length of one request to
+/mcp by its Authorization header (src/openapi/server.ts), so a question on the demo space becomes
+a vector on the visitor's own account - never on the owner's.
+*/
+export const visitorToken = new AsyncLocalStorage<string | undefined>();
+
+// the models of Ollama whose same weights Hugging Face serves (the vectors must be the same)
+const ON_HUGGING_FACE: Record<string, string> = { "bge-m3": "BAAI/bge-m3" };
+
+async function byHuggingFace(model: string, text: string) {
+	const token = visitorToken.getStore();
+	const repo = ON_HUGGING_FACE[model.replace(/:latest$/, "")];
+	if (!token || !repo) return undefined;
+	try {
+		const answer = await fetch(
+			`https://router.huggingface.co/hf-inference/models/${repo}/pipeline/feature-extraction`,
+			{
+				method: "POST",
+				headers: {
+					authorization: `Bearer ${token}`,
+					"content-type": "application/json",
+				},
+				body: JSON.stringify({ inputs: [text], normalize: true }),
+				signal: AbortSignal.timeout(30_000),
+			},
+		);
+		if (!answer.ok) return undefined;
+		const vectors = (await answer.json()) as number[][];
+		return Array.isArray(vectors[0]) ? vectors[0] : undefined;
+	} catch {
+		return undefined;
+	}
+}
+
+// a question as a vector of the same model: Ollama here, else Hugging Face on the visitor's
+// token; undefined without either
 export async function questionVector(
 	text: string,
 ): Promise<number[] | undefined> {
 	const model = embeddingModel();
 	if (!model || !text.trim()) return undefined;
+	return (
+		(await byOllama(model, text)) ?? (await byHuggingFace(model.model, text))
+	);
+}
+
+async function byOllama(
+	model: { model: string },
+	text: string,
+): Promise<number[] | undefined> {
 	try {
 		const answer = await fetch(`${OLLAMA_URL}/api/embed`, {
 			method: "POST",
@@ -77,6 +124,47 @@ export async function questionVector(
 	} catch {
 		return undefined;
 	}
+}
+
+/*
+On a host reading the dataset from Hugging Face (remote.ts, the demo space) the vectors are
+taken from there on the first question: the listing of embeddings/, then every year's file,
+eight at a time (about 760 MB of bge-m3). Asked once; a failure lets it be asked again.
+*/
+let taking: Promise<void> | undefined;
+export function takeVectors(): Promise<void> {
+	if (!remote || embeddingModel()) return Promise.resolve();
+	taking ??= (async () => {
+		const api = DATASET_URL.replace(
+			/^(https:\/\/[^/]+)\/datasets\/([^/]+\/[^/]+)\/resolve\/([^/]+)$/,
+			"$1/api/datasets/$2/tree/$3",
+		);
+		const list = async (path: string) =>
+			(await (await fetch(`${api}/${path}`)).json()) as {
+				path: string;
+				type: string;
+			}[];
+		const files: string[] = [];
+		const walk = async (path: string) => {
+			for (const one of await list(path))
+				if (one.type === "directory") await walk(one.path);
+				else if (/\.(parquet|json)$/.test(one.path)) files.push(one.path);
+		};
+		await walk("embeddings");
+		// model.json last: the vectors count as here only once every year is
+		const ordered = [
+			...files.filter((one) => !one.endsWith("model.json")),
+			...files.filter((one) => one.endsWith("model.json")),
+		];
+		let next = 0;
+		const worker = async () => {
+			while (next < ordered.length) await fromDataset(ordered[next++]);
+		};
+		await Promise.all(Array.from({ length: 8 }, worker));
+	})().catch(() => {
+		taking = undefined;
+	});
+	return taking;
 }
 
 // the years that have vectors: "DU/1918", ...
@@ -132,6 +220,7 @@ export async function nearest(
 	question: string,
 	{ journal = "", limit = 10 } = {},
 ): Promise<{ ELI: string; score: number }[] | undefined> {
+	await takeVectors();
 	const years = embeddedYears().filter(
 		(one) => !journal || one.startsWith(`${journal}/`),
 	);

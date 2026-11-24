@@ -133,8 +133,36 @@ The first comparison (phase 31, 30 answers):
 | `MASTERMIND_FIRST` | 3 | texts of the nearest acts read before it speaks |
 | `MASTERMIND_PORT`, `OLLAMA_PORT` | 8081, 11434 | the ports of compose |
 
-A public host - the demo space - never asks a model, even with
-`MASTERMIND_URL` set.
+## On the demo space: the visitor's own Hugging Face
+
+The tab **ask the law** of the viewer (`#ask`) is the same mastermind as a
+chat: every cited act a link to its page, the acts it named without reading
+them marked with `?`, its reasoning folded.
+
+On the demo space (phase 32) it runs on the visitor's own account, as the
+owner's other space does: the space's card asks for `hf_oauth` with the
+scope `inference-api`, the visitor signs in with Hugging Face (`/login`),
+and the token stays in the server's memory behind an HttpOnly cookie - it
+never reaches the browser, a file or a log. Then:
+
+- the model through Inference Providers (`https://router.huggingface.co/v1`),
+  `google/gemma-4-26B-A4B-it` by default (`DEMO_MODEL`; `DEMO_URL` for
+  another api), paid from the visitor's credits;
+- the question a vector by `BAAI/bge-m3` on Hugging Face, the same model as
+  the vectors of the dataset, which the space takes on its first question
+  (about 760 MB);
+- one question at a time per visitor, four at once in all; a visitor's
+  conversation is not kept.
+
+A visitor without credits left gets Hugging Face's own answer: *"Purchase
+pre-paid credits to continue using Inference Providers"*. The space signs
+in nobody without `hf_oauth` in its card, and `/api/ask` then says so.
+
+| Variable | Default | What it is |
+| --- | --- | --- |
+| `DEMO_MODEL` | `google/gemma-4-26B-A4B-it` | the model on the space |
+| `DEMO_URL` | `https://router.huggingface.co/v1` | its OpenAI-like api |
+| `OAUTH_CLIENT_ID`, `OAUTH_CLIENT_SECRET`, `OPENID_PROVIDER_URL`, `SPACE_HOST` | set by Hugging Face | signing in |
 
 ## What to expect
 

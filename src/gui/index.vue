@@ -47,6 +47,9 @@ const PlotsDiagrams = defineAsyncComponent(
 const StatisticsHistory = defineAsyncComponent(
 	() => import("./screens/statisticsHistory.vue"),
 );
+const DevilsAdvocate = defineAsyncComponent(
+	() => import("./screens/devilsAdvocate.vue"),
+);
 
 // address of the http api (src/openapi): empty means the host that served this page
 // the members and the links of "Terms of use", read by the website at build (src/web/data)
@@ -109,6 +112,7 @@ onUnmounted(() => {
 			<PlotsDiagrams v-if="route.screen === 'plots'" />
 			<StatisticsHistory v-if="route.screen === 'statistics'" />
 			<SettingsPanel v-if="route.screen === 'settings'" />
+			<DevilsAdvocate v-if="route.screen === 'ask'" />
 		</LayoutMain>
 		<TiesMinimap
 			v-if="settings.minimap && ['acts', 'act'].includes(route.screen)"

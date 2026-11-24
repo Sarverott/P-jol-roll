@@ -12,11 +12,16 @@ A client of the MCP server, to see from a terminal what an agent gets (task mcp:
 A number given as an argument is a number (year=2026).
 */
 
-export async function connect(url = process.env.MCP_URL) {
+export async function connect(
+	url = process.env.MCP_URL,
+	headers?: Record<string, string>,
+) {
 	const client = new Client({ name: "p-jol-roll-client", version: "1" });
 	await client.connect(
 		url
-			? new StreamableHTTPClientTransport(new URL(url))
+			? new StreamableHTTPClientTransport(new URL(url), {
+					requestInit: headers ? { headers } : undefined,
+				})
 			: new StdioClientTransport({
 					command: process.execPath,
 					args: ["--import", "tsx", "src/mcp/main.ts"],

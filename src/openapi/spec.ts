@@ -51,7 +51,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.28.0",
+		version: "0.28.6",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
@@ -60,7 +60,7 @@ export const spec = {
 		"/api/ask": {
 			get: {
 				summary:
-					"a question answered by the law mastermind from the acts it read through the MCP tools, each cited by its ELI - only an api started with MASTERMIND_URL; not legal advice",
+					"a question answered by the law mastermind from the acts it read through the MCP tools, each cited by its ELI - an api started with MASTERMIND_URL, or the demo space on the signed-in visitor's own Hugging Face token (401 until then); not legal advice",
 				parameters: [
 					{
 						name: "question",
@@ -75,9 +75,29 @@ export const spec = {
 							"the answer, the reasoning, the acts cited (read: whether a tool gave it) and the tools called",
 					},
 					400: { description: "no question, or a too long one" },
+					401: {
+						description:
+							"the demo space: sign in with Hugging Face first (login)",
+					},
 					429: { description: "another question is being answered" },
 					502: { description: "the model did not answer" },
 					503: { description: "no mastermind on this host" },
+				},
+			},
+		},
+		"/api/ask/about": {
+			get: {
+				summary:
+					"whether this host answers questions (/api/ask), whether it asks the visitor to sign in with Hugging Face first, and the model",
+				responses: { 200: { description: "{ answers, signIn, model }" } },
+			},
+		},
+		"/api/me": {
+			get: {
+				summary:
+					"whether signing in with Hugging Face is possible here (the demo space, /login), and who is signed in",
+				responses: {
+					200: { description: "{ signingIn, user: { name } | null }" },
 				},
 			},
 		},

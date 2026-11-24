@@ -10,6 +10,7 @@ defineProps({
 });
 const MORE = [
 	{ screen: "map", title: "map of the whole law" },
+	{ screen: "ask", title: "ask the law" },
 	{ screen: "data", title: "Sejm, judgments, lists" },
 	{ screen: "plots", title: "plots" },
 	{ screen: "statistics", title: "statistics and history" },

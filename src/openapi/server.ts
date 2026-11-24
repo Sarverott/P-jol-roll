@@ -5,6 +5,7 @@ import { toNodeHandler } from "@modelcontextprotocol/node";
 import express, { Router } from "express";
 import { rateLimit } from "express-rate-limit";
 import { Server as SocketServer } from "socket.io";
+import { visitorToken } from "../core/reading/embeddings.js";
 import * as library from "../core/reading/library.js";
 import { remote } from "../core/reading/remote.js";
 import { DATASET_DIR } from "../core/resources/store.js";
@@ -61,7 +62,15 @@ export function serve({
 		next();
 	});
 	// the tools of src/mcp for agents elsewhere; a fresh server per request
-	app.all("/mcp", toNodeHandler(mcpHandler()));
+	// a Hugging Face token in Authorization is the caller's own, used only for its own question
+	// (search_meaning on the demo space, phase 32)
+	const mcp = toNodeHandler(mcpHandler());
+	app.all("/mcp", (request, response, next) =>
+		visitorToken.run(
+			request.headers.authorization?.match(/^Bearer (hf_[\w-]+)$/)?.[1],
+			() => mcp(request, response, next),
+		),
+	);
 	// the jobs of writing functions, filled in once socket.io is there to tell about them
 	const writable = Router();
 	if (writing) app.use(writable);
