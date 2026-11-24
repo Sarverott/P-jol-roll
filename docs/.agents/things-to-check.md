@@ -6,6 +6,16 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. The hosted deepseek (phase 34) is not seen answering.**
+  `--escalate` and `--hard` pass against stand-ins of the host's model and
+  of Inference Providers; asking `deepseek-ai/DeepSeek-R1-0528` for real
+  needs credits on the token (`HF_TOKEN` here, the visitor's on the space),
+  and an agent does not spend them. To check: `task mastermind:ask --
+  --hard "..."` once there are credits; whether a provider gives it tools
+  (the router picks novita, deepinfra or featherless-ai).
+- **2026-11-24. The Python stack in CI** (`task python:check` in
+  `checks.yml`, uv by `astral-sh/setup-uv@v7`) passes here; first seen in
+  CI with the gate of phase 34.
 - **2026-11-24. The executive agent in opencode (phase 33)** is not
   reliable: Code Mode did not find `p-jol-roll` in some runs, and
   `search_meaning` was an unknown tool there even when `search_acts` was

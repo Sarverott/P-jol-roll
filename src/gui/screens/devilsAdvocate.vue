@@ -7,9 +7,11 @@ import { inject, onBeforeUnmount, onMounted, ref } from "vue";
 import AnswerCard from "../components/ask/AnswerCard.vue";
 
 const api = inject("api", "");
-const about = ref(null); // { answers, signIn, model }
+const about = ref(null); // { answers, signIn, model, hard }
 const me = ref(null); // { signingIn, user }
 const question = ref("");
+// the advanced strategy (phase 34): a weak answer goes on to the deepseek of hard questions
+const escalate = ref(false);
 const talk = ref([]); // { question, advice?, error?, login?, waiting? }
 const seconds = ref(0);
 let clock;
@@ -38,7 +40,7 @@ async function send() {
 	clock = setInterval(() => seconds.value++, 1000);
 	try {
 		const answer = await fetch(
-			`${api}/api/ask?question=${encodeURIComponent(asked)}`,
+			`${api}/api/ask?question=${encodeURIComponent(asked)}${escalate.value ? "&escalate=1" : ""}`,
 		);
 		const body = await answer.json().catch(() => ({}));
 		if (answer.ok) one.advice = body;
@@ -134,6 +136,12 @@ async function send() {
 					</button>
 				</div>
 			</form>
+			<label v-if="about.hard" class="checkbox is-size-7 i18n-texts-slot">
+				<input v-model="escalate" type="checkbox" :disabled="busy()">
+				a hard question: a weak answer goes on to
+				<span translate="no">{{ about.hard }}</span> (slower, paid by the same
+				account)
+			</label>
 		</template>
 	</section>
 </template>

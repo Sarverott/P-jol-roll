@@ -82,6 +82,19 @@ const lines = computed(() =>
 			</summary>
 			<p class="answer is-size-7 has-text-grey">{{ advice.original }}</p>
 		</details>
+		<details v-if="advice.escalated" class="mt-2">
+			<summary class="is-size-7 i18n-texts-slot">
+				what the smaller model said first
+			</summary>
+			<p class="is-size-7 has-text-grey i18n-texts-slot">
+				<span translate="no">{{ advice.escalated.from }}</span>:
+				{{ advice.escalated.why.join("; ") }}
+			</p>
+			<p
+				class="answer is-size-7 has-text-grey"
+				v-text="advice.escalated.answer"
+			></p>
+		</details>
 		<p class="is-size-7 has-text-grey mt-2 i18n-texts-slot">
 			<span translate="no">{{ advice.model }}</span>,
 			{{ advice.steps?.length ?? 0 }} tool calls<template v-if="advice.guard"

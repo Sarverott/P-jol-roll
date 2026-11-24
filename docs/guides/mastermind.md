@@ -51,6 +51,50 @@ By hand: `docker compose --profile mastermind up -d`, and
 `-f compose.yaml -f resources/services/gpu.yaml` before `--profile` for the
 NVIDIA cards (the NVIDIA Container Toolkit is needed for them).
 
+## The advanced strategy: a deepseek hosted by Hugging Face
+
+The owner's plan (Q18, phase 34): small models on the host first, the hard
+questions to a large deepseek hosted by Hugging Face. `src/mastermind/strategy.ts`:
+
+- **`--escalate`**: the usual model answers first; its answer goes on when it
+  is weak - it says nothing, cites no act, or cites an act it never opened.
+  The large one, `deepseek-ai/DeepSeek-R1-0528` through Inference Providers
+  (`https://router.huggingface.co/v1`; novita, deepinfra and featherless-ai
+  serve it), gets the small one's answer to check, never to trust, and
+  reads the acts itself through the same MCP tools.
+- **`--hard`**: straight to it.
+
+```bash
+task mastermind:ask -- --escalate "Czy mogę odliczyć ulgę na dziecko po rozwodzie?"
+task mastermind:ask -- --hard "..."
+curl -G http://127.0.0.1:8080/api/ask --data-urlencode "question=..." -d escalate=1
+```
+
+Here it is paid by `HF_TOKEN` of `.env` - the owner's own, so only a
+question the owner asks spends it; on the space by the signed-in visitor's
+token. The chat shows a switch *a hard question* when the host can pay for
+it (`hard` of `/api/ask/about`), and folds what the smaller model said first.
+The large one's conversation is kept with `escalated`: the small model, why
+its answer went on, what it said and where that is kept.
+
+| Variable | Default | What it is |
+| --- | --- | --- |
+| `HARD_MODEL` | `deepseek-ai/DeepSeek-R1-0528` | the model of hard questions |
+| `HARD_URL` | `https://router.huggingface.co/v1` | its OpenAI-like api |
+| `HARD_KEY` | `HF_TOKEN` | the token it is paid by |
+
+Not yet seen answering for real: Inference Providers refuse the owner's
+token with 402 until it has credits (phase 32); it is tested against a
+stand-in of them.
+
+## The Python stack
+
+The models and the simulations have a stack of their own (phase 34):
+[`stacks/python/`](https://github.com/Sarverott/P-jol-roll/tree/master/stacks/python),
+a uv project reading the law through the same MCP tools (`Law`) and asking
+the mastermind through `/api/ask` (`Mastermind`). `task python:check`,
+`task python:law -- nearest "obowiązek szkolny"`.
+
 ## The executive agent
 
 Not a chat but a task (phase 33): a small qwen does what a person gives it,
@@ -208,4 +252,4 @@ in nobody without `hf_oauth` in its card, and `/api/ask` then says so.
 most of it thinking. It is the smallest voice of the plan: it now and then
 answers in English, slips a word of another script into Polish, or cites an
 act it did not open - which the check marks. The larger deepseek of phase
-33 is for the hard questions; the families of phase 31 are tried first.
+34 (the advanced strategy above) is for the hard questions.

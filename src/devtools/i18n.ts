@@ -181,6 +181,13 @@ const ADVICE = {
 	steps: [{ tool: "act_text", arguments: {}, ok: true }],
 	model: "stand-in",
 	guard: { by: "stand-in", verdict: "no", said: "No" },
+	// the advanced strategy (phase 34): the smaller model's answer, folded
+	escalated: {
+		from: "small-stand-in",
+		why: ["it cited no act"],
+		answer: "Rada Stanu.",
+		record: "",
+	},
 };
 const chat = async (
 	about: unknown,
@@ -215,7 +222,12 @@ const chat = async (
 	}
 	take(await english(page));
 };
-const answering = { answers: true, signIn: true, model: "stand-in" };
+const answering = {
+	answers: true,
+	signIn: true,
+	model: "stand-in",
+	hard: "hard-stand-in",
+};
 await chat(null, { signingIn: false, user: null });
 await chat(
 	{ answers: false, signIn: false, model: "" },
