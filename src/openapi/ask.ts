@@ -1,4 +1,5 @@
 import { type Request, type Response, Router } from "express";
+import { teamOf } from "../mastermind/team.js";
 import { sessionOf, signingIn } from "./oauth.js";
 
 /*
@@ -99,7 +100,7 @@ askRoutes.get("/api/ask/about", (_request: Request, response: Response) => {
 			? process.env.DEMO_MODEL || "google/gemma-4-26B-A4B-it"
 			: process.env.MASTERMIND_URL
 				? process.env.MASTERMIND_MODEL ||
-					process.env.MASTERMIND_TEAM ||
+					teamOf(process.env.MASTERMIND_TEAM)?.answer ||
 					"deepseek-r1:8b"
 				: "",
 	});
