@@ -6,6 +6,20 @@ point was added.
 
 ## Decisions for Sett
 
+- **2026-11-24. M4 closed without a major version** (phase 36): the
+  ROADMAP says a milestone bumps X, but M1-M3 closed in 0.x and so does
+  M4; v1.0.0 is Sett's to call.
+- **2026-11-24. The simulation bubble is the project's own** (phase 36),
+  not OASIS or MiroFish, which VISION named: OASIS (`camel-oasis` 0.2.6)
+  resolves on Python 3.12 but brings 138 packages with torch,
+  sentence-transformers and neo4j. It can be added as an engine of the
+  stack when Sett wants a social network simulated rather than a
+  conversation.
+- **2026-11-24. The findings of `task analyse` are the register's own
+  data read strictly**: a basis "repealed" may be kept alive by
+  transitional provisions, a "Tribunal judgment not followed" may have
+  been answered by a new act rather than an amendment. They are things to
+  look at, not errors proven.
 - **2026-11-24. The sittings of Sejm (phase 35) were not gathered from the
   source.** The shapes of `/proceedings` and `/transcripts` come from the
   API's documentation as Cleo knows it and from the stages of the processes

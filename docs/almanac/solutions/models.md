@@ -47,6 +47,14 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **The text of an act is the act as published** (phase 36): the law in
+  force is its newest consolidated text, an announcement of its own (*Inf.
+  o tekście jednolitym* in its ties); a model given the 1997 text of the
+  Banking Law reasoned about state banks. Read the consolidated one.
+- **A small model asked for proposals writes an explainer** unless the
+  task is said again at the end of the prompt, numbered; and it invents a
+  "basis" (a journal and a position) unless told to name only what it was
+  given (phase 36).
 - **MCP's Python SDK 2 is not the 1.x of the examples**: the http client
   is `streamable_http_client(url, http_client=httpx2.AsyncClient(...))`
   (headers on the client), a result says `is_error`, and an error raised
