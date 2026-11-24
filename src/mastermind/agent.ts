@@ -76,7 +76,7 @@ if ((process.env.AGENT_ENGINE || "own") !== "opencode") {
 				`  [${one.ELI}] ${one.read ? "read through the tools" : "NOT OPENED - named without reading"}`,
 			);
 		console.log(
-			`\n${model}, ${advice.steps.length} tool call(s). Kept: ${advice.record || "no"}. Not legal advice.`,
+			`\n${model}, ${advice.steps.length} tool call(s). Kept: ${advice.record || "no"}. Not (formally) legal advices.`,
 		);
 	} finally {
 		await client.close();
@@ -267,6 +267,6 @@ for (const one of advice.cited)
 		`  [${one.ELI}] ${one.read ? "read through the tools" : found.has(one.ELI) ? "found by a tool, not opened" : "NOT FROM THE TOOLS - named from memory"}`,
 	);
 console.log(
-	`\n${model} in opencode, ${advice.steps.length} tool call(s), exit ${code}. Kept: ${advice.record || "no"}. Not legal advice.`,
+	`\n${model} in opencode, ${advice.steps.length} tool call(s), exit ${code}. Kept: ${advice.record || "no"}. Not (formally) legal advices.`,
 );
 process.exit(code);

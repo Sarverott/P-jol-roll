@@ -23,7 +23,7 @@ The conversations of the law mastermind of
 law of Poland answered by language models that read the acts of Dziennik
 Ustaw and Monitor Polski through the project's MCP tools and cite each act
 by its ELI. Every conversation is kept, so that models and their families
-can be compared on the same questions. **Not legal advice** - answers of
+can be compared on the same questions. **Not (formally) legal advices** - answers of
 small local models, kept as they were given, mistakes included.
 
 ## Layout

@@ -68,7 +68,7 @@ async function send() {
 			<p class="mb-3 i18n-texts-slot">
 				Ask about the law of Poland. The answer comes from the acts the model
 				reads through the project's tools, each cited act a link.
-				<strong>Not legal advice.</strong>
+				<strong>Not (formally) legal advices.</strong>
 				<span v-if="about.model" class="is-size-7 has-text-grey">
 					(<span translate="no">{{ about.model }}</span>)</span
 				>

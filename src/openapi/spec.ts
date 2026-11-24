@@ -51,7 +51,7 @@ export const spec = {
 	openapi: "3.1.0",
 	info: {
 		title: "P_JOL_ROLL",
-		version: "0.32.8",
+		version: "0.32.9",
 		description:
 			"Read-only access to Polish journals of laws gathered by P_JOL_ROLL. It answers from local files only and never asks the source. Live notices of changed files go over socket.io on the same address, and the same reading is served to AI agents as MCP tools at /mcp (streamable http).",
 		license: { name: "AGPL-3.0-only" },
@@ -60,7 +60,7 @@ export const spec = {
 		"/api/ask": {
 			get: {
 				summary:
-					"a question answered by the law mastermind from the acts it read through the MCP tools, each cited by its ELI - an api started with MASTERMIND_URL, or the demo space on the signed-in visitor's own Hugging Face token (401 until then); not legal advice",
+					"a question answered by the law mastermind from the acts it read through the MCP tools, each cited by its ELI - an api started with MASTERMIND_URL, or the demo space on the signed-in visitor's own Hugging Face token (401 until then); not (formally) legal advices",
 				parameters: [
 					{
 						name: "question",
