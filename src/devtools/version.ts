@@ -24,10 +24,12 @@ const COPIES: [string, RegExp][] = [
 	["src/firefox-ext/manifest.json", field('"version":')],
 	["src/openapi/spec.ts", field("version:")],
 	["src/mcp/server.ts", field(String.raw`name:\s*"p-jol-roll",\s*version:`)],
-	...["docs", "examples", "scripts"].flatMap((dir): [string, RegExp][] => [
-		[`${dir}/pyproject.toml`, PYTHON],
-		[`${dir}/uv.lock`, LOCKED],
-	]),
+	...["docs", "examples", "scripts", "stacks/python"].flatMap(
+		(dir): [string, RegExp][] => [
+			[`${dir}/pyproject.toml`, PYTHON],
+			[`${dir}/uv.lock`, LOCKED],
+		],
+	),
 ];
 
 // NOTE: patterns are repeatable and instead of multiple copies we can use reusable subpatterns of regexp - pattern `\s*")[^"]+(")/` is almost in every field of version checkers

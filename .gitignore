@@ -62,3 +62,5 @@ __pycache__/
 # marimo notebooks made from examples/notebooks/ (task examples:convert)
 examples/marimo
 examples/.venv
+# the environment of the Python stack (task python:sync)
+stacks/python/.venv
