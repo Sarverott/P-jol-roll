@@ -10,7 +10,7 @@
 		"dev": "node scripts/state.mjs && vite"
 	},
 	"dependencies": {
-		"p5": "2.3.4",
+		"p5": "2.4.0",
 		"react": "^19.3.1",
 		"react-dom": "^19.3.1"
 	},
