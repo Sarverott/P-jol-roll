@@ -84,11 +84,18 @@ in the country, as open source.
 Planned from the owner's own words - the milestones, the law mastermind of
 Q18, the devices of Q17, PP4 - and not started: each begins when the owner
 says so, and its TODO items are written then. Numbers may move (one on in
-phases 29, 31 and 32).
+phases 29, 31 and 32; 41-47 put before ESP32 by the owner's order of phase 41).
 
 | Phase | Milestone | Idea |
 | ----- | --------- | ---- |
-| 41 | M5 | off the grid: ESP32 boards as mesh nodes of the law (PP4, when decided) |
+| 41 | M6 | sources that hold: the Sejm's transcripts given time and a fallback, the dates of SAOS checked, the common courts' Portal Orzeczeń taken directly |
+| 42 | M6 | international law adopted by Poland: the law of the EU in force (EUR-Lex), the international agreements binding Poland (Q22) |
+| 43 | M6 | public tenders (e-Zamówienia, TED) and local and regional law: the sixteen voivodeships' official journals (Q23) |
+| 44 | M6 | the declaration of transparency: every public office with its official contacts, its place on OpenStreetMap, the address space of the state (Q24) |
+| 45 | M6 | reports to the authorities by mail - Police, the army, CBA, ABW, AW, CERT Polska, NASK - drafted, read by a person, sent (Q20) |
+| 46 | M6 | mirrors of the repository on GitLab, Bitbucket, sourcehut, Gitea and a Gitea of our own, each with the same milestones, pull requests and devlog (Q21) |
+| 47 | M6 | the announcements of the discussion #107 on Tumblr, X, Blogger, Telegram, Discord and Mastodon (Q21) |
+| 48 | M5 | off the grid: ESP32 boards as mesh nodes of the law (PP4, when decided) |
 
 ## The law mastermind (Q18, phase 22)
 
