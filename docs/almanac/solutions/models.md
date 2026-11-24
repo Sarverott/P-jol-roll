@@ -47,6 +47,12 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **WebAuthn takes no IP address** (phase 40): a page at
+  `http://127.0.0.1:<port>` cannot be a relying party; `localhost` can,
+  and is a secure context. Test it without a key: CDP's
+  `WebAuthn.addVirtualAuthenticator` (ctap2, usb, presence simulated) in
+  Playwright's Chromium; `getPublicKey()` of the registration gives the
+  key's SPKI, so no CBOR is parsed.
 - **`$!` of a shell function run in the background is the subshell's**
   (phase 39): `law start &` with `law` a function left the node running
   when the test killed `$!`; start the binary itself in the background,
