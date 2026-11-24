@@ -41,5 +41,58 @@
 			"branches": ["dev/*"],
 			"bump": "patch"
 		}
+	},
+	"mirrors": {
+		"source": {
+			"host": "github.com",
+			"web": "https://github.com/Sarverott/P-jol-roll"
+		},
+		"to": [
+			{
+				"name": "gitea",
+				"host": "gitea.com",
+				"web": "https://gitea.com/Sarverott/P-jol-roll",
+				"git": "https://gitea.com/Sarverott/P-jol-roll.git",
+				"user": "Sarverott",
+				"secret": "MIRROR_GITEA_TOKEN",
+				"api": "https://gitea.com/api/v1",
+				"devlog": "gitea"
+			},
+			{
+				"name": "gitlab",
+				"host": "gitlab.com",
+				"web": "https://gitlab.com/Sarverott/P-jol-roll",
+				"git": "https://gitlab.com/Sarverott/P-jol-roll.git",
+				"user": "oauth2",
+				"secret": "MIRROR_GITLAB_TOKEN",
+				"api": "https://gitlab.com/api/v4",
+				"devlog": "gitlab"
+			},
+			{
+				"name": "bitbucket",
+				"host": "bitbucket.org",
+				"web": "https://bitbucket.org/apokryf/p-jol-roll",
+				"git": "https://bitbucket.org/apokryf/p-jol-roll.git",
+				"user": "x-token-auth",
+				"secret": "MIRROR_BITBUCKET_TOKEN"
+			},
+			{
+				"name": "sourcehut",
+				"host": "sr.ht",
+				"web": "https://git.sr.ht/~sarverott/P-jol-roll",
+				"git": "git@git.sr.ht:~sarverott/P-jol-roll",
+				"secret": "MIRROR_SOURCEHUT_SSH_KEY"
+			},
+			{
+				"name": "own-gitea",
+				"host": "own-gitea",
+				"web": "$MIRROR_OWN_GITEA_URL/Sarverott/P-jol-roll",
+				"git": "$MIRROR_OWN_GITEA_URL/Sarverott/P-jol-roll.git",
+				"user": "Sarverott",
+				"secret": "MIRROR_OWN_GITEA_TOKEN",
+				"api": "$MIRROR_OWN_GITEA_URL/api/v1",
+				"devlog": "gitea"
+			}
+		]
 	}
 }

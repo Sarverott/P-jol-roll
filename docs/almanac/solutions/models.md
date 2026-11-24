@@ -47,6 +47,11 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **Gitea in a container for a test** (phase 46): `GITEA__security__INSTALL_LOCK=true`
+  and sqlite skip the installer; `gitea admin user create` and `gitea admin
+  user generate-access-token --raw`, run as the user `git`, give an
+  administrator and a token. Push from a clone of the repository, so the
+  refs a mirror script makes (`refs/mirror/*`) never land in the working one.
 - **Read a certificate that does not verify** (phase 45): `tls.connect`
   with `rejectUnauthorized: false` still says `authorized` and
   `authorizationError` - the failure becomes the evidence; a server that

@@ -83,6 +83,7 @@ in the country, as open source.
 | 43 | public tenders (e-Zamówienia by day, TED) and local and regional law (ten voivodeships' journals through their ELI API) |
 | 44 | the declaration of transparency: 4,933 public offices' official contacts and places, the state's networks in RIPE |
 | 45 | reports to the authorities: their official contacts, drafts with evidence (certificates of public servers), sent only after a person's yes |
+| 46 | the repository and its devlog mirrored to gitea.com, gitlab.com, bitbucket.org, sr.ht and our own Gitea |
 
 ### Phases ahead (planned in phase 28)
 
@@ -93,7 +94,6 @@ phases 29, 31 and 32; 41-47 put before ESP32 by the owner's order of phase 41).
 
 | Phase | Milestone | Idea |
 | ----- | --------- | ---- |
-| 46 | M6 | mirrors of the repository on GitLab, Bitbucket, sourcehut, Gitea and a Gitea of our own, each with the same milestones, pull requests and devlog (Q21) |
 | 47 | M6 | the announcements of the discussion #107 on Tumblr, X, Blogger, Telegram, Discord and Mastodon (Q21) |
 | 48 | M5 | off the grid: ESP32 boards as mesh nodes of the law (PP4, when decided) |
 

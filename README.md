@@ -18,6 +18,11 @@
 [![bucket](https://img.shields.io/badge/bucket-Hugging%20Face-yellow?logo=huggingface)](https://huggingface.co/buckets/Sarverott/raw-law-of-poland)
 [![MCP](https://img.shields.io/badge/MCP-%2Fmcp-informational)](https://sarverott-docs-of-law-by-gov-in-poland.hf.space/mcp)
 [![Architecture diagram](https://gitdiagram.com/diagram-badge.svg)](https://gitdiagram.com/sarverott/p-jol-roll)
+[![github.com source](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSarverott%2FP-jol-roll%2Fbadges%2Fsource-github.com.json)](https://github.com/Sarverott/P-jol-roll)
+[![gitea.com mirror](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSarverott%2FP-jol-roll%2Fbadges%2Fmirror-gitea.com.json)](https://gitea.com/Sarverott/P-jol-roll)
+[![gitlab.com mirror](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSarverott%2FP-jol-roll%2Fbadges%2Fmirror-gitlab.com.json)](https://gitlab.com/Sarverott/P-jol-roll)
+[![bitbucket.org mirror](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSarverott%2FP-jol-roll%2Fbadges%2Fmirror-bitbucket.org.json)](https://bitbucket.org/apokryf/p-jol-roll)
+[![sr.ht mirror](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FSarverott%2FP-jol-roll%2Fbadges%2Fmirror-sr.ht.json)](https://git.sr.ht/~sarverott/P-jol-roll)
 
 Polish **Journals of Laws resources operational lurker loader** - complex set of tools to handle datamining, crawling and parsing of all law documents released as published by polish goverment national legal code, package of approved acts or available constitution version
 

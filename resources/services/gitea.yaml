@@ -1,0 +1,19 @@
+# gitea: a Gitea of our own (phase 46) - the mirror the project keeps itself, beside GitLab,
+# Bitbucket, sourcehut and gitea.com. Started by the owner on a machine that serves it:
+#   task mirror:gitea:up          on 127.0.0.1:3000 (GITEA_PORT), its data in resources/.containerdatavol/gitea/
+# then an administrator `Sarverott` made in it, a token of theirs as the secret
+# MIRROR_OWN_GITEA_TOKEN and its address as the variable MIRROR_OWN_GITEA_URL of the repository:
+# the workflow mirrors.yml fills it on every push to development.
+services:
+  gitea:
+    profiles: [gitea]
+    image: gitea/gitea:1.27.3
+    environment:
+      GITEA__security__INSTALL_LOCK: "true"
+      GITEA__database__DB_TYPE: sqlite3
+      GITEA__server__ROOT_URL: ${GITEA_ROOT_URL:-http://127.0.0.1:3000/}
+    volumes:
+      - ./resources/.containerdatavol/gitea:/data
+    ports:
+      - "127.0.0.1:${GITEA_PORT:-3000}:3000"
+    restart: unless-stopped

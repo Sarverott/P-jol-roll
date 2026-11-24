@@ -1,0 +1,51 @@
+# The source (this GitHub repository) synced to its mirrors (phase 46, as in the BOS core):
+# GitLab, Bitbucket, sourcehut, Gitea and a Gitea of our own (.github/bos.json: mirrors) - every
+# branch and tag, deletions too - and the devlog written on those that keep issues (Gitea,
+# GitLab): the same milestones, labels and issues as GitHub's (scripts/devops/mirrors/devlog.py).
+# Then a status badge per place on the branch `badges`, shown in the README. A mirror whose
+# secret is not set is left out and said; one that fails shows 403 on its badge, and the run goes
+# on. Mirrors only receive: pull requests, checks and releases happen here.
+#   secrets  MIRROR_GITEA_TOKEN, MIRROR_GITLAB_TOKEN, MIRROR_BITBUCKET_TOKEN,
+#            MIRROR_SOURCEHUT_SSH_KEY, MIRROR_OWN_GITEA_TOKEN
+#   vars     MIRROR_OWN_GITEA_URL (https://git.example.org) - our own Gitea, when it runs
+name: "mirrors › the source and its devlog on five more places"
+
+on:
+  push:
+    branches: [development]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mirrors
+  cancel-in-progress: true
+
+jobs:
+  mirrors:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      MIRROR_GITEA_TOKEN: ${{ secrets.MIRROR_GITEA_TOKEN }}
+      MIRROR_GITLAB_TOKEN: ${{ secrets.MIRROR_GITLAB_TOKEN }}
+      MIRROR_BITBUCKET_TOKEN: ${{ secrets.MIRROR_BITBUCKET_TOKEN }}
+      MIRROR_SOURCEHUT_SSH_KEY: ${{ secrets.MIRROR_SOURCEHUT_SSH_KEY }}
+      MIRROR_OWN_GITEA_TOKEN: ${{ secrets.MIRROR_OWN_GITEA_TOKEN }}
+      MIRROR_OWN_GITEA_URL: ${{ vars.MIRROR_OWN_GITEA_URL }}
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0 }
+      - name: The repositories made where they are not
+        continue-on-error: true
+        run: python3 scripts/devops/mirrors/devlog.py --ensure
+      - name: Every branch and tag to each mirror, a badge each
+        # a mirror's failure is on its badge and in the log; the work goes on
+        continue-on-error: true
+        run: scripts/devops/mirrors/mirrors.sh "$RUNNER_TEMP/badges"
+      - name: The devlog on the mirrors that keep issues
+        continue-on-error: true
+        run: python3 scripts/devops/mirrors/devlog.py
+      - name: The badges, on the branch badges
+        run: scripts/devops/mirrors/status-badges.sh "$RUNNER_TEMP/badges"
