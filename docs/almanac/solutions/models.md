@@ -47,6 +47,11 @@ the MCP tools of `src/mcp`.
 - **Models write markdown** (`**`, `###`, links around an ELI): the chat reads it as
   pieces of text, never as HTML, so an answer cannot put anything on the
   page.
+- **An API that answers 406 to the crawler** (phase 41): crawlee asks for
+  HTML by default (`Accept: text/html,...`); SAOS refuses that with 406
+  "unsupported media type", and the handler got `json` as null - `task
+  saos` took nothing without a clear error. Every walk asks for
+  `application/json, */*;q=0.8`, and a handler checks its status.
 - **WebAuthn takes no IP address** (phase 40): a page at
   `http://127.0.0.1:<port>` cannot be a relying party; `localhost` can,
   and is a secure context. Test it without a key: CDP's

@@ -34,6 +34,9 @@ export const dayPath = (term: number, sitting: number, date: string) =>
 		`${sitting}`,
 		`${date}.json`,
 	);
+// a day's transcript as one PDF: taken when its statements do not come as JSON (phase 41)
+export const dayPdfPath = (term: number, sitting: number, date: string) =>
+	join(SEJM_BUCKET, `term${term}`, "transcripts", `${sitting}`, `${date}.pdf`);
 export const statementPath = (
 	term: number,
 	sitting: number,
@@ -132,14 +135,23 @@ export async function sittings(plan: GatheringScope.SittingsPlan) {
 			.map(({ sitting, date }) => ({
 				url: transcripts(term, sitting, date),
 				path: dayPath(term, sitting, date),
+				pdf: dayPdfPath(term, sitting, date),
 			}));
 		left -= days.length;
-		if (days.length)
-			await crawl(
-				days.map(({ url, path }) => ({ url, userData: { path } })),
-				files,
-				plan.rate,
-			);
+		if (!days.length) continue;
+		// a day's statements take the API 25 s and more to give: they are given two minutes
+		await crawl(
+			days.map(({ url, path }) => ({ url, userData: { path } })),
+			files,
+			plan.rate,
+			{ timeout: 120, tolerate: true },
+		);
+		// a day that still did not come: its transcript as one PDF, which the API gives faster
+		const late = days
+			.filter(({ path }) => !existsSync(path))
+			.filter(({ pdf }) => !existsSync(pdf))
+			.map(({ url, pdf }) => ({ url: `${url}/pdf`, userData: { path: pdf } }));
+		if (late.length) await crawl(late, files, plan.rate, { timeout: 120 });
 	}
 	if (!plan.files) return;
 	left = plan.limit || Number.POSITIVE_INFINITY;
